@@ -45,7 +45,6 @@ Thumbs.db
 # Build trash #
 ###############
 *.o
-bin/*
 
 ##############
 # Java Trash #
