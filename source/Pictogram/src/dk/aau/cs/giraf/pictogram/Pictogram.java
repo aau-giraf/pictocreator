@@ -1,18 +1,23 @@
 package dk.aau.cs.giraf.pictogram;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class Pictogram extends View implements IPictogram{
 	private String imagePath;
-	private String text;
-	private String audio;
+	private String textPath;
+	private String audioPath;
 	private String pictogramID;
 	
-	Pictogram(Context context, AttributeSet attrs) {
+	Pictogram(Context context, AttributeSet attrs, String image, String audio, String text) {
 		super(context, attrs);
+		
+		this.imagePath = image;
+		this.audioPath = audio;
+		this.textPath = text;
 	}
 	
 	@Override
@@ -24,13 +29,19 @@ public class Pictogram extends View implements IPictogram{
 	@Override
 	public void renderText() {
 		// TODO Auto-generated method stub
+		if (getBackground() == null) {
+			setBackgroundColor(Color.WHITE);
+		}
+		
+		
 		
 	}
 
 	@Override
 	public void renderImage() {
 		// TODO Auto-generated method stub
-		BitmapDrawable image = new BitmapDrawable(getResources(),imagePath);
+		BitmapDrawable image = new BitmapDrawable(getResources(), imagePath);
+		setBackground(image);
 		
 	}
 
