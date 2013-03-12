@@ -1,8 +1,10 @@
 package dk.aau.cs.giraf.pictogram;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -37,11 +39,13 @@ public class Pictogram extends View implements IPictogram{
 		
 	}
 
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
 	@Override
 	public void renderImage() {
 		// TODO Auto-generated method stub
 		BitmapDrawable image = new BitmapDrawable(getResources(), imagePath);
-		setBackground(image);
+		//Draw stuff...
 		
 	}
 
