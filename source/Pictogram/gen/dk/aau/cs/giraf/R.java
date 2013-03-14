@@ -33,14 +33,17 @@ containing a value of this type.
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static int activity_horizontal_margin=0x7f030000;
-        public static int activity_vertical_margin=0x7f030001;
+        public static int activity_horizontal_margin=0x7f040000;
+        public static int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
         public static int ic_launcher=0x7f020000;
     }
+    public static final class layout {
+        public static int picto_layout=0x7f030000;
+    }
     public static final class string {
-        public static int app_name=0x7f040000;
+        public static int app_name=0x7f050000;
     }
     public static final class styleable {
         /** Attributes that can be used with a Pictogram.

@@ -124,7 +124,7 @@ public enum PictoFactory {
 
         //TODO replace this when a new snappier version of
         // Pictogram gets implemented.
-        Pictogram pictogram = new Pictogram(null, null, pic, aud, text);
+        Pictogram pictogram = new Pictogram(null);
 
         return pictogram;
     }
