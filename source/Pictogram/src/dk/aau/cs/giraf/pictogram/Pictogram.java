@@ -248,8 +248,11 @@ public class Pictogram extends ViewGroup implements IPictogram{
 		
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			//super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-			int width = 0;
+			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+			int size = MeasureSpec.getSize(widthMeasureSpec);
+			String someSize = MeasureSpec.toString(size);
+			System.out.println(someSize);
+			/*int width = 0;
 			int height = 0;
 			if(image != null) {
 				width = image.getWidth();
@@ -259,7 +262,7 @@ public class Pictogram extends ViewGroup implements IPictogram{
 				width = MeasureSpec.getSize(widthMeasureSpec);
 				height = MeasureSpec.getSize(heightMeasureSpec);
 			}			
-			setMeasuredDimension(width, height);
+			setMeasuredDimension(width, height);*/
 		}
 		
 		@Override
@@ -327,7 +330,6 @@ public class Pictogram extends ViewGroup implements IPictogram{
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 			//super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-			/*
 			int reqWidth;
 			int reqHeight;
 			
@@ -350,12 +352,12 @@ public class Pictogram extends ViewGroup implements IPictogram{
 			else {
 				reqHeight = (int) textPaint.getTextSize();
 			}
-			setMeasuredDimension(reqWidth, reqHeight);*/
-			
+			setMeasuredDimension(reqWidth, reqHeight);
+			/*
 			int width = MeasureSpec.getSize(widthMeasureSpec);
 			int height = MeasureSpec.getSize(heightMeasureSpec);
 			
-			setMeasuredDimension(width, height);
+			setMeasuredDimension(width, height);*/
 		}
 		
 		@Override

@@ -2,6 +2,8 @@ package dk.aau.cs.giraf.pictogram;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+
 public enum PictoFactory {
     INSTANCE;
     private ArrayList<String> tempImageDatabase;
@@ -9,15 +11,11 @@ public enum PictoFactory {
     private ArrayList<String> tempTextDatabase;
 
     public void repopulateTemporaryDatabase(){
-        String _tempImageDatabase[] = { "/sdcard/Pictogram/bade.wma",
-                                        "/sdcard/Pictogram/børstetænder.wma",
+        String _tempAudioDatabase[] = { "/sdcard/Pictogram/bade.wma",
                                         "/sdcard/Pictogram/drikke.wma",
                                         "/sdcard/Pictogram/du.wma",
                                         "/sdcard/Pictogram/film.wma",
-                                        "/sdcard/Pictogram/forhøjt.wma",
-                                        "/sdcard/Pictogram/gå.wma",
                                         "/sdcard/Pictogram/ja.wma",
-                                        "/sdcard/Pictogram/køre.wma",
                                         "/sdcard/Pictogram/lavemad.wma",
                                         "/sdcard/Pictogram/lege.wma",
                                         "/sdcard/Pictogram/mig.wma",
@@ -28,20 +26,13 @@ public enum PictoFactory {
                                         "/sdcard/Pictogram/spillecomputer.wma",
                                         "/sdcard/Pictogram/stop.wma",
                                         "/sdcard/Pictogram/sulten.wma",
-                                        "/sdcard/Pictogram/søvnig.wma",
-                                        "/sdcard/Pictogram/talesammen.wma",
-                                        "/sdcard/Pictogram/tørstig.wma",
-                                        "/sdcard/Pictogram/værestille.wma"};
+                                        "/sdcard/Pictogram/talesammen.wma"};
 
-        String _tempAudioDatabase[] = {"/sdcard/Pictogram/Bade.png",
-                                       "/sdcard/Pictogram/BørsteTænder.png",
+        String _tempImageDatabase[] = {"/sdcard/Pictogram/Bade.png",
                                        "/sdcard/Pictogram/Drikke.png",
                                        "/sdcard/Pictogram/Du.png",
                                        "/sdcard/Pictogram/Film.png",
-                                       "/sdcard/Pictogram/ForHøjt.png",
-                                       "/sdcard/Pictogram/Gå.png",
                                        "/sdcard/Pictogram/Ja.png",
-                                       "/sdcard/Pictogram/Køre.png",
                                        "/sdcard/Pictogram/LaveMad.png",
                                        "/sdcard/Pictogram/Lege.png",
                                        "/sdcard/Pictogram/Mig.png",
@@ -52,10 +43,7 @@ public enum PictoFactory {
                                        "/sdcard/Pictogram/SpilleComputer.png",
                                        "/sdcard/Pictogram/Stop.png",
                                        "/sdcard/Pictogram/Sulten.png",
-                                       "/sdcard/Pictogram/Søvnig.png",
-                                       "/sdcard/Pictogram/TaleSammen.png",
-                                       "/sdcard/Pictogram/Tørstig.png",
-                                       "/sdcard/Pictogram/VæreStille.png"};
+                                       "/sdcard/Pictogram/TaleSammen.png"};
 
         String _tempTextDatabase[] = {"Bade",
                                       "Børste Tænder",
@@ -100,7 +88,7 @@ public enum PictoFactory {
     /**
      *
      */
-    public Pictogram getPictogram(long pictogramID) {
+    public Pictogram getPictogram(Context context, long pictogramID) {
 
         // Imagine a database of pictograms with tags and
         // beautiful text for plastering on to them here.
@@ -124,7 +112,7 @@ public enum PictoFactory {
 
         //TODO replace this when a new snappier version of
         // Pictogram gets implemented.
-        Pictogram pictogram = new Pictogram(null, null, null, null, 0);
+        Pictogram pictogram = new Pictogram(context, pic, text, aud, pictogramID);
 
         return pictogram;
     }
