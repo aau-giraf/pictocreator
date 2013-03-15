@@ -11,39 +11,39 @@ public enum PictoFactory {
     private ArrayList<String> tempTextDatabase;
 
     public void repopulateTemporaryDatabase(){
-        String _tempAudioDatabase[] = { "/sdcard/Pictogram/bade.wma",
-                                        "/sdcard/Pictogram/drikke.wma",
-                                        "/sdcard/Pictogram/du.wma",
-                                        "/sdcard/Pictogram/film.wma",
-                                        "/sdcard/Pictogram/ja.wma",
-                                        "/sdcard/Pictogram/lavemad.wma",
-                                        "/sdcard/Pictogram/lege.wma",
-                                        "/sdcard/Pictogram/mig.wma",
-                                        "/sdcard/Pictogram/morgenroutine.wma",
-                                        "/sdcard/Pictogram/nej.wma",
-                                        "/sdcard/Pictogram/se.wma",
-                                        "/sdcard/Pictogram/sidened.wma",
-                                        "/sdcard/Pictogram/spillecomputer.wma",
-                                        "/sdcard/Pictogram/stop.wma",
-                                        "/sdcard/Pictogram/sulten.wma",
-                                        "/sdcard/Pictogram/talesammen.wma"};
+        String _tempAudioDatabase[] = {"/bade.wma",
+                                       "/drikke.wma",
+                                       "/du.wma",
+                                       "/film.wma",
+                                       "/ja.wma",
+                                       "/lavemad.wma",
+                                       "/lege.wma",
+                                       "/mig.wma",
+                                       "/morgenroutine.wma",
+                                       "/nej.wma",
+                                       "/se.wma",
+                                       "/sidened.wma",
+                                       "/spillecomputer.wma",
+                                       "/stop.wma",
+                                       "/sulten.wma",
+                                       "/talesammen.wma"};
 
-        String _tempImageDatabase[] = {"/sdcard/Pictogram/Bade.png",
-                                       "/sdcard/Pictogram/Drikke.png",
-                                       "/sdcard/Pictogram/Du.png",
-                                       "/sdcard/Pictogram/Film.png",
-                                       "/sdcard/Pictogram/Ja.png",
-                                       "/sdcard/Pictogram/LaveMad.png",
-                                       "/sdcard/Pictogram/Lege.png",
-                                       "/sdcard/Pictogram/Mig.png",
-                                       "/sdcard/Pictogram/MorgenRoutine.png",
-                                       "/sdcard/Pictogram/Nej.png",
-                                       "/sdcard/Pictogram/Se.png",
-                                       "/sdcard/Pictogram/SideNed.png",
-                                       "/sdcard/Pictogram/SpilleComputer.png",
-                                       "/sdcard/Pictogram/Stop.png",
-                                       "/sdcard/Pictogram/Sulten.png",
-                                       "/sdcard/Pictogram/TaleSammen.png"};
+        String _tempImageDatabase[] = {"/Bade.png",
+                                       "/Drikke.png",
+                                       "/Du.png",
+                                       "/Film.png",
+                                       "/Ja.png",
+                                       "/LaveMad.png",
+                                       "/Lege.png",
+                                       "/Mig.png",
+                                       "/MorgenRoutine.png",
+                                       "/Nej.png",
+                                       "/Se.png",
+                                       "/SideNed.png",
+                                       "/SpilleComputer.png",
+                                       "/Stop.png",
+                                       "/Sulten.png",
+                                       "/TaleSammen.png"};
 
         String _tempTextDatabase[] = {"Bade",
                                       "Børste Tænder",
@@ -71,9 +71,11 @@ public enum PictoFactory {
 
         // honestly I didn't check but I expect that they are exactly the same length.
         int length = _tempImageDatabase.length;
+        String storagePath = Environment.getExternalStorageDirectory().getPath() + "/Pictogram";
 
         for(int i = 0; i < length; i++){
-            tempImageDatabase.add(_tempImageDatabase[i]);
+
+            tempImageDatabase.add(storagePath + _tempImageDatabase[i]);
         }
 
         for(int i = 0; i < length; i++){
@@ -81,7 +83,7 @@ public enum PictoFactory {
         }
 
         for(int i = 0; i < length; i++){
-            tempAudioDatabase.add(_tempAudioDatabase[i]);
+            tempAudioDatabase.add(storagePath + _tempAudioDatabase[i]);
         }
     }
 
