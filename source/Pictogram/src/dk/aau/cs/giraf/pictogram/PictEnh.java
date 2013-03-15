@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import dk.aau.cs.giraf.R;
 
-public class Pictogram extends FrameLayout implements IPictogram{
+public class PictEnh extends FrameLayout implements IPictogram{
 	
 	private String imagePath;
 	private String textLabel;
@@ -18,7 +18,7 @@ public class Pictogram extends FrameLayout implements IPictogram{
 	private Gravity textGravity;
 	
 	//Main constructor (no XML)
-	public Pictogram(Context context, String image, String text, String audio, long id) {
+	public PictEnh(Context context, String image, String text, String audio, long id) {
 		super(context);
 		this.imagePath = image;
 		this.textLabel = text;
