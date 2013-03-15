@@ -25,19 +25,19 @@ import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
 public class Pictogram extends ViewGroup implements IPictogram{
-
-	//private int pictoWidth;
-	//private int pictoHeight;
 	
 	private String imagePath;
 	private String textLabel;
 	private String audioPath;
 	private long pictogramID;
 	
-	//private ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 	//Main constructor (no XML)
-	public Pictogram(Context context) {
+	public Pictogram(Context context, String image, String text, String audio, long id) {
 		super(context);
+		this.imagePath = image;
+		this.textLabel = text;
+		this.audioPath = audio;
+		this.pictogramID = id;
 	}
 	
 	//Eventually for XML (if needed) otherwise use other constructor
