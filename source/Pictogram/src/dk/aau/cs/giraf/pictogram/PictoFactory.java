@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.os.Environment;
 
+//TODO: Make this a service that applications can hook to
+//TODO: If made local, set it to run in seperate thread (DBsync and traversing can be costly)
 public enum PictoFactory {
     INSTANCE;
     private ArrayList<String> tempImageDatabase = new ArrayList<String>();

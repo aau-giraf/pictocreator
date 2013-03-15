@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import dk.aau.cs.giraf.R;
 
+//TODO: Make custom ImageView and TextView with predefined "niceness"
+//TODO: Implement a "onClick" play audio feature
+//TODO: Handle empty paths (render empty(img?) if path not found)
 public class Pictogram extends FrameLayout implements IPictogram{
 	
 	private String imagePath;
