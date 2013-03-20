@@ -9,6 +9,7 @@ import android.os.Environment;
 //TODO: If made local, set it to run in seperate thread (DBsync and traversing can be costly)
 public enum PictoFactory {
     INSTANCE;
+
     private ArrayList<String> tempImageDatabase = new ArrayList<String>();
     private ArrayList<String> tempAudioDatabase = new ArrayList<String>();
     private ArrayList<String> tempTextDatabase = new ArrayList<String>();
@@ -73,7 +74,7 @@ public enum PictoFactory {
         // Imagine also that it was possible to load whole
         // collections of these things just by the switch
         // of a method.
-    	
+
         if(tempImageDatabase.isEmpty()){
             // completely arbirary, but hey!
             repopulateTemporaryDatabase();
