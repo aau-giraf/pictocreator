@@ -37,7 +37,6 @@ public enum AudioPlayer{
     private AudioPlayer(){
         // not entierly sure what this is supposed to accomplish.
         // Log.v(TAG, "index=" + i);
-
         open();
     }
 
@@ -73,11 +72,11 @@ public enum AudioPlayer{
         }
     }
 
-    public static void play(final String path){
+    public void play(final String path){
         play(path, null);
     }
 
-    public static void play(final String path, final OnCompletionListener listener){
+    public void play(final String path, final OnCompletionListener listener){
         //TODO find out if we should stop any ongoing playback or not, current implementation stops playback. Making it an user defined option might be too much?
         //TODO play is blocking, make this not true by implementing a seperate thread?
         try {
