@@ -1,15 +1,17 @@
 package dk.aau.cs.giraf.pictogram;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 //TODO: Make this a service that applications can hook to
 //TODO: If made local, set it to run in seperate thread (DBsync and traversing can be costly)
 public enum PictoFactory {
     INSTANCE;
-    privat final static TAG = "PictoFactory";
+    private final static String TAG = "PictoFactory";
 
     private ArrayList<String> tempImageDatabase = new ArrayList<String>();
     private ArrayList<String> tempAudioDatabase = new ArrayList<String>();
