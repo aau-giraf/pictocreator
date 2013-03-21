@@ -32,12 +32,11 @@ import android.util.Log;
 public enum AudioPlayer{
     INSTANCE;
     private static MediaPlayer mediaPlayer;
-    private final static String TAG = "GIRAF_Pictogram_AudioPlayer";
+    private final static String TAG = "AudioPlayer";
 
     private AudioPlayer(){
         // not entierly sure what this is supposed to accomplish.
         // Log.v(TAG, "index=" + i);
-
         open();
     }
 
@@ -65,7 +64,6 @@ public enum AudioPlayer{
             Log.i(TAG,"Resetting AudioPlayer.");
             mediaPlayer.reset();
         } catch (IllegalStateException e){
-            // when is an object really a mediaplayer, the state says "When playback!", the communists say "Every object is a mediaplayer!", the religious says "mediaplayer belongs to the JVM!". I say a mediaplayer chooses, an object obeys!
             Log.e(TAG,"Could not reset AudioPlayer.");
             Log.i(TAG, "Attempting to reopen AudioPlayer.");
             close();
@@ -73,11 +71,11 @@ public enum AudioPlayer{
         }
     }
 
-    public static void play(final String path){
+    public void play(final String path){
         play(path, null);
     }
 
-    public static void play(final String path, final OnCompletionListener listener){
+    public void play(final String path, final OnCompletionListener listener){
         //TODO find out if we should stop any ongoing playback or not, current implementation stops playback. Making it an user defined option might be too much?
         //TODO play is blocking, make this not true by implementing a seperate thread?
         try {
@@ -98,7 +96,8 @@ public enum AudioPlayer{
             e.printStackTrace();
         } catch (IOException e) {
             //TODO make this exception take proper action instead of just failing and shutting up.
-            Log.e(TAG, "play thres an IOException, please check if your path is correct.");
+            //TODO make this exception more informative.
+            Log.e(TAG, "play throws an IOException.");
             e.printStackTrace();
         }
     }

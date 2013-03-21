@@ -16,19 +16,20 @@ import dk.aau.cs.giraf.R;
 //TODO: Handle empty paths (render empty(img?) if path not found)
 public class Pictogram extends FrameLayout implements IPictogram{
 
-        private String imagePath;
-        private String textLabel;
-        private String audioPath;
-        private long pictogramID;
+        private final String imagePath;
+        private final String textLabel;
+        private final String audioPath;
+        private final long pictogramID;
+
         private Gravity textGravity;
 
         //Main constructor (no XML)
-        public Pictogram(Context context, String image, String text, String audio, long id) {
+        public Pictogram(Context context, final String image, final String text, final String audio, final long id) {
                 super(context);
-                this.imagePath = image;
-                this.textLabel = text;
-                this.audioPath = audio;
-                this.pictogramID = id;
+                imagePath = image;
+                textLabel = text;
+                audioPath = audio;
+                pictogramID = id;
         }
 
         @Override
@@ -72,7 +73,7 @@ public class Pictogram extends FrameLayout implements IPictogram{
             new Thread(new Runnable(){
                     public void run(){
                         try{
-                            AudioPlayer.INSTANCE.play(audioPath, listener);
+                                AudioPlayer.INSTANCE.play(audioPath, listener);
                         } catch (Exception e){
                             //TODO Properly catch exceptions thrown by AudioPlayer and handle them.
                         }
@@ -102,19 +103,19 @@ public class Pictogram extends FrameLayout implements IPictogram{
         }
 
         public String getImagePath() {
-                return this.imagePath;
+                return imagePath;
         }
 
         public String getTextLabel() {
-                return this.textLabel;
+                return textLabel;
         }
 
         public String getAudioPath() {
-                return this.audioPath;
+                return audioPath;
         }
 
         public long getPictogramID() {
-                return this.pictogramID;
+                return pictogramID;
         }
 
 }
