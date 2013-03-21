@@ -1,18 +1,20 @@
 package com.example.pictotester;
+import java.io.IOException;
+
+import android.media.MediaPlayer;
 import dk.aau.cs.giraf.pictogram.*;
 import android.os.Bundle;
 import android.os.Environment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
-	
-	String imagePath = Environment.getExternalStorageDirectory().getPath() + "/Pictogram/Film.png";
-	String textLabel = "Filmses";
 
 	@SuppressLint("NewApi")
 	@Override
@@ -23,7 +25,7 @@ public class MainActivity extends Activity {
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT , LayoutParams.MATCH_PARENT);
 		LayoutParams params2 = new LayoutParams(100 , 100);
 		
-		GridLayout grid = new GridLayout(this);
+		LinearLayout grid = new LinearLayout(this);
 		addContentView(grid, params);
 		
 		Pictogram[] arr = new Pictogram[10];
@@ -34,17 +36,14 @@ public class MainActivity extends Activity {
 			arr[i].renderText();
 			grid.addView(arr[i], params2);
 		}
-		grid.invalidate();
+
+		//arr[0].playAudio();
+		
 		/*
 		Pictogram pic = PictoFactory.INSTANCE.getPictogram(this, 0);
 		pic.renderImage();
 		pic.renderText();
 		grid.addView(pic);
-		
-		Pictogram pic2 = PictoFactory.INSTANCE.getPictogram(this, 1);
-		pic2.renderImage();
-		pic2.renderText(Gravity.CENTER);
-		grid.addView(pic2);
 		*/
 	}
 
