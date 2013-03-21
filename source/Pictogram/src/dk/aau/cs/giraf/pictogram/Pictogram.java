@@ -3,6 +3,7 @@ package dk.aau.cs.giraf.pictogram;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import dk.aau.cs.giraf.R;
 //TODO: Implement a "onClick" play audio feature
 //TODO: Handle empty paths (render empty(img?) if path not found)
 public class Pictogram extends FrameLayout implements IPictogram{
+    private static final String TAG = "Pictogram";
 
         private final String imagePath;
         private final String textLabel;
@@ -58,6 +60,8 @@ public class Pictogram extends FrameLayout implements IPictogram{
         public void renderImage() {
                 Bitmap img = BitmapFactory.decodeFile(imagePath);
                 ImageView image = new ImageView(getContext());
+                String msg = imagePath + " found, making bitmap.";
+                Log.d(TAG, msg);
                 image.setImageBitmap(img);
                 this.addView(image);
         }
