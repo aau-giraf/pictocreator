@@ -53,7 +53,8 @@ public enum PictoFactory {
 
         // honestly I didn't check but I expect that they are exactly the same length.
         int length = _tempImageDatabase.length;
-        String storagePath = Environment.getExternalStorageDirectory().getPath() + "/Pictogram";
+        String storagePath = Environment.getExternalStorageDirectory().getPath()
+            + "/Pictures/giraf/public";
 
         for(int i = 0; i < length; i++){
 
