@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.media.MediaPlayer.OnCompletionListener;
 
-import dk.aau.cs.giraf.R;
+import dk.aau.cs.giraf.oasis.lib.*;
+import dk.aau.cs.giraf.oasis.lib.models.*;
 
 //TODO: Make custom ImageView and TextView with predefined "niceness"
 //TODO: Implement a "onClick" play audio feature
@@ -22,7 +23,8 @@ public class Pictogram extends FrameLayout implements IPictogram{
         private final String textLabel;
         private final String audioPath;
         private final long pictogramID;
-
+        private final Media f = null;
+        
         private Gravity textGravity;
 
         //Main constructor (no XML)
@@ -84,6 +86,7 @@ public class Pictogram extends FrameLayout implements IPictogram{
                     }
                 }).start();
                 //TODO check that the thread is stopped again at some point. [OLD PARROT TODO]
+            Log.d(TAG, "Made sound: " + audioPath);
         }
 
         @Override
