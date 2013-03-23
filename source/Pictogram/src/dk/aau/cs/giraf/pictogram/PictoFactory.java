@@ -85,12 +85,12 @@ public enum PictoFactory {
             Arrays.sort(_tempAudioDatabase);
 
             int i = 0;
-            MediaHelper mediaHelper = databaseHelper.mediaHelper;
+            //MediaHelper mediaHelper = databaseHelper.mediaHelper;
 
             for(String img : _tempImageDatabase){
                 String sub = img.substring(0,img.length()-4);
-                Media imgMedia = new Media(_tempTextDatabase[i], img, true, "pictogram", 0);
-                Media audMedia = new Media();
+                Media imgMedia = new Media(_tempTextDatabase[i], img, true, "pictogram", 2);
+                //Media audMedia = new Media();
 
                 tempImageDatabase.add(img);
                 tempTextDatabase.add(_tempTextDatabase[i]);
@@ -106,12 +106,13 @@ public enum PictoFactory {
                     }
                     j++;
                 }
-                long ida = databaseHelper.mediaHelper.insertMedia(imgMedia);
-
+                //long ida = databaseHelper.mediaHelper.insertMedia(imgMedia);
+                /*
                 if(!audMedia.equals(new Media())){
                     mediaHelper.insertMedia(audMedia);
                     mediaHelper.attachSubMediaToMedia(audMedia, imgMedia);
                 }
+                */
                 i += 1;
             }
         } else {

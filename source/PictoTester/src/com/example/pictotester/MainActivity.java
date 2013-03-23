@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 		addContentView(grid, params);
 		
 		Pictogram[] arr = new Pictogram[10];
-		
+
 		for (int i = 0; i < 10; i++) {
 			arr[i] = PictoFactory.INSTANCE.getPictogram(this, i);
 			arr[i].renderImage();
