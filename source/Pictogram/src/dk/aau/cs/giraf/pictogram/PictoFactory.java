@@ -3,14 +3,15 @@ package dk.aau.cs.giraf.pictogram;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-import dk.aau.cs.giraf.oasis.lib.Helper;
-import dk.aau.cs.giraf.oasis.lib.controllers.MediaHelper;
-import dk.aau.cs.giraf.oasis.lib.models.Media;
+// import dk.aau.cs.giraf.oasis.lib.Helper;
+// import dk.aau.cs.giraf.oasis.lib.controllers.MediaHelper;
+// import dk.aau.cs.giraf.oasis.lib.models.Media;
 
 
 //TODO: Make this a service that applications can hook to
@@ -19,7 +20,7 @@ public enum PictoFactory {
     INSTANCE;
     private final static String TAG = "PictoFactory";
 
-    private Helper databaseHelper;
+    //private Helper databaseHelper;
     private ArrayList<String> tempImageDatabase = new ArrayList<String>();
     private ArrayList<String> tempAudioDatabase = new ArrayList<String>();
     private ArrayList<String> tempTextDatabase = new ArrayList<String>();
@@ -29,9 +30,9 @@ public enum PictoFactory {
         tempAudioDatabase.clear();
         tempTextDatabase.clear();
 
-        if(databaseHelper == null){
-            databaseHelper = new Helper(null);
-        }
+        // if(databaseHelper == null){
+        //     databaseHelper = new Helper(null);
+        // }
         Log.d(TAG, "PictoFactory initialized and \"database\" cleared.");
     }
 
@@ -65,59 +66,49 @@ public enum PictoFactory {
                     Log.i(TAG, "File name too short to consider a media file.");
                 }
             }
+        }
 
-            Log.d(TAG, "Pictograms added to relevant databases.");
+        _tempImageDatabase = new String[tempImageDatabase.size()];
+        _tempTextDatabase = new String[tempTextDatabase.size()];
+        _tempAudioDatabase = new String[tempAudioDatabase.size()];
 
-            _tempImageDatabase = new String[tempImageDatabase.size()];
-            _tempTextDatabase = new String[tempTextDatabase.size()];
-            _tempAudioDatabase = new String[tempAudioDatabase.size()];
+        _tempImageDatabase = tempImageDatabase.toArray(new String[0]);
+        _tempTextDatabase = tempTextDatabase.toArray(new String[0]);
+        _tempAudioDatabase = tempAudioDatabase.toArray(new String[0]);
 
-            tempImageDatabase.toArray(_tempImageDatabase);
-            tempTextDatabase.toArray(_tempTextDatabase);
-            tempAudioDatabase.toArray(_tempAudioDatabase);
+        tempImageDatabase.clear();
+        tempTextDatabase.clear();
+        tempAudioDatabase.clear();
 
-            tempImageDatabase.clear();
-            tempTextDatabase.clear();
-            tempAudioDatabase.clear();
+        Arrays.sort(_tempImageDatabase);
+        Arrays.sort(_tempTextDatabase);
+        Arrays.sort(_tempAudioDatabase);
 
-            Arrays.sort(_tempImageDatabase);
-            Arrays.sort(_tempTextDatabase);
-            Arrays.sort(_tempAudioDatabase);
+        int i = 0;
 
-            int i = 0;
-            //MediaHelper mediaHelper = databaseHelper.mediaHelper;
+        // MediaHelper mediaHelper = databaseHelper.mediaHelper;
+        // List<Media> allMedia = mediaHelper.getMedia();
+        // Log.d(TAG, "All media from database was found and placed in allMedia");
 
-            for(String img : _tempImageDatabase){
-                String sub = img.substring(0,img.length()-4);
-                Media imgMedia = new Media(_tempTextDatabase[i], img, true, "pictogram", 2);
-                //Media audMedia = new Media();
+        for(String img : _tempImageDatabase){
+            String sub = img.substring(0,img.length()-4);
+            //Media imgMedia = new Media(_tempTextDatabase[i], img, true, "pictogram", 2);
+            //Media audMedia = new Media();
 
-                tempImageDatabase.add(img);
-                tempTextDatabase.add(_tempTextDatabase[i]);
+            tempImageDatabase.add(img);
+            tempTextDatabase.add(_tempTextDatabase[i]);
 
-                int j = 0;
-                for(String aud : tempAudioDatabase){
-                    if(aud.startsWith(sub)){
-                        String msg = "Found " + sub + " in " + aud;
-                        Log.d(TAG, msg);
-                        // audMedia = new Media(_tempAudioDatabase[j], aud, true, "audio", 0);
-                        tempAudioDatabase.set(i ,_tempAudioDatabase[j]);
-                        break;
-                    }
-                    j++;
+            int j = 0;
+            for(String aud : tempAudioDatabase){
+                if(aud.startsWith(sub)){
+                    String msg = "Found " + sub + " in " + aud;
+                    Log.d(TAG, msg);
+                    tempAudioDatabase.set(i ,_tempAudioDatabase[j]);
+                    break;
                 }
-                //long ida = databaseHelper.mediaHelper.insertMedia(imgMedia);
-                /*
-                if(!audMedia.equals(new Media())){
-                    mediaHelper.insertMedia(audMedia);
-                    mediaHelper.attachSubMediaToMedia(audMedia, imgMedia);
-                }
-                */
-                i += 1;
+                j++;
             }
-        } else {
-            String msg = "Could not find anything in " + storagePath;
-            Log.e(TAG, msg);
+            i += 1;
         }
     }
 
