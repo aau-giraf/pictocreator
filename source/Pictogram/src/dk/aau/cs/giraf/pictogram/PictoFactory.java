@@ -9,9 +9,9 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-// import dk.aau.cs.giraf.oasis.lib.Helper;
-// import dk.aau.cs.giraf.oasis.lib.controllers.MediaHelper;
-// import dk.aau.cs.giraf.oasis.lib.models.Media;
+import dk.aau.cs.giraf.oasis.lib.Helper;
+import dk.aau.cs.giraf.oasis.lib.controllers.MediaHelper;
+import dk.aau.cs.giraf.oasis.lib.models.Media;
 
 
 //TODO: Make this a service that applications can hook to
@@ -20,7 +20,7 @@ public enum PictoFactory {
     INSTANCE;
     private final static String TAG = "PictoFactory";
 
-    //private Helper databaseHelper;
+    private Helper databaseHelper;
     private ArrayList<String> tempImageDatabase = new ArrayList<String>();
     private ArrayList<String> tempAudioDatabase = new ArrayList<String>();
     private ArrayList<String> tempTextDatabase = new ArrayList<String>();
@@ -29,10 +29,6 @@ public enum PictoFactory {
         tempImageDatabase.clear();
         tempAudioDatabase.clear();
         tempTextDatabase.clear();
-
-        // if(databaseHelper == null){
-        //     databaseHelper = new Helper(null);
-        // }
         Log.d(TAG, "PictoFactory initialized and \"database\" cleared.");
     }
 
@@ -86,10 +82,6 @@ public enum PictoFactory {
 
         int i = 0;
 
-        // MediaHelper mediaHelper = databaseHelper.mediaHelper;
-        // List<Media> allMedia = mediaHelper.getMedia();
-        // Log.d(TAG, "All media from database was found and placed in allMedia");
-
         for(String img : _tempImageDatabase){
             String sub = img.substring(0,img.length()-4);
             //Media imgMedia = new Media(_tempTextDatabase[i], img, true, "pictogram", 2);
@@ -112,6 +104,24 @@ public enum PictoFactory {
         }
     }
 
+    private void RealDB(){
+        MediaHelper mediaHelper = databaseHelper.mediaHelper;
+        List<Media> allMedia = mediaHelper.getMedia();
+
+        String msg = "Media:%s\n\tId:%d\n\tType:%s\n\tPath:%s";
+
+        for(Media m : allMedia){
+            String type = m.getMType();
+            if(type.equalsIgnoreCase("IMAGE")){
+                tempImageDatabase.add(m.getMPath());
+                tempTextDatabase.add(m.getName());
+
+                String outp = String.format(msg, m.getName(), m.getId(), m.getMType(), m.getMPath());
+                Log.d(TAG, outp);
+            }
+        }
+    }
+
     /**
      *
      */
@@ -123,24 +133,29 @@ public enum PictoFactory {
         // Imagine also that it was possible to load whole
         // collections of these things just by the switch
         // of a method.
+        databaseHelper = new Helper(context);
 
         if(tempImageDatabase.isEmpty()){
             Log.d(TAG, "\"Database\" was empty, filling it up.");
-            // completely arbirary, but hey!
-            repopulateTemporaryDatabase();
+            RealDB();
             Log.d(TAG, "Finished filling \"Database\"");
         }
 
         String pic = tempImageDatabase.get(0);
         tempImageDatabase.remove(0);
+        tempImageDatabase.add(pic);
+
         String text = tempTextDatabase.get(0);
         tempTextDatabase.remove(0);
+        tempTextDatabase.add(text);
+
         String aud = null;
 
-        if(!tempAudioDatabase.isEmpty()){
-            aud = tempAudioDatabase.get(0);
-            aud = tempAudioDatabase.remove(0);
-        }
+        // if(!tempAudioDatabase.isEmpty()){
+        //     aud = tempAudioDatabase.get(0);
+        //     aud = tempAudioDatabase.remove(0);
+        // }
+
         //TODO replace this when a new snappier version of
         // Pictogram gets implemented.
         Pictogram pictogram = new Pictogram(context, pic, text, aud, pictogramID);
