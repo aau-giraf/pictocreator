@@ -5,24 +5,30 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.hardware.Camera.ShutterCallback;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 public class CamActivity extends Activity {
 	private final static String TAG = "CamActivity";
 	
-	CamPreview camPreview;	
+	CamPreview camPreview;
+	PhotoHandler photoHandler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cam);
-		
+		photoHandler = new PhotoHandler(this);
 		camPreview = new CamPreview(this);
 		
 		FrameLayout preview = (FrameLayout)findViewById(R.id.camera_preview);
 		preview.addView(camPreview);
+		
+		Button captureButton = (Button)findViewById(R.id.button_capture);
 	}
 
 	@Override
@@ -30,6 +36,10 @@ public class CamActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.cam, menu);
 		return true;
+	}
+	
+	public void capturePhoto(View v) {
+		camPreview.takePicture(shutterCall, null, photoHandler);
 	}
 	
 	@Override
@@ -50,5 +60,11 @@ public class CamActivity extends Activity {
 	        return false;
 	    }
 	}
+	
+	private final ShutterCallback shutterCall = new ShutterCallback() {
+		public void onShutter() {
+			//Do nothing
+		}
+	};
 
 }
