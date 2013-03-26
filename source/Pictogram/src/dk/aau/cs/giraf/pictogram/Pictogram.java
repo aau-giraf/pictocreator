@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.media.MediaPlayer.OnCompletionListener;
 
 import dk.aau.cs.giraf.oasis.lib.*;
@@ -71,14 +72,13 @@ public class Pictogram extends FrameLayout implements IPictogram {
     }
 
     public boolean hasAudio() {
-        return audioPath == null;
+        return audioPath != null;
     }
 
     @Override
     public void playAudio() {
         playAudio(null);
     }
-
 
     public void playAudio(final OnCompletionListener listener){
         if(hasAudio()){
@@ -88,12 +88,14 @@ public class Pictogram extends FrameLayout implements IPictogram {
                     }
                 }).start();
 
+            String msg = "Played audio: " + textLabel;
+            Toast.makeText(super.getContext(), msg, Toast.LENGTH_SHORT).show();
             //TODO check that the thread is stopped again at some point. [OLD PARROT TODO]
-            Log.d(TAG, "Made sound: " + audioPath);
         } else {
-            Log.d(TAG, "No sound attatched: " + pictogramID);
+            Log.d(TAG, "No sound attatched: " + pictogramID + "\n\tOn:" + textLabel);
         }
     }
+
     @Override
     public String[] getTags() {
         return null;
