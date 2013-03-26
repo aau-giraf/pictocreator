@@ -51,5 +51,8 @@ Thumbs.db
 ##############
 *.class
 *.jar
+.classpath
+local.properties
 .metadata
 bin/
+R.java.d
