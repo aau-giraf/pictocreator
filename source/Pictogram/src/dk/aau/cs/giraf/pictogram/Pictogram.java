@@ -15,8 +15,6 @@ import dk.aau.cs.giraf.oasis.lib.*;
 import dk.aau.cs.giraf.oasis.lib.models.*;
 
 //TODO: Make custom ImageView and TextView with predefined "niceness"
-//TODO: Implement a "onClick" play audio feature
-//TODO: Handle empty paths (render empty(img?) if path not found)
 public class Pictogram extends FrameLayout implements IPictogram {
     private static final String TAG = "Pictogram";
 
