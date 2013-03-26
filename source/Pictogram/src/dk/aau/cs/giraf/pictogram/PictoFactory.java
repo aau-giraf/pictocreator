@@ -123,10 +123,37 @@ public enum PictoFactory {
     }
 
     /**
-     *
+     * Somewhat dangerous method that gets every single piece of media
+     * from the DB.
      */
-    public Pictogram getPictogram(Context context, long pictogramID) {
 
+    public List<Pictogram> getAllPictograms(Context context){
+        databaseHelper = new Helper(context);
+        MediaHelper mediaHelper = databaseHelper.mediaHelper;
+        List<Media> allMedia = mediaHelper.getMedia();
+        List<Pictogram> allPictograms = new ArrayList<Pictogram>();
+
+        for(Media media : allMedia){
+            if(media.getMType().equalsIgnoreCase("IMAGE")){
+                List<Media> subs = mediaHelper.getSubMediaByMedia(media);
+                String aud = null;
+
+                if(subs.size() != 0){
+                        aud = subs.get(0).getMPath();
+                }
+
+                Pictogram pictogram = new Pictogram(context,
+                                                    media.getMPath(),
+                                                    media.getName(),
+                                                    aud,
+                                                    media.getId());
+                allPictograms.add(pictogram);
+            }
+        }
+        return allPictograms;
+    }
+
+    public Pictogram getPictogram(Context context, long pictogramID) {
         // Imagine a database of pictograms with tags and
         // beautiful text for plastering on to them here.
         //
@@ -140,6 +167,8 @@ public enum PictoFactory {
             RealDB();
             Log.d(TAG, "Finished filling \"Database\"");
         }
+
+
 
         String pic = tempImageDatabase.get(0);
         tempImageDatabase.remove(0);
