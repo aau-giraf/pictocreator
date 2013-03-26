@@ -57,12 +57,12 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		params.setPreviewSize(previewSize.width, previewSize.height);
 		cam.setParameters(params);
 		
-		try {
+		try{
 			cam.setPreviewDisplay(holder);
-			cam.startPreview();
-		} catch (Exception e) {
-			Log.d(TAG, "Something went horribly wrong in starting preview");
+		} catch(Exception e) {
+			Log.d(TAG, "Display holder was not set");
 		}
+		startPreview();
 	}
 
 	@Override
@@ -152,9 +152,20 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 	}
 	
 	private void configureHolder() {
-		
 		holder = getHolder();
 		holder.addCallback(this);
 		holder.setKeepScreenOn(true);
+	}
+	
+	public void takePicture(Camera.ShutterCallback shutter, Camera.PictureCallback raw, Camera.PictureCallback jpeg) {
+		cam.takePicture(shutter, raw, jpeg);
+	}
+	
+	public void startPreview() {
+		try {
+			cam.startPreview();
+		} catch (Exception e) {
+			Log.d(TAG, "Something went horribly wrong in starting preview");
+		}
 	}
 }
