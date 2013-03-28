@@ -22,14 +22,17 @@ public enum PictoFactory {
     INSTANCE;
     private final static String TAG = "PictoFactory";
 
-    private Helper databaseHelper;
+    private static Helper databaseHelper;
 
 
-    /**
-     * Somewhat dangerous method that gets every single piece of media
-     * from the DB.
-     */
-    public List<Pictogram> getAllPictograms(Context context){
+   /**
+    * <b>Do not use this function for anything essential!</b>
+    *
+    * Gets every single pictogram available in the database currently.
+    * @param context the context in which the method is executed.
+    * @return all pictograms currently in the database.
+    */
+    public static List<Pictogram> getAllPictograms(Context context){
         databaseHelper = new Helper(context);
         MediaHelper mediaHelper = databaseHelper.mediaHelper;
         List<Media> allMedia = mediaHelper.getMedia();
@@ -46,7 +49,20 @@ public enum PictoFactory {
         return allPictograms;
     }
 
-    private Pictogram convertMedia(Context context, Media media) throws IllegalArgumentException{
+    /**
+     * Takes any media from the oasis library and converts it to a pictogram.
+     *
+     * <p> Be warned that the first piece of submedia found will be set
+     * as the audio for the pictogram, so if there is a mistake in the DB
+     * it will live on by this function.
+     *
+     * @param context the context in which the method is executed.
+     * @param media a media object to be converted to a pictogram
+     * @return a pictogram that matches the media
+     * @throws IllegalArgumentException if the media is not found to be of the
+     * correct type it will be rejected with this exception.
+     */
+    public static Pictogram convertMedia(Context context, Media media) throws IllegalArgumentException{
         try{
             if(media.getMType().equalsIgnoreCase("IMAGE")){
                 List<Media> subs = databaseHelper.mediaHelper.getSubMediaByMedia(media);
@@ -88,8 +104,13 @@ public enum PictoFactory {
             return null;
         }
     }
-
-    public List<Pictogram> getPictogramsByProfile(Context context, Profile profile){
+    /**
+     * Gets all pictograms owned by a specific profile.
+     * @param context the context in which the method is executed.
+     * @param profile the profile from which the medias will be lifted.
+     * @return a {@link list} of pictograms.
+     */
+    public static List<Pictogram> getPictogramsByProfile(Context context, Profile profile){
         List<Pictogram> pictograms = new ArrayList<Pictogram>();
         List<Media> medias;
         databaseHelper = new Helper(context);
@@ -109,16 +130,38 @@ public enum PictoFactory {
         return pictograms;
     }
 
+
     /**
+     * <b> Unimplemented method, please do not call!</b>
      *
+     * <p>Get all Pictograms that match a list of tags.
+     * @param context the context in which the method is executed.
+     * @param tag the tag which should be found.
+     * @return a pictogram.
      */
-    public Pictogram getPictogram(Context context, long pictogramId){
-        // Imagine a database of pictograms with tags and
-        // beautiful text for plastering on to them here.
-        //
-        // Imagine also that it was possible to load whole
-        // collections of these things just by the switch
-        // of a method.
+    public static Pictogram getPictogramsByTag(Context context, String tag){
+        return null;
+    }
+
+    /**
+     * <b> Unimplemented method, please do not call!</b>
+     *
+     * <p>Get all Pictograms that match a list of tags.
+     * @param context the context in which the method is executed.
+     * @param tags the tags which should be found.
+     * @return a list of pictograms.
+     */
+    public static List<Pictogram> getPictogramsByTag(Context context, String[] tags){
+        return null;
+    }
+
+    /**
+     * Gets a specific pictogram from the database.
+     * @param context the context in which the method is executed.
+     * @param pictogramId a number identifying the pictogram in the database.
+     * @return a pictogram.
+     */
+    public static Pictogram getPictogram(Context context, long pictogramId){
         Pictogram pictogram;
 
         databaseHelper = new Helper(context);
@@ -131,4 +174,5 @@ public enum PictoFactory {
 
         return pictogram;
     }
+
 }

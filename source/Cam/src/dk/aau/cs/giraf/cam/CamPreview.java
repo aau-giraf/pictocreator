@@ -22,7 +22,11 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 	int currentCameraID = 0;
 	boolean hasMultiCams = false;
 	
-	
+	/**
+	 * 
+	 * @param context
+	 * @param attrs
+	 */
 	public CamPreview(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
@@ -30,6 +34,10 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		hasMultiCams = checkCameraHardware();
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 */
 	public CamPreview(Context context) {
 		super(context);
 		
@@ -37,6 +45,9 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		hasMultiCams = checkCameraHardware();
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 		
@@ -64,7 +75,10 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		}
 		startPreview();
 	}
-
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		if(hasMultiCams) {
@@ -75,6 +89,9 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		try {
@@ -86,6 +103,13 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		releaseCamera();
 	}
 	
+	/**
+	 * 
+	 * @param width
+	 * @param height
+	 * @param parameters
+	 * @return
+	 */
 	private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
 		Camera.Size result=null;
 
@@ -108,6 +132,11 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		return(result);
 	}
 	
+	/**
+	 * 
+	 * @param cameraID
+	 * @return
+	 */
 	public static Camera getCamera(int cameraID) {
 		Camera camera = null;
 		try {
@@ -118,6 +147,9 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		return camera;
 	}
 	
+	/**
+	 * 
+	 */
 	private void releaseCamera() {
 		if (cam != null) {
 			cam.release();
@@ -125,6 +157,10 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private boolean checkCameraHardware() {
 		/* Dat method, x_x */ 
 		Camera.CameraInfo camInfo = new Camera.CameraInfo();
@@ -151,16 +187,28 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 		return true;
 	}
 	
+	/**
+	 * 
+	 */
 	private void configureHolder() {
 		holder = getHolder();
 		holder.addCallback(this);
 		holder.setKeepScreenOn(true);
 	}
 	
+	/**
+	 * 
+	 * @param shutter
+	 * @param raw
+	 * @param jpeg
+	 */
 	public void takePicture(Camera.ShutterCallback shutter, Camera.PictureCallback raw, Camera.PictureCallback jpeg) {
 		cam.takePicture(shutter, raw, jpeg);
 	}
 	
+	/**
+	 * 
+	 */
 	public void startPreview() {
 		try {
 			cam.startPreview();

@@ -18,6 +18,9 @@ public class CamActivity extends Activity {
 	CamPreview camPreview;
 	PhotoHandler photoHandler;
 	
+	/**
+	 * 
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +33,9 @@ public class CamActivity extends Activity {
 		
 		Button captureButton = (Button)findViewById(R.id.button_capture);
 	}
-
+	/**
+	 * 
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -38,20 +43,35 @@ public class CamActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * 	
+	 * @param v
+	 */
 	public void capturePhoto(View v) {
 		camPreview.takePicture(shutterCall, null, photoHandler);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onResume() {
 		super.onResume();
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onPause() {
 		super.onPause();
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
 	private boolean checkCameraHardware(Context context) {
 	    if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
 	        return true;
@@ -61,6 +81,9 @@ public class CamActivity extends Activity {
 	    }
 	}
 	
+	/**
+	 * 
+	 */
 	private final ShutterCallback shutterCall = new ShutterCallback() {
 		public void onShutter() {
 			//Do nothing

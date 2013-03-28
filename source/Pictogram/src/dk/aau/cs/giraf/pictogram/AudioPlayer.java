@@ -34,31 +34,33 @@ public enum AudioPlayer{
     private static MediaPlayer mediaPlayer;
     private final static String TAG = "AudioPlayer";
 
+    /**
+     * Opens the {@link MediaPlayer} this is called as soon as the object
+     * appears in memory.
+     */
     private AudioPlayer(){
-        // not entierly sure what this is supposed to accomplish.
-        // Log.v(TAG, "index=" + i);
         open();
     }
 
-    // Commented because of a disagreement with people of the greater republic of republics.
-    // private static AudioPlayer getInstance(){
-    //     if(mInstance==null){
-    //         mInstance = new AudioPlayer();
-    //     }
-    //     return mInstance;
-    // }
-
     /**
-     *
+     * Creates the {@link MediaPlayer} object, this object is used for playing
+     * audio.
      */
     public static void open(){
         mediaPlayer = new MediaPlayer();
     }
 
+    /**
+     * Releases the {@link MediaPlayer}, making it a null object.
+     */
     public static void close(){
         mediaPlayer.release();
     }
 
+    /**
+     * This method tries to reset the {@link MediaPlayer}. If it did not
+     * succeed it will retry, closing and opening it.
+     */
     public static void reset(){
         try{
             Log.i(TAG,"Resetting AudioPlayer.");
@@ -71,10 +73,20 @@ public enum AudioPlayer{
         }
     }
 
+    /**
+     * Plays a specific piece of audio.
+     * @param path the path to a piece of audio.
+     */
     public void play(final String path){
         play(path, null);
     }
 
+    /**
+     * Plays a specific piece of audio. Taking a listener for use when the
+     * audio has finished playing.
+     * @param path the path to a piece of audio.
+     * @param listener the callback that will be run
+     */
     public void play(final String path, final OnCompletionListener listener){
         //TODO find out if we should stop any ongoing playback or not, current implementation stops playback. Making it an user defined option might be too much?
         //TODO play is blocking, make this not true by implementing a seperate thread?
