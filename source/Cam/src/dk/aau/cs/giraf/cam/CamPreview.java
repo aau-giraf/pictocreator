@@ -11,6 +11,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+/**
+ * 
+ * @author Croc
+ *
+ */
 public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 	private final static String TAG = "CamPreview";
 	

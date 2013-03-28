@@ -12,6 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+/**
+ * 
+ * @author Croc
+ *
+ */
 public class CamActivity extends Activity {
 	private final static String TAG = "CamActivity";
 	

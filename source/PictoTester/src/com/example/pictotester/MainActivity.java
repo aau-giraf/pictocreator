@@ -15,6 +15,11 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+/**
+ * 
+ * @author Croc
+ *
+ */
 public class MainActivity extends Activity {
 
     @SuppressLint("NewApi")

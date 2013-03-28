@@ -18,6 +18,12 @@ import dk.aau.cs.giraf.oasis.lib.controllers.MediaHelper;
 
 //TODO: Make this a service that applications can hook to
 //TODO: If made local, set it to run in seperate thread (DBsync and traversing can be costly)
+
+/**
+ * 
+ * @author Croc
+ *
+ */
 public enum PictoFactory {
     INSTANCE;
     private final static String TAG = "PictoFactory";
@@ -60,7 +66,7 @@ public enum PictoFactory {
      * @param media a media object to be converted to a pictogram
      * @return a pictogram that matches the media
      * @throws IllegalArgumentException if the media is not found to be of the
-     * correct type it will be rejected with this exception.
+     * 		   correct type it will be rejected with this exception.
      */
     public static Pictogram convertMedia(Context context, Media media) throws IllegalArgumentException{
         try{

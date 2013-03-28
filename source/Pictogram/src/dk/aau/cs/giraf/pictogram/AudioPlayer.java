@@ -25,9 +25,9 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 
-
-/*
- * File kindly borrowed from Parrot, which previously borrowed it from digiPECS.
+/**
+ * @author Croc
+ * @author digiPECS
  */
 public enum AudioPlayer{
     INSTANCE;
@@ -56,7 +56,7 @@ public enum AudioPlayer{
     public static void close(){
         mediaPlayer.release();
     }
-
+    
     /**
      * This method tries to reset the {@link MediaPlayer}. If it did not
      * succeed it will retry, closing and opening it.
