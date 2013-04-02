@@ -12,213 +12,219 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
- * 
+ *
  * @author Croc
  *
  */
 public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
-	private final static String TAG = "CamPreview";
-	
-	Camera cam;
-	Size previewSize;
-	SurfaceHolder holder;
-	int defaultCameraID = 0;
-	int frontCameraID = 1;
-	int currentCameraID = 0;
-	boolean hasMultiCams = false;
-	
-	/**
-	 * 
-	 * @param context
-	 * @param attrs
-	 */
-	public CamPreview(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		
-		configureHolder();
-		hasMultiCams = checkCameraHardware();
-	}
-	
-	/**
-	 * 
-	 * @param context
-	 */
-	public CamPreview(Context context) {
-		super(context);
-		
-		configureHolder();
-		hasMultiCams = checkCameraHardware();
-	}
+    private final static String TAG = "CamPreview";
 
-	/**
-	 * 
-	 */
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		
-		if(holder.getSurface() == null) {
-			Log.d(TAG, "Surface does not exist");
-			return;
-		}
-		try {
-			cam.stopPreview();
-		} catch (Exception e) {
-			Log.d(TAG, "Lol, you tried to stop a non-existent preview");
-		}
-		releaseCamera();
-		cam = getCamera(defaultCameraID);
-		
-		Camera.Parameters params = cam.getParameters();
-		previewSize = getBestPreviewSize(width, height, params);
-		params.setPreviewSize(previewSize.width, previewSize.height);
-		cam.setParameters(params);
-		
-		try{
-			cam.setPreviewDisplay(holder);
-		} catch(Exception e) {
-			Log.d(TAG, "Display holder was not set");
-		}
-		startPreview();
-	}
-	
-	/**
-	 * 
-	 */
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		if(hasMultiCams) {
-			Log.d(TAG, "Multiple camera devices found");
-		}
-		else if(!hasMultiCams) {
-			Log.d(TAG, "Only one device found");
-		}
-	}
+    Camera cam;
+    Size previewSize;
+    SurfaceHolder holder;
+    int defaultCameraID = 0;
+    int frontCameraID = 1;
+    int currentCameraID = 0;
+    boolean hasMultiCams = false;
 
-	/**
-	 * 
-	 */
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		try {
-			cam.stopPreview();
-			cam.setPreviewDisplay(null);
-		} catch (Exception e) {
-			Log.d(TAG, "Error stopping preview and setting display to null");
-		}
-		releaseCamera();
-	}
-	
-	/**
-	 * 
-	 * @param width
-	 * @param height
-	 * @param parameters
-	 * @return
-	 */
-	private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
-		Camera.Size result=null;
+    /**
+     *
+     * @param context
+     * @param attrs
+     */
+    public CamPreview(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
-		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-			if (size.width <= width && size.height <= height) {
-				if (result == null) {
-					result=size;
-				}
-				else {
-					int resultArea=result.width * result.height;
-					int newArea=size.width * size.height;
+        configureHolder();
+        hasMultiCams = checkCameraHardware();
+    }
 
-					if (newArea > resultArea) {
-						result=size;
-					}
-				}
-			}
-		}
+    /**
+     *
+     * @param context
+     */
+    public CamPreview(Context context) {
+        super(context);
 
-		return(result);
-	}
-	
-	/**
-	 * 
-	 * @param cameraID
-	 * @return
-	 */
-	public static Camera getCamera(int cameraID) {
-		Camera camera = null;
-		try {
-			camera = Camera.open(cameraID);
-		} catch(Exception e) {
-			Log.d(TAG, "Failed to get the requested camera");
-		}
-		return camera;
-	}
-	
-	/**
-	 * 
-	 */
-	private void releaseCamera() {
-		if (cam != null) {
-			cam.release();
-			cam = null;
-		}
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	private boolean checkCameraHardware() {
-		/* Dat method, x_x */ 
-		Camera.CameraInfo camInfo = new Camera.CameraInfo();
-		int numberOfCams = Camera.getNumberOfCameras();
-		
-		if(numberOfCams == 1) {
-			return false;
-		}
-		
-		for(int j = 0; j < numberOfCams; j++) {
-			Camera.getCameraInfo(j, camInfo);
-			if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-				defaultCameraID = currentCameraID = j;
-				Log.d(TAG, "Camera facing back is set, with id: " + String.valueOf(j));
-			}
-			else if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-				frontCameraID = j;
-				Log.d(TAG, "Camera facing front is set, with id: " + String.valueOf(j));
-			}
-			else {
-				Log.d(TAG, "Default configuration kept, since facing is not set in system");
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * 
-	 */
-	private void configureHolder() {
-		holder = getHolder();
-		holder.addCallback(this);
-		holder.setKeepScreenOn(true);
-	}
-	
-	/**
-	 * 
-	 * @param shutter
-	 * @param raw
-	 * @param jpeg
-	 */
-	public void takePicture(Camera.ShutterCallback shutter, Camera.PictureCallback raw, Camera.PictureCallback jpeg) {
-		cam.takePicture(shutter, raw, jpeg);
-	}
-	
-	/**
-	 * 
-	 */
-	public void startPreview() {
-		try {
-			cam.startPreview();
-		} catch (Exception e) {
-			Log.d(TAG, "Something went horribly wrong in starting preview");
-		}
-	}
+        configureHolder();
+        hasMultiCams = checkCameraHardware();
+    }
+
+    /**
+     *
+     * @param holder
+     * @param format
+     * @param width
+     * @param height
+     */
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        if(holder.getSurface() == null) {
+            Log.d(TAG, "Surface does not exist");
+            return;
+        }
+        try {
+            cam.stopPreview();
+        } catch (Exception e) {
+            Log.d(TAG, "Lol, you tried to stop a non-existent preview");
+        }
+        releaseCamera();
+        cam = getCamera(defaultCameraID);
+
+        Camera.Parameters params = cam.getParameters();
+        previewSize = getBestPreviewSize(width, height, params);
+        params.setPreviewSize(previewSize.width, previewSize.height);
+        cam.setParameters(params);
+
+        try{
+            cam.setPreviewDisplay(holder);
+        } catch(Exception e) {
+            Log.d(TAG, "Display holder was not set");
+        }
+        startPreview();
+    }
+
+    /**
+     *
+     * @param holder
+     */
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        if(hasMultiCams) {
+            Log.d(TAG, "Multiple camera devices found");
+        }
+        else if(!hasMultiCams) {
+            Log.d(TAG, "Only one device found");
+        }
+    }
+
+    /**
+     *
+     * @param holder
+     */
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        try {
+            cam.stopPreview();
+            cam.setPreviewDisplay(null);
+        } catch (Exception e) {
+            Log.d(TAG, "Error stopping preview and setting display to null");
+        }
+        releaseCamera();
+    }
+
+    /**
+     *
+     * @param width
+     * @param height
+     * @param parameters
+     * @return
+     */
+    private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
+        Camera.Size result=null;
+
+        for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+            if (size.width <= width && size.height <= height) {
+                if (result == null) {
+                    result=size;
+                }
+                else {
+                    int resultArea=result.width * result.height;
+                    int newArea=size.width * size.height;
+
+                    if (newArea > resultArea) {
+                        result=size;
+                    }
+                }
+            }
+        }
+
+        return(result);
+    }
+
+    /**
+     *
+     * @param cameraID
+     * @return
+     */
+    public static Camera getCamera(int cameraID) {
+        Camera camera = null;
+        try {
+            camera = Camera.open(cameraID);
+        } catch(Exception e) {
+            Log.d(TAG, "Failed to get the requested camera");
+        }
+        return camera;
+    }
+
+    /**
+     *
+     */
+    private void releaseCamera() {
+        if (cam != null) {
+            cam.release();
+            cam = null;
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    private boolean checkCameraHardware() {
+        /* Dat method, x_x */
+        Camera.CameraInfo camInfo = new Camera.CameraInfo();
+        int numberOfCams = Camera.getNumberOfCameras();
+
+        if(numberOfCams == 1) {
+            return false;
+        }
+
+        for(int j = 0; j < numberOfCams; j++) {
+            Camera.getCameraInfo(j, camInfo);
+            if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                defaultCameraID = currentCameraID = j;
+                Log.d(TAG, "Camera facing back is set, with id: " + String.valueOf(j));
+            }
+            else if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                frontCameraID = j;
+                Log.d(TAG, "Camera facing front is set, with id: " + String.valueOf(j));
+            }
+            else {
+                Log.d(TAG, "Default configuration kept, since facing is not set in system");
+            }
+        }
+        return true;
+    }
+
+    /**
+     *
+     */
+    private void configureHolder() {
+        holder = getHolder();
+        holder.addCallback(this);
+        holder.setKeepScreenOn(true);
+    }
+
+    /**
+     *
+     * @param shutter
+     * @param raw
+     * @param jpeg
+     */
+    public void takePicture(Camera.ShutterCallback shutter, Camera.PictureCallback raw, Camera.PictureCallback jpeg) {
+        cam.takePicture(shutter, raw, jpeg);
+    }
+
+    /**
+     *
+     */
+    public void startPreview() {
+        try {
+            cam.startPreview();
+        } catch (Exception e) {
+            Log.d(TAG, "Something went horribly wrong in starting preview");
+        }
+    }
 }
