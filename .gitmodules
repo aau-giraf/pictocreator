@@ -1,0 +1,3 @@
+[submodule "source/lib/pictogram"]
+	path = source/lib/pictogram
+	url = http://cs-cust06-int.cs.aau.dk/git-ro/pictogram-lib.git
