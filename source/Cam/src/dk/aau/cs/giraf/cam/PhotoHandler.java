@@ -33,7 +33,7 @@ public class PhotoHandler implements PictureCallback {
 			return;
 		}
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddd-HHmmss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
 		String date = dateFormat.format(new Date());
 		String photoFile = "GImage_" + date + ".jpg";
 		

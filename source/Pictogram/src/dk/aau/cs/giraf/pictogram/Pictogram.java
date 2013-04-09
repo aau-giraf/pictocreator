@@ -1,6 +1,8 @@
 package dk.aau.cs.giraf.pictogram;
 
+import dk.aau.cs.giraf.R;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -11,16 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer.OnCompletionListener;
 
-import dk.aau.cs.giraf.oasis.lib.*;
-import dk.aau.cs.giraf.oasis.lib.models.*;
-//TODO: Make custom ImageView and TextView with predefined "niceness"
-
 /**
  * 
  * @author Croc
  *
  */
-public class Pictogram extends FrameLayout implements IPictogram {
+public class Pictogram extends FrameLayout {
     private static final String TAG = "Pictogram";
 
     private final String imagePath;
@@ -28,7 +26,7 @@ public class Pictogram extends FrameLayout implements IPictogram {
     private final String audioPath;
     private final long pictogramID;
 
-    private Gravity textGravity;
+    private boolean usingColor = true;
 
     //Main constructor (no XML)
 
@@ -60,22 +58,20 @@ public class Pictogram extends FrameLayout implements IPictogram {
      * Populates the view with both image and text, making it an actual viewable
      * view.
      */
-    @Override
     public void renderAll() {
         renderImage();
         renderText();
     }
-
 
     /**
      * Populates the view with text, making it an actual viewable view.
      * The gravity is by default set to {@value} TODO insert value
      * {@link #renderText(int)} can be used if you want to place the text.
      */
-    @Override
     public void renderText() {
         TextView text = new TextView(getContext());
         text.setText(textLabel);
+        text.setPadding(15, 15, 15, 15);
         text.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         this.addView(text);
     }
@@ -87,7 +83,7 @@ public class Pictogram extends FrameLayout implements IPictogram {
     public void renderText(int gravity) {
         TextView text = new TextView(getContext());
         text.setText(textLabel);
-        text.setPadding(10, 10, 10, 10);
+        text.setPadding(15, 15, 15, 15);
         text.setGravity(Gravity.CENTER_HORIZONTAL | gravity);
         this.addView(text);
     }
@@ -95,7 +91,6 @@ public class Pictogram extends FrameLayout implements IPictogram {
     /**
      * Populates the view with an image, making it an actual viewable view.
      */
-    @Override
     public void renderImage() {
         Bitmap img = BitmapFactory.decodeFile(imagePath);
         ImageView image = new ImageView(getContext());
@@ -103,6 +98,10 @@ public class Pictogram extends FrameLayout implements IPictogram {
         Log.d(TAG, msg);
         image.setImageBitmap(img);
         this.addView(image);
+    }
+    //TODO finish writing this up to fully utilize colorfiltering for grayscale
+    public void useColor(boolean value) {
+    	this.usingColor = value;
     }
 
     /**
@@ -112,7 +111,6 @@ public class Pictogram extends FrameLayout implements IPictogram {
         return audioPath != null;
     }
 
-    @Override
     public void playAudio() {
         playAudio(null);
     }
@@ -123,7 +121,8 @@ public class Pictogram extends FrameLayout implements IPictogram {
     public void playAudio(final OnCompletionListener listener){
         if(hasAudio()){
             new Thread(new Runnable(){
-                    public void run(){
+                    @Override
+					public void run(){
                         AudioPlayer.INSTANCE.play(audioPath, listener);
                     }
                 }).start();
@@ -142,38 +141,7 @@ public class Pictogram extends FrameLayout implements IPictogram {
      * <p> Get tags attached to the pictogram.
      * TODO implement properly.
      */
-    @Override
     public String[] getTags() {
-        return null;
-    }
-
-    /**
-     * <b>NOT YET IMPLEMENTED!</b>
-     *
-     * Returns the data of the image path if it has been generated.
-     */
-    @Override
-    public String getImageData() {
-        return null;
-    }
-
-    /**
-     * <b>NOT YET IMPLEMENTED!</b>
-     *
-     * Returns the data from the audio path if it has been generated.
-     */
-    @Override
-    public String getAudioData() {
-        return null;
-    }
-
-    /**
-     * <b>Pointless!</b>
-     *
-     * This method is functionally pointless, don't call it.
-     */
-    @Override
-    public String getTextData() {
         return null;
     }
 
