@@ -8,4 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RecordActivity" >
 
+    <ToggleButton
+        android:id="@+id/record_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp"
+        android:text="ToggleButton" />
+
+    <view class="dk.aau.cs.giraf.audiorecorder.BarLevelDrawable"
+        android:id="@+id/decibel_meter"
+        android:layout_width="200dp"
+        android:layout_height="48dp" ></view>
+
+
 </RelativeLayout>
