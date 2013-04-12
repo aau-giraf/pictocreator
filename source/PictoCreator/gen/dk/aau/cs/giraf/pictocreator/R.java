@@ -26,6 +26,44 @@ containing a value of this type.
          */
         public static final int width=0x7f010000;
     }
+    public static final class color {
+        /**  Giraf Blue Colours 
+         */
+        public static final int giraf_blue1=0x7f060008;
+        public static final int giraf_blue2=0x7f060009;
+        public static final int giraf_blue3=0x7f06000a;
+        public static final int giraf_blue4=0x7f06000b;
+        /**  Giraf Brown Colours 
+         */
+        public static final int giraf_brown1=0x7f06000c;
+        public static final int giraf_brown2=0x7f06000d;
+        public static final int giraf_brown3=0x7f06000e;
+        public static final int giraf_brown4=0x7f06000f;
+        /**  Giraf Desert Colours 
+         */
+        public static final int giraf_desert1=0x7f060010;
+        public static final int giraf_desert2=0x7f060011;
+        public static final int giraf_desert3=0x7f060012;
+        public static final int giraf_desert4=0x7f060013;
+        /**  Giraf Grayscale Colours 
+         */
+        public static final int giraf_gray1=0x7f060014;
+        public static final int giraf_gray2=0x7f060015;
+        /**  Giraf Green Colours 
+         */
+        public static final int giraf_green1=0x7f060000;
+        public static final int giraf_green2=0x7f060001;
+        public static final int giraf_green3=0x7f060002;
+        public static final int giraf_green4=0x7f060003;
+        /**  Giraf Red Colours 
+         */
+        public static final int giraf_red1=0x7f060004;
+        public static final int giraf_red2=0x7f060005;
+        public static final int giraf_red3=0x7f060006;
+        public static final int giraf_red4=0x7f060007;
+        public static final int giraf_white1=0x7f060016;
+        public static final int giraf_white2=0x7f060017;
+    }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
 
@@ -42,14 +80,15 @@ containing a value of this type.
         public static final int transparent=0x7f020002;
     }
     public static final class id {
-        public static final int menu_settings=0x7f080000;
+        public static final int imageView1=0x7f090000;
+        public static final int menu_settings=0x7f090001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int picto_layout=0x7f030001;
+        public static final int croc_layout=0x7f030001;
     }
     public static final class menu {
-        public static final int activity_main=0x7f070000;
+        public static final int activity_main=0x7f080000;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
@@ -78,11 +117,11 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
     }
     public static final class styleable {
         /** Attributes that can be used with a Pictogram.
