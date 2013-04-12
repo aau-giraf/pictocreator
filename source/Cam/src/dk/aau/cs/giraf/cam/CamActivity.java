@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.util.Log;
 import android.view.Menu;
@@ -90,6 +89,7 @@ public class CamActivity extends Activity {
 	 * 
 	 */
 	private final ShutterCallback shutterCall = new ShutterCallback() {
+		@Override
 		public void onShutter() {
 			//Do nothing
 		}
