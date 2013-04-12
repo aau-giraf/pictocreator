@@ -30,8 +30,8 @@ public class MainActivity extends Activity {
 
         Pictogram[] arr = new Pictogram[10];
         List<Pictogram> pictograms = PictoFactory.getAllPictograms(this);
-
-        for(int i = 0; i < 10; i++){
+        
+        for(int i = 0; i < pictograms.size(); i++){
             Pictogram pictogram = pictograms.get(i);
             pictogram.renderImage();
             pictogram.renderText();
