@@ -1,7 +1,7 @@
 package dk.aau.cs.giraf.audiorecorder;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,40 +13,45 @@ public class AudioHandler {
 
     private static final String TAG = "AudioHandler";
 
+    // private WavHandler wavHandler;
+
+    // private AmrHandler amrHandler;
+
+    // private short[] wavShortData;
+
+    // byte[] wavByteData;
+
+    // int wavDataSize = 0;
+
+    // private static String wavFilePath;
+
+    String amrFilePath;
+
     public AudioHandler(){
+        // wavHandler = new WavHandler();
+        createAmrFilePath();
+
     }
 
-    public void saveAudio(short[] shortData) {
+    public String getFilePath(){
+        return amrFilePath;
+    }
 
-        byte[] data = shortToByte(shortData);
-
+    private void createAmrFilePath(){
         File soundFileDir = getDir();
 
         if(!soundFileDir.exists() && !soundFileDir.mkdirs()) {
-            Log.d(TAG, "Cannot create directory for the image");
+            Log.d(TAG, "Cannot create directory for the sound");
             return;
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
         String date = dateFormat.format(new Date());
-        String audioFile = "GSound_" + date + ".wav";
+        String audioFile = "GSound_" + date + ".3gp";
 
         String fileName = soundFileDir.getPath() + File.separator + audioFile;
 
-        File soundFile = new File(fileName);
-
-        try {
-            FileOutputStream fos = new FileOutputStream(soundFile);
-            fos.write(data);
-            fos.close();
-            // Toast.makeText(context, "Giraf sound: " + audioFile + "\n" +
-            //                "Saved in: " + soundFileDir, Toast.LENGTH_LONG).show();
-        }
-        catch(Exception e) {
-            Log.d(TAG, "Sound: " + audioFile + " was not saved" + e.getMessage());
-            // Toast.makeText(context, "Sound could not be saved", Toast.LENGTH_LONG).show();
-        }
-
+        amrFilePath = fileName;
     }
 
     private File getDir() {
@@ -63,18 +68,49 @@ public class AudioHandler {
     private boolean hasExternalStorage() {
         return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
     }
-
-    private byte[] shortToByte(short[] input){
-        int index;
-        int length = input.length;
-
-        ByteBuffer bytes = ByteBuffer.allocate(length * 2);
-
-        for(index = 0; index != length; index++){
-            bytes.putShort(input[index]);
-        }
-
-        return bytes.array();
-    }
-
 }
+
+    // public void saveAudioData(short[] shortData, int arraySize){
+    //     wavDataSize = arraySize;
+
+    //     wavShortData = new short[wavDataSize];
+
+    //     for(int i = 0; i < wavDataSize; i++){
+    //         wavShortData[i] = shortData[i];
+    //     }
+
+    //     wavByteData = shortToByte(wavShortData);
+
+    //     try{
+    //         wavHandler.saveWavData(wavByteData);
+    //     }
+    //     catch (FileNotFoundException e){
+    //         Log.e(TAG, "Wav data could not be saved");
+    //     }
+    // }
+
+    // public void stopHandler(){
+    //     try {
+    //         wavFilePath = wavHandler.getWavFilePath();
+    //     }
+    //     catch (FileNotFoundException e) {
+    //         Log.e(TAG, "wav file path not found");
+    //     }
+
+    //     amrHandler = new AmrHandler(wavFilePath);
+
+    //     wavHandler.deleteFile();
+    // }
+
+    // private byte[] shortToByte(short[] input){
+    //     int index;
+    //     int iterations = input.length;
+
+    //     ByteBuffer buffer = ByteBuffer.allocate(iterations *2);
+
+    //     for(index = 0; index != iterations; index++){
+    //         buffer.putShort(input[index]);
+    //     }
+
+    //     return buffer.array();
+    // }
