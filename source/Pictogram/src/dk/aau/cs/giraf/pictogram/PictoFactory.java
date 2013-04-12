@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import dk.aau.cs.giraf.oasis.lib.Helper;
