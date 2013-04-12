@@ -1,8 +1,6 @@
 package dk.aau.cs.giraf.pictogram;
 
-import dk.aau.cs.giraf.R;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;

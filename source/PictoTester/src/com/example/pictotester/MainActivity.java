@@ -1,18 +1,12 @@
 package com.example.pictotester;
-import java.io.IOException;
 import java.util.List;
 
-import android.media.MediaPlayer;
 import dk.aau.cs.giraf.pictogram.*;
 import android.os.Bundle;
-import android.os.Environment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
 /**
@@ -28,16 +22,16 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT , LayoutParams.MATCH_PARENT);
+        LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT , android.view.ViewGroup.LayoutParams.MATCH_PARENT);
         LayoutParams params2 = new LayoutParams(100 , 100);
 
         LinearLayout grid = new LinearLayout(this);
         addContentView(grid, params);
 
         Pictogram[] arr = new Pictogram[10];
-        List<Pictogram> pictograms = PictoFactory.INSTANCE.getAllPictograms(this);
-
-        for(int i = 0; i < 10; i++){
+        List<Pictogram> pictograms = PictoFactory.getAllPictograms(this);
+        
+        for(int i = 0; i < pictograms.size(); i++){
             Pictogram pictogram = pictograms.get(i);
             pictogram.renderImage();
             pictogram.renderText();

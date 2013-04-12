@@ -37,7 +37,9 @@ containing a value of this type.
         public static int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static int ic_launcher=0x7f020000;
+        public static int blank=0x7f020000;
+        public static int ic_launcher=0x7f020001;
+        public static int transparent=0x7f020002;
     }
     public static final class layout {
         public static int picto_layout=0x7f030000;
