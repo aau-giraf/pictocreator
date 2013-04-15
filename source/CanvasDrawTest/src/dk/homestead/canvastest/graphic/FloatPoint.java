@@ -1,4 +1,4 @@
-package dk.homestead.canvastest.shape;
+package dk.homestead.canvastest.graphic;
 
 /**
  * Simpler Point implementation that allows floats. Fuckin' odd that they use
