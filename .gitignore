@@ -56,3 +56,4 @@ local.properties
 .metadata
 bin/
 R.java.d
+gen/

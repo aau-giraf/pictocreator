@@ -2,19 +2,29 @@ package com.example.pictotester;
 import java.util.List;
 
 import dk.aau.cs.giraf.pictogram.*;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+<<<<<<< HEAD
+import android.os.Environment;
+import android.widget.Toast;
+import android.app.Dialog;
+=======
+>>>>>>> 81be0b91cb6192252dc11aeddaa55874142c8e9b
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 
 /**
- * 
+ *
  * @author Croc
  *
  */
 public class MainActivity extends Activity {
+    private final static String TAG = "Tester";
 
     @SuppressLint("NewApi")
     @Override
@@ -28,36 +38,20 @@ public class MainActivity extends Activity {
         LinearLayout grid = new LinearLayout(this);
         addContentView(grid, params);
 
-        Pictogram[] arr = new Pictogram[10];
-        List<Pictogram> pictograms = PictoFactory.getAllPictograms(this);
-        
-        for(int i = 0; i < pictograms.size(); i++){
-            Pictogram pictogram = pictograms.get(i);
-            pictogram.renderImage();
-            pictogram.renderText();
+        TextView pap = new TextView(this);
+        pap.setText("Hey!");
 
-            grid.addView(pictogram, params2);
+        List<Pictogram> pictograms = PictoFactory.INSTANCE.getPictogramsByTag(this, "Dog");
+        if(pictograms != null){
+            Pictogram p = pictograms.get(0);
+            p.renderImage();
+            grid.addView(p, params2);
+            String path = p.getImagePath();
+
+            SaveDialogFragment save = new SaveDialogFragment();
+            save.setPreview(path);
+            save.show(getFragmentManager(), TAG);
         }
-        for(Pictogram p : pictograms){
-        	if(p.hasAudio()){
-        		p.playAudio();
-        		break;
-        	}
-        }
-        // for (int i = 1; i < 10; i++) {
-        //         arr[i].renderImage();
-        //         arr[i].renderText();
-        //         grid.addView(arr[i], params2);
-        // }
-
-        //arr[0].playAudio();
-
-        /*
-          Pictogram pic = PictoFactory.INSTANCE.getPictogram(this, 0);
-          pic.renderImage();
-          pic.renderText();
-          grid.addView(pic);
-        */
     }
 
     @Override
@@ -66,5 +60,4 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
 }
