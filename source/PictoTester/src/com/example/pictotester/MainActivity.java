@@ -4,12 +4,6 @@ import java.util.List;
 import dk.aau.cs.giraf.pictogram.*;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-<<<<<<< HEAD
-import android.os.Environment;
-import android.widget.Toast;
-import android.app.Dialog;
-=======
->>>>>>> 81be0b91cb6192252dc11aeddaa55874142c8e9b
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
