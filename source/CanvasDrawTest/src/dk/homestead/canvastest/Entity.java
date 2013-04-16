@@ -86,10 +86,18 @@ public abstract class Entity {
 	 * @param canvas
 	 */
 	public void draw(Canvas canvas){
+		// Store the current number of saves. In case the graphic does not
+		// clean up after itself, we can restore the correct number of times.
+		int layer = canvas.getSaveCount();
 		// Adapt canvas to location/size.
 		canvas.save();
 		canvas.translate(x, y);
 		graphic.draw(canvas); // Size information should be in here.
 		canvas.restore();
+		if (canvas.getSaveCount() != layer){
+			// Restore correct number of layers.
+			for (int i = 0; i < canvas.getSaveCount()-layer; i++)
+					canvas.restore();
+		}
 	}
 }

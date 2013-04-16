@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.*;
 import android.os.Handler;
@@ -18,12 +17,25 @@ public class DrawView extends View {
 
 	enum DRAW_MODE { FREEHAND, LINE, BOX };
 	
+	/**
+	 * Current draw mode, selected from the tool box.
+	 */
 	DRAW_MODE curDrawMode = DRAW_MODE.FREEHAND;
 	
+	/**
+	 * Location of the touch event. 
+	 */
 	float drawx,drawy;
 	
+	/**
+	 * Are we currently shaping something or drawing freehand?
+	 * This matches a "fingerDown" boolean, denoting that the user's finger
+	 * is still pressed to the screen.
+	 */
 	boolean drawing = false;
 	
+	
+	// Various DEBUG stuff.
 	ShapeDrawable shape;
 	Shape drawnShape;
 	Paint paint = new Paint();
@@ -35,7 +47,11 @@ public class DrawView extends View {
 	 */
 	Bitmap buffer;
 	
-	LayerDrawable drawStack;
+	/**
+	 * This stack contains all current layers in the *drawing*. See drawStack
+	 * for the entire rendering stack used.
+	 */
+	EntityGroup layers;
 	
 	public DrawView(Context context) {
 		super(context);
@@ -52,6 +68,9 @@ public class DrawView extends View {
 		init_stuff();
 	}
 
+	/**
+	 * Generic initialisations.
+	 */
 	protected void init_stuff()
 	{
 		paint.setARGB(255, 0, 0, 0);
@@ -67,6 +86,10 @@ public class DrawView extends View {
      */
     private RefreshHandler mRedrawHandler = new RefreshHandler();
 
+    /**
+     * Not sure this is even used anymore.
+     * @author lindhart
+     */
     class RefreshHandler extends Handler {
 
         @Override
@@ -111,10 +134,20 @@ public class DrawView extends View {
 		drawx = event.getX();
 		drawy = event.getY();
 		drawing = true;
+	
+		int index = event.getActionIndex();
+		int action = event.getActionMasked();
+		if ((action & MotionEvent.ACTION_UP) != 0){
+			Log.i("DrawView:onTouchEvent", "Finger was raised.");
+		}
+		else if ((action & MotionEvent.ACTION_DOWN) != 0){
+			Log.i("DrawView:onTouchEvent", "Finger was placed.");
+		}
 		
 		invalidate();
 		
 		return true;
 	}
+	
 	
 }
