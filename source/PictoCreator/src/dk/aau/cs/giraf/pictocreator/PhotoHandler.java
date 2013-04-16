@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.cam;
+package dk.aau.cs.giraf.pictocreator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,12 +50,6 @@ public class PhotoHandler implements PictureCallback {
 		} catch(Exception e) {
 			Log.d(TAG, "Picture: " + photoFile + " was not saved" + e.getMessage());
 			Toast.makeText(context, "Image could not be saved", Toast.LENGTH_LONG).show();
-		} finally {
-			try {
-				camera.startPreview();
-			} catch (NullPointerException nil) {
-				Log.d(TAG, "Camera is null, preview not started" + nil.getMessage());
-			}
 		}
 		
 	}

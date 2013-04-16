@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<!-- Giraf Green Colours -->
+    <color name="giraf_green1">#A6D179</color>
+    <color name="giraf_green2">#33CC66</color>
+    <color name="giraf_green3">#0FAF72</color>
+    <color name="giraf_green4">#009933</color>
+    
+    <!-- Giraf Red Colours -->
+    <color name="giraf_red1">#F392B6</color>
+    <color name="giraf_red2">#FF6699</color>
+    <color name="giraf_red3">#F0624A</color>
+    <color name="giraf_red4">#CC3300</color>
+    
+    <!-- Giraf Blue Colours -->
+    <color name="giraf_blue1">#8EBFE1</color>
+    <color name="giraf_blue2">#4F7FC0</color>
+    <color name="giraf_blue3">#3366CC</color>
+    <color name="giraf_blue4">#000099</color>
+    
+    <!-- Giraf Brown Colours -->
+    <color name="giraf_brown1">#F38057</color>
+    <color name="giraf_brown2">#FF7F00</color>
+    <color name="giraf_brown3">#FF6600</color>
+    <color name="giraf_brown4">#993300</color>
+    
+    <!-- Giraf Desert Colours -->
+    <color name="giraf_desert1">#FFD96E</color>
+    <color name="giraf_desert2">#FFBB55</color>
+    <color name="giraf_desert3">#DD9639</color>
+    <color name="giraf_desert4">#9E6435</color>
+    
+    <!-- Giraf Grayscale Colours -->
+    <color name="giraf_gray1">#596A79</color>
+    <color name="giraf_gray2">#9CAEBE</color>
+    <color name="giraf_white1">#F3F5F8</color>
+    <color name="giraf_white2">#E9EDF2</color>
+</resources>
