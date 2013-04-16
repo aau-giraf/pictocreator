@@ -4,23 +4,29 @@ import java.util.List;
 
 import android.media.MediaPlayer;
 import dk.aau.cs.giraf.pictogram.*;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.widget.Toast;
+import android.app.Dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
 /**
- * 
+ *
  * @author Croc
  *
  */
 public class MainActivity extends Activity {
+    private final static String TAG = "Tester";
 
     @SuppressLint("NewApi")
     @Override
@@ -29,41 +35,25 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT , LayoutParams.MATCH_PARENT);
-        LayoutParams params2 = new LayoutParams(100 , 100);
+        LayoutParams params2 = new LayoutParams(100, 100);
 
         LinearLayout grid = new LinearLayout(this);
         addContentView(grid, params);
 
-        Pictogram[] arr = new Pictogram[10];
-        List<Pictogram> pictograms = PictoFactory.INSTANCE.getAllPictograms(this);
+        TextView pap = new TextView(this);
+        pap.setText("Hey!");
 
-        for(int i = 0; i < 10; i++){
-            Pictogram pictogram = pictograms.get(i);
-            pictogram.renderImage();
-            pictogram.renderText();
+        List<Pictogram> pictograms = PictoFactory.INSTANCE.getPictogramsByTag(this, "Dog");
+        if(pictograms != null){
+            Pictogram p = pictograms.get(0);
+            p.renderImage();
+            grid.addView(p, params2);
+            String path = p.getImagePath();
 
-            grid.addView(pictogram, params2);
+            SaveDialogFragment save = new SaveDialogFragment();
+            save.setPreview(path);
+            save.show(getFragmentManager(), TAG);
         }
-        for(Pictogram p : pictograms){
-        	if(p.hasAudio()){
-        		p.playAudio();
-        		break;
-        	}
-        }
-        // for (int i = 1; i < 10; i++) {
-        //         arr[i].renderImage();
-        //         arr[i].renderText();
-        //         grid.addView(arr[i], params2);
-        // }
-
-        //arr[0].playAudio();
-
-        /*
-          Pictogram pic = PictoFactory.INSTANCE.getPictogram(this, 0);
-          pic.renderImage();
-          pic.renderText();
-          grid.addView(pic);
-        */
     }
 
     @Override
@@ -72,5 +62,4 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
 }
