@@ -28,6 +28,11 @@ public class DrawView extends View {
 	float drawx,drawy;
 	
 	/**
+	 * Width and height of the view.
+	 */
+	int width, height;
+	
+	/**
 	 * Are we currently shaping something or drawing freehand?
 	 * This matches a "fingerDown" boolean, denoting that the user's finger
 	 * is still pressed to the screen.
@@ -45,13 +50,23 @@ public class DrawView extends View {
 	 * highly volatile drawing area, compared to the draw stack that simply
 	 * contains the layers of drawn stuff so far.
 	 */
-	Bitmap buffer;
+	Bitmap drawBuffer;
+	
+	/**
+	 * The canvas used to draw on the drawBuffer.
+	 */
+	Canvas bufferCanvas;
 	
 	/**
 	 * This stack contains all current layers in the *drawing*. See drawStack
 	 * for the entire rendering stack used.
 	 */
-	EntityGroup layers;
+	EntityGroup drawStack;
+	
+	/**
+	 * The toolbox, drawn to the left
+	 */
+	EntityGroup toolbox;
 	
 	public DrawView(Context context) {
 		super(context);
@@ -73,44 +88,42 @@ public class DrawView extends View {
 	 */
 	protected void init_stuff()
 	{
+		Log.i("DrawView:init_stuff", "Initialisations!");
 		paint.setARGB(255, 0, 0, 0);
 		drawnShape = new OvalShape();
 		drawnShape.resize(200, 100);
 		shape = new ShapeDrawable(drawnShape);
 	}
 	
-    /**
-     * Create a simple handler that we can use to cause animation to happen.  We
-     * set ourselves as a target and we can use the sleep()
-     * function to cause an update/invalidate to occur at a later date.
-     */
-    private RefreshHandler mRedrawHandler = new RefreshHandler();
-
-    /**
-     * Not sure this is even used anymore.
-     * @author lindhart
-     */
-    class RefreshHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            DrawView.this.update();
-            DrawView.this.invalidate();
-        }
-
-        public void sleep(long delayMillis) {
-        	this.removeMessages(0);
-            sendMessageDelayed(obtainMessage(0), delayMillis);
-        }
-    };
-    
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		// TODO Auto-generated method stub
+		Log.i("DrawView:onSizeChanged", "Size changed!");
+		this.width = w;
+		this.height = h;
+		initBuffers();
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+	
+	protected void initBuffers(){
+		drawBuffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		bufferCanvas = new Canvas(drawBuffer);
+	}
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
 		Log.w("DrawView",  "Invalidated. Redrawing.");
-		// super.onDraw(canvas);
+		
+		// Drawing order: drawStack, drawBuffer, renderStack (toolbox).
+		//drawStack.draw(canvas);
+		
+		canvas.drawBitmap(drawBuffer, 0, 0, null);
+		
+		// toolbox.draw(canvas);
+		
 		// Clear
 		// canvas.drawRGB(r,  g,  b);
+		/*
 		if (drawing)
 		{
 			canvas.drawCircle(drawx, drawy, 10, paint);
@@ -122,26 +135,33 @@ public class DrawView extends View {
 		shape.draw(canvas);
 		drawnShape.draw(canvas, paint);
 		canvas.restore();
+		// Draw toolbox bitmap?
+		*/
 	}
 
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		drawx = event.getX();
-		drawy = event.getY();
-		drawing = true;
-	
 		int index = event.getActionIndex();
 		int action = event.getActionMasked();
-		if ((action & MotionEvent.ACTION_UP) != 0){
-			Log.i("DrawView:onTouchEvent", "Finger was raised.");
-		}
-		else if ((action & MotionEvent.ACTION_DOWN) != 0){
+		action = event.getAction();
+	
+		drawx = event.getX(index);
+		drawy = event.getY(index);
+		
+		if (action == MotionEvent.ACTION_DOWN){
 			Log.i("DrawView:onTouchEvent", "Finger was placed.");
+			drawing = true;
+		}
+		else if (action == MotionEvent.ACTION_UP){
+			Log.i("DrawView:onTouchEvent", "Finger was raised.");
+			drawing = false;
+		}
+		else if (action == MotionEvent.ACTION_MOVE){
+			Log.i("DrawView:onTouchEvent", "Finger moved.");
+			bufferCanvas.drawCircle(drawx, drawy, 10, paint);
+		}
+		else{
+			Log.w("DrawView:onTouchEvent", "Unknown touch event!");
 		}
 		
 		invalidate();
