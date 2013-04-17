@@ -1,13 +1,12 @@
 package dk.homestead.canvastest;
 
+import dk.homestead.canvastest.handlers.RectHandler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.*;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -61,12 +60,18 @@ public class DrawView extends View {
 	 * This stack contains all current layers in the *drawing*. See drawStack
 	 * for the entire rendering stack used.
 	 */
-	EntityGroup drawStack;
+	EntityGroup drawStack = new EntityGroup();
 	
 	/**
 	 * The toolbox, drawn to the left
 	 */
 	EntityGroup toolbox;
+	
+	/**
+	 * The currently active handler for touch events.
+	 */
+	ActionHandler currentHandler;
+	
 	
 	public DrawView(Context context) {
 		super(context);
@@ -102,6 +107,8 @@ public class DrawView extends View {
 		this.width = w;
 		this.height = h;
 		initBuffers();
+		// DEBUG
+		currentHandler = new RectHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 	
@@ -115,58 +122,25 @@ public class DrawView extends View {
 		Log.w("DrawView",  "Invalidated. Redrawing.");
 		
 		// Drawing order: drawStack, drawBuffer, renderStack (toolbox).
-		//drawStack.draw(canvas);
+		drawStack.draw(canvas);
 		
-		canvas.drawBitmap(drawBuffer, 0, 0, null);
+		// canvas.drawBitmap(currentHandler.getBuffer(), 0, 0, null);
+		currentHandler.draw(canvas);
 		
 		// toolbox.draw(canvas);
-		
-		// Clear
-		// canvas.drawRGB(r,  g,  b);
-		/*
-		if (drawing)
-		{
-			canvas.drawCircle(drawx, drawy, 10, paint);
-			
-		}
-		canvas.save();
-		canvas.translate(50,  50);
-		canvas.scale(0.3f, 0.3f);
-		shape.draw(canvas);
-		drawnShape.draw(canvas, paint);
-		canvas.restore();
-		// Draw toolbox bitmap?
-		*/
+		// DEBUG: Draw entity count.
+		Paint redPaint = new Paint();
+		redPaint.setColor(0xFFFF0000);
+		canvas.drawText(String.valueOf(drawStack.size()), 30, 30, redPaint);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		int index = event.getActionIndex();
-		int action = event.getActionMasked();
-		action = event.getAction();
-	
-		drawx = event.getX(index);
-		drawy = event.getY(index);
-		
-		if (action == MotionEvent.ACTION_DOWN){
-			Log.i("DrawView:onTouchEvent", "Finger was placed.");
-			drawing = true;
+		if (currentHandler.onTouchEvent(event, drawStack)){
+			invalidate();
+			return true;
 		}
-		else if (action == MotionEvent.ACTION_UP){
-			Log.i("DrawView:onTouchEvent", "Finger was raised.");
-			drawing = false;
-		}
-		else if (action == MotionEvent.ACTION_MOVE){
-			Log.i("DrawView:onTouchEvent", "Finger moved.");
-			bufferCanvas.drawCircle(drawx, drawy, 10, paint);
-		}
-		else{
-			Log.w("DrawView:onTouchEvent", "Unknown touch event!");
-		}
-		
-		invalidate();
-		
-		return true;
+		else return false;
 	}
 	
 	

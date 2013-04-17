@@ -1,6 +1,5 @@
 package dk.homestead.canvastest;
 
-import dk.homestead.canvastest.graphic.FloatPoint;
 import android.graphics.Canvas;
 
 /**

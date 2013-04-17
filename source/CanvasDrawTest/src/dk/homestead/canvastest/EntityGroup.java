@@ -2,6 +2,8 @@ package dk.homestead.canvastest;
 
 import java.util.ArrayList;
 
+import android.graphics.Canvas;
+
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
  * objects and their movement, or to ensure a specific drawing order.
@@ -38,5 +40,20 @@ public class EntityGroup extends Entity {
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * EntityGroup's draw method diverges from regular Entity objects because
+	 * it has no graphic itself.
+	 */
+	@Override
+	public void draw(Canvas canvas) {
+		for (Entity e : entities){
+			e.draw(canvas);
+		}
+	}
+	
+	public int size(){
+		return entities.size();
 	}
 }
