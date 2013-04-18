@@ -20,12 +20,9 @@ public class PhotoHandler implements PictureCallback {
 	private final static String TAG = "PhotoHandler";
 
 	private final Context context;
-	ImageButton button;
 	
 	public PhotoHandler(Context context) {
 		this.context = context;
-		Resources res = context.getResources();
-		button = res.get
 	}
 	
 	@Override
