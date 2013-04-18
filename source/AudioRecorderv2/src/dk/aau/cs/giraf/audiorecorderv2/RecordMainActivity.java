@@ -16,13 +16,13 @@ public class RecordMainActivity extends Activity // implements RecordInterface
 
     private static final String TAG = "RecordMainActivity";
 
-    AudioHandler handler;
+    // AudioHandler handler;
 
-    DecibelMeterView decibelMeter;
+    // DecibelMeterView decibelMeter;
 
-    RecordThread recThread;
+    // RecordThread recThread;
 
-    ToggleButton recordButton;
+    // ToggleButton recordButton;
 
     /**
      * Called when the activity is first created
