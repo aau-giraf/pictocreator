@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,23 +23,22 @@ public class RecordActivity extends Activity{ // implements MicrophoneThreadList
 
     private static final String TAG = "RecordActivity";
 
-    // MicrophoneThread micThread;
-    // BarLevelDrawable decibelMeter;
+    TextView mStatusView;
 
-    // private PlayButton   mPlayButton = null;
-    // private MediaPlayer mediaPlayer = null;
+    Thread runner;
 
-    // double offSetDB = 10;
+    private static double mEMA = 0.0;
 
-    // double gain = 2500.0/ Math.pow(10.0, 90.0 / 20.0);
+    static final private double EMA_FILTER = 0.6;
 
-    // double rmsSmoothed, alpha = 0.9;
+    final Runnable updater = new Runnable(){
 
-    // private int sampleRate;
-    // private int audioSource;
+        public void run(){
+            updateTv();
+        };
+    };
 
-    // private volatile boolean isDrawing;
-    // private volatile int drawingCollided;
+    final Handler mHandler = new Handler();
 
     MediaRecorder recorder;
 
@@ -54,48 +55,64 @@ public class RecordActivity extends Activity{ // implements MicrophoneThreadList
 
     	Log.d(TAG, "onCreate()");
 
-        // micThread = new MicrophoneThread(this);
+        setContentView(R.layout.activity_record);
 
-        // final ToggleButton recordButton = (ToggleButton)findViewById(R.id.record_button);
-        // try{
-        // ToggleButton.OnClickListener recordListener =
-        //     new ToggleButton.OnClickListener() {
-        //         @Override
-        //         public void onClick(View view){
-        //             if(recordButton.isChecked()){
-        //                 startRecording();
-        //             }
-        //             else {
-        //                 stopRecording();
-        //             }
-        //         }
-        //     };
-        // recordButton.setOnClickListener(recordListener);
-        // }
-        // catch (Throwable x){
-        //     Log.e(TAG, "Something went wrong with the listener");
-        // }
+        // LinearLayout layout = new LinearLayout(this);
+
+        ToggleButton recordButton = (ToggleButton) findViewById(R.id.recordButton);
+
+        recordButton.setOnClickListener(
+                                        new OnClickListener() {
+                                            public void onClick(View view) {
+                                                if (((ToggleButton) view).isChecked()) {
+                                                    startRecording();
+                                                }
+                                                else {
+                                                    stopRecording();
+                                                }
+                                            }
+                                        });
+
+
+        // layout.addView(recordButton,
+        //                new LinearLayout.LayoutParams(
+        //                                              ViewGroup.LayoutParams.WRAP_CONTENT,
+        //                                              ViewGroup.LayoutParams.WRAP_CONTENT,
+        //                                              0));
+
+        mStatusView = (TextView) findViewById(R.id.status);
+
+        if (runner == null)
+        {
+            runner = new Thread(){
+                public void run()
+                {
+                    while (runner != null)
+                    {
+                        try
+                        {
+                            Thread.sleep(200);
+                            Log.i("Noise", Double.toString((getAmplitudeEMA() % 100)) + " Db" );
+                        }
+                        catch (InterruptedException e) {
+                            Log.e("Noise", "Interrupted");
+                        };
+                        mHandler.post(updater);
+                    }
+                }
+            };
+            runner.start();
+            Log.d("Noise", "start runner()");
+        }
 
         Log.d(TAG, "onCreate()");
-
-        LinearLayout layout = new LinearLayout(this);
-
-        RecordButton recordButton = new RecordButton(this);
-
-        layout.addView(recordButton,
-                       new LinearLayout.LayoutParams(
-                                                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                     0));
-
-        setContentView(layout);
     }
 
     public void startRecording(){
         recorder = new MediaRecorder();
 
         try{
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             recorder.setOutputFile(handler.getFilePath());
@@ -113,6 +130,7 @@ public class RecordActivity extends Activity{ // implements MicrophoneThreadList
 
     public void stopRecording(){
         recorder.stop();
+
         recorder.reset();
 
     }
@@ -124,27 +142,53 @@ public class RecordActivity extends Activity{ // implements MicrophoneThreadList
             recorder.release();
             recorder = null;
         }
+        runner = null;
+
+        Log.i(TAG, "soundDb: " + soundDb(100));
     }
 
-    class RecordButton extends ToggleButton {
-
-        OnClickListener clicker = new OnClickListener() {
-                public void onClick(View v) {
-                    if (isChecked()) {
-                        startRecording();
-                    }
-                    else {
-                        stopRecording();
-                    }
-                }
-            };
-
-        public RecordButton(Context context){
-            super(context);
-            setOnClickListener(clicker);
-        }
+    public void updateTv(){
+        mStatusView.setText(Double.toString((Math.floor(getAmplitudeEMA() % 100))) + " dB");
     }
+
+    public double soundDb(double ampl){
+        return  20 * Math.log10(getAmplitudeEMA() / ampl);
+    }
+
+    public double getAmplitude() {
+        if (recorder != null)
+            return  (recorder.getMaxAmplitude());
+        else
+            return 0;
+
+    }
+
+    public double getAmplitudeEMA() {
+        double amp =  getAmplitude();
+        mEMA = EMA_FILTER * amp + (1.0 - EMA_FILTER) * mEMA;
+        return mEMA;
+    }
+
 }
+
+    // class RecordButton extends ToggleButton {
+
+    //     OnClickListener clicker = new OnClickListener() {
+    //             public void onClick(View v) {
+    //                 if (isChecked()) {
+    //                     startRecording();
+    //                 }
+    //                 else {
+    //                     stopRecording();
+    //                 }
+    //             }
+    //         };
+
+    //     public RecordButton(Context context){
+    //         super(context);
+    //         setOnClickListener(clicker);
+    //     }
+    // }
 
 // readPreferences();
 // micThread.setSampleRate(sampleRate);
