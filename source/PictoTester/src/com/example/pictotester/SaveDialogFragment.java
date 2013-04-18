@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +44,11 @@ public class SaveDialogFragment extends DialogFragment{
     }
 
     public void setTags(Collection<String> tags){
-        this.tags = (ArrayList<String>) tags;
+        //this.tags = (ArrayList<String>) tags;
+        this.tags = new ArrayList<String>();
+        for(int i = 0; i < 50; i++){
+            this.tags.add(Integer.toString(i));
+        }
     }
 
     @Override
@@ -59,12 +64,12 @@ public class SaveDialogFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState){
         ListView listView;
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.save_tag, tags);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.save_tag, tags);
 
         view = inflater.inflate(R.layout.save_dialog_rel, container);
         previewView = (LinearLayout) view.findViewById(R.id.save_preview);
         listView = (ListView) view.findViewById(R.id.save_tags_list);
-
+        listView.setAdapter(arrayAdapter);
         // Log.d(TAG, "Created dialog.");
 
         if(preview != null){

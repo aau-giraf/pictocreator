@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 /**
  *
  * @author Croc
@@ -21,6 +22,7 @@ public class MainActivity extends Activity {
     private final static String TAG = "Tester";
     private Pictogram preview;
     private ArrayList<String> tags;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class MainActivity extends Activity {
 
         LinearLayout layout = new LinearLayout(this);
         addContentView(layout, params);
-
 
 
         TextView pap = new TextView(this);
