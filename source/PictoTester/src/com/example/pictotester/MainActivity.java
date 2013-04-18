@@ -1,6 +1,6 @@
 package com.example.pictotester;
-import java.util.List;
 
+import java.util.List;
 import dk.aau.cs.giraf.pictogram.*;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 /**
  *
  * @author Croc
@@ -19,6 +20,8 @@ import android.widget.LinearLayout;
  */
 public class MainActivity extends Activity {
     private final static String TAG = "Tester";
+    private Pictogram preview;
+    private ArrayList<String> tags;
 
     @SuppressLint("NewApi")
     @Override
@@ -26,25 +29,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT , android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                                               android.view.ViewGroup.LayoutParams.MATCH_PARENT);
         LayoutParams params2 = new LayoutParams(100 , 100);
 
-        LinearLayout grid = new LinearLayout(this);
-        addContentView(grid, params);
+        LinearLayout layout = new LinearLayout(this);
+        addContentView(layout, params);
+
 
         TextView pap = new TextView(this);
         pap.setText("Hey!");
 
         List<Pictogram> pictograms = PictoFactory.INSTANCE.getPictogramsByTag(this, "Dog");
         if(pictograms != null){
-            Pictogram p = pictograms.get(0);
-            p.renderImage();
-            grid.addView(p, params2);
-            String path = p.getImagePath();
-
-            SaveDialogFragment save = new SaveDialogFragment();
-            save.setPreview(path);
-            save.show(getFragmentManager(), TAG);
+            preview = pictograms.get(0);
+            // preview.renderImage();
+            // layout.addView(preview, params2);
+            showSaveDialog();
         }
     }
 
@@ -53,5 +54,12 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void showSaveDialog(){
+        SaveDialogFragment dialog = new SaveDialogFragment();
+        dialog.setTags(tags);
+        dialog.setPreview(preview);
+        dialog.show(getFragmentManager(), "SaveDialog");
     }
 }
