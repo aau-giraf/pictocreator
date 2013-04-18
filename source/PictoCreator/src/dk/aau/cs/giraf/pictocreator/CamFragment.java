@@ -20,51 +20,41 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class CamFragment extends Fragment {
-private final static String TAG = "CamActivity";
-
+	private final static String TAG = "CamFragment";
+	
+	View view;
 	CamPreview camFeed;
 	PhotoHandler photoHandler;
-	FrameLayout camView;
 	ImageButton captureButton;
-	LinearLayout fragmentLayout;
+	FrameLayout preview;
 	
 	Activity parentActivity;
-	LayoutParams matchParent, wrapContent;
 	
 	@Override
 	public void onCreate(Bundle savedInstance) {
+		super.onCreate(savedInstance);
 		parentActivity = this.getActivity();
-		matchParent = new LayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		wrapContent = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		
+
 		photoHandler = new PhotoHandler(parentActivity);
 		camFeed = new CamPreview(parentActivity);
-		
-		camView = new FrameLayout(parentActivity);
-		camView.setLayoutParams(matchParent);
-		
-		captureButton = new ImageButton(parentActivity);
-		captureButton.setLayoutParams(wrapContent);
-		captureButton.setBackgroundResource(R.drawable.cam); //Add the proper image
-		captureButton.setOnClickListener(captureClick);
-		
-		fragmentLayout = new LinearLayout(parentActivity);
-		fragmentLayout.setOrientation(LinearLayout.HORIZONTAL);
-		fragmentLayout.setLayoutParams(matchParent);
-		
-		camView.addView(camFeed);
-		fragmentLayout.addView(camView);
-		fragmentLayout.addView(captureButton);
-		
+
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		return fragmentLayout;
+		view = inflater.inflate(R.layout.cam_fragment, container, false);
+		
+		preview = (FrameLayout)view.findViewById(R.id.camera_preview);
+		preview.addView(camFeed);
+		captureButton = (ImageButton)view.findViewById(R.id.button_capture);
+		captureButton.setOnClickListener(captureClick);
+		
+		return view;
 	}
 	
 	/**
@@ -119,6 +109,7 @@ private final static String TAG = "CamActivity";
 
 		@Override
 		public void onClick(View view) {
+			captureButton.setClickable(false);
 			capturePhoto(view);
 		}
 		

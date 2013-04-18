@@ -6,10 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 //Vogella's photohandler
@@ -18,9 +20,12 @@ public class PhotoHandler implements PictureCallback {
 	private final static String TAG = "PhotoHandler";
 
 	private final Context context;
+	ImageButton button;
 	
 	public PhotoHandler(Context context) {
 		this.context = context;
+		Resources res = context.getResources();
+		button = res.get
 	}
 	
 	@Override
@@ -53,6 +58,7 @@ public class PhotoHandler implements PictureCallback {
 		} finally {
 			try {
 				camera.startPreview();
+				//set the camera button to enabled... somehow
 			} catch (NullPointerException nil) {
 				Log.d(TAG, "Camera is null, preview not started" + nil.getMessage());
 			}

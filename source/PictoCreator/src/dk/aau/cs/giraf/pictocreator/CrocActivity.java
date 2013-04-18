@@ -2,6 +2,8 @@ package dk.aau.cs.giraf.pictocreator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +23,9 @@ import java.util.List;
 
 
 public class CrocActivity extends Activity {
+	
+	FragmentManager fragManager;
+	FragmentTransaction fragTrans;
 
     private final static String TAG = "CrocMain";
 
@@ -36,6 +41,14 @@ public class CrocActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        fragManager = getFragmentManager();
+        fragTrans = fragManager.beginTransaction();
+        
+        CamFragment camFragment = new CamFragment();
+        fragTrans.add(R.id.fragmentContainer, camFragment);
+        fragTrans.commit();
+        
     }
 
     @Override
