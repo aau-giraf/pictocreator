@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.graphics.BitmapFactory;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ToggleButton;
 
 public class RecordDialogFragment extends DialogFragment implements RecordInterface {
@@ -30,6 +31,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     RecordThread recThread;
 
     ToggleButton recordButton;
+
+    Button okButton;
+
+    Button cancelButton;
 
     public RecordDialogFragment() {
 
@@ -59,15 +64,19 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        // int style = DialogFragment.STYLE_NO_TITLE;
+        int style = DialogFragment.STYLE_NO_TITLE;
 
-        // setStyle(style, 0);
+        setStyle(style, 0);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         view = inflater.inflate(R.layout.record_dialog, container);
+
+        final Dialog tmpDialog = getDialog();
+
+        tmpDialog.setCanceledOnTouchOutside(false);
 
         handler = new AudioHandler();
 
@@ -76,6 +85,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recordButton = (ToggleButton) view.findViewById(R.id.record_button);
 
         decibelMeter = (DecibelMeterView) view.findViewById(R.id.decibel_meter);
+
+        okButton = (Button) view.findViewById(R.id.positive_dialog_button);
+
+        cancelButton = (Button) view.findViewById(R.id.negative_dialog_button);
 
         OnClickListener clickListener = new OnClickListener() {
                 public void onClick(View view) {
@@ -87,6 +100,23 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                     }
                 }
             };
+
+        cancelButton.setOnClickListener(new OnClickListener(){
+
+                @Override
+                public void onClick(View arg0) {
+                    tmpDialog.cancel();
+                }
+            });
+
+        okButton.setOnClickListener(new OnClickListener(){
+
+                @Override
+                public void onClick(View arg0) {
+                    tmpDialog.dismiss();
+                }
+            });
+
         recordButton.setOnClickListener(clickListener);
 
         return view;
