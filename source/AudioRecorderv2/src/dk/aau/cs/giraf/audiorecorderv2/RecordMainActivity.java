@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ToggleButton;
+import android.widget.Button;
+
 /**
  * Main activity for the audio recorder
  * @author Croc
@@ -32,6 +34,21 @@ public class RecordMainActivity extends Activity // implements RecordInterface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_main);
 
+        final RecordDialogFragment recordDialog = new RecordDialogFragment();
+        // recordDialog.show(getFragmentManager(), TAG);
+
+        // recordDialog.setTitle(R.string.record_dialog_title);
+
+        OnClickListener clickListener = new OnClickListener() {
+                public void onClick(View view) {
+                    recordDialog.show(getFragmentManager(), TAG);
+                }
+            };
+
+        Button dialogButton = (Button) findViewById(R.id.start_dialog_button);
+
+        dialogButton.setOnClickListener(clickListener);
+
     //     handler = new AudioHandler();
 
     //     recThread = new RecordThread(handler, this);
@@ -53,19 +70,17 @@ public class RecordMainActivity extends Activity // implements RecordInterface
     //         };
     // recordButton.setOnClickListener(clickListener);
 
-        RecordDialogFragment recordDialog = new RecordDialogFragment();
-        recordDialog.show(getFragmentManager(), TAG);
     }
 
     /**
      * Creates the action bar
      */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.record_main, menu);
-        return true;
-    }
+    // @Override
+    // public boolean onCreateOptionsMenu(Menu menu) {
+    //     // Inflate the menu; this adds items to the action bar if it is present.
+    //     getMenuInflater().inflate(R.menu.record_main, menu);
+    //     return true;
+    // }
 
     /**
      * Override function for the RecordInterface
