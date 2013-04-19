@@ -18,7 +18,7 @@ public class RecordThread implements Runnable {
 
     private static final double EMA_FILTER = 0.6;
 
-    int audioSource = MediaRecorder.AudioSource.MIC;
+    int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
     int outputFormat = MediaRecorder.OutputFormat.THREE_GPP;
     int audioEncoder = MediaRecorder.AudioEncoder.AMR_NB;
 
