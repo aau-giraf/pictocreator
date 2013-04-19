@@ -23,6 +23,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
     int frontCameraID = 1;
     int currentCameraID = 0;
     boolean hasMultiCams = false;
+    boolean blackNWhite = false;
 
     /**
      *
@@ -154,14 +155,18 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
         }
         return camera;
     }
-
+    /**
+     *
+     */
     public void switchCam() {
         try {
             cam.stopPreview();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Log.d(TAG, "Lol, you tried to stop a non-existent preview");
         }
         releaseCamera();
+
         if(currentCameraID == defaultCameraID){
             cam = getCamera(frontCameraID);
             currentCameraID = frontCameraID;
@@ -177,12 +182,59 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
         }
         try{
             cam.setPreviewDisplay(holder);
-        } catch(Exception e) {
+        }
+        catch(Exception e) {
             Log.d(TAG, "Display holder was not set");
         }
         startPreview();
     }
 
+    /**
+     *
+     */
+    public void switchParams() {
+        // try {
+        //     cam.stopPreview();
+        // }
+        // catch (Exception e) {
+        //     Log.d(TAG, "Lol, you tried to stop a non-existent preview");
+        // }
+        // releaseCamera();
+
+        // Log.d(TAG, "Cam released");
+
+        Camera.Parameters params = cam.getParameters();
+
+        String currentParams = params.getColorEffect();
+
+        if(!blackNWhite){
+            params.setColorEffect(Camera.Parameters.EFFECT_MONO);
+            blackNWhite = !blackNWhite;
+        }
+        else {
+            params.setColorEffect(Camera.Parameters.EFFECT_NONE);
+            blackNWhite = !blackNWhite;
+        }
+        // else {
+        //     params = null;
+        //     Log.e(TAG, "CameraParameters unknown");
+        // }
+
+        // cam = getCamera(currentCameraID);
+
+        // Log.d(TAG, "getCamera sucessed");
+
+        cam.setParameters(params);
+
+        try{
+            cam.setPreviewDisplay(holder);
+        }
+        catch(Exception e) {
+            Log.d(TAG, "Display holder was not set");
+        }
+        startPreview();
+
+    }
 
     /**
      *

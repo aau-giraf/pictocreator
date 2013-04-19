@@ -22,8 +22,6 @@ public class CamActivity extends Activity {
     CamPreview camPreview;
     PhotoHandler photoHandler;
 
-    Button switchButton;
-
     /**
      *
      */
@@ -37,13 +35,15 @@ public class CamActivity extends Activity {
         FrameLayout preview = (FrameLayout)findViewById(R.id.camera_preview);
         preview.addView(camPreview);
 
-        switchButton = (Button)findViewById(R.id.button_switch_cam);
+        Button switchButton = (Button)findViewById(R.id.button_switch_cam);
+
+        Button effectButton = (Button)findViewById(R.id.button_switch_params);
+
+        Button captureButton = (Button)findViewById(R.id.button_capture);
 
         if(!(camPreview.hasMultiCams)){
             switchButton.setClickable(false);
         }
-
-        Button captureButton = (Button)findViewById(R.id.button_capture);
 
     }
     /**
@@ -66,6 +66,11 @@ public class CamActivity extends Activity {
 
     public void switchCamera(View view){
             camPreview.switchCam();
+
+    }
+
+    public void switchParams(View view){
+            camPreview.switchParams();
 
     }
 
