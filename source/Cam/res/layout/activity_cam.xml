@@ -23,4 +23,13 @@
     android:onClick="capturePhoto"
     />
 
+  <Button
+    android:id="@+id/button_switch_cam"
+    android:text="Switch cam"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:onClick="switchCamera"
+    />
+
 </LinearLayout>

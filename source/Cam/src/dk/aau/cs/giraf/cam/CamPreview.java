@@ -155,6 +155,35 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
         return camera;
     }
 
+    public void switchCam() {
+        try {
+            cam.stopPreview();
+        } catch (Exception e) {
+            Log.d(TAG, "Lol, you tried to stop a non-existent preview");
+        }
+        releaseCamera();
+        if(currentCameraID == defaultCameraID){
+            cam = getCamera(frontCameraID);
+            currentCameraID = frontCameraID;
+            Log.d(TAG, "Cam changed to front");
+        }
+        else if(currentCameraID == frontCameraID){
+            cam = getCamera(defaultCameraID);
+            currentCameraID = defaultCameraID;
+            Log.d(TAG, "Cam changed to default");
+        }
+        else {
+            Log.e(TAG, "Cam ID unknown");
+        }
+        try{
+            cam.setPreviewDisplay(holder);
+        } catch(Exception e) {
+            Log.d(TAG, "Display holder was not set");
+        }
+        startPreview();
+    }
+
+
     /**
      *
      */
