@@ -15,7 +15,7 @@ import android.util.AttributeSet;
  */
 public class DecibelMeterView extends View {
 
-    private double _level = -1;
+    private double _level = 0.2;
 
     private final int[] meterColors = {0xff5555ff,
                                        0xff5555ff,
@@ -74,7 +74,7 @@ public class DecibelMeterView extends View {
     private void drawMeter(Canvas canvas){
         int meterSize = meterColors.length;
 
-        int padding = 5;
+        int padding = 3;
         int x = 10;
         int y = 0;
 

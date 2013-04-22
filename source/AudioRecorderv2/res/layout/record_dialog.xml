@@ -8,14 +8,14 @@
 
 
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
       android:orientation="horizontal" >
 
     <view
         android:id="@+id/decibel_meter"
         android:layout_width="45dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_margin="20dp"
         class="dk.aau.cs.giraf.audiorecorderv2.DecibelMeterView" >
 
@@ -43,9 +43,11 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginRight="20dp"
+          android:layout_marginLeft="20dp"
           android:background="@android:color/darker_gray"
           android:gravity="center_horizontal"
-          android:text="@string/textViewText" >
+          android:text="@string/textViewText"
+          android:textAppearance="?android:attr/textAppearanceMedium" >
 
       </TextView>
     </LinearLayout>
@@ -59,7 +61,7 @@
   <!--     android:text="MiddelText" /> -->
 
   <LinearLayout
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal" >
 
@@ -68,14 +70,14 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="20dp"
-      android:text="CANCEL"/>
+      android:text="@android:string/cancel"/>
 
   <Button
       android:id="@+id/positive_dialog_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="20dp"
-      android:text="OK" />
+      android:text="@android:string/ok" />
 
   </LinearLayout>
 
