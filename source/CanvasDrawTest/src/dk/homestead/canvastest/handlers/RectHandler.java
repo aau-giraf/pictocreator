@@ -3,6 +3,7 @@ package dk.homestead.canvastest.handlers;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.homestead.canvastest.ActionHandler;
@@ -19,15 +20,13 @@ import dk.homestead.canvastest.entity.RectEntity;
  * @author lindhart
  *
  */
-public class RectHandler extends ActionHandler {
+public class RectHandler extends ShapeHandler {
 
 	protected FloatPoint startPoint;
 	protected FloatPoint endPoint;
 	protected int currentIndex;
 	
 	protected float left,top,right,bottom;
-	
-	protected Paint paint;
 	
 	private String tag = "RectHandler.onTouchEvent";
 	
@@ -36,6 +35,7 @@ public class RectHandler extends ActionHandler {
 		// Set up generic paint.
 		paint = new Paint();
 		paint.setARGB(255, 0, 0, 0); // Black!
+		paint.setStyle(Style.STROKE);
 	}
 
 	@Override
