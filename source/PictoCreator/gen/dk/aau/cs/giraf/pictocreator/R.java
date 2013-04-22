@@ -9,23 +9,91 @@ package dk.aau.cs.giraf.pictocreator;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int height=0x7f010001;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int width=0x7f010000;
+    }
+    public static final class color {
+        /**  Giraf Blue Colours 
+         */
+        public static final int giraf_blue1=0x7f060008;
+        public static final int giraf_blue2=0x7f060009;
+        public static final int giraf_blue3=0x7f06000a;
+        public static final int giraf_blue4=0x7f06000b;
+        /**  Giraf Brown Colours 
+         */
+        public static final int giraf_brown1=0x7f06000c;
+        public static final int giraf_brown2=0x7f06000d;
+        public static final int giraf_brown3=0x7f06000e;
+        public static final int giraf_brown4=0x7f06000f;
+        /**  Giraf Desert Colours 
+         */
+        public static final int giraf_desert1=0x7f060010;
+        public static final int giraf_desert2=0x7f060011;
+        public static final int giraf_desert3=0x7f060012;
+        public static final int giraf_desert4=0x7f060013;
+        /**  Giraf Grayscale Colours 
+         */
+        public static final int giraf_gray1=0x7f060014;
+        public static final int giraf_gray2=0x7f060015;
+        /**  Giraf Green Colours 
+         */
+        public static final int giraf_green1=0x7f060000;
+        public static final int giraf_green2=0x7f060001;
+        public static final int giraf_green3=0x7f060002;
+        public static final int giraf_green4=0x7f060003;
+        /**  Giraf Red Colours 
+         */
+        public static final int giraf_red1=0x7f060004;
+        public static final int giraf_red2=0x7f060005;
+        public static final int giraf_red3=0x7f060006;
+        public static final int giraf_red4=0x7f060007;
+        public static final int giraf_white1=0x7f060016;
+        public static final int giraf_white2=0x7f060017;
+    }
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+    
+         */
+        public static final int activity_horizontal_margin=0x7f040000;
+        public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int blank=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int transparent=0x7f020002;
     }
     public static final class id {
-        public static final int menu_settings=0x7f070000;
+        public static final int imageView1=0x7f090000;
+        public static final int menu_settings=0x7f090001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int croc_layout=0x7f030001;
     }
     public static final class menu {
-        public static final int activity_main=0x7f060000;
+        public static final int activity_main=0x7f080000;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int hello_world=0x7f040001;
-        public static final int menu_settings=0x7f040002;
+        public static final int app_name=0x7f050000;
+        public static final int hello_world=0x7f050001;
+        public static final int menu_settings=0x7f050002;
     }
     public static final class style {
         /** 
@@ -49,10 +117,55 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f070001;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a Pictogram.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #Pictogram_height dk.aau.cs.giraf.pictocreator:height}</code></td><td></td></tr>
+           <tr><td><code>{@link #Pictogram_width dk.aau.cs.giraf.pictocreator:width}</code></td><td></td></tr>
+           </table>
+           @see #Pictogram_height
+           @see #Pictogram_width
+         */
+        public static final int[] Pictogram = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link dk.aau.cs.giraf.pictocreator.R.attr#height}
+          attribute's value can be found in the {@link #Pictogram} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:height
+        */
+        public static final int Pictogram_height = 1;
+        /**
+          <p>This symbol is the offset where the {@link dk.aau.cs.giraf.pictocreator.R.attr#width}
+          attribute's value can be found in the {@link #Pictogram} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:width
+        */
+        public static final int Pictogram_width = 0;
+    };
 }

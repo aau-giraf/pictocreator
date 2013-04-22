@@ -1,14 +1,32 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:orientation="vertical"
+    android:weightSum="100"
+    tools:context=".CrocActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+    <RelativeLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:background="@color/giraf_desert4"
+    	android:layout_weight="10" >
 
-</RelativeLayout>
+        <ImageView
+        	android:id="@+id/imageView1"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:padding="10dp"
+        	android:src="@drawable/ic_launcher" />
+
+    </RelativeLayout>
+    
+    <FrameLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="90"
+    	android:background="@color/giraf_desert1"
+    	android:layout_gravity="center" >
+    </FrameLayout>
+    
+</LinearLayout>

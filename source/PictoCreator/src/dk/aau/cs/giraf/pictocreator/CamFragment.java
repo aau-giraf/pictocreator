@@ -1,23 +1,21 @@
-package dk.aau.cs.giraf.cam;
+package dk.aau.cs.giraf.pictocreator;
 
-import android.os.Bundle;
-import android.app.Activity;
+import dk.aau.cs.giraf.pictocreator.CamPreview;
+import dk.aau.cs.giraf.pictocreator.PhotoHandler;
+import dk.aau.cs.giraf.pictocreator.R;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera.ShutterCallback;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-/**
- * 
- * @author Croc
- *
- */
-public class CamActivity extends Activity {
-	private final static String TAG = "CamActivity";
+public class CamFragment extends Fragment {
+private final static String TAG = "CamActivity";
 	
 	CamPreview camPreview;
 	PhotoHandler photoHandler;
@@ -25,8 +23,9 @@ public class CamActivity extends Activity {
 	/**
 	 * 
 	 */
+	/*
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cam);
 		photoHandler = new PhotoHandler(this);
@@ -37,16 +36,18 @@ public class CamActivity extends Activity {
 		
 		Button captureButton = (Button)findViewById(R.id.button_capture);
 	}
+	*/
 	/**
 	 * 
 	 */
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.cam, menu);
 		return true;
 	}
-	
+	*/
 	/**
 	 * 	
 	 * @param v
