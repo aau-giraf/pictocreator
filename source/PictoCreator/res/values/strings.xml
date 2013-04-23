@@ -4,5 +4,7 @@
     <string name="app_name">Croc</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    
+    <string name="record_dialog_title">Lyd optager</string>
+    <string name="textViewText">Lydfil-navn</string>
+
 </resources>
