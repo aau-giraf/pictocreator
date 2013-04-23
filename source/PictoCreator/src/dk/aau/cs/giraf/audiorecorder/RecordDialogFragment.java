@@ -1,5 +1,6 @@
 package dk.aau.cs.giraf.audiorecorder;
 
+import dk.aau.cs.giraf.pictocreator.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
