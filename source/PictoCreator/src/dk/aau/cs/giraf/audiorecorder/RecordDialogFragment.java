@@ -19,6 +19,33 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
+/**
+ * Class for the dialog used for recording in the croc application
+ * The class implement RecordInterface,
+ * this is done to bind the decibelmeter and the recorder together
+ *
+ * @author Croc
+ */
+
+/*
+  How to use:
+
+  Copy-Paste the below, and make sure the layout have a button with id:start_dialog_button,
+  then everything should work fine
+
+  final RecordDialogFragment recordDialog = new RecordDialogFragment();
+
+  OnClickListener clickListener = new OnClickListener() {
+  public void onClick(View view) {
+  recordDialog.show(getFragmentManager(), TAG);
+  }
+  };
+
+  Button dialogButton = (Button) findViewById(R.id.start_dialog_button);
+
+  dialogButton.setOnClickListener(clickListener);
+
+ */
 public class RecordDialogFragment extends DialogFragment implements RecordInterface {
 
     private static final String TAG = "RecordDialogFragment";
@@ -37,6 +64,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     Button cancelButton;
 
+    /**
+     * Constructor for the Dialog
+     * Left empty on purpose
+     */
     public RecordDialogFragment() {
 
     }
@@ -61,6 +92,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
             });
     }
 
+    /**
+     *
+     */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -70,6 +104,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         setStyle(style, 0);
     }
 
+    /**
+     *
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
