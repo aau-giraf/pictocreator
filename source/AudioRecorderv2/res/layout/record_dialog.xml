@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:orientation="horizontal" >
+
+    <view
+        android:id="@+id/decibel_meter"
+        android:layout_width="45dp"
+        android:layout_height="150dp"
+        android:layout_margin="20dp"
+        class="dk.aau.cs.giraf.audiorecorderv2.DecibelMeterView" >
+
+    </view>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+      <ToggleButton
+          android:id="@+id/record_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal|center_vertical"
+          android:layout_margin="20dp"
+          android:background="@drawable/toggle_button_background"
+          android:gravity="bottom|center_horizontal"
+          android:nextFocusLeft="@dimen/activity_horizontal_margin"
+          android:nextFocusRight="@dimen/activity_horizontal_margin"
+          android:textOff=""
+          android:textOn="" />
+
+      <TextView
+          android:id="@+id/textView1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="20dp"
+          android:layout_marginLeft="20dp"
+          android:background="@android:color/darker_gray"
+          android:gravity="center_horizontal"
+          android:text="@string/textViewText"
+          android:textAppearance="?android:attr/textAppearanceMedium" >
+
+      </TextView>
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <!-- <TextView -->
+  <!--     android:layout_width="match_parent" -->
+  <!--     android:layout_height="wrap_content" -->
+  <!--     android:gravity="center" -->
+  <!--     android:text="MiddelText" /> -->
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal" >
+
+  <Button
+      android:id="@+id/negative_dialog_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="20dp"
+      android:text="@android:string/cancel"/>
+
+  <Button
+      android:id="@+id/positive_dialog_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="20dp"
+      android:text="@android:string/ok" />
+
+  </LinearLayout>
+
+  <!-- <TextView -->
+  <!--     android:layout_width="wrap_content" -->
+  <!--     android:layout_height="wrap_content" -->
+  <!--     android:text="TextView" /> -->
+
+
+</LinearLayout>

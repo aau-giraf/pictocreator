@@ -6,10 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 //Vogella's photohandler
@@ -50,6 +52,13 @@ public class PhotoHandler implements PictureCallback {
 		} catch(Exception e) {
 			Log.d(TAG, "Picture: " + photoFile + " was not saved" + e.getMessage());
 			Toast.makeText(context, "Image could not be saved", Toast.LENGTH_LONG).show();
+		} finally {
+			try {
+				camera.startPreview();
+				//set the camera button to enabled... somehow
+			} catch (NullPointerException nil) {
+				Log.d(TAG, "Camera is null, preview not started" + nil.getMessage());
+			}
 		}
 		
 	}

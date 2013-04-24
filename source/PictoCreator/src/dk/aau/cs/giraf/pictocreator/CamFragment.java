@@ -3,57 +3,66 @@ package dk.aau.cs.giraf.pictocreator;
 import dk.aau.cs.giraf.pictocreator.CamPreview;
 import dk.aau.cs.giraf.pictocreator.PhotoHandler;
 import dk.aau.cs.giraf.pictocreator.R;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class CamFragment extends Fragment {
-private final static String TAG = "CamActivity";
+	private final static String TAG = "CamFragment";
 	
-	CamPreview camPreview;
+	View view;
+	CamPreview camFeed;
 	PhotoHandler photoHandler;
+	ImageButton captureButton;
+	FrameLayout preview;
 	
-	/**
-	 * 
-	 */
-	/*
+	Activity parentActivity;
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstance) {
+		super.onCreate(savedInstance);
+		parentActivity = this.getActivity();
+
+		photoHandler = new PhotoHandler(parentActivity);
+		camFeed = new CamPreview(parentActivity);
+
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_cam);
-		photoHandler = new PhotoHandler(this);
-		camPreview = new CamPreview(this);
 		
-		FrameLayout preview = (FrameLayout)findViewById(R.id.camera_preview);
-		preview.addView(camPreview);
+		view = inflater.inflate(R.layout.cam_fragment, container, false);
 		
-		Button captureButton = (Button)findViewById(R.id.button_capture);
+		preview = (FrameLayout)view.findViewById(R.id.camera_preview);
+		preview.addView(camFeed);
+		captureButton = (ImageButton)view.findViewById(R.id.button_capture);
+		captureButton.setOnClickListener(captureClick);
+		
+		return view;
 	}
-	*/
-	/**
-	 * 
-	 */
-	/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.cam, menu);
-		return true;
-	}
-	*/
+	
 	/**
 	 * 	
 	 * @param v
 	 */
 	public void capturePhoto(View v) {
-		camPreview.takePicture(shutterCall, null, photoHandler);
+		camFeed.takePicture(shutterCall, null, photoHandler);
 	}
 	
 	/**
@@ -94,6 +103,16 @@ private final static String TAG = "CamActivity";
 		public void onShutter() {
 			//Do nothing
 		}
+	};
+	
+	private final OnClickListener captureClick = new OnClickListener() {
+
+		@Override
+		public void onClick(View view) {
+			captureButton.setClickable(false);
+			capturePhoto(view);
+		}
+		
 	};
 
 }

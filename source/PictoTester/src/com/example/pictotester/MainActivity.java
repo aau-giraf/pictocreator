@@ -1,20 +1,27 @@
 package com.example.pictotester;
-import java.util.List;
 
+import java.util.List;
 import dk.aau.cs.giraf.pictogram.*;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 /**
- * 
+ *
  * @author Croc
  *
  */
 public class MainActivity extends Activity {
+    private final static String TAG = "Tester";
+    private Pictogram preview;
+    private ArrayList<String> tags;
 
     @SuppressLint("NewApi")
     @Override
@@ -22,42 +29,24 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT , android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                                               android.view.ViewGroup.LayoutParams.MATCH_PARENT);
         LayoutParams params2 = new LayoutParams(100 , 100);
 
-        LinearLayout grid = new LinearLayout(this);
-        addContentView(grid, params);
+        LinearLayout layout = new LinearLayout(this);
+        addContentView(layout, params);
 
-        Pictogram[] arr = new Pictogram[10];
-        List<Pictogram> pictograms = PictoFactory.getAllPictograms(this);
-        
-        for(int i = 0; i < pictograms.size(); i++){
-            Pictogram pictogram = pictograms.get(i);
-            pictogram.renderImage();
-            pictogram.renderText();
 
-            grid.addView(pictogram, params2);
+        TextView pap = new TextView(this);
+        pap.setText("Hey!");
+
+        List<Pictogram> pictograms = PictoFactory.INSTANCE.getPictogramsByTag(this, "Dog");
+        if(pictograms != null){
+            preview = pictograms.get(0);
+            // preview.renderImage();
+            // layout.addView(preview, params2);
+            showSaveDialog();
         }
-        for(Pictogram p : pictograms){
-        	if(p.hasAudio()){
-        		p.playAudio();
-        		break;
-        	}
-        }
-        // for (int i = 1; i < 10; i++) {
-        //         arr[i].renderImage();
-        //         arr[i].renderText();
-        //         grid.addView(arr[i], params2);
-        // }
-
-        //arr[0].playAudio();
-
-        /*
-          Pictogram pic = PictoFactory.INSTANCE.getPictogram(this, 0);
-          pic.renderImage();
-          pic.renderText();
-          grid.addView(pic);
-        */
     }
 
     @Override
@@ -67,4 +56,10 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    public void showSaveDialog(){
+        SaveDialogFragment dialog = new SaveDialogFragment();
+        dialog.setTags(tags);
+        dialog.setPreview(preview);
+        dialog.show(getFragmentManager(), "SaveDialog");
+    }
 }
