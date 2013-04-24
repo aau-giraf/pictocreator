@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.entity.LineEntity;
+import dk.homestead.canvastest.entity.PrimitiveEntity;
 
 /**
  * The LineHandler class allows drawing straight lines. Simple stuff.
@@ -18,9 +19,7 @@ public class LineHandler extends ShapeHandler {
 	public LineHandler(Bitmap buffersrc) {
 		super(buffersrc);
 		// Set up generic paint.
-		strokePaint = new Paint();
-		strokePaint.setARGB(255, 0, 0, 0); // Black!
-		strokePaint.setStrokeWidth(3);
+		strokeColor = 0xFF000000;
 	}
 
 	@Override
@@ -30,15 +29,14 @@ public class LineHandler extends ShapeHandler {
 	}
 	
 	@Override
-	public void drawBuffer(Canvas canvas) {
-		Log.i("LineHandler.drawBuffer", "Drawing onto canvas.");
-		
-		canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokePaint);
+	public PrimitiveEntity updateBuffer() {
+		bufferedEntity = new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokeColor);
+		return bufferedEntity;
 	}
 	
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
-		drawStack.addEntity(new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokePaint));
+		drawStack.addEntity(new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokeColor));
 	}
 
 }

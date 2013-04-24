@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import dk.homestead.canvastest.ActionHandler;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.FloatPoint;
+import dk.homestead.canvastest.entity.PrimitiveEntity;
 
 /**
  * An ActionHandler specifically for drawing shapes. This aggregates such
@@ -37,16 +38,6 @@ public abstract class ShapeHandler extends ActionHandler {
 	 */
 	protected int currentPointerId;
 	
-	/**
-	 * Paint used for shape strokes.
-	 */
-	protected Paint strokePaint;
-	
-	/**
-	 * Paint used for fill draws. Not used on all shapes (line, for example).
-	 */
-	protected Paint fillPaint;
-	
 	private String tag = "RectHandler.onTouchEvent";
 	
 	/**
@@ -58,6 +49,13 @@ public abstract class ShapeHandler extends ActionHandler {
 	 * Color of the shapes fill (the inside color).
 	 */
 	protected int fillColor;
+	
+	/**
+	 * The PrimitiveEntity currently being created. The seperate handlers can
+	 * use this both for final addition to the drawStack as well as temp buffer
+	 * drawing.
+	 */
+	protected PrimitiveEntity bufferedEntity;
 	
 	public ShapeHandler(Bitmap buffersrc) {
 		super(buffersrc);
@@ -129,7 +127,16 @@ public abstract class ShapeHandler extends ActionHandler {
 	 * output on a passed canvas.
 	 * @param canvas The canvas to draw onto.
 	 */
-	public abstract void drawBuffer(Canvas canvas);
+	public final void drawBuffer(Canvas canvas) {
+		updateBuffer();
+		bufferedEntity.draw(canvas);
+	}
+	
+	/**
+	 * When called, expects the internal PrimitiveEntity to be updated and
+	 * returned.
+	 */
+	public abstract PrimitiveEntity updateBuffer();
 	
 	/**
 	 * Helper function that recalculates the bounds of a rectangle based on

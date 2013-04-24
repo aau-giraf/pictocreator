@@ -14,21 +14,16 @@ public class OvalEntity extends PrimitiveEntity {
 
 	float left, top, right, bottom;
 	
-	public OvalEntity(float left, float top, float right, float bottom, Paint paint) {
+	public OvalEntity(float left, float top, float right, float bottom, int fillColor, int strokeColor) {
+		super(left, top, fillColor, strokeColor);
 		this.left = left;
 		this.top = top;
 		this.bottom = bottom;
 		this.right = right;
-		this.paint = paint;
-		
-		RectShape sh = new RectShape();
-		sh.resize(right-left, bottom-top);
-		x = left;
-		y = top;
 	}
 
 	 @Override
-	public void draw(Canvas canvas) {
+	public void drawWithPaint(Canvas canvas, Paint paint) {
 		 RectF area = new RectF(left, top, right, bottom);
 		 canvas.drawArc(area, 0.0f, 360.0f, true, paint);
 	}

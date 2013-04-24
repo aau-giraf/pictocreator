@@ -13,21 +13,17 @@ public class RectEntity extends PrimitiveEntity {
 
 	float left, top, right, bottom;
 	
-	public RectEntity(float left, float top, float right, float bottom, Paint paint) {
+	public RectEntity(float left, float top, float right, float bottom, int fillColor, int strokeColor) {
+		super(left, top, fillColor, strokeColor);
+		
 		this.left = left;
 		this.top = top;
 		this.bottom = bottom;
 		this.right = right;
-		this.paint = paint;
-		
-		RectShape sh = new RectShape();
-		sh.resize(right-left, bottom-top);
-		x = left;
-		y = top;
 	}
 
 	 @Override
-	public void draw(Canvas canvas) {
+	public void drawWithPaint(Canvas canvas, Paint paint) {
 		 canvas.drawRect(left, top, right, bottom, paint);
 	}
 }

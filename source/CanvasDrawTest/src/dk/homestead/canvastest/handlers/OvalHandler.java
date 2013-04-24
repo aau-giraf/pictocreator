@@ -7,6 +7,7 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.entity.OvalEntity;
+import dk.homestead.canvastest.entity.PrimitiveEntity;
 
 /**
  * The RectHandler class handles drawing rectangles on the drawing surface.
@@ -22,18 +23,15 @@ public class OvalHandler extends ShapeHandler {
 	public OvalHandler(Bitmap buffersrc) {
 		super(buffersrc);
 		// Set up generic paint.
-		strokePaint = new Paint();
-		strokePaint.setARGB(255, 0, 0, 0); // Black!
-		strokePaint.setStyle(Style.STROKE);
+		strokeColor = 0xFF000000;
+		fillColor = 0x55FF0000;
 	}
 	
 	@Override
-	public void drawBuffer(Canvas canvas) {
+	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();
-		
-		RectF oval = new RectF(left, top, right, bottom);
-		
-		canvas.drawArc(oval, 0.0f, 360.0f, true, strokePaint);	
+		this.bufferedEntity = new OvalEntity(left, top, right, bottom, fillColor, strokeColor);
+		return bufferedEntity;
 	}
 	
 	@Override
@@ -49,6 +47,6 @@ public class OvalHandler extends ShapeHandler {
 	
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
-		drawStack.addEntity(new OvalEntity(left, top, right, bottom, strokePaint));
+		drawStack.addEntity(bufferedEntity);
 	}
 }

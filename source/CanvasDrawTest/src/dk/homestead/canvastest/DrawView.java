@@ -110,8 +110,8 @@ public class DrawView extends View {
 		this.height = h;
 		initBuffers();
 		// DEBUG
-		// currentHandler = new OvalHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-		// currentHandler = new RectHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+		//currentHandler = new OvalHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+		//currentHandler = new RectHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
 		currentHandler = new LineHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
 		super.onSizeChanged(w, h, oldw, oldh);
 	}

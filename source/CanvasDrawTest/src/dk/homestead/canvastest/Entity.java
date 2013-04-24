@@ -20,12 +20,12 @@ public abstract class Entity {
 	/**
 	 * X-coordinate of the Shape, measured by its left edge.
 	 */
-	protected float x;
+	private float x;
 	
 	/**
 	 * Y-coordinate of the Shape, measured by its top edge.
 	 */
-	protected float y;
+	private float y;
 	 
 	/**
 	 * Retrieve the shape's leftmost X-coordinate.
@@ -38,6 +38,10 @@ public abstract class Entity {
 	 * @return
 	 */
 	public float getY() { return this.y; }
+	
+	public void setX(float x) { this.x = x; }
+	
+	public void setY(float y) { this.y = y; }
 	
 	/**
 	 * Width of the Entity's hitbox.

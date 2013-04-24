@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import dk.homestead.canvastest.EntityGroup;
+import dk.homestead.canvastest.entity.PrimitiveEntity;
 import dk.homestead.canvastest.entity.RectEntity;
 
 /**
@@ -21,16 +22,15 @@ public class RectHandler extends ShapeHandler {
 	public RectHandler(Bitmap buffersrc) {
 		super(buffersrc);
 		// Set up generic paint.
-		strokePaint = new Paint();
-		strokePaint.setARGB(255, 0, 0, 0); // Black!
-		strokePaint.setStyle(Style.STROKE);
+		strokeColor = 0xFF000000;
+		fillColor = 0x55FF0000;
 	}
 	
 	@Override
-	public void drawBuffer(Canvas canvas) {
+	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();
-		
-		canvas.drawRect(left, top, right, bottom, strokePaint);	
+		this.bufferedEntity = new RectEntity(left, top, right, bottom, fillColor, strokeColor);
+		return bufferedEntity;
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class RectHandler extends ShapeHandler {
 	
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
-		drawStack.addEntity(new RectEntity(left, top, right, bottom, strokePaint));
+		drawStack.addEntity(bufferedEntity);
 	}
 	
 }
