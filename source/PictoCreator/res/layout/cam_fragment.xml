@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingLeft="40dp"
-	android:paddingBottom="40dp"
-	android:paddingTop="40dp"
-	android:paddingRight="20dp"
-	android:orientation="horizontal" >
-	
+	android:orientation="horizontal"
+	android:background="@null"
+	android:paddingBottom="60dp"
+	android:paddingLeft="60dp"
+	android:paddingRight="60dp"
+	android:paddingTop="60dp" >
+
 	<FrameLayout
-    android:id="@+id/camera_preview"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="0.8"
-    />
-	
-	<Space 
-	android:layout_width="40dp"
-	android:layout_height="match_parent" />
+		android:id="@+id/camera_preview"
+		android:layout_width="1000dp"
+		android:layout_height="750dp"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true" >
 
-  <ImageButton
-    android:id="@+id/button_capture"
-    android:src="@drawable/cam"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    />
+	</FrameLayout>
 
-</LinearLayout>
+	<ImageButton
+		android:id="@+id/button_capture"
+		android:layout_width="100dp"
+		android:layout_height="140dp"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:src="@drawable/cam" />
+
+	<ToggleButton
+		android:id="@+id/color_effects"
+		android:layout_width="100dp"
+		android:layout_height="80dp"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/color_effects"
+		android:background="@drawable/color_effect_switch"
+		android:textOn=""
+		android:textOff="" />
+
+	<ImageButton
+		android:id="@+id/switch_cam"
+		android:layout_width="100dp"
+		android:layout_height="80dp"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:background="@drawable/cam"/>
+
+</RelativeLayout>

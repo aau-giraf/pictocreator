@@ -19,6 +19,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    Camera cam;
    Size previewSize;
    SurfaceHolder holder;
+   //Default settings for camera (not all systems report correctly when asked)
    int defaultCameraID = 0;
    int frontCameraID = 1;
    int currentCameraID = 0;
@@ -33,7 +34,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        super(context, attrs);
 
        configureHolder();
-       hasMultiCams = checkCameraHardware();
+       hasMultiCams = hasMultipleCam();
    }
 
    /**
@@ -44,7 +45,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        super(context);
 
        configureHolder();
-       hasMultiCams = checkCameraHardware();
+       hasMultiCams = hasMultipleCam();
    }
 
    /**
@@ -164,12 +165,52 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
            cam = null;
        }
    }
+   
+   public void setColorEffect(String params) {
+	   Camera.Parameters current = cam.getParameters();
+	   
+	   current.setColorEffect(params);
+	   
+	   cam.setParameters(current);
+   }
+   
+   public void switchCam() {
+       try {
+           cam.stopPreview();
+       }
+       catch (Exception e) {
+           Log.d(TAG, "Lol, you tried to stop a non-existent preview");
+       }
+       releaseCamera();
+
+       if(currentCameraID == defaultCameraID){
+           cam = getCamera(frontCameraID);
+           currentCameraID = frontCameraID;
+           Log.d(TAG, "Cam changed to front");
+       }
+       else if(currentCameraID == frontCameraID){
+           cam = getCamera(defaultCameraID);
+           currentCameraID = defaultCameraID;
+           Log.d(TAG, "Cam changed to default");
+       }
+       else {
+           Log.e(TAG, "Cam ID unknown");
+       }
+       try{
+           cam.setPreviewDisplay(holder);
+       }
+       catch(Exception e) {
+           Log.d(TAG, "Display holder was not set");
+       }
+       startPreview();
+   }
 
    /**
     *
     * @return
     */
-   private boolean checkCameraHardware() {
+   
+   public boolean hasMultipleCam() {
        /* Dat method, x_x */
        Camera.CameraInfo camInfo = new Camera.CameraInfo();
        int numberOfCams = Camera.getNumberOfCameras();

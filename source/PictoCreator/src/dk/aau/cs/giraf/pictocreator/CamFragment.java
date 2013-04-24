@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,17 +23,19 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ToggleButton;
 
 public class CamFragment extends Fragment {
 	private final static String TAG = "CamFragment";
-	
+	private final static int clickDelay = 500;
 	View view;
 	CamPreview camFeed;
 	PhotoHandler photoHandler;
-	ImageButton captureButton;
+	ImageButton captureButton, switchButton;
+	ToggleButton  colorEffectButton;
 	FrameLayout preview;
 	
-	Activity parentActivity;
+	private Activity parentActivity;
 	
 	@Override
 	public void onCreate(Bundle savedInstance) {
@@ -40,7 +44,7 @@ public class CamFragment extends Fragment {
 
 		photoHandler = new PhotoHandler(parentActivity);
 		camFeed = new CamPreview(parentActivity);
-
+		
 	}
 	
 	@Override
@@ -53,7 +57,14 @@ public class CamFragment extends Fragment {
 		preview.addView(camFeed);
 		captureButton = (ImageButton)view.findViewById(R.id.button_capture);
 		captureButton.setOnClickListener(captureClick);
+		colorEffectButton = (ToggleButton)view.findViewById(R.id.color_effects);
+		colorEffectButton.setOnClickListener(colorClick);
+		switchButton = (ImageButton)view.findViewById(R.id.switch_cam);
+		switchButton.setOnClickListener(switchClick);
 		
+		if(!camFeed.hasMultiCams) {
+			switchButton.setEnabled(false);
+		}
 		return view;
 	}
 	
@@ -81,18 +92,8 @@ public class CamFragment extends Fragment {
 		super.onPause();
 	}
 	
-	/**
-	 * 
-	 * @param context
-	 * @return
-	 */
-	private boolean checkCameraHardware(Context context) {
-	    if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-	        return true;
-	    } else {
-	        Log.d(TAG, "No camera found on device");
-	        return false;
-	    }
+	private void switchCam(View view) {
+		camFeed.switchCam();
 	}
 	
 	/**
@@ -101,7 +102,8 @@ public class CamFragment extends Fragment {
 	private final ShutterCallback shutterCall = new ShutterCallback() {
 		@Override
 		public void onShutter() {
-			//Do nothing
+			//This callback is implemented and left blank to
+			//provide the shutter sound when snapping a photo
 		}
 	};
 	
@@ -111,8 +113,35 @@ public class CamFragment extends Fragment {
 		public void onClick(View view) {
 			captureButton.setClickable(false);
 			capturePhoto(view);
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				public void run() {
+					captureButton.setClickable(true);
+				}
+			}, clickDelay);
+		}
+	};
+	
+	private final OnClickListener colorClick = new OnClickListener() {
+
+		@Override
+		public void onClick(View view) {
+			if(colorEffectButton.isChecked()) {
+				camFeed.setColorEffect(Camera.Parameters.EFFECT_MONO);
+			}
+			else if(!colorEffectButton.isChecked()) {
+				camFeed.setColorEffect(Camera.Parameters.EFFECT_NONE);
+			}
 		}
 		
+	};
+	
+	private final OnClickListener switchClick = new OnClickListener() {
+		
+		@Override
+		public void onClick(View view) {
+			camFeed.switchCam();
+		}
 	};
 
 }
