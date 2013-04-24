@@ -88,15 +88,11 @@ public abstract class Entity {
 		// Store the current number of saves. In case the graphic does not
 		// clean up after itself, we can restore the correct number of times.
 		int layer = canvas.getSaveCount();
-		// Adapt canvas to location/size.
-		canvas.save();
-		canvas.translate(x, y);
-		graphic.draw(canvas); // Size information should be in here.
-		canvas.restore();
-		if (canvas.getSaveCount() != layer){
-			// Restore correct number of layers.
-			for (int i = 0; i < canvas.getSaveCount()-layer; i++)
-					canvas.restore();
-		}
+		canvas.save(); // Save a layer so we somewhat avoid the graphic messing with translations.
+		// The graphic has inherited location/size data from the Entity (where relevant), so we
+		// simply instruct it to draw.
+		graphic.draw(canvas);
+		// Restore the canvas to its original setting.
+		canvas.restoreToCount(layer);
 	}
 }

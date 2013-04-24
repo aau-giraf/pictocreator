@@ -4,8 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import dk.homestead.canvastest.EntityGroup;
-import dk.homestead.canvastest.entity.RectEntity;
+import dk.homestead.canvastest.entity.OvalEntity;
 
 /**
  * The RectHandler class handles drawing rectangles on the drawing surface.
@@ -16,9 +17,9 @@ import dk.homestead.canvastest.entity.RectEntity;
  * @author lindhart
  *
  */
-public class RectHandler extends ShapeHandler {
-	
-	public RectHandler(Bitmap buffersrc) {
+public class OvalHandler extends ShapeHandler {
+
+	public OvalHandler(Bitmap buffersrc) {
 		super(buffersrc);
 		// Set up generic paint.
 		strokePaint = new Paint();
@@ -30,18 +31,9 @@ public class RectHandler extends ShapeHandler {
 	public void drawBuffer(Canvas canvas) {
 		calcRectBounds();
 		
-		canvas.drawRect(left, top, right, bottom, strokePaint);	
-	}
-	
-	/**
-	 * Helper function that recalculates the bounds of the rectangle based on
-	 * start and end points.
-	 */
-	protected void calcRectBounds(){
-		top = Math.min(startPoint.y, endPoint.y);
-		bottom = Math.max(startPoint.y, endPoint.y);
-		left = Math.min(startPoint.x, endPoint.x);
-		right = Math.max(startPoint.x, endPoint.x);
+		RectF oval = new RectF(left, top, right, bottom);
+		
+		canvas.drawArc(oval, 0.0f, 360.0f, true, strokePaint);	
 	}
 	
 	@Override
@@ -57,7 +49,6 @@ public class RectHandler extends ShapeHandler {
 	
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
-		drawStack.addEntity(new RectEntity(left, top, right, bottom, strokePaint));
+		drawStack.addEntity(new OvalEntity(left, top, right, bottom, strokePaint));
 	}
-	
 }

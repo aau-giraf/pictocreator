@@ -82,4 +82,64 @@ public abstract class ActionHandler {
 		Rect rect=new Rect(0,0,bufferCanvas.getWidth(),bufferCanvas.getHeight());
 		bufferCanvas.drawRect(rect,paint);
 	}
+	
+	/**
+	 * Each ActionHandler must be able to provide its own icon for the toolbox.
+	 * Whether this is generated on the fly or predetermined bitmap resource is
+	 * up to each handler's implementation.
+	 * @return Returns a Bitmap with the dimensions size-by-size.
+	 */
+	abstract public Bitmap getToolboxIcon(int size);
+	
+	/**
+	 * Shorthand for scaling a Bitmap to a specific size.
+	 * @param toScale The Bitmap to scale.
+	 * @param newSize The new size-by-size size.
+	 * @return The scaled Bitmap.
+	 */
+	protected static Bitmap scaleBitmap(Bitmap toScale, int newSize){
+		return Bitmap.createScaledBitmap(toScale, newSize, newSize, true);
+	}
+	
+	/**
+	 * Called by the touch handler when an ACTION_DOWN MotionEvent is
+	 * triggered.
+	 * @param event The entire MotionEvent.
+	 * @param drawStack The calling environment's drawStack that contains
+	 * current Entity objects already created. This allows the handler to
+	 * modify the stack as needed.
+	 */
+	public void onActionDown(MotionEvent event, EntityGroup drawStack){
+		// Stub.
+	}
+	
+	/**
+	 * Called by the touch handler when an ACTION_MOVE MotionEvent is
+	 * triggered.
+	 * @param event The entire MotionEvent.
+	 * @param drawStack The calling environment's drawStack that contains
+	 * current Entity objects already created. This allows the handler to
+	 * modify the stack as needed.
+	 */
+	public void onActionMove(MotionEvent event, EntityGroup drawStack){
+		// Stub.
+	}
+	
+	/**
+	 * Called by the touch handler when an ACTION_UP MotionEvent is
+	 * triggered.
+	 * @param event The entire MotionEvent.
+	 * @param drawStack The calling environment's drawStack that contains
+	 * current Entity objects already created. This allows the handler to
+	 * modify the stack as needed.
+	 */
+	public void onActionUp(MotionEvent event, EntityGroup drawStack){
+		// Stub.
+	}
+	
+	/**
+	 * All handlers must define a drawBuffer method that draws their current UI
+	 * output on a passed canvas.
+	 */
+	public abstract void drawBuffer(Canvas canvas);
 }

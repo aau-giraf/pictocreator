@@ -1,5 +1,7 @@
 package dk.homestead.canvastest;
 
+import dk.homestead.canvastest.handlers.LineHandler;
+import dk.homestead.canvastest.handlers.OvalHandler;
 import dk.homestead.canvastest.handlers.RectHandler;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -108,7 +110,9 @@ public class DrawView extends View {
 		this.height = h;
 		initBuffers();
 		// DEBUG
-		currentHandler = new RectHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+		// currentHandler = new OvalHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+		// currentHandler = new RectHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+		currentHandler = new LineHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 	
