@@ -1,6 +1,6 @@
 package dk.homestead.canvastest;
 
-import com.example.canvasdrawtest.R;
+import dk.homestead.canvastest.R;
 
 import android.os.Bundle;
 import android.app.Activity;

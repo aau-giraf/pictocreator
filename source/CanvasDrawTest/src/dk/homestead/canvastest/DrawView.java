@@ -1,10 +1,14 @@
 package dk.homestead.canvastest;
 
+import dk.homestead.canvastest.handlers.LineHandler;
+import dk.homestead.canvastest.handlers.OvalHandler;
+import dk.homestead.canvastest.handlers.RectHandler;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Handler;
-import android.os.Message;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.*;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,82 +18,144 @@ public class DrawView extends View {
 
 	enum DRAW_MODE { FREEHAND, LINE, BOX };
 	
+	/**
+	 * Current draw mode, selected from the tool box.
+	 */
 	DRAW_MODE curDrawMode = DRAW_MODE.FREEHAND;
 	
+	/**
+	 * Location of the touch event. 
+	 */
 	float drawx,drawy;
 	
+	/**
+	 * Width and height of the view.
+	 */
+	int width, height;
+	
+	/**
+	 * Are we currently shaping something or drawing freehand?
+	 * This matches a "fingerDown" boolean, denoting that the user's finger
+	 * is still pressed to the screen.
+	 */
 	boolean drawing = false;
 	
+	
+	// Various DEBUG stuff.
+	ShapeDrawable shape;
+	Shape drawnShape;
+	Paint paint = new Paint();
+	
+	/**
+	 * The buffer holds what is "currently being drawn" by the user. This is a
+	 * highly volatile drawing area, compared to the draw stack that simply
+	 * contains the layers of drawn stuff so far.
+	 */
+	Bitmap drawBuffer;
+	
+	/**
+	 * The canvas used to draw on the drawBuffer.
+	 */
+	Canvas bufferCanvas;
+	
+	/**
+	 * This stack contains all current layers in the *drawing*. See drawStack
+	 * for the entire rendering stack used.
+	 */
+	EntityGroup drawStack = new EntityGroup();
+	
+	/**
+	 * The toolbox, drawn to the left
+	 */
+	Toolbox toolbox = new Toolbox(64, this.getHeight());
+	
+	/**
+	 * The currently active handler for touch events.
+	 */
+	ActionHandler currentHandler;
 	
 	
 	public DrawView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		init_stuff();
 	}
 
 	public DrawView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
+		init_stuff();
 	}
 
 	public DrawView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
+		init_stuff();
 	}
 
-    /**
-     * Create a simple handler that we can use to cause animation to happen.  We
-     * set ourselves as a target and we can use the sleep()
-     * function to cause an update/invalidate to occur at a later date.
-     */
-    private RefreshHandler mRedrawHandler = new RefreshHandler();
-
-    class RefreshHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            DrawView.this.update();
-            DrawView.this.invalidate();
-        }
-
-        public void sleep(long delayMillis) {
-        	this.removeMessages(0);
-            sendMessageDelayed(obtainMessage(0), delayMillis);
-        }
-    };
+	/**
+	 * Generic initialisations.
+	 */
+	protected void init_stuff()
+	{
+		Log.i("DrawView:init_stuff", "Initialisations!");
+		paint.setARGB(255, 0, 0, 0);
+		drawnShape = new OvalShape();
+		drawnShape.resize(200, 100);
+		shape = new ShapeDrawable(drawnShape);
+	}
 	
-    private int r,g,b = 50;
-    
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		// TODO Auto-generated method stub
+		Log.i("DrawView:onSizeChanged", "Size changed!");
+		this.width = w;
+		this.height = h;
+		initBuffers();
+		
+		// Set up the toolbox.
+		
+		toolbox = new Toolbox(64, h);
+		toolbox.addHandler(new RectHandler());
+		toolbox.addHandler(new OvalHandler());
+		toolbox.addHandler(new LineHandler());
+		
+		// DEBUG
+		//currentHandler = new OvalHandler();
+		//currentHandler = new RectHandler();
+		//currentHandler = new LineHandler();
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+	
+	protected void initBuffers(){
+		drawBuffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		bufferCanvas = new Canvas(drawBuffer);
+	}
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		// TODO Auto-generated method stub
 		Log.w("DrawView",  "Invalidated. Redrawing.");
-		// super.onDraw(canvas);
-		// Clear
-		// canvas.drawRGB(r,  g,  b);
-		if (drawing)
-		{
-			Paint p = new Paint();
-			p.setARGB(255, 0, 0, 0);
-			canvas.drawCircle(drawx, drawy, 10, p);
-			
-		}
+		
+		// Drawing order: drawStack, drawBuffer, renderStack (toolbox).
+		drawStack.draw(canvas);
+		
+		// canvas.drawBitmap(currentHandler.getBuffer(), 0, 0, null);
+		toolbox.getCurrentHandler().drawBuffer(canvas);
+		
+		toolbox.draw(canvas);
+		
+		// DEBUG: Draw entity count.
+		Paint redPaint = new Paint();
+		redPaint.setColor(0xFFFF0000);
+		canvas.drawText(String.valueOf(drawStack.size()), 30, 30, redPaint);
 	}
 
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		drawx = event.getX();
-		drawy = event.getY();
-		drawing = true;
-		
-		invalidate();
-		
-		return true;
+		if (toolbox.onTouch(event)) return true;
+		else if (toolbox.getCurrentHandler().onTouchEvent(event, drawStack)){
+			invalidate();
+			return true;
+		}
+		else return false;
 	}
+	
 	
 }
