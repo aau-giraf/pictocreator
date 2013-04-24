@@ -2,7 +2,6 @@ package dk.homestead.canvastest.handlers;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.homestead.canvastest.ActionHandler;
@@ -57,12 +56,14 @@ public abstract class ShapeHandler extends ActionHandler {
 	 */
 	protected PrimitiveEntity bufferedEntity;
 	
-	public ShapeHandler(Bitmap buffersrc) {
-		super(buffersrc);
-	}
+	protected boolean doDraw;
 	
 	public void setStrokeColor(int color) { this.strokeColor = color; }
 	public void setFillColor(int color) { this.fillColor = color; }
+	
+	public ShapeHandler() {
+		startPoint = endPoint = new FloatPoint(0, 0);
+	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event, EntityGroup drawStack) {
@@ -79,6 +80,8 @@ public abstract class ShapeHandler extends ActionHandler {
 			// Register the ID of the pointer responsible for the down event. This is what we actually track.
 			this.currentPointerId = eventPointerId;
 			
+			doDraw = false;
+			
 			Log.i(tag, "Pointer down. Registering.");
 		}
 		else if (action == MotionEvent.ACTION_MOVE){
@@ -89,10 +92,9 @@ public abstract class ShapeHandler extends ActionHandler {
 			}
 			else Log.i(tag, "Move event. Wrong pointer. Ignoring.");
 			
-			// Clear the buffer prior to requesting new data.
-			clearBuffer();
 			// Under all circumstances, draw the buffer canvas to display to the user.
-			drawBuffer(this.bufferCanvas);
+			doDraw = true;
+			// drawBuffer(this.bufferCanvas);
 		}
 		else if (action == MotionEvent.ACTION_UP){
 			// Finger raised. If we have valid data, store to drawStack and clear.
@@ -102,7 +104,7 @@ public abstract class ShapeHandler extends ActionHandler {
 				if (startPoint.distance(endPoint) > 1) pushEntity(drawStack);
 				else Log.i(tag, "Shape points are not distinct. Ignoring.");
 
-				clearBuffer(); // Clear the UI buffer in both cases. The handler is inactive.
+				doDraw = false;
 			}
 			else Log.w(tag, "Index did not match. Ignoring event.");
 		}
@@ -127,9 +129,12 @@ public abstract class ShapeHandler extends ActionHandler {
 	 * output on a passed canvas.
 	 * @param canvas The canvas to draw onto.
 	 */
+	@Override 
 	public final void drawBuffer(Canvas canvas) {
-		updateBuffer();
-		bufferedEntity.draw(canvas);
+		if (doDraw) {
+			updateBuffer();
+			bufferedEntity.draw(canvas);
+		}
 	}
 	
 	/**

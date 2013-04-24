@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.util.Log;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.entity.PrimitiveEntity;
 import dk.homestead.canvastest.entity.RectEntity;
@@ -19,8 +20,7 @@ import dk.homestead.canvastest.entity.RectEntity;
  */
 public class RectHandler extends ShapeHandler {
 	
-	public RectHandler(Bitmap buffersrc) {
-		super(buffersrc);
+	public RectHandler() {
 		// Set up generic paint.
 		strokeColor = 0xFF000000;
 		fillColor = 0x55FF0000;
@@ -48,9 +48,14 @@ public class RectHandler extends ShapeHandler {
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(ret);
-		c.rotate(30.0f);
+		c.rotate(30.0f, size/2, size/2);
+		c.scale(0.5f, 0.5f, size/2, size/2);
 		Paint p = new Paint();
+		p.setColor(0xFF0000CC);
+		p.setStyle(Style.FILL);
+		c.drawRect(4, 4, size-4, size-4, p);
 		p.setColor(0xFF000000);
+		p.setStyle(Style.STROKE);
 		c.drawRect(4, 4, size-4, size-4, p);
 		return ret;
 	}

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.Log;
-import android.view.MotionEvent;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.entity.LineEntity;
 import dk.homestead.canvastest.entity.PrimitiveEntity;
@@ -16,16 +15,21 @@ import dk.homestead.canvastest.entity.PrimitiveEntity;
  */
 public class LineHandler extends ShapeHandler {
 
-	public LineHandler(Bitmap buffersrc) {
-		super(buffersrc);
+	public LineHandler() {
 		// Set up generic paint.
 		strokeColor = 0xFF000000;
 	}
 
 	@Override
 	public Bitmap getToolboxIcon(int size) {
-		// TODO Auto-generated method stub
-		return null;
+		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+		Canvas c = new Canvas(ret);
+		
+		Paint p = new Paint();
+		p.setColor(0xFF000000);
+		p.setStyle(Style.STROKE);
+		c.drawLine(4, 8, size-8, size-4, p);
+		return ret;
 	}
 	
 	@Override

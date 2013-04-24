@@ -99,4 +99,24 @@ public abstract class Entity {
 		// Restore the canvas to its original setting.
 		canvas.restoreToCount(layer);
 	}
+	
+	/**
+	 * Simple rectangular non-rotated collision detection at a specific point.
+	 * @param x The X-coordinate of the point to check.
+	 * @param y The Y-coordinate of the point to check.
+	 * @return True if the point is within the hitbox, false otherwise.
+	 */
+	public boolean collidesWithPoint(float x, float y) {
+		return (getX() <= x && x <= getWidth()+getX()) &&
+				(getY() <= x && x <= getHeight()+getY());
+	}
+	
+	/**
+	 * Simple rectangular non-rotated collision detection at a specific point.
+	 * @param p The point to check.
+	 * @return True if the point is within the hitbox, false otherwise.
+	 */
+	public boolean collidesWithPoint(FloatPoint p) {
+		return collidesWithPoint(p.x, p.y);
+	}
 }

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.util.Log;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.entity.OvalEntity;
 import dk.homestead.canvastest.entity.PrimitiveEntity;
@@ -20,8 +21,7 @@ import dk.homestead.canvastest.entity.PrimitiveEntity;
  */
 public class OvalHandler extends ShapeHandler {
 
-	public OvalHandler(Bitmap buffersrc) {
-		super(buffersrc);
+	public OvalHandler() {
 		// Set up generic paint.
 		strokeColor = 0xFF000000;
 		fillColor = 0x55FF0000;
@@ -38,10 +38,22 @@ public class OvalHandler extends ShapeHandler {
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(ret);
-		c.rotate(30.0f);
+		
+		c.scale(0.5f, 0.5f, size/2, size/2);
+		
 		Paint p = new Paint();
+		RectF area = new RectF(0.0f, 0.0f, size, size);
+		
+		p.setColor(0xFFCC0000);
+		p.setStyle(Style.FILL);
+		
+		c.drawArc(area, 0, 360, true, p);
+		
 		p.setColor(0xFF000000);
-		c.drawRect(4, 4, size-4, size-4, p);
+		p.setStyle(Style.STROKE);
+		
+		c.drawArc(area, 0, 360, true, p);
+		
 		return ret;
 	}
 	

@@ -67,7 +67,7 @@ public class DrawView extends View {
 	/**
 	 * The toolbox, drawn to the left
 	 */
-	EntityGroup toolbox;
+	Toolbox toolbox = new Toolbox(64, this.getHeight());
 	
 	/**
 	 * The currently active handler for touch events.
@@ -109,10 +109,18 @@ public class DrawView extends View {
 		this.width = w;
 		this.height = h;
 		initBuffers();
+		
+		// Set up the toolbox.
+		
+		toolbox = new Toolbox(64, h);
+		toolbox.addHandler(new RectHandler());
+		toolbox.addHandler(new OvalHandler());
+		toolbox.addHandler(new LineHandler());
+		
 		// DEBUG
-		//currentHandler = new OvalHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-		//currentHandler = new RectHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-		currentHandler = new LineHandler(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+		//currentHandler = new OvalHandler();
+		//currentHandler = new RectHandler();
+		//currentHandler = new LineHandler();
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 	
@@ -129,9 +137,10 @@ public class DrawView extends View {
 		drawStack.draw(canvas);
 		
 		// canvas.drawBitmap(currentHandler.getBuffer(), 0, 0, null);
-		currentHandler.draw(canvas);
+		toolbox.getCurrentHandler().drawBuffer(canvas);
 		
-		// toolbox.draw(canvas);
+		toolbox.draw(canvas);
+		
 		// DEBUG: Draw entity count.
 		Paint redPaint = new Paint();
 		redPaint.setColor(0xFFFF0000);
@@ -140,7 +149,8 @@ public class DrawView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (currentHandler.onTouchEvent(event, drawStack)){
+		if (toolbox.onTouch(event)) return true;
+		else if (toolbox.getCurrentHandler().onTouchEvent(event, drawStack)){
 			invalidate();
 			return true;
 		}

@@ -19,7 +19,7 @@ import android.view.MotionEvent;
  * @author lindhart
  *
  */
-public abstract class ActionHandler {
+public abstract class ActionHandler extends Entity {
 
 	/**
 	 * The drawing buffer. Modify this to suit. This buffer will always been
@@ -38,24 +38,6 @@ public abstract class ActionHandler {
 	protected Bitmap bufferBitmap;
 	
 	/**
-	 * Creates a new ActionHandler object. 
-	 * @param buffersrc A base bitmap upon which a proper canvas can be
-	 * initialised.
-	 */
-	public ActionHandler(Bitmap buffersrc) {
-		bufferBitmap = buffersrc.copy(Bitmap.Config.ARGB_8888, true);
-		bufferCanvas = new Canvas(bufferBitmap);
-		Log.i("ActionHandler[]", "Mqutable? "+String.valueOf(bufferBitmap.isMutable()));
-	}
-	
-	/**
-	 * Returns a copy of the internal bitmap. Used by DrawView to decide what
-	 * to draw from the handler.
-	 * @return
-	 */
-	public Bitmap getBuffer() { return bufferBitmap; }
-	
-	/**
 	 * Primary handling mechanism. On every touch event, this method is invoked
 	 * and the handler should respond accordingly.
 	 * @param event The source event, passed uncorrupted from the DrawView parent.
@@ -65,23 +47,6 @@ public abstract class ActionHandler {
 	 * handlers: if you handled the event, return true, otherwise false.
 	 */
 	public abstract boolean onTouchEvent(MotionEvent event, EntityGroup drawStack);
-	
-	public void draw(Canvas canvas) {
-		canvas.drawBitmap(bufferBitmap, 0, 0, null);	
-	}
-	
-	/**
-	 * Helper function that clears the canvas to transparent (not black or white).
-	 * Shamelessly ripped from
-	 * http://stackoverflow.com/questions/8716854/how-do-i-clear-the-contents-of-a-drawn-canvas-in-android
-	 */
-	protected void clearBuffer(){
-		Paint paint = new Paint();
-		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR)); 
-
-		Rect rect=new Rect(0,0,bufferCanvas.getWidth(),bufferCanvas.getHeight());
-		bufferCanvas.drawRect(rect,paint);
-	}
 	
 	/**
 	 * Each ActionHandler must be able to provide its own icon for the toolbox.

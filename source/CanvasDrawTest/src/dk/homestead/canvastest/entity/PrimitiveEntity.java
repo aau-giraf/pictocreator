@@ -3,7 +3,6 @@ package dk.homestead.canvastest.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.text.style.LineHeightSpan.WithDensity;
 import dk.homestead.canvastest.Entity;
 
 public abstract class PrimitiveEntity extends Entity {
