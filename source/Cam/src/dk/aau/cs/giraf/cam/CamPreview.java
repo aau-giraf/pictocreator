@@ -193,15 +193,6 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
      *
      */
     public void switchParams() {
-        // try {
-        //     cam.stopPreview();
-        // }
-        // catch (Exception e) {
-        //     Log.d(TAG, "Lol, you tried to stop a non-existent preview");
-        // }
-        // releaseCamera();
-
-        // Log.d(TAG, "Cam released");
 
         Camera.Parameters params = cam.getParameters();
 
@@ -215,25 +206,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
             params.setColorEffect(Camera.Parameters.EFFECT_NONE);
             blackNWhite = !blackNWhite;
         }
-        // else {
-        //     params = null;
-        //     Log.e(TAG, "CameraParameters unknown");
-        // }
-
-        // cam = getCamera(currentCameraID);
-
-        // Log.d(TAG, "getCamera sucessed");
 
         cam.setParameters(params);
-
-        try{
-            cam.setPreviewDisplay(holder);
-        }
-        catch(Exception e) {
-            Log.d(TAG, "Display holder was not set");
-        }
-        startPreview();
-
     }
 
     /**
