@@ -1,12 +1,11 @@
-package dk.aau.cs.giraf.audiorecorder;
+package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
-import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
-
+import android.view.View;
 
 /**
  * Class for creation of the view reprecenting the decibel meter

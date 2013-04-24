@@ -1,8 +1,8 @@
-package dk.aau.cs.giraf.audiorecorder;
+package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
-import java.lang.InterruptedException;
-import java.lang.IllegalStateException;
 import java.io.IOException;
+import java.lang.IllegalStateException;
+import java.lang.InterruptedException;
 
 import android.media.*;
 import android.util.Log;

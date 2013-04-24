@@ -1,15 +1,16 @@
-package dk.aau.cs.giraf.audiorecorder;
+package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
-import dk.aau.cs.giraf.pictocreator.R;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ToggleButton;
+
+import dk.aau.cs.giraf.pictocreator.R;
 
 /**
  * Class for the dialog used for recording in the croc application
