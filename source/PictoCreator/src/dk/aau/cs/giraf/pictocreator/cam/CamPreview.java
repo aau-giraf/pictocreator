@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.pictocreator;
+package dk.aau.cs.giraf.pictocreator.cam;
 
 import android.content.Context;
 import android.hardware.Camera;

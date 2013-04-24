@@ -1,8 +1,9 @@
-package dk.aau.cs.giraf.pictocreator;
+package dk.aau.cs.giraf.pictocreator.cam;
 
-import dk.aau.cs.giraf.pictocreator.CamPreview;
-import dk.aau.cs.giraf.pictocreator.PhotoHandler;
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.R.id;
+import dk.aau.cs.giraf.pictocreator.R.layout;
+import dk.aau.cs.giraf.pictocreator.cam.CamPreview;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;

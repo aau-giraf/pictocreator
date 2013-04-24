@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.pictocreator;
+package dk.aau.cs.giraf.pictocreator.cam;
 
 import java.io.File;
 import java.io.FileOutputStream;

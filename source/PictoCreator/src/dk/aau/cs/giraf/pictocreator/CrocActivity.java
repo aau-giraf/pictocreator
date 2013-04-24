@@ -28,6 +28,7 @@ import dk.aau.cs.giraf.oasis.lib.*;
 import dk.aau.cs.giraf.oasis.lib.controllers.*;
 import dk.aau.cs.giraf.oasis.lib.models.*;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.*;
+import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictogram.*;
 
 
