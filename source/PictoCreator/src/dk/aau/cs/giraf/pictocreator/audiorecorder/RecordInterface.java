@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.audiorecorder;
+package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 /**
  * Interface for binding the recording thread, the activity and the decibelmeter

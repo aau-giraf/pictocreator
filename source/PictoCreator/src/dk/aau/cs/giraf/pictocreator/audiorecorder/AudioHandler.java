@@ -1,7 +1,6 @@
-package dk.aau.cs.giraf.audiorecorder;
+package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
