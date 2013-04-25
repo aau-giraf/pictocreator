@@ -1,77 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" >
-
-
-  <LinearLayout
-      android:id="@+id/save_preview_layout"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/save_preview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="horizontal"
+android:baselineAligned="false" >
+    
+	<RelativeLayout 
+		android:layout_height="match_parent"
+		android:layout_width="0dp"
+		android:layout_weight="0.5"
+		android:padding="20dp">
+		
+		<TextView
         android:id="@+id/save_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This Dialog is fo savin'."
-        android:layout_weight=".5" />
-
-    <EditText
+        android:text="This Dialog is fo savin&apos;."
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="40dp" />
+		
+		<FrameLayout
+			android:id="@+id/preview_frame" 
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:background="#FF00FF"
+			android:layout_below="@+id/save_title"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="10dp" >
+			
+		</FrameLayout>
+		
+		<EditText
         android:id="@+id/save_input_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-  </LinearLayout>
-
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_toRightOf="@id/save_preview_layout"
-      android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/save_input_find"
-        android:background="@android:color/white"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".25" />
-    <ListView
-        android:id="@+id/save_tags_list"
-        android:layout_width="0dp"
+        android:ems="10"
+        android:layout_below="@+id/preview_frame"
+        android:layout_centerHorizontal="true" />
+		
+		<Button
+        android:id="@+id/save_button_positive"
+        android:text="@string/positive_button_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".25" />
-  </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>		
+		
+	</RelativeLayout>
+	
+	<RelativeLayout
+		android:layout_height="match_parent"
+		android:layout_width="0dp"
+		android:layout_weight="0.5"
+		android:padding="20dp">
+		
+		<FrameLayout
+		android:id="@+id/list_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/save_input_find" >
+        
+	        <ListView
+	            android:id="@+id/save_tags_list"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:scrollbars="vertical" >
+	        </ListView>
+        </FrameLayout>
+    
+		<EditText
+	        android:id="@+id/save_input_find"
+	        android:background="@android:color/white"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/save_button_negative"
+	         />
+		
+		<Button
+	        android:id="@+id/save_button_negative"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="40dp"
+	        android:paddingLeft="8dp"
+	        android:paddingRight="8dp"
+	        android:text="@string/negative_button_text" />
+	
+	</RelativeLayout>	
 
-  <Button
-      android:id="@+id/save_button_positive"
-      android:text="@string/positive_button_text"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:gravity="center_horizontal"
-      android:paddingLeft="8dp"
-      android:paddingRight="8dp"
-      android:layout_weight="1" />
-
-  <Button
-      android:id="@+id/save_button_negative"
-      android:text="@string/negative_button_text"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:gravity="center_horizontal"
-      android:paddingLeft="8dp"
-      android:paddingRight="8dp"
-      android:layout_weight="1" />
 </LinearLayout>
-
-</RelativeLayout>
