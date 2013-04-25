@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.pictocreator;
+package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import dk.aau.cs.giraf.pictocreator.R;
 
 public class Dummy extends Fragment{
 	
