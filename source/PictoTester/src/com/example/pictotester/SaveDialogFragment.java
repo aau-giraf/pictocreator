@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +32,7 @@ public class SaveDialogFragment extends DialogFragment{
     private final static String TAG = "SaveDialog";
 
     private View view;
-    private LinearLayout previewView;
+    private FrameLayout previewView;
     private Pictogram preview;
     private ArrayList<String> tags;
     private LayoutParams params = new LayoutParams(100 , 100);
@@ -67,7 +68,7 @@ public class SaveDialogFragment extends DialogFragment{
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.save_tag, tags);
 
         view = inflater.inflate(R.layout.save_dialog_rel, container);
-        previewView = (LinearLayout) view.findViewById(R.id.save_preview);
+        previewView = (FrameLayout) view.findViewById(R.id.save_preview);
         listView = (ListView) view.findViewById(R.id.save_tags_list);
         listView.setAdapter(arrayAdapter);
         // Log.d(TAG, "Created dialog.");
