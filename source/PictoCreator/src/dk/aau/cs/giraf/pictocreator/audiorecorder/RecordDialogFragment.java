@@ -128,6 +128,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                     }
                     else {
                         recThread.stop();
+                        decibelMeter.setLevel(0);
                     }
                 }
             };
