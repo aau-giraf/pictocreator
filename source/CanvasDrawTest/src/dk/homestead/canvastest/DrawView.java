@@ -3,6 +3,7 @@ package dk.homestead.canvastest;
 import dk.homestead.canvastest.handlers.LineHandler;
 import dk.homestead.canvastest.handlers.OvalHandler;
 import dk.homestead.canvastest.handlers.RectHandler;
+import dk.homestead.canvastest.handlers.SelectionHandler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -113,6 +114,7 @@ public class DrawView extends View {
 		// Set up the toolbox.
 		
 		toolbox = new Toolbox(64, h);
+		toolbox.addHandler(new SelectionHandler());
 		toolbox.addHandler(new RectHandler());
 		toolbox.addHandler(new OvalHandler());
 		toolbox.addHandler(new LineHandler());
@@ -149,9 +151,14 @@ public class DrawView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (toolbox.onTouch(event)) return true;
+		// Always draw for now. Very inefficient, but the optimisation is too demanding for now.
+		// We need some way of messaging a "dirty" state of parts of the draw stack. 
+		invalidate();
+		
+		if (toolbox.onTouch(event)) {
+			return true;
+		}
 		else if (toolbox.getCurrentHandler().onTouchEvent(event, drawStack)){
-			invalidate();
 			return true;
 		}
 		else return false;

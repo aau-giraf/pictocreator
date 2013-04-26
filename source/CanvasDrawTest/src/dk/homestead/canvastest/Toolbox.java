@@ -135,20 +135,26 @@ public class Toolbox extends Entity {
 			Log.i("Toolbox.onTouch", "Pointer does not collide with Toolbox area. Ignoring.");
 			return false;
 		}
-		else if (event.getAction() != MotionEvent.ACTION_DOWN) {
-			Log.i("Toolbox.onTouch", "Not ACTION_DOWN event. Ignoring.");
-			return false;
+		
+		switch(event.getAction()) {
+		case MotionEvent.ACTION_DOWN : {
+			Log.i("Toolbox.onTouch", "Valid event type. Continuing.");
+			
+			int handlerIndex = (int)Math.floor(event.getY(pointerIndex)/getWidth());
+			
+			Log.i("Toolbox.onTouch", "Pointer at handler index " + String.valueOf(handlerIndex) + ".");
+			
+			if (handlerIndex < handlers.size()) {
+				setCurrentHandler(handlers.get(handlerIndex));
+				Log.i("Toolbox.onTouch", "New handler: '" + currentHandler.getClass().getName() + "'.");
+			}
+			return true;
 		}
-		
-		Log.i("Toolbox.onTouch", "Valid event type. Continuing.");
-		
-		int handlerIndex = (int)Math.floor(event.getY(pointerIndex)/getWidth());
-		
-		Log.i("Toolbox.onTouch", "Pointer at handler index " + String.valueOf(handlerIndex) + ".");
-		
-		if (handlerIndex < handlers.size()) {
-			setCurrentHandler(handlers.get(handlerIndex));
+		case MotionEvent.ACTION_MOVE : {
+			// Ignore for now. May have reordering/secondary effect later.
+			return true;
 		}
-		return true;
+		default : return false; // Unhandled
+		}
 	}
 }

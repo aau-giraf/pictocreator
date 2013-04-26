@@ -127,8 +127,8 @@ public abstract class Entity {
 	 */
 	public boolean collidesWithPoint(float x, float y) {
 		if (angle != 0) Log.w("Entity.collidesWithPoint", "Collision detection will not work with rotated Entity!");
-		return (getX() <= x && x <= getWidth()+getX()) &&
-				(getY() <= x && x <= getHeight()+getY());
+		return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
+				(getHitboxTop() <= y && y <= getHitboxBottom());
 	}
 	
 	/**

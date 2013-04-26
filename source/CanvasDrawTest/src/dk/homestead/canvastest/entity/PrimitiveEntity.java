@@ -20,7 +20,7 @@ public abstract class PrimitiveEntity extends Entity {
 	 * @param fillColor Pain used for the filling part of the primitive. It will be set to FILL style automatically.
 	 * @param strokeColor
 	 */
-	public PrimitiveEntity(float x, float y, int fillColor, int strokeColor) {
+	public PrimitiveEntity(float x, float y, float w, float h, int fillColor, int strokeColor) {
 		strokePaint.setStyle(Style.STROKE);
 		strokePaint.setColor(strokeColor);
 		fillPaint.setStyle(Style.FILL);
@@ -28,6 +28,8 @@ public abstract class PrimitiveEntity extends Entity {
 		
 		setX(x);
 		setY(y);
+		setWidth(w);
+		setHeight(h);
 	}
 	
 	/**
@@ -51,31 +53,5 @@ public abstract class PrimitiveEntity extends Entity {
 		if (enable){
 			
 		}
-	}
-	
-	/**
-	 * Similar to draw
-	 * @param canvas
-	 */
-	public void drawHighlighted(Canvas canvas, Paint hlPaint) {
-		draw(canvas); // Perform normal draw operation.
-		
-		if (hlPaint == null) {
-			hlPaint = new Paint(); // Special paint we use on a third drawing pass.
-			hlPaint.setStyle(Style.STROKE);
-			hlPaint.setPathEffect(new DashPathEffect(new float[]{10.0f,10.0f}, 0));
-			hlPaint.setColor(0xFF000000);
-			hlPaint.setStrokeWidth(2);
-		}
-		
-		// Now highlight.
-		RectShape rs = new RectShape();
-		rs.resize(getWidth(), getHeight());
-		canvas.translate(getX(), getY());
-		canvas.rotate(getAngle());
-		rs.draw(canvas, hlPaint);
-		
-		// TODO: Support rotated Entity.
-		// canvas.drawRect(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom(), hlPaint);
 	}
 }

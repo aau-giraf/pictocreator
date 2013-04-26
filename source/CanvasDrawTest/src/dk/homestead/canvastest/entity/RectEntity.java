@@ -15,15 +15,12 @@ public class RectEntity extends PrimitiveEntity {
 	float left, top, right, bottom;
 	
 	public RectEntity(float left, float top, float right, float bottom, int fillColor, int strokeColor) {
-		super(left, top, fillColor, strokeColor);
+		super(left, top, right-left, bottom-top, fillColor, strokeColor);
 		
 		this.left = left;
 		this.top = top;
 		this.bottom = bottom;
 		this.right = right;
-		
-		setWidth(right-left);
-		setHeight(bottom-top);
 	}
 
 	@Override

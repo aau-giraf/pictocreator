@@ -12,21 +12,15 @@ import android.graphics.drawable.shapes.RectShape;
  *
  */
 public class OvalEntity extends PrimitiveEntity {
-
-	float left, top, right, bottom;
 	
 	public OvalEntity(float left, float top, float right, float bottom, int fillColor, int strokeColor) {
-		super(left, top, fillColor, strokeColor);
-		this.left = left;
-		this.top = top;
-		this.bottom = bottom;
-		this.right = right;
+		super(left, top, right-left, bottom-top, fillColor, strokeColor);
 	}
 
 	@Override		
 	public void drawWithPaint(Canvas canvas, Paint paint) {
-		RectF area = new RectF(left, top, right, bottom);
-		canvas.drawArc(area, 0.0f, 360.0f, true, paint);
+		// RectF area = new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
+		// canvas.drawArc(area, 0.0f, 360.0f, true, paint);
 	 
 		OvalShape rs = new OvalShape();
 		rs.resize(getWidth(), getHeight());

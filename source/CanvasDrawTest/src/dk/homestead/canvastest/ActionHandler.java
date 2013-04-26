@@ -67,42 +67,6 @@ public abstract class ActionHandler extends Entity {
 	}
 	
 	/**
-	 * Called by the touch handler when an ACTION_DOWN MotionEvent is
-	 * triggered.
-	 * @param event The entire MotionEvent.
-	 * @param drawStack The calling environment's drawStack that contains
-	 * current Entity objects already created. This allows the handler to
-	 * modify the stack as needed.
-	 */
-	public void onActionDown(MotionEvent event, EntityGroup drawStack){
-		// Stub.
-	}
-	
-	/**
-	 * Called by the touch handler when an ACTION_MOVE MotionEvent is
-	 * triggered.
-	 * @param event The entire MotionEvent.
-	 * @param drawStack The calling environment's drawStack that contains
-	 * current Entity objects already created. This allows the handler to
-	 * modify the stack as needed.
-	 */
-	public void onActionMove(MotionEvent event, EntityGroup drawStack){
-		// Stub.
-	}
-	
-	/**
-	 * Called by the touch handler when an ACTION_UP MotionEvent is
-	 * triggered.
-	 * @param event The entire MotionEvent.
-	 * @param drawStack The calling environment's drawStack that contains
-	 * current Entity objects already created. This allows the handler to
-	 * modify the stack as needed.
-	 */
-	public void onActionUp(MotionEvent event, EntityGroup drawStack){
-		// Stub.
-	}
-	
-	/**
 	 * All handlers must define a drawBuffer method that draws their current UI
 	 * output on a passed canvas.
 	 */
