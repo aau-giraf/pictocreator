@@ -40,9 +40,42 @@ public class StoragePictogram {
         this.audioPath = audioPath;
     }
 
-    // public setImagePath(String imagePath);
-    // public setTextLabel(String setTextLabel);
-    // public setAudioPath(String audioPath);
+    public void setImagePath(String imagePath){
+        this.imagePath = imagePath;
+    }
+
+    public void setTextLabel(String textLabel){
+        this.textLabel = textLabel;
+    }
+
+    public void setAudioPath(String audioPath){
+        this.audioPath = audioPath;
+    }
+
+    public void setAuthor(long author){
+        this.author = author;
+    }
+
+    public String getImagePath(){
+        return imagePath;
+    }
+
+    public String getTextLabel(){
+        return textLabel;
+    }
+
+    public String getAudioPath(){
+        return audioPath;
+    }
+
+    public long getAuthor(){
+        return author;
+    }
+
+    public void addTag(String tag){
+        tags.add(tag);
+    }
+
     private Tag insertTag(String tag){
         Tag newTag = null;
         TagsHelper tagsHelper = databaseHelper.tagsHelper;
@@ -72,7 +105,9 @@ public class StoragePictogram {
         List<Tag> addedTags = new ArrayList<Tag>();
 
         for(String tag : tags){
-            addedTags.add(insertTag(tag));
+            Tag newTag = insertTag(tag);
+
+            addedTags.add(newTag);
         }
 
         return addedTags;
@@ -121,9 +156,20 @@ public class StoragePictogram {
 
     public boolean addPictogram(){
         Media media;
+        MediaHelper mediaHelper = databaseHelper.mediaHelper;
+        boolean retVal = true;
 
         media = generateMedia();
-        if(media != null){}
-        return true;
+
+        if(media != null){
+            List<Tag> addTags = generateTagList();
+            if(addTags != null && addTags.size() > 0){
+                mediaHelper.addTagsToMedia(addTags, media);
+            }
+        } else {
+            retVal = false;
+        }
+
+        return retVal;
     }
 }
