@@ -14,7 +14,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 /**
- * The toolbox entity 
+ * The toolbox entity is a dynamic grid of ActionHandlers with which the user
+ * can interact.
  * @author lindhart
  *
  */

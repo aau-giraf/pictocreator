@@ -1,9 +1,12 @@
 package dk.homestead.canvastest.entity;
 
 import android.graphics.Canvas;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.drawable.shapes.RectShape;
 import dk.homestead.canvastest.Entity;
+import dk.homestead.canvastest.FloatPoint;
 
 public abstract class PrimitiveEntity extends Entity {
 
@@ -48,5 +51,31 @@ public abstract class PrimitiveEntity extends Entity {
 		if (enable){
 			
 		}
+	}
+	
+	/**
+	 * Similar to draw
+	 * @param canvas
+	 */
+	public void drawHighlighted(Canvas canvas, Paint hlPaint) {
+		draw(canvas); // Perform normal draw operation.
+		
+		if (hlPaint == null) {
+			hlPaint = new Paint(); // Special paint we use on a third drawing pass.
+			hlPaint.setStyle(Style.STROKE);
+			hlPaint.setPathEffect(new DashPathEffect(new float[]{10.0f,10.0f}, 0));
+			hlPaint.setColor(0xFF000000);
+			hlPaint.setStrokeWidth(2);
+		}
+		
+		// Now highlight.
+		RectShape rs = new RectShape();
+		rs.resize(getWidth(), getHeight());
+		canvas.translate(getX(), getY());
+		canvas.rotate(getAngle());
+		rs.draw(canvas, hlPaint);
+		
+		// TODO: Support rotated Entity.
+		// canvas.drawRect(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom(), hlPaint);
 	}
 }
