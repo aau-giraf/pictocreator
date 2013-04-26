@@ -14,7 +14,7 @@ import android.view.View;
  */
 public class DecibelMeterView extends View {
 
-    private double _level = 0.2;
+    private double _level = 0.0;
 
     private final int[] meterColors = {0xff5555ff,
                                        0xff5555ff,
