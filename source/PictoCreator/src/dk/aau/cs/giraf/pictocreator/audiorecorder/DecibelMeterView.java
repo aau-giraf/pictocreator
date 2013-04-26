@@ -61,7 +61,6 @@ public class DecibelMeterView extends View {
      * @param level The level to set in the decibelmeter
      */
     public void setLevel(double level){
-        // TODO implement set level function
         _level = level;
         invalidate();
     }

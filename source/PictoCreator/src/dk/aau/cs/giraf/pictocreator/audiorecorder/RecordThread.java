@@ -99,7 +99,7 @@ public class RecordThread implements Runnable {
                 isRunning = false;
                 mediaRecorder.stop();
                 mediaRecorder.reset();
-                _interface.decibelUpdate(0.1);
+
                 recordThread.join();
                 Log.d(TAG, "recordThread joined");
             }
@@ -107,6 +107,7 @@ public class RecordThread implements Runnable {
         catch (InterruptedException interrupt){
             Log.v(TAG, "Interrupted", interrupt);
         }
+        _interface.decibelUpdate(0);
     }
 
     /**
