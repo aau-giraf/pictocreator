@@ -29,8 +29,7 @@ import dk.aau.cs.giraf.oasis.lib.controllers.*;
 import dk.aau.cs.giraf.oasis.lib.models.*;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.*;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
-import dk.aau.cs.giraf.pictocreator.canvas.Dummy;
-import dk.aau.cs.giraf.pictogram.*;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawActivity;
 
 
 public class CrocActivity extends Activity {
@@ -43,7 +42,7 @@ public class CrocActivity extends Activity {
 	private ToggleButton fragSwitch;
 	private ImageButton dialogButton;
 	private CamFragment camFragment;
-	private Dummy dummy;
+	private DrawActivity drawFragment;
 	private RecordDialogFragment recordDialog;
 
     // public static final String GUARDIANID = "currentGuardianID";
@@ -64,8 +63,8 @@ public class CrocActivity extends Activity {
         fragManager = getFragmentManager();
         fragTrans = fragManager.beginTransaction();
 
-        dummy = new Dummy();
-        fragTrans.add(R.id.fragmentContainer, dummy);
+        drawFragment = new DrawActivity();
+        fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
         dialogButton = (ImageButton)findViewById(R.id.start_dialog_button);
@@ -94,9 +93,9 @@ public class CrocActivity extends Activity {
     		fragTrans.commit();
     	}
     	else if(!fragSwitch.isChecked()) {
-    		dummy = new Dummy();
+    		drawFragment = new DrawActivity();
     		fragTrans = getFragmentManager().beginTransaction();
-    		fragTrans.replace(R.id.fragmentContainer, dummy);
+    		fragTrans.replace(R.id.fragmentContainer, drawFragment);
     		fragTrans.commit();
     	}
     }
