@@ -124,7 +124,7 @@ public class RecordThread implements Runnable {
 
         while(isRunning){
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
                 decibel = (getAmplitudeEMA() / 10000) - 1.0;
                 // decibel = amplitudeToDecibel(mediaRecorder.getMaxAmplitude());
                 Log.d(TAG, "getAmplitudeEMA: " + getAmplitudeEMA());
@@ -170,6 +170,15 @@ public class RecordThread implements Runnable {
         double amp =  getAmplitude();
         ema = EMA_FILTER * amp + (1.0 - EMA_FILTER) * ema;
         return ema;
+    }
+
+    /**
+     * Function called when the dialog is canceled,
+     * and deletes the saved file, if there is any
+     */
+    public void onCancel(){
+            audioHandler.deleteFile();
+
     }
 
 
