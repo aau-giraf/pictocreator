@@ -124,7 +124,7 @@ public class RecordThread implements Runnable {
 
         while(isRunning){
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
                 decibel = (getAmplitudeEMA() / 10000) - 1.0;
                 // decibel = amplitudeToDecibel(mediaRecorder.getMaxAmplitude());
                 Log.d(TAG, "getAmplitudeEMA: " + getAmplitudeEMA());
