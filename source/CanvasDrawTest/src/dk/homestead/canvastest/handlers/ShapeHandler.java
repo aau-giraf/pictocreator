@@ -1,6 +1,5 @@
 package dk.homestead.canvastest.handlers;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -37,7 +36,7 @@ public abstract class ShapeHandler extends ActionHandler {
 	 */
 	protected int currentPointerId;
 	
-	private String tag = "RectHandler.onTouchEvent";
+	private String tag = "ShapeHandler.onTouchEvent";
 	
 	/**
 	 * Color of the shapes outline.

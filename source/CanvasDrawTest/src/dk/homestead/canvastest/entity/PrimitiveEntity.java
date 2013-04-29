@@ -1,12 +1,9 @@
 package dk.homestead.canvastest.entity;
 
 import android.graphics.Canvas;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.drawable.shapes.RectShape;
 import dk.homestead.canvastest.Entity;
-import dk.homestead.canvastest.FloatPoint;
 
 public abstract class PrimitiveEntity extends Entity {
 

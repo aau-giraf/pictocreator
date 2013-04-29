@@ -14,7 +14,6 @@ public class FloatPoint {
 	public float y;
 	
 	public FloatPoint() {
-		// TODO Auto-generated constructor stub
 		this.x = this.y = 0;
 	}
 	
