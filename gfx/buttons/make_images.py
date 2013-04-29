@@ -22,4 +22,4 @@ for f in files:
 	#export_as_png(f, 250)
 	#export_as_png(f, 50)
 	print(f)
-	subprocess.call("cp %s ../../source/PictoCreator/res/drawable/" % export_as_png(f, 100), shell=True, stdout=subprocess.PIPE)
+	subprocess.call("mv %s ../../source/PictoCreator/res/drawable/" % export_as_png(f, 100), shell=True, stdout=subprocess.PIPE)
