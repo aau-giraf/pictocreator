@@ -6,43 +6,43 @@
     tools:context=".CrocActivity" >
 
     <RelativeLayout
-    	android:layout_width="match_parent"
-    	android:layout_height="0dp"
-    	android:layout_weight="0.15"
-    	android:background="@drawable/banner_background"
-    	android:orientation="horizontal"
-    	android:padding="5dp" >
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15"
+        android:background="@drawable/banner_background"
+        android:orientation="horizontal"
+        android:padding="5dp" >
 
-    	<!-- Logo and title -->
+        <!-- Logo and title -->
 
-    	<ImageView
-    		android:id="@+id/crocLogo"
-    		android:layout_width="wrap_content"
-    		android:layout_height="match_parent"
-    		android:layout_centerVertical="true"
-    		android:src="@drawable/ic_launcher" />
+        <ImageView
+                android:id="@+id/crocLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_launcher" />
 
-    	<TextView
-    		android:id="@+id/crocTitle"
-    		android:layout_width="wrap_content"
-    		android:layout_height="match_parent"
-    		android:layout_centerVertical="true"
-    		android:layout_marginLeft="20dp"
-    		android:layout_toRightOf="@+id/crocLogo"
-    		android:gravity="center"
-    		android:text="CROC" />
+        <TextView
+                android:id="@+id/crocTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/crocLogo"
+                android:gravity="center"
+                android:text="CROC" />
 
-    	<!-- Buttons -->
+        <!-- Buttons -->
 
-    	<Button
-    		android:id="@+id/settings"
-    		android:layout_width="wrap_content"
-    		android:layout_height="match_parent"
-    		android:layout_alignParentRight="true"
-    		android:layout_centerVertical="true"
-    		android:text="Croc\nSettings" />
+        <Button
+                android:id="@+id/settings"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="Croc\nSettings" />
 
-    	<ToggleButton
+        <ToggleButton
             android:id="@+id/toggleFragments"
             android:layout_width="100dp"
             android:layout_height="80dp"
@@ -53,25 +53,26 @@
             android:onClick="switchFragments"
             android:textOn=""
             android:textOff="" />
-    	
-    	<ImageButton 
-    		android:id="@+id/start_dialog_button"
-    		android:layout_width="100dp"
-    		android:layout_height="80dp"
-    		android:layout_toLeftOf="@+id/toggleFragments"
-    		android:layout_marginRight="60dp"
-    		android:background="@drawable/mic" />
-    	
+
+        <ImageButton
+                android:id="@+id/start_dialog_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/toggleFragments"
+                android:layout_marginRight="60dp"
+                android:background="@drawable/mic" />
+
 
     </RelativeLayout>
-    
+
     <FrameLayout
-    	android:id="@+id/fragmentContainer"
-    	android:layout_width="match_parent"
-    	android:layout_height="0dp"
-    	android:layout_weight="0.85"
-    	android:background="@drawable/fragment_background"
-    	android:layout_gravity="center" >
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.85"
+        android:background="@drawable/fragment_background"
+        android:layout_gravity="center" >
     </FrameLayout>
-    
+
 </LinearLayout>
