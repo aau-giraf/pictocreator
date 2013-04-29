@@ -19,6 +19,8 @@ public class AudioHandler {
 
     private String outputFilePath = null;
 
+    private String savedFileName;
+
     /**
      * Constructor for the class.
      * Calls function to create the output file.
@@ -59,6 +61,21 @@ public class AudioHandler {
         String fileName = soundFileDir.getPath() + File.separator + audioFile;
 
         outputFilePath = fileName;
+
+        savedFileName = audioFile;
+    }
+
+    /**
+     * Function for deleting the saved file,
+     * This function is called by RecordThread in the cancel() function.
+     */
+    public void deleteFile(){
+            File tmpFile = new File(outputFilePath);
+
+            if(tmpFile.exists()){
+                tmpFile.delete();
+            }
+
     }
 
     /**

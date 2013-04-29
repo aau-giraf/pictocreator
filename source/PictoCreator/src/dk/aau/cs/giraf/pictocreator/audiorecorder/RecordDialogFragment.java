@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import dk.aau.cs.giraf.pictocreator.R;
@@ -137,6 +138,8 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
                 @Override
                 public void onClick(View arg0) {
+                    recThread.onCancel();
+                    Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
                 }
             });

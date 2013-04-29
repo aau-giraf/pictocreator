@@ -172,5 +172,14 @@ public class RecordThread implements Runnable {
         return ema;
     }
 
+    /**
+     * Function called when the dialog is canceled,
+     * and deletes the saved file, if there is any
+     */
+    public void onCancel(){
+            audioHandler.deleteFile();
+
+    }
+
 
 }
