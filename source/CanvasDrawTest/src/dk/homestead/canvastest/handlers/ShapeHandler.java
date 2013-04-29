@@ -1,6 +1,5 @@
 package dk.homestead.canvastest.handlers;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;

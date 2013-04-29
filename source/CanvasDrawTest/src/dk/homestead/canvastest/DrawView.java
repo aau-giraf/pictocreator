@@ -16,31 +16,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawView extends View {
-
-	enum DRAW_MODE { FREEHAND, LINE, BOX };
-	
-	/**
-	 * Current draw mode, selected from the tool box.
-	 */
-	DRAW_MODE curDrawMode = DRAW_MODE.FREEHAND;
-	
-	/**
-	 * Location of the touch event. 
-	 */
-	float drawx,drawy;
-	
 	/**
 	 * Width and height of the view.
 	 */
 	int width, height;
-	
-	/**
-	 * Are we currently shaping something or drawing freehand?
-	 * This matches a "fingerDown" boolean, denoting that the user's finger
-	 * is still pressed to the screen.
-	 */
-	boolean drawing = false;
-	
 	
 	// Various DEBUG stuff.
 	ShapeDrawable shape;
@@ -74,7 +53,8 @@ public class DrawView extends View {
 	 * The currently active handler for touch events.
 	 */
 	ActionHandler currentHandler;
-	
+
+	Paint redPaint = new Paint();
 	
 	public DrawView(Context context) {
 		super(context);
@@ -101,11 +81,11 @@ public class DrawView extends View {
 		drawnShape = new OvalShape();
 		drawnShape.resize(200, 100);
 		shape = new ShapeDrawable(drawnShape);
+		redPaint.setColor(0xFFFF0000);
 	}
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		// TODO Auto-generated method stub
 		Log.i("DrawView:onSizeChanged", "Size changed!");
 		this.width = w;
 		this.height = h;
@@ -119,10 +99,6 @@ public class DrawView extends View {
 		toolbox.addHandler(new OvalHandler());
 		toolbox.addHandler(new LineHandler());
 		
-		// DEBUG
-		//currentHandler = new OvalHandler();
-		//currentHandler = new RectHandler();
-		//currentHandler = new LineHandler();
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 	
@@ -142,10 +118,7 @@ public class DrawView extends View {
 		toolbox.getCurrentHandler().drawBuffer(canvas);
 		
 		toolbox.draw(canvas);
-		
-		// DEBUG: Draw entity count.
-		Paint redPaint = new Paint();
-		redPaint.setColor(0xFFFF0000);
+
 		canvas.drawText(String.valueOf(drawStack.size()), 30, 30, redPaint);
 	}
 
@@ -163,6 +136,4 @@ public class DrawView extends View {
 		}
 		else return false;
 	}
-	
-	
 }

@@ -1,6 +1,5 @@
 package dk.homestead.canvastest.entity;
 
-import dk.homestead.canvastest.FloatPoint;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.shapes.RectShape;
