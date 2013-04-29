@@ -22,7 +22,7 @@ public class LineEntity extends PrimitiveEntity {
 		this.x2 = x2;
 		this.y2 = y2;
 	}
-
+	
 	@Override
 	public void drawWithPaint(Canvas canvas, Paint paint) {
 		//canvas.drawLine(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom(), paint);

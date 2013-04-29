@@ -36,7 +36,7 @@ public abstract class ShapeHandler extends ActionHandler {
 	 */
 	protected int currentPointerId;
 	
-	private String tag = "RectHandler.onTouchEvent";
+	private String tag = "ShapeHandler.onTouchEvent";
 	
 	/**
 	 * Color of the shapes outline.

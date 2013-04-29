@@ -1,5 +1,6 @@
 package dk.homestead.canvastest;
 
+import dk.homestead.canvastest.handlers.FreehandHandler;
 import dk.homestead.canvastest.handlers.LineHandler;
 import dk.homestead.canvastest.handlers.OvalHandler;
 import dk.homestead.canvastest.handlers.RectHandler;
@@ -98,6 +99,7 @@ public class DrawView extends View {
 		toolbox.addHandler(new RectHandler());
 		toolbox.addHandler(new OvalHandler());
 		toolbox.addHandler(new LineHandler());
+		toolbox.addHandler(new FreehandHandler());
 		
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
