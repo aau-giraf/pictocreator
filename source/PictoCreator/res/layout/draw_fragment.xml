@@ -6,13 +6,60 @@
 	android:paddingLeft="60dp"
 	android:paddingRight="60dp"
 	android:paddingTop="60dp"
-    tools:context=".DrawActivity" >
+    tools:context=".DrawFragment" >
 
     <dk.aau.cs.giraf.pictocreator.canvas.DrawView
         android:id="@+id/drawingview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/drawToolbox"
+        android:background="@color/giraf_white1" />
+
+    <ScrollView
+        android:id="@+id/drawToolbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/select_handler_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/draw_select_100x100" />
+            
+            <ImageButton
+                android:id="@+id/freehand_handler_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/draw_freehand_100x100" />
+            
+            <ImageButton
+                android:id="@+id/rect_handler_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/draw_rect_100x100" />
+
+            <ImageButton
+                android:id="@+id/line_handler_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/draw_line_100x100" />
+            
+            <ImageButton
+                android:id="@+id/oval_handler_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/draw_oval_100x100" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

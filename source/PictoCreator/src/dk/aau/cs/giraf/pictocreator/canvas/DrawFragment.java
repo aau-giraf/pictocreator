@@ -1,5 +1,9 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import java.io.FileNotFoundException;
+import java.lang.reflect.Constructor;
+
+import dalvik.system.PathClassLoader;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
@@ -7,6 +11,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import android.app.Fragment;
+import android.graphics.Bitmap.Config;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.webkit.WebView.FindListener;
 import android.widget.ImageButton;
+import dk.aau.cs.giraf.pictocreator.canvas.*;
 
 public class DrawFragment extends Fragment {
 
@@ -60,11 +66,21 @@ public class DrawFragment extends Fragment {
 		ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 		
 		// Set initial handler.
-		drawView.setHandler(new RectHandler());
-		activeHandlerButton = rectHandlerButton; 
+		drawView.setHandler(new SelectionHandler());
+		activeHandlerButton = selectHandlerButton; 
 		activeHandlerButton.setEnabled(false);
 		
 		return view;
+	}
+	
+	/**
+	 * Shorthand for switching active handler button. Better than serious code redundancy.
+	 * @param button The ImageButton to disable. The currently disabled button will be re-enabled.
+	 */
+	protected void setActiveButton(ImageButton button) {
+		activeHandlerButton.setEnabled(true); // Enable previous.
+		activeHandlerButton = button; // Switch out active.
+		activeHandlerButton.setEnabled(false); // Disable new active.
 	}
 	
 	private final OnClickListener onSelectHandlerButtonClick = new OnClickListener() {
@@ -72,9 +88,7 @@ public class DrawFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			drawView.setHandler(new SelectionHandler());
-			activeHandlerButton.setEnabled(true); // Enable previous.
-			activeHandlerButton = selectHandlerButton; // Switch out active.
-			activeHandlerButton.setEnabled(false); // Disable new active.
+			setActiveButton(selectHandlerButton);
 		}
 	};
 	
@@ -83,9 +97,7 @@ public class DrawFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			drawView.setHandler(new FreehandHandler());
-			activeHandlerButton.setEnabled(true); // Enable previous.
-			activeHandlerButton = freehandHandlerButton; // Switch out active.
-			activeHandlerButton.setEnabled(false); // Disable new active.
+			setActiveButton(freehandHandlerButton);
 		}
 	};
 	
@@ -98,9 +110,7 @@ public class DrawFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			drawView.setHandler(new RectHandler());
-			activeHandlerButton.setEnabled(true); // Enable previous.
-			activeHandlerButton = rectHandlerButton; // Switch out active.
-			activeHandlerButton.setEnabled(false); // Disable new active.
+			setActiveButton(rectHandlerButton);
 		}
 	};
 	
@@ -109,9 +119,7 @@ public class DrawFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			drawView.setHandler(new OvalHandler());
-			activeHandlerButton.setEnabled(true); // Enable previous.
-			activeHandlerButton = ovalHandlerButton; // Switch out active.
-			activeHandlerButton.setEnabled(false); // Disable new active.
+			setActiveButton(ovalHandlerButton);
 			
 		}
 	};
@@ -121,9 +129,8 @@ public class DrawFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			drawView.setHandler(new LineHandler());
-			activeHandlerButton.setEnabled(true); // Enable previous.
-			activeHandlerButton = lineHandlerButton; // Switch out active.
-			activeHandlerButton.setEnabled(false); // Disable new active.
+			setActiveButton(lineHandlerButton);
+			
 		}
 	};
 	

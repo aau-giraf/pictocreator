@@ -1,5 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
+import org.xmlpull.v1.XmlPullParser;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
