@@ -1,9 +1,12 @@
 package dk.homestead.canvastest.entity;
 
 import android.graphics.Canvas;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.drawable.shapes.RectShape;
 import dk.homestead.canvastest.Entity;
+import dk.homestead.canvastest.FloatPoint;
 
 public abstract class PrimitiveEntity extends Entity {
 
@@ -17,7 +20,7 @@ public abstract class PrimitiveEntity extends Entity {
 	 * @param fillColor Pain used for the filling part of the primitive. It will be set to FILL style automatically.
 	 * @param strokeColor
 	 */
-	public PrimitiveEntity(float x, float y, int fillColor, int strokeColor) {
+	public PrimitiveEntity(float x, float y, float w, float h, int fillColor, int strokeColor) {
 		strokePaint.setStyle(Style.STROKE);
 		strokePaint.setColor(strokeColor);
 		fillPaint.setStyle(Style.FILL);
@@ -25,6 +28,8 @@ public abstract class PrimitiveEntity extends Entity {
 		
 		setX(x);
 		setY(y);
+		setWidth(w);
+		setHeight(h);
 	}
 	
 	/**

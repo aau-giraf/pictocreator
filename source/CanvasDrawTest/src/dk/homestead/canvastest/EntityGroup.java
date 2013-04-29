@@ -11,26 +11,23 @@ import android.graphics.Canvas;
  */
 public class EntityGroup extends Entity {
 
-	ArrayList<Entity> entities = new ArrayList<Entity>();
+	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 	
 	public EntityGroup() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void addEntity(Entity toAdd)
-	{
-		if (entities.contains(toAdd))
-		{
+	public void addEntity(Entity toAdd)	{
+		if (entities.contains(toAdd)) 		{
 			// Throw something. Possibly a vase.
 		}
-		else
-		{
-			entities.add(toAdd);
+		else {
+			// entities.add(toAdd);
+			entities.add(0, toAdd);
 		}
 	}
 	
-	public Entity removeEntity(Entity toRemove)
-	{
+	public Entity removeEntity(Entity toRemove)	{
 		if (entities.contains(toRemove))
 		{
 			entities.remove(toRemove);
@@ -53,7 +50,25 @@ public class EntityGroup extends Entity {
 		}
 	}
 	
-	public int size(){
+	public int size() {
 		return entities.size();
+	}
+	
+	/**
+	 * Returns the first (topmost) Entity that collides with a given set of coordinates, or null.
+	 * @param x
+	 * @param y
+	 * @return The topmost Entity that collides with the point, or null if none.
+	 */
+	public Entity getCollidedWithPoint(float x, float y) {
+		for (int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			if (e.collidesWithPoint(x, y)) return e;
+		}
+		/*
+		for (Entity e : entities) {
+			if (e.collidesWithPoint(x, y)) return e;
+		}*/
+		return null;
 	}
 }

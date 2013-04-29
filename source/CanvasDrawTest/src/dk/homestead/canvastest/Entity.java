@@ -1,6 +1,8 @@
 package dk.homestead.canvastest;
 
 import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.util.Log;
 
 /**
  * Custom-rolled Entity class for Drawables. One major drawback I find with the
@@ -55,11 +57,28 @@ public abstract class Entity {
 	 */
 	protected float height;
 	
+	/**
+	 * Angle of rotation, in degrees.
+	 */
+	protected float angle;
+	
 	public float getHeight() { return this.height; }
 	public float getWidth() { return this.width; }
 		
 	public void setHeight(float height) { this.height = height; }
 	public void setWidth(float width) { this.width = width; }
+	
+	/**
+	 * Retrieve the angle of rotation for this Entity.
+	 * @return The current angle of rotation.
+	 */
+	public float getAngle() { return angle; }
+	
+	/**
+	 * Set the angle of rotation for this Entity.
+	 * @param angle The new angle.
+	 */
+	public void setAngle(float angle) { this.angle = angle; }
 	
 	public FloatPoint getCenter() { return new FloatPoint(this.x + this.width/2, this.y + this.height/2); }
 	
@@ -107,8 +126,9 @@ public abstract class Entity {
 	 * @return True if the point is within the hitbox, false otherwise.
 	 */
 	public boolean collidesWithPoint(float x, float y) {
-		return (getX() <= x && x <= getWidth()+getX()) &&
-				(getY() <= x && x <= getHeight()+getY());
+		if (angle != 0) Log.w("Entity.collidesWithPoint", "Collision detection will not work with rotated Entity!");
+		return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
+				(getHitboxTop() <= y && y <= getHitboxBottom());
 	}
 	
 	/**
@@ -118,5 +138,37 @@ public abstract class Entity {
 	 */
 	public boolean collidesWithPoint(FloatPoint p) {
 		return collidesWithPoint(p.x, p.y);
+	}
+	
+	/**
+	 * Retrieve the coordinates for the leftmost point in the hitbox.
+	 * @return
+	 */
+	public float getHitboxLeft() {
+		return x;
+	}
+	
+	/**
+	 * Retrieve the coordinates for the rightmost point in the hitbox.
+	 * @return
+	 */
+	public float getHitboxRight() {
+		return x+getWidth();
+	}
+	
+	/**
+	 * Retrieve the coordinates for the topmost point in the hitbox.
+	 * @return
+	 */
+	public float getHitboxTop() {
+		return y;
+	}
+	
+	/**
+	 * Retrieve the coordinates for the bottommost point in the hitbox.
+	 * @return
+	 */
+	public float getHitboxBottom() {
+		return y+getHeight();
 	}
 }
