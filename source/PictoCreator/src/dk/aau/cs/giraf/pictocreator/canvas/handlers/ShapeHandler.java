@@ -1,12 +1,12 @@
-package dk.homestead.canvastest.handlers;
+package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
-import dk.homestead.canvastest.ActionHandler;
-import dk.homestead.canvastest.EntityGroup;
-import dk.homestead.canvastest.FloatPoint;
-import dk.homestead.canvastest.entity.PrimitiveEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
+import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
+import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 
 /**
  * An ActionHandler specifically for drawing shapes. This aggregates such

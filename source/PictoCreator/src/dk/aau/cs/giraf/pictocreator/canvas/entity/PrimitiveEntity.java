@@ -1,9 +1,9 @@
-package dk.homestead.canvastest.entity;
+package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import dk.homestead.canvastest.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 
 public abstract class PrimitiveEntity extends Entity {
 

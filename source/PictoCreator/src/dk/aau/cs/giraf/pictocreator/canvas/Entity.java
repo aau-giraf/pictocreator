@@ -1,4 +1,6 @@
-package dk.homestead.canvastest;
+package dk.aau.cs.giraf.pictocreator.canvas;
+
+import org.xmlpull.v1.XmlPullParser;
 
 import android.graphics.Canvas;
 import android.util.Log;
@@ -170,4 +172,18 @@ public abstract class Entity {
 	public float getHitboxBottom() {
 		return y+getHeight();
 	}
+	
+	/**
+	 * All Entity objects must implement a serialisation method exportXml. It
+	 * must output valid XML for the Entity.
+	 * @return
+	 */
+	//public abstract String exportXml();
+	
+	/**
+	 * All Entity objects must implement a deserialization method importXml.
+	 * It will be passed an XmlPullParser object that should have reached
+	 * @param xml
+	 */
+	//public abstract void importXml(XmlPullParser parser);
 }

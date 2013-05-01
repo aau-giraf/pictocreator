@@ -1,13 +1,12 @@
-package dk.homestead.canvastest.handlers;
+package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.RectF;
-import dk.homestead.canvastest.EntityGroup;
-import dk.homestead.canvastest.entity.OvalEntity;
-import dk.homestead.canvastest.entity.PrimitiveEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.RectEntity;
 
 /**
  * The RectHandler class handles drawing rectangles on the drawing surface.
@@ -18,9 +17,9 @@ import dk.homestead.canvastest.entity.PrimitiveEntity;
  * @author lindhart
  *
  */
-public class OvalHandler extends ShapeHandler {
-
-	public OvalHandler() {
+public class RectHandler extends ShapeHandler {
+	
+	public RectHandler() {
 		// Set up generic paint.
 		strokeColor = 0xFF000000;
 		fillColor = 0x55FF0000;
@@ -29,30 +28,34 @@ public class OvalHandler extends ShapeHandler {
 	@Override
 	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();
-		this.bufferedEntity = new OvalEntity(left, top, right, bottom, fillColor, strokeColor);
+		this.bufferedEntity = new RectEntity(left, top, right, bottom, fillColor, strokeColor);
 		return bufferedEntity;
+	}
+	
+	/**
+	 * Helper function that recalculates the bounds of the rectangle based on
+	 * start and end points.
+	 */
+	protected void calcRectBounds(){
+		top = Math.min(startPoint.y, endPoint.y);
+		bottom = Math.max(startPoint.y, endPoint.y);
+		left = Math.min(startPoint.x, endPoint.x);
+		right = Math.max(startPoint.x, endPoint.x);
 	}
 	
 	@Override
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 		Canvas c = new Canvas(ret);
-		
+		c.rotate(30.0f, size/2, size/2);
 		c.scale(0.5f, 0.5f, size/2, size/2);
-		
 		Paint p = new Paint();
-		RectF area = new RectF(0.0f, 0.0f, size, size);
-		
-		p.setColor(0xFFCC0000);
+		p.setColor(0xFF0000CC);
 		p.setStyle(Style.FILL);
-		
-		c.drawArc(area, 0, 360, true, p);
-		
+		c.drawRect(4, 4, size-4, size-4, p);
 		p.setColor(0xFF000000);
 		p.setStyle(Style.STROKE);
-		
-		c.drawArc(area, 0, 360, true, p);
-		
+		c.drawRect(4, 4, size-4, size-4, p);
 		return ret;
 	}
 	
@@ -60,4 +63,5 @@ public class OvalHandler extends ShapeHandler {
 	public void pushEntity(EntityGroup drawStack) {
 		drawStack.addEntity(bufferedEntity);
 	}
+	
 }

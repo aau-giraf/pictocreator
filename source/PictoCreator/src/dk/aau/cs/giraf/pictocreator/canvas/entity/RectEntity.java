@@ -1,4 +1,4 @@
-package dk.homestead.canvastest.entity;
+package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

@@ -1,4 +1,4 @@
-package dk.homestead.canvastest;
+package dk.aau.cs.giraf.pictocreator.canvas;
 
 import java.util.ArrayList;
 
@@ -61,10 +61,6 @@ public class EntityGroup extends Entity {
 			Entity e = entities.get(i);
 			if (e.collidesWithPoint(x, y)) return e;
 		}
-		/*
-		for (Entity e : entities) {
-			if (e.collidesWithPoint(x, y)) return e;
-		}*/
 		return null;
 	}
 }

@@ -1,12 +1,12 @@
-package dk.homestead.canvastest.handlers;
+package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import dk.homestead.canvastest.EntityGroup;
-import dk.homestead.canvastest.entity.LineEntity;
-import dk.homestead.canvastest.entity.PrimitiveEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.LineEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 
 /**
  * The LineHandler class allows drawing straight lines. Simple stuff.

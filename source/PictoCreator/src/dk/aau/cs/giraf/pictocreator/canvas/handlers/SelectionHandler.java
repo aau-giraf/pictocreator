@@ -1,4 +1,4 @@
-package dk.homestead.canvastest.handlers;
+package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -8,10 +8,10 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.Log;
 import android.view.MotionEvent;
-import dk.homestead.canvastest.ActionHandler;
-import dk.homestead.canvastest.Entity;
-import dk.homestead.canvastest.EntityGroup;
-import dk.homestead.canvastest.FloatPoint;
+import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
+import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
+import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 
 public class SelectionHandler extends ActionHandler {
 
