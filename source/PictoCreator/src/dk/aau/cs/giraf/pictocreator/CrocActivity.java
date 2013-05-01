@@ -11,6 +11,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class CrocActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        Resources res = getResources();
 
         fragSwitch = (ToggleButton)findViewById(R.id.toggleFragments);
 

@@ -139,7 +139,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                 @Override
                 public void onClick(View arg0) {
                     recThread.onCancel();
-                    Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
                 }
             });
