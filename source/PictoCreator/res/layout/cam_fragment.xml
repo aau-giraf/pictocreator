@@ -25,7 +25,8 @@
 		android:layout_height="140dp"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-		android:src="@drawable/cam" />
+      	android:background="@drawable/cam_hack_button"
+      	android:src="@drawable/cam" />
 
 	<ToggleButton
 		android:id="@+id/color_effects"
@@ -43,6 +44,6 @@
 		android:layout_height="80dp"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
-		android:background="@drawable/cam"/>
+		android:background="@drawable/cam_facing_button"/>
 
 </RelativeLayout>
