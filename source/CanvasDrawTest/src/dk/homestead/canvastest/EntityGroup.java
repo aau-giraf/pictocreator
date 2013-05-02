@@ -12,10 +12,6 @@ import android.graphics.Canvas;
 public class EntityGroup extends Entity {
 
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
-	
-	public EntityGroup() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public void addEntity(Entity toAdd)	{
 		if (entities.contains(toAdd)) 		{

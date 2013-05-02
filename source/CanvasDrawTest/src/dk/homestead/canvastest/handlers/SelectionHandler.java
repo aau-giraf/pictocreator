@@ -1,15 +1,11 @@
 package dk.homestead.canvastest.handlers;
 
-import java.util.ArrayList;
-import java.util.Currency;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.drawable.shapes.RectShape;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.homestead.canvastest.ActionHandler;

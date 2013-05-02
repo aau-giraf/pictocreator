@@ -64,19 +64,19 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal" >
 
-  <Button
+  <ImageButton
       android:id="@+id/negative_dialog_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="70dp"
+      android:layout_height="70dp"
       android:layout_margin="20dp"
-      android:text="@android:string/cancel"/>
+      android:background="@drawable/cancel_button_xml" />
 
-  <Button
+  <ImageButton
       android:id="@+id/positive_dialog_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="70dp"
+      android:layout_height="70dp"
       android:layout_margin="20dp"
-      android:text="@android:string/ok" />
+      android:background="@drawable/accept_button_xml" />
 
   </LinearLayout>
 

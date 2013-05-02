@@ -33,7 +33,7 @@ public class CamFragment extends Fragment {
 	CamPreview camFeed;
 	PhotoHandler photoHandler;
 	ImageButton captureButton, switchButton;
-	ToggleButton  colorEffectButton;
+	ToggleButton colorEffectButton;
 	FrameLayout preview;
 	
 	private Activity parentActivity;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MotionEvent;
 
 public class MainActivity extends Activity {
 
@@ -28,11 +27,4 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		
-		return true;
-	}
-
 }

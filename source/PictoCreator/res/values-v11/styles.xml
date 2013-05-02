@@ -7,5 +7,13 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
     </style>
+    
+    <style name="croc_head">
+        <item name="android:color">@color/giraf_green4</item>
+    </style>
+    
+    <style name="croc_fragment">
+        <item name="android:color">@color/giraf_green1</item>
+    </style>
 
 </resources>

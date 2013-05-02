@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Log;
 import dk.homestead.canvastest.EntityGroup;
 import dk.homestead.canvastest.entity.LineEntity;
 import dk.homestead.canvastest.entity.PrimitiveEntity;

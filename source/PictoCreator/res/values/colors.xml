@@ -36,4 +36,17 @@
     <color name="giraf_gray2">#9CAEBE</color>
     <color name="giraf_white1">#F3F5F8</color>
     <color name="giraf_white2">#E9EDF2</color>
+    
+    <!-- Gradient Colours -->
+    <color name="drk_gradient">#0FFF</color>
+    <color name="lgt_gradient">#37000000</color>
+    <color name="med_gradient">#1000</color>
+    <color name="gloss_gradient">#2FFFFFFF</color>
+    
+    <!-- Shadow Colours -->
+    <color name="black_shadow">#2A0C0C0C</color>
+    
+    <color name="croc_head">@color/giraf_green4</color>
+    <color name="croc_fragment">@color/giraf_green1</color>
+    
 </resources>
