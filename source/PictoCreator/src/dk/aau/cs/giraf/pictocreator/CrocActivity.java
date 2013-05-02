@@ -46,6 +46,8 @@ public class CrocActivity extends Activity {
 	private CamFragment camFragment;
 	private DrawFragment drawFragment;
 	private RecordDialogFragment recordDialog;
+	
+	private String imagePath = null;
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";

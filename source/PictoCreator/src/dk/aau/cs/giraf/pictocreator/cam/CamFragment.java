@@ -31,7 +31,7 @@ public class CamFragment extends Fragment {
 	private final static int clickDelay = 500;
 	View view;
 	CamPreview camFeed;
-	PhotoHandler photoHandler;
+	public PhotoHandler photoHandler;
 	ImageButton captureButton, switchButton;
 	ToggleButton colorEffectButton;
 	FrameLayout preview;
