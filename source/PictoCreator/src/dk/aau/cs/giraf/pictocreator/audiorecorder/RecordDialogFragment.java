@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -50,18 +51,19 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     DecibelMeterView decibelMeter;
 
-    RecordThread recThread;
+    private RecordThread recThread;
 
-    ToggleButton recordButton;
+    private ToggleButton recordButton;
 
-    Button okButton;
+    private ImageButton acceptButton;
 
-    Button cancelButton;
+    private ImageButton cancelButton;
+
 
     /**
      * Constructor for the Dialog
      * Left empty on purpose
-     */
+n     */
     public RecordDialogFragment() {
 
     }
@@ -118,9 +120,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         decibelMeter = (DecibelMeterView) view.findViewById(R.id.decibel_meter);
 
-        okButton = (Button) view.findViewById(R.id.positive_dialog_button);
+        acceptButton = (ImageButton) view.findViewById(R.id.record_positive_button);
 
-        cancelButton = (Button) view.findViewById(R.id.negative_dialog_button);
+        cancelButton = (ImageButton) view.findViewById(R.id.record_negative_button);
 
         OnClickListener clickListener = new OnClickListener() {
                 public void onClick(View view) {
@@ -137,17 +139,18 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         cancelButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View view){
                     recThread.onCancel();
                     //Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
                 }
             });
 
-        okButton.setOnClickListener(new OnClickListener(){
+        acceptButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View view){
+                    recThread.onAccept();
                     tmpDialog.dismiss();
                 }
             });

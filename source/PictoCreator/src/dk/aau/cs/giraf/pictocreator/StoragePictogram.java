@@ -6,6 +6,8 @@ import dk.aau.cs.giraf.oasis.lib.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.content.Context;
 import android.util.Log;
@@ -22,8 +24,8 @@ public class StoragePictogram {
     private long author;
     private boolean publicPictogram;
     private List<String> tags; // tags added by the user which should be converted via generateTagList
-    private List<Tag> tagList;
-    private List<Tag> globalTags;
+    private HashSet<Tag> tagList;
+    private HashSet<Tag> globalTags;
     private long pictogramID;
     private Context context;
     private Helper databaseHelper;
@@ -142,6 +144,7 @@ public class StoragePictogram {
         MediaHelper mediaHelper = databaseHelper.mediaHelper;
 
         pictureMedia = insertMedia(pictureMedia);
+        pictogramID = pictureMedia.getId();
 
         if(!audioPath.equals("") && audioPath != null){
             // this part is pretty dumb:

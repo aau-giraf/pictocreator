@@ -50,40 +50,27 @@
 
       </TextView>
     </LinearLayout>
-
   </LinearLayout>
-
-  <!-- <TextView -->
-  <!--     android:layout_width="match_parent" -->
-  <!--     android:layout_height="wrap_content" -->
-  <!--     android:gravity="center" -->
-  <!--     android:text="MiddelText" /> -->
 
   <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal" >
 
-  <Button
-      android:id="@+id/negative_dialog_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+  <ImageButton
+      android:id="@+id/record_positive_button"
+      android:layout_width="70dp"
+      android:layout_height="70dp"
       android:layout_margin="20dp"
-      android:text="@android:string/cancel"/>
+      android:background="@drawable/accept_button_xml" />
 
-  <Button
-      android:id="@+id/positive_dialog_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+  <ImageButton
+      android:id="@+id/record_negative_button"
+      android:layout_width="70dp"
+      android:layout_height="70dp"
       android:layout_margin="20dp"
-      android:text="@android:string/ok" />
+      android:background="@drawable/cancel_button_xml" />
 
   </LinearLayout>
-
-  <!-- <TextView -->
-  <!--     android:layout_width="wrap_content" -->
-  <!--     android:layout_height="wrap_content" -->
-  <!--     android:text="TextView" /> -->
-
 
 </LinearLayout>

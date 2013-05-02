@@ -73,6 +73,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        Camera.Parameters params = cam.getParameters();
        previewSize = getBestPreviewSize(width, height, params);
        params.setPreviewSize(previewSize.width, previewSize.height);
+       requestLayout();
        cam.setParameters(params);
 
        try{
