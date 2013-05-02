@@ -282,6 +282,11 @@ public class SelectionHandler extends ActionHandler {
 		}
 	}
 
+	@Override
+	public void draw(Canvas canvas) {
+		drawBuffer(canvas);
+	}
+	
 	/**
 	 * Similar to draw
 	 * @param canvas

@@ -12,16 +12,17 @@
         android:id="@+id/drawingview"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/drawToolbox"
+        android:layout_toLeftOf="@+id/colorToolbox"
+        android:layout_toRightOf="@+id/drawToolbox"
         android:background="@color/giraf_white1" />
 
     <ScrollView
         android:id="@+id/drawToolbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true" >
 
         <LinearLayout
@@ -58,6 +59,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/draw_oval_100x100" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/colorToolbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <ImageButton
+                android:id="@+id/canvasColorPreviewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/blank_100x100" />
 
         </LinearLayout>
     </ScrollView>

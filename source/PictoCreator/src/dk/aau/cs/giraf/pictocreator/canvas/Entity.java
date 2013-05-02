@@ -97,41 +97,11 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * The Graphic object that is the visible element of the Entity. Should be
-	 * one of DrawableGraphic (supporting Drawables) or ShapeGraphic
-	 * (supporting Android Shape objects) - or your own! See the Graphic
-	 * superclass for more details.
-	 */
-	protected Graphic graphic;
-	
-	/**
-	 * Retrieve the current Graphic object (if any).
-	 * @return The Entity's current Graphic object.
-	 */
-	public Graphic getGraphic() { return graphic; }
-	
-	/**
-	 * Sets the Entity's Graphic object.
-	 * @param graphic The new Graphic.
-	 */
-	public void setGraphic(Graphic graphic) { this.graphic = graphic; }
-	
-	/**
 	 * All Shape subtypes must override and implement the onDraw method. They
 	 * are responsible for drawing themselves to the passed canvas.
 	 * @param canvas
 	 */
-	public void draw(Canvas canvas){
-		// Store the current number of saves. In case the graphic does not
-		// clean up after itself, we can restore the correct number of times.
-		int layer = canvas.getSaveCount();
-		canvas.save(); // Save a layer so we somewhat avoid the graphic messing with translations.
-		// The graphic has inherited location/size data from the Entity (where relevant), so we
-		// simply instruct it to draw.
-		graphic.draw(canvas);
-		// Restore the canvas to its original setting.
-		canvas.restoreToCount(layer);
-	}
+	public abstract void draw(Canvas canvas);
 	
 	/**
 	 * Simple rectangular non-rotated collision detection at a specific point.

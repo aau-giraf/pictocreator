@@ -10,6 +10,9 @@ public abstract class PrimitiveEntity extends Entity {
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
 	
+	public void setFillColor(int color) { fillPaint.setColor(color); }
+	public void setStrokeColor(int color) { strokePaint.setColor(color); }
+	
 	/**
 	 * Creates a new PrimitiveEntity at a specific location and paint styles.
 	 * @param x X-coordinate of the Entity.
@@ -52,10 +55,5 @@ public abstract class PrimitiveEntity extends Entity {
 		
 		canvas.restore();
 	}
-	
-	public void setStroke(boolean enable){
-		if (enable){
-			
-		}
-	}
+
 }

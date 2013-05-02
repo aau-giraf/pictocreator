@@ -41,6 +41,9 @@ public class DrawView extends View {
 	
 	Paint boundsPaint = new Paint();
 	
+	protected int strokeColor = 0xFF000000;
+	protected int fillColor = 0xCCFF0000;
+	
 	public DrawView(Context context) {
 		super(context);
 		initStuff();
@@ -92,6 +95,18 @@ public class DrawView extends View {
 	 */
 	public void setHandler(ActionHandler handler) {
 		this.currentHandler = handler;
+		this.currentHandler.setFillColor(fillColor);
+		this.currentHandler.setStrokeColor(strokeColor);
+	}
+	
+	public void setFillColor(int color) {
+		this.currentHandler.setFillColor(color);
+		this.fillColor = color;
+	}
+	
+	public void setStrokeColor(int color) {
+		this.currentHandler.setStrokeColor(color);
+		this.strokeColor = color;
 	}
 	
 	@Override

@@ -1,9 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import java.io.FileNotFoundException;
-import java.lang.reflect.Constructor;
-
-import dalvik.system.PathClassLoader;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
@@ -11,17 +7,15 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import android.app.Fragment;
-import android.graphics.Bitmap.Config;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.webkit.WebView.FindListener;
 import android.widget.ImageButton;
-import dk.aau.cs.giraf.pictocreator.canvas.*;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 public class DrawFragment extends Fragment {
 
@@ -69,6 +63,18 @@ public class DrawFragment extends Fragment {
 		drawView.setHandler(new SelectionHandler(getResources()));
 		activeHandlerButton = selectHandlerButton; 
 		activeHandlerButton.setEnabled(false);
+		
+		LinearLayout ll = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
+		
+		ColorButton b;
+		b = new ColorButton(drawView, this.getActivity());
+		b.setImageResource(R.drawable.blank_100x100);
+		b.setBackgroundColor(getActivity().getResources().getColor(R.color.giraf_blue1));
+		ll.addView(b);
+		b = new ColorButton(drawView, this.getActivity());
+		b.setImageResource(R.drawable.blank_100x100);
+		b.setBackgroundColor(getActivity().getResources().getColor(R.color.giraf_brown1));
+		ll.addView(b);
 		
 		return view;
 	}
@@ -134,4 +140,7 @@ public class DrawFragment extends Fragment {
 		}
 	};
 	
+	public void onSaveInstanceState(Bundle outState) {
+		
+	};
 }
