@@ -91,7 +91,8 @@ public class SaveDialogFragment extends DialogFragment{
         cancelButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View view){
+                    // TODO: Make function to call when dialog is "accepted"
                     tmpDialog.cancel();
                 }
             });
@@ -99,7 +100,8 @@ public class SaveDialogFragment extends DialogFragment{
         acceptButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View view){
+                    // TODO: Make function to call when dialog is canceled
                     tmpDialog.dismiss();
                 }
             });

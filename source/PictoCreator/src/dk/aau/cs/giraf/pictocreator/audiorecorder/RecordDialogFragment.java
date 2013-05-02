@@ -139,7 +139,7 @@ n     */
         cancelButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View view){
                     recThread.onCancel();
                     //Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
@@ -149,7 +149,7 @@ n     */
         acceptButton.setOnClickListener(new OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View view){
                     recThread.onAccept();
                     tmpDialog.dismiss();
                 }
