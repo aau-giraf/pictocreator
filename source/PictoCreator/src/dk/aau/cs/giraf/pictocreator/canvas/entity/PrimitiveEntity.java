@@ -3,12 +3,15 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.Entity;;
 
 public abstract class PrimitiveEntity extends Entity {
 
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
+	
+	public void setFillColor(int color) { fillPaint.setColor(color); }
+	public void setStrokeColor(int color) { strokePaint.setColor(color); }
 	
 	/**
 	 * Creates a new PrimitiveEntity at a specific location and paint styles.
@@ -42,13 +45,15 @@ public abstract class PrimitiveEntity extends Entity {
 	
 	@Override
 	public void draw(Canvas canvas) {
+		canvas.save();
+		
+		canvas.translate(getX(), getY());
+		canvas.rotate(getAngle(), getWidth()/2, getHeight()/2);
+		
 		drawWithPaint(canvas, fillPaint); // Fill
 		drawWithPaint(canvas, strokePaint); // Stroke
+		
+		canvas.restore();
 	}
-	
-	public void setStroke(boolean enable){
-		if (enable){
-			
-		}
-	}
+
 }

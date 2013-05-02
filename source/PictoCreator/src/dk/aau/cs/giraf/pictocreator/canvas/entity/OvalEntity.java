@@ -17,16 +17,9 @@ public class OvalEntity extends PrimitiveEntity {
 
 	@Override		
 	public void drawWithPaint(Canvas canvas, Paint paint) {
-		// RectF area = new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
-		// canvas.drawArc(area, 0.0f, 360.0f, true, paint);
-	 
 		OvalShape rs = new OvalShape();
 		rs.resize(getWidth(), getHeight());
 		 
-		canvas.save();
-		canvas.translate(getX(), getY());
-		canvas.rotate(getAngle());
 		rs.draw(canvas, paint);
-		canvas.restore();
 	}
 }

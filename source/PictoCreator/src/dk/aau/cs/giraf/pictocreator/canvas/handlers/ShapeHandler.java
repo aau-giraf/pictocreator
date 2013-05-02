@@ -39,16 +39,6 @@ public abstract class ShapeHandler extends ActionHandler {
 	private String tag = "ShapeHandler.onTouchEvent";
 	
 	/**
-	 * Color of the shapes outline.
-	 */
-	protected int strokeColor;
-	
-	/**
-	 * Color of the shapes fill (the inside color).
-	 */
-	protected int fillColor;
-	
-	/**
 	 * The PrimitiveEntity currently being created. The seperate handlers can
 	 * use this both for final addition to the drawStack as well as temp buffer
 	 * drawing.
@@ -56,9 +46,18 @@ public abstract class ShapeHandler extends ActionHandler {
 	protected PrimitiveEntity bufferedEntity;
 	
 	protected boolean doDraw;
+
+	@Override
+	public void setStrokeColor(int color) {
+		super.setStrokeColor(color);
+		if (bufferedEntity != null) bufferedEntity.setStrokeColor(color);
+	}
 	
-	public void setStrokeColor(int color) { this.strokeColor = color; }
-	public void setFillColor(int color) { this.fillColor = color; }
+	@Override
+	public void setFillColor(int color) {
+		super.setFillColor(color);
+		if (bufferedEntity != null) bufferedEntity.setFillColor(color);
+	}
 	
 	public ShapeHandler() {
 		startPoint = endPoint = new FloatPoint(0, 0);
@@ -134,6 +133,11 @@ public abstract class ShapeHandler extends ActionHandler {
 			updateBuffer();
 			bufferedEntity.draw(canvas);
 		}
+	}
+	
+	@Override
+	public void draw(Canvas canvas) {
+		drawBuffer(canvas);
 	}
 	
 	/**

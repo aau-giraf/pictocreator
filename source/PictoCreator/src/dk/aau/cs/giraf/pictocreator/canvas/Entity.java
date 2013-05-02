@@ -1,8 +1,9 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -19,16 +20,16 @@ import android.util.Log;
  * @author lindhart
  *
  */
-public abstract class Entity {
+public abstract class Entity implements Parcelable {
 	/**
 	 * X-coordinate of the Shape, measured by its left edge.
 	 */
-	private float x;
+	private float x = 0;
 	
 	/**
 	 * Y-coordinate of the Shape, measured by its top edge.
 	 */
-	private float y;
+	private float y = 0;
 	 
 	/**
 	 * Retrieve the shape's leftmost X-coordinate.
@@ -50,13 +51,13 @@ public abstract class Entity {
 	 * Width of the Entity's hitbox.
 	 * Try Entity.getGraphic().getWidth() for the displayed width.
 	 */
-	protected float width;
+	protected float width = 0;
 	
 	/**
 	 * Height of the Entity's hitbox.
 	 * Try Entity.getGraphic().getHeight() for the displayed height.
 	 */
-	protected float height;
+	protected float height = 0;
 	
 	/**
 	 * Angle of rotation, in degrees.
@@ -81,44 +82,29 @@ public abstract class Entity {
 	 */
 	public void setAngle(float angle) { this.angle = angle; }
 	
+	/**
+	 * Rotates the Entity by a relative amount.
+	 * @param value The amount to rotate by.
+	 */
+	public void rotateBy(float value) { this.angle += value; }
+	
 	public FloatPoint getCenter() { return new FloatPoint(this.x + this.width/2, this.y + this.height/2); }
 	
-	/**
-	 * The Graphic object that is the visible element of the Entity. Should be
-	 * one of DrawableGraphic (supporting Drawables) or ShapeGraphic
-	 * (supporting Android Shape objects) - or your own! See the Graphic
-	 * superclass for more details.
-	 */
-	protected Graphic graphic;
+	public void setCenter(FloatPoint p) {
+		setCenter(p.x, p.y);
+	}
 	
-	/**
-	 * Retrieve the current Graphic object (if any).
-	 * @return The Entity's current Graphic object.
-	 */
-	public Graphic getGraphic() { return graphic; }
-	
-	/**
-	 * Sets the Entity's Graphic object.
-	 * @param graphic The new Graphic.
-	 */
-	public void setGraphic(Graphic graphic) { this.graphic = graphic; }
+	public void setCenter(float x, float y) {
+		setX(x-getWidth()/2);
+		setY(y-getHeight()/2);
+	}
 	
 	/**
 	 * All Shape subtypes must override and implement the onDraw method. They
 	 * are responsible for drawing themselves to the passed canvas.
 	 * @param canvas
 	 */
-	public void draw(Canvas canvas){
-		// Store the current number of saves. In case the graphic does not
-		// clean up after itself, we can restore the correct number of times.
-		int layer = canvas.getSaveCount();
-		canvas.save(); // Save a layer so we somewhat avoid the graphic messing with translations.
-		// The graphic has inherited location/size data from the Entity (where relevant), so we
-		// simply instruct it to draw.
-		graphic.draw(canvas);
-		// Restore the canvas to its original setting.
-		canvas.restoreToCount(layer);
-	}
+	public abstract void draw(Canvas canvas);
 	
 	/**
 	 * Simple rectangular non-rotated collision detection at a specific point.
@@ -127,7 +113,18 @@ public abstract class Entity {
 	 * @return True if the point is within the hitbox, false otherwise.
 	 */
 	public boolean collidesWithPoint(float x, float y) {
-		if (angle != 0) Log.w("Entity.collidesWithPoint", "Collision detection will not work with rotated Entity!");
+		if (getAngle() != 0) { // Unrotate the point and compare it to a bare rect.
+			double c = Math.cos(-getAngle());
+			double s = Math.sin(-getAngle());
+			
+			Log.i("Entity.collidesWithPoint",
+					String.format("Unrotating %s by %s degrees.", new FloatPoint(x, y).toString(), String.valueOf(-getAngle())));
+			x = (float)(getX() + c * (x - getX()) - s * (y - getY()));
+			y = (float)(getY() + s * (x - getX()) + c * (y - getY()));
+			Log.i("Entity.collidesWithPoint",
+					String.format("New points is %s.", new FloatPoint(x, y).toString()));
+		}
+		
 		return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
 				(getHitboxTop() <= y && y <= getHitboxBottom());
 	}
@@ -173,17 +170,50 @@ public abstract class Entity {
 		return y+getHeight();
 	}
 	
-	/**
-	 * All Entity objects must implement a serialisation method exportXml. It
-	 * must output valid XML for the Entity.
-	 * @return
-	 */
-	//public abstract String exportXml();
+	public Entity() {
+	}
+	
+	public Entity(Parcel in) {
+		float[] vals = new float[5];
+		in.readFloatArray(vals);
+		setX(vals[0]);
+		setY(vals[1]);
+		setWidth(vals[2]);
+		setHeight(vals[3]);
+		setAngle(vals[4]);
+	}
+	
+	public float distanceToPoint(float x, float y) {
+		return distanceBetweenPoints(getX(), getY(), x, y);
+	}
+	
+	public float distanceToPoint(FloatPoint p) {
+		return distanceToPoint(p.x, p.y);
+	}
+	
+	public float distanceToEntity(Entity e) {
+		return distanceBetweenPoints(e.x, e.y, getX(), getY());
+	}
+	
+	public float distanceBetweenPoints(FloatPoint p1, FloatPoint p2) {
+		return distanceBetweenPoints(p1.x, p1.y, p2.x, p2.y);
+	}
+
+	public float distanceBetweenPoints(float x1, float y1, float x2, float y2) {
+		return (float)Math.sqrt(Math.abs(x1-x2) + Math.abs(y1-y2));
+	}
 	
 	/**
-	 * All Entity objects must implement a deserialization method importXml.
-	 * It will be passed an XmlPullParser object that should have reached
-	 * @param xml
+	 * Default parcel write for Entity. Stores location (x/y), size (width/height) and rotation (angle).
 	 */
-	//public abstract void importXml(XmlPullParser parser);
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeFloatArray(new float[]{getX(), getY(), getWidth(), getHeight(), getAngle()});
+	}
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
 }
