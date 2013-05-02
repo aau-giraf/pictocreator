@@ -79,7 +79,22 @@ public abstract class Entity {
 	 */
 	public void setAngle(float angle) { this.angle = angle; }
 	
+	/**
+	 * Rotates the Entity by a relative amount.
+	 * @param value The amount to rotate by.
+	 */
+	public void rotateBy(float value) { this.angle += value; }
+	
 	public FloatPoint getCenter() { return new FloatPoint(this.x + this.width/2, this.y + this.height/2); }
+	
+	public void setCenter(FloatPoint p) {
+		setCenter(p.x, p.y);
+	}
+	
+	public void setCenter(float x, float y) {
+		setX(x-getWidth()/2);
+		setY(y-getHeight()/2);
+	}
 	
 	/**
 	 * The Graphic object that is the visible element of the Entity. Should be
@@ -125,7 +140,18 @@ public abstract class Entity {
 	 * @return True if the point is within the hitbox, false otherwise.
 	 */
 	public boolean collidesWithPoint(float x, float y) {
-		if (angle != 0) Log.w("Entity.collidesWithPoint", "Collision detection will not work with rotated Entity!");
+		if (getAngle() != 0) { // Unrotate the point and compare it to a bare rect.
+			double c = Math.cos(-getAngle());
+			double s = Math.sin(-getAngle());
+			
+			Log.i("Entity.collidesWithPoint",
+					String.format("Unrotating %s by %s degrees.", new FloatPoint(x, y).toString(), String.valueOf(-getAngle())));
+			x = (float)(getX() + c * (x - getX()) - s * (y - getY()));
+			y = (float)(getY() + s * (x - getX()) + c * (y - getY()));
+			Log.i("Entity.collidesWithPoint",
+					String.format("New points is %s.", new FloatPoint(x, y).toString()));
+		}
+		
 		return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
 				(getHitboxTop() <= y && y <= getHitboxBottom());
 	}
@@ -170,20 +196,6 @@ public abstract class Entity {
 	public float getHitboxBottom() {
 		return y+getHeight();
 	}
-	
-	/**
-	 * All Entity objects must implement a serialisation method exportXml. It
-	 * must output valid XML for the Entity.
-	 * @return
-	 */
-	//public abstract String exportXml();
-	
-	/**
-	 * All Entity objects must implement a deserialization method importXml.
-	 * It will be passed an XmlPullParser object that should have reached
-	 * @param xml
-	 */
-	//public abstract void importXml(XmlPullParser parser);
 	
 	public float distanceToPoint(float x, float y) {
 		return distanceBetweenPoints(getX(), getY(), x, y);

@@ -58,6 +58,8 @@ public class SelectionHandler extends ActionHandler {
 	
 	protected boolean showIcons = false;
 	
+	protected float previousAngle;
+	
 	protected static String getFullIconName(String base, int size) {
 		return String.format("%s_icon_%sx%s", base, size, size);
 	}
@@ -90,21 +92,31 @@ public class SelectionHandler extends ActionHandler {
 		resizeIcon.setX(selectedEntity.getHitboxRight());
 		resizeIcon.setY(selectedEntity.getHitboxBottom());
 		
-		// Rotation around point.
-		// offset.
-		// distance: a^2+b^2=c^2 <=> sqrt(a^2+b^2)=c
-		/*
-		float distance = selectedEntity.distanceToEntity(resizeIcon);
-		float xfact = (float)Math.cos(selectedEntity.getX());
-		float yfact = (float)Math.sin(selectedEntity.getY());
-		*/		
-		
 		rotateIcon.setAngle(180);
+		
 		rotateIcon.setX(selectedEntity.getHitboxLeft()-rotateIcon.getWidth());
 		rotateIcon.setY(selectedEntity.getHitboxBottom());
-		
+		/*
+		Log.i("SelectionHandler.updateIconLocations", "Rotating point: " + String.valueOf(selectedEntity.getAngle()));
+		Log.i("SelectionHandler.updateIconLocations", "Location prior to angle correction: " + rotateIcon.getCenter().toString());
+		rotateIcon.setCenter(rotatePointAroundPoint(rotateIcon.getCenter(), selectedEntity.getAngle(), selectedEntity.getCenter()));
+		Log.i("SelectionHandler.updateIconLocations", "Location after angle correction: " + rotateIcon.getCenter().toString());
+		*/
 		scrapIcon.setX(selectedEntity.getHitboxRight());
 		scrapIcon.setY(selectedEntity.getHitboxTop()-scrapIcon.getHeight());
+	}
+	
+	protected static FloatPoint rotatePointAroundPoint(FloatPoint p, float angle, FloatPoint pivot) {
+		if (pivot == null) pivot = new FloatPoint(); // Default - around (0,0).
+		
+		FloatPoint fp = new FloatPoint();
+		
+		//p'x =             cos(theta) * (px -     ox) -      sin(theta) * (py -     oy) +      ox
+		fp.x = (float)(Math.cos(angle) * (p.x-pivot.x) - Math.sin(angle) * (p.y-pivot.y) + pivot.x);
+		//p'y =             sin(theta) * (px -     ox) +      cos(theta) * (py -     oy) +      oy
+		fp.y = (float)(Math.sin(angle) * (p.x-pivot.x) + Math.cos(angle) * (p.y-pivot.y) + pivot.y);
+		
+		return fp;
 	}
 	
 	protected void scrapEntity(EntityGroup drawStack) {
@@ -150,7 +162,10 @@ public class SelectionHandler extends ActionHandler {
 			if (selectedEntity != null) {
 				// Attempt to collide with action icon.
 				if (resizeIcon.collidesWithPoint(px, py)) currentMode = ACTION_MODE.RESIZE;
-				else if (rotateIcon.collidesWithPoint(px, py)) currentMode = ACTION_MODE.ROTATE;
+				else if (rotateIcon.collidesWithPoint(px, py)) {
+					currentMode = ACTION_MODE.ROTATE;
+					previousAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
+				}
 				else if (scrapIcon.collidesWithPoint(px, py)) {
 					scrapEntity(drawStack);
 					deselect();
@@ -200,7 +215,13 @@ public class SelectionHandler extends ActionHandler {
 					break;
 				}
 				case ROTATE: {
-					Log.i("Selectionhandler.onTouchEvent", "NotImplemented: ROTATION");
+					float currentAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
+					
+					// selectedEntity.setAngle(getAngle(selectedEntity.getCenter(), new FloatPoint(px, py))-previousAngle);
+					selectedEntity.rotateBy(currentAngle-previousAngle);
+					
+					previousAngle = currentAngle;
+					
 					handled = true;
 					break;
 				}
@@ -221,7 +242,23 @@ public class SelectionHandler extends ActionHandler {
 		
 		return false;
 	}
+	
+	public static float getAngle(FloatPoint fromPoint, FloatPoint toPoint) {
+	    double dx = toPoint.x - fromPoint.x;
+	    // Minus to correct for coord re-mapping
+	    double dy = -(toPoint.y - fromPoint.y);
 
+	    double inRads = Math.atan2(dy,dx);
+
+	    // We need to map to coord system when 0 degree is at 3 O'clock, 270 at 12 O'clock
+	    if (inRads < 0)
+	        inRads = Math.abs(inRads);
+	    else
+	        inRads = 2*Math.PI - inRads;
+
+	    return (float)Math.toDegrees(inRads);
+	}
+	
 	@Override
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap toRet = Bitmap.createBitmap(size, size, Config.ARGB_8888);
@@ -253,21 +290,12 @@ public class SelectionHandler extends ActionHandler {
 		// No need to draw the Entity through the buffer. It is already on the draw stack.
 		// selectedEntity.draw(canvas); // Perform normal draw operation.
 		
-		// Now highlight.
-		canvas.drawRect(
-				selectedEntity.getHitboxLeft(),
-				selectedEntity.getHitboxTop(),
-				selectedEntity.getHitboxRight(),
-				selectedEntity.getHitboxBottom(),
-				hlPaint);
-		/*
-		RectShape rs = new RectShape();
-		rs.resize(getWidth(), getHeight());
-		canvas.translate(getX(), getY());
-		canvas.rotate(getAngle());
-		rs.draw(canvas, hlPaint);
-		*/
-		// TODO: Support rotated Entity.
-		// canvas.drawRect(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom(), hlPaint);
+		canvas.save();
+		
+		canvas.translate(selectedEntity.getX(), selectedEntity.getY());
+		canvas.rotate(selectedEntity.getAngle(), selectedEntity.getWidth()/2, selectedEntity.getHeight()/2);
+		canvas.drawRect(0.0f, 0.0f, selectedEntity.getWidth(), selectedEntity.getHeight(), hlPaint);
+		
+		canvas.restore();
 	}
 }

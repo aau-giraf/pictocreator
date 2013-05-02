@@ -45,7 +45,7 @@ public abstract class PrimitiveEntity extends Entity {
 		canvas.save();
 		
 		canvas.translate(getX(), getY());
-		canvas.rotate(getAngle());
+		canvas.rotate(getAngle(), getWidth()/2, getHeight()/2);
 		
 		drawWithPaint(canvas, fillPaint); // Fill
 		drawWithPaint(canvas, strokePaint); // Stroke
