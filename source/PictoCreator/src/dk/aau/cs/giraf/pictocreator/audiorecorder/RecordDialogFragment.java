@@ -51,18 +51,19 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     DecibelMeterView decibelMeter;
 
-    RecordThread recThread;
+    private RecordThread recThread;
 
-    ToggleButton recordButton;
+    private ToggleButton recordButton;
 
-    ImageButton acceptButton;
+    private ImageButton acceptButton;
 
-    ImageButton cancelButton;
+    private ImageButton cancelButton;
+
 
     /**
      * Constructor for the Dialog
      * Left empty on purpose
-     */
+n     */
     public RecordDialogFragment() {
 
     }
@@ -119,9 +120,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         decibelMeter = (DecibelMeterView) view.findViewById(R.id.decibel_meter);
 
-        acceptButton = (ImageButton) view.findViewById(R.id.positive_dialog_button);
+        acceptButton = (ImageButton) view.findViewById(R.id.record_positive_button);
 
-        cancelButton = (ImageButton) view.findViewById(R.id.negative_dialog_button);
+        cancelButton = (ImageButton) view.findViewById(R.id.record_negative_button);
 
         OnClickListener clickListener = new OnClickListener() {
                 public void onClick(View view) {
