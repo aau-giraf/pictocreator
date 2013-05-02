@@ -144,6 +144,7 @@ public class StoragePictogram {
         MediaHelper mediaHelper = databaseHelper.mediaHelper;
 
         pictureMedia = insertMedia(pictureMedia);
+        pictogramID = pictureMedia.getId();
 
         if(!audioPath.equals("") && audioPath != null){
             // this part is pretty dumb:
