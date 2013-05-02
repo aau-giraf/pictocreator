@@ -39,15 +39,16 @@ public class CrocActivity extends Activity {
     private final static String TAG = "CrocMain";
     private static Intent girafIntent;
 
-    private CamFragment camFragment;
-    private DrawFragment drawFragment;
-    private FragmentManager fragManager;
-    private FragmentTransaction fragTrans;
+	private FragmentManager fragManager;
+	private FragmentTransaction fragTrans;
+	private ToggleButton fragSwitch;
+	private ImageButton dialogButton;
+	private CamFragment camFragment;
+	private DrawFragment drawFragment;
+	private RecordDialogFragment recordDialog;
     private ImageButton recordDialogButton;
     private ImageButton saveDialogButton;
-    private RecordDialogFragment recordDialog;
     private SaveDialogFragment saveDialog;
-    private ToggleButton fragSwitch;
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
