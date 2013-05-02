@@ -36,7 +36,7 @@ import dk.aau.cs.giraf.pictocreator.management.*;
 
 public class CrocActivity extends Activity {
 
-	private final static String TAG = "CrocMain";
+    private final static String TAG = "CrocMain";
     private static Intent girafIntent;
 
 	private FragmentManager fragManager;
@@ -46,8 +46,9 @@ public class CrocActivity extends Activity {
 	private CamFragment camFragment;
 	private DrawFragment drawFragment;
 	private RecordDialogFragment recordDialog;
-	
-	private String imagePath = null;
+    private ImageButton recordDialogButton;
+    private ImageButton saveDialogButton;
+    private SaveDialogFragment saveDialog;
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
@@ -55,8 +56,8 @@ public class CrocActivity extends Activity {
     // public static final String APP_ACTIVITYNAME = "appActivityName";
     // public static final String APP_COLOR = "appBackgroundColor";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -72,13 +73,16 @@ public class CrocActivity extends Activity {
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        dialogButton = (ImageButton)findViewById(R.id.start_dialog_button);
-        dialogButton.setOnClickListener(showRecorderClick);
+        recordDialogButton = (ImageButton)findViewById(R.id.start_record_dialog_button);
+        recordDialogButton.setOnClickListener(showRecorderClick);
+
+        saveDialogButton = (ImageButton)findViewById(R.id.start_save_dialog_button);
+        saveDialogButton.setOnClickListener(showLabelMakerClick);
 
         //Check for camera last
         //If no cam found, disable the fragment switch button
         if(!checkForCamera(this)) {
-        	fragSwitch.setEnabled(false);
+            fragSwitch.setEnabled(false);
         }
     }
 
@@ -92,38 +96,44 @@ public class CrocActivity extends Activity {
     public void switchFragments(View view) {
 
     	if(fragSwitch.isChecked()) {
-    		camFragment = new CamFragment();
-    		fragTrans = getFragmentManager().beginTransaction();
-    		fragTrans.replace(R.id.fragmentContainer, camFragment);
-    		fragTrans.commit();
+            camFragment = new CamFragment();
+            fragTrans = getFragmentManager().beginTransaction();
+            fragTrans.replace(R.id.fragmentContainer, camFragment);
+            fragTrans.commit();
     	}
     	else if(!fragSwitch.isChecked()) {
-    		drawFragment = new DrawFragment();
-    		fragTrans = getFragmentManager().beginTransaction();
-    		fragTrans.replace(R.id.fragmentContainer, drawFragment);
-    		fragTrans.commit();
+            drawFragment = new DrawFragment();
+            fragTrans = getFragmentManager().beginTransaction();
+            fragTrans.replace(R.id.fragmentContainer, drawFragment);
+            fragTrans.commit();
     	}
     }
 
     /**
-	 *
-	 * @param context
-	 * @return
-	 */
-	private boolean checkForCamera(Context context) {
-	    if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-	        return true;
-	    } else {
-	        Log.d(TAG, "No camera found on device");
-	        return false;
-	    }
-	}
+     *
+     * @param context
+     * @return
+     */
+    private boolean checkForCamera(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            return true;
+        } else {
+            Log.d(TAG, "No camera found on device");
+            return false;
+        }
+    }
 
-	private final OnClickListener showRecorderClick = new OnClickListener() {
-		  public void onClick(View view) {
-			  recordDialog = new RecordDialogFragment();
-			  recordDialog.show(getFragmentManager(), TAG);
-		  }
+    private final OnClickListener showRecorderClick = new OnClickListener() {
+            public void onClick(View view) {
+                recordDialog = new RecordDialogFragment();
+                recordDialog.show(getFragmentManager(), TAG);
+            }
 	};
 
+    private final OnClickListener showLabelMakerClick = new OnClickListener() {
+            public void onClick(View view) {
+                saveDialog = new SaveDialogFragment();
+                saveDialog.show(getFragmentManager(), TAG);
+            }
+	};
 }

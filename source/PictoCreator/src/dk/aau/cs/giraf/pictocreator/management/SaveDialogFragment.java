@@ -3,16 +3,19 @@ package dk.aau.cs.giraf.pictocreator.management;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ListView;
 
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictogram.Pictogram;
@@ -24,6 +27,11 @@ public class SaveDialogFragment extends DialogFragment{
     private FrameLayout previewView;
     private Pictogram preview;
     private ArrayList<String> tags;
+
+    private ImageButton acceptButton;
+
+    private ImageButton cancelButton;
+
     public SaveDialogFragment(){
         // empty constructor required for DialogFragment
     }
@@ -50,8 +58,18 @@ public class SaveDialogFragment extends DialogFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState){
+        final Dialog tmpDialog = getDialog();
+
+        tmpDialog.setCanceledOnTouchOutside(false);
+
         ListView listView;
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.save_tag, tags);
+        ArrayAdapter<String> arrayAdapter;
+
+        if(tags == null){
+            setTags(this.tags);
+        }
+
+        arrayAdapter  = new ArrayAdapter<String>(getActivity(), R.layout.save_tag, tags);
 
         view = inflater.inflate(R.layout.save_dialog, container);
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);
@@ -65,6 +83,28 @@ public class SaveDialogFragment extends DialogFragment{
 
             Log.d(TAG, "Set the image, it's super dope now.");
         }
+
+        acceptButton = (ImageButton) view.findViewById(R.id.save_button_positive);
+
+        cancelButton = (ImageButton) view.findViewById(R.id.save_button_negative);
+
+        cancelButton.setOnClickListener(new OnClickListener(){
+
+                @Override
+                public void onClick(View view){
+                    // TODO: Make function to call when dialog is "accepted"
+                    tmpDialog.cancel();
+                }
+            });
+
+        acceptButton.setOnClickListener(new OnClickListener(){
+
+                @Override
+                public void onClick(View view){
+                    // TODO: Make function to call when dialog is canceled
+                    tmpDialog.dismiss();
+                }
+            });
 
         return view;
     }
