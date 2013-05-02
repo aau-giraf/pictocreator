@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.hardware.Camera;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 public class PhotoHandler implements PictureCallback {
 	private final static String TAG = "PhotoHandler";
 
+	private String imagePath = null;
 	private final Context context;
 	
 	public PhotoHandler(Context context) {
@@ -64,18 +66,9 @@ public class PhotoHandler implements PictureCallback {
 	}
 	
 	private File getDir() {
-		File storageDir;
-		if(hasExternalStorage()) {
-			storageDir = Environment.getExternalStorageDirectory();
-		}
-		else {
-			storageDir = Environment.getRootDirectory();
-		}
-		return new File(storageDir, ".giraf/croc/img");
-	}
-	
-	private boolean hasExternalStorage() {
-		return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
+		
+		File storageDir = context.getCacheDir();
+		return new File(storageDir, "img");
 	}
 
 }
