@@ -1,0 +1,116 @@
+#+title:Wasteland API research
+#+startup:showall
+* The JSON object
+  Everything is a JSON object which is used for basically everything.
+    #+BEGIN_SRC javascript
+      {
+          "auth" : request_auth,
+          "action" : request_action,
+          "data" : request_data
+      }
+    #+END_SRC
+
+** Authentication
+   There are three ways to authenticate, sending a username and a password in the following JSON format:
+     #+BEGIN_SRC javascript
+       {
+           "username" : STRING,
+           "password" : STRING
+       }
+    #+END_SRC
+
+   Via the string expanded from a QR ID-card:
+     #+BEGIN_SRC javascript
+       {
+           "certificate" : STRING
+       }
+    #+END_SRC
+
+   Via a session code:
+    #+BEGIN_SRC javascript
+       {
+           "session" : STRING
+       }
+    #+END_SRC
+
+
+** Requesting
+   There are two types of request, action and data.
+
+   Action describes the type of request you are making, data the type of data you are requesting.
+*** Action
+    When requesting one of the following actions should be used:
+    #+BEGIN_SRC javascript
+       "create" OR "read" OR "update" OR "delete" OR null
+    #+END_SRC
+
+    Using =null= will result in a session code which can be used for the entirety of your session. No need for future authentication with username/password.
+*** Data
+    The different actions have different Request Data objects associated with them.
+**** Create
+     Create is for creating objects in the database, this should contain a JSON of the object you want to add to the database, see =value_object=.
+
+    #+BEGIN_SRC javascript
+      {
+          "type" : data_type,
+          "values" : [value_object, ...]
+      }
+    #+END_SRC
+**** Read
+    #+BEGIN_SRC javascript
+      {
+          "type" : data_type,
+          "view" : "list" OR "details",
+          "ids" : [INT, ...] OR null
+      }
+    #+END_SRC
+     When reading from the database one sends a request for the specific type, if the returned objects should be a list of JSON objects which are accessible to the requesting user or a specific list of objects.
+
+     "ids" should be null if the "view" is set to "list" and a list of integer ids if "view" is "details".
+
+**** Update
+     #+BEGIN_SRC javascript
+       {
+         "type": data_type
+         "values":
+         [
+           {
+             "id": INT,
+             "value": value_object
+           },
+           ...
+         ]
+       }
+     #+END_SRC
+     This is where the confusion begins for really and truly; what the fuck is value?
+
+     I believe this is updating a specific object in the database, the object being defined in "values", I guess.
+**** Delete
+     #+BEGIN_SRC javascript
+       {
+           "type" : data_type,
+           "ids" : [INT, ...]
+       }
+     #+END_SRC
+** API RESPONSE
+   Wasteland server will respond to a request with a JSON object, cool, here it is:
+   #+BEGIN_SRC javascript
+     {
+         "status" : status_code,
+         "errors" : [STRING, ...],
+         "data" : response_data
+     }
+   #+END_SRC
+*** Status Code
+    The string =status_code= is a response explaining how the request went.
+    Codes:
+    - "OK" the request was accepted.
+    - "SYNTAXERROR" the request did not conform to the Syntax
+    - "BADREQUEST" keys or types were wrong.
+    - "AUTHFAILED" authentication failed.
+    - "ACCESSDENIED" the user does not have access to the requested objects.
+*** Response Data
+
+* "Features"
+  - Tags seem to not at all be in the current schema?
+  - How are we supposed to handle this data? It would seem obvious to me that at least some semblance of a database Helper was implemented to parse these JSON objects?
