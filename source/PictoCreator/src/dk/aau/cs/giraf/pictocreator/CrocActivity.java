@@ -1,10 +1,5 @@
 package dk.aau.cs.giraf.pictocreator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -13,21 +8,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View.OnClickListener;
 import android.view.View;
-import android.widget.FrameLayout.LayoutParams;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
-import dk.aau.cs.giraf.oasis.lib.*;
-import dk.aau.cs.giraf.oasis.lib.controllers.*;
-import dk.aau.cs.giraf.oasis.lib.models.*;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.*;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;

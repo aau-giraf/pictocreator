@@ -7,10 +7,7 @@ import dk.aau.cs.giraf.oasis.lib.models.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
-import java.util.Set;
-
 import android.content.Context;
-import android.util.Log;
 
 /**
  * @author: croc

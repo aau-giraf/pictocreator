@@ -1,29 +1,19 @@
 package dk.aau.cs.giraf.pictocreator.cam;
 
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.R.id;
-import dk.aau.cs.giraf.pictocreator.R.layout;
 import dk.aau.cs.giraf.pictocreator.cam.CamPreview;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 public class CamFragment extends Fragment {

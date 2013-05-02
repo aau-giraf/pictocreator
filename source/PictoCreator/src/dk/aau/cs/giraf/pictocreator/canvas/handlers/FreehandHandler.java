@@ -20,11 +20,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 public class FreehandHandler extends ShapeHandler {
 
 	private String tag = "FreehandHandler.onTouchEvent";
-	
-	public FreehandHandler() {
-		// Generic paint.
-		strokeColor = 0xFF000000;
-	}
 
 	@Override
 	public void pushEntity(EntityGroup drawStack) {

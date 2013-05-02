@@ -8,7 +8,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

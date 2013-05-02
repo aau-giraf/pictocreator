@@ -1,11 +1,8 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Canvas;
 import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group

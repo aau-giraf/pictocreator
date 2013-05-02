@@ -1,7 +1,6 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.graphics.Canvas;
-import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;

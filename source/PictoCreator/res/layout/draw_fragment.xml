@@ -27,7 +27,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <ImageButton
@@ -72,17 +72,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxHeight="@dimen/OneHundredPixels"
-                android:maxWidth="@dimen/OneHundredPixels"
-                android:minHeight="100px"
-                android:minWidth="100px"
                 android:src="@drawable/blank_100x100" />
 
         </LinearLayout>

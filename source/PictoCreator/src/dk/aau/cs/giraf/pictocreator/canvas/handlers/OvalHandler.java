@@ -19,12 +19,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
  *
  */
 public class OvalHandler extends ShapeHandler {
-
-	public OvalHandler() {
-		// Set up generic paint.
-		strokeColor = 0xFF000000;
-		fillColor = 0x55FF0000;
-	}
 	
 	@Override
 	public PrimitiveEntity updateBuffer() {

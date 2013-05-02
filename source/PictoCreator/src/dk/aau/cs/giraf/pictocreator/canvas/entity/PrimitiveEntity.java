@@ -32,6 +32,11 @@ public abstract class PrimitiveEntity extends Entity {
 		setHeight(h);
 	}
 	
+	public PrimitiveEntity(int fillColor, int strokeColor) {
+		strokePaint.setStyle(Style.STROKE);
+		fillPaint.setStyle(Style.FILL);
+	}
+	
 	/**
 	 * All ShapeEntity subclasses must implement drawWithPaint. ShapeEntity's
 	 * own base draw method will call drawWithPaint twice; once for the fill

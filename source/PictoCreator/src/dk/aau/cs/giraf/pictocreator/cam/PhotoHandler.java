@@ -5,14 +5,10 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 //Vogella's photohandler

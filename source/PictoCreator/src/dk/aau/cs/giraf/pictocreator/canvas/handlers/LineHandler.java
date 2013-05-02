@@ -14,11 +14,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
  */
 public class LineHandler extends ShapeHandler {
 
-	public LineHandler() {
-		// Set up generic paint.
-		strokeColor = 0xFF000000;
-	}
-
 	@Override
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -33,13 +28,13 @@ public class LineHandler extends ShapeHandler {
 	
 	@Override
 	public PrimitiveEntity updateBuffer() {
-		bufferedEntity = new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokeColor);
+		bufferedEntity = new LineEntity(left, top, right, bottom, strokeColor);
 		return bufferedEntity;
 	}
 	
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
-		drawStack.addEntity(new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokeColor));
+		drawStack.addEntity(bufferedEntity);
 	}
 
 }

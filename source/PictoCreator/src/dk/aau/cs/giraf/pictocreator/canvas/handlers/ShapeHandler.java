@@ -61,6 +61,9 @@ public abstract class ShapeHandler extends ActionHandler {
 	
 	public ShapeHandler() {
 		startPoint = endPoint = new FloatPoint(0, 0);
+
+		strokeColor = 0xFF000000;
+		fillColor = 0x55FF0000;
 	}
 	
 	@Override
