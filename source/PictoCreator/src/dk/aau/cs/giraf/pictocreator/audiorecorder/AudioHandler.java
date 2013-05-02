@@ -1,6 +1,10 @@
 package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,7 +47,8 @@ public class AudioHandler {
     }
 
     /**
-     * Function for creating the output file, and the path to the file
+     * Function for creating the tmp output file, and the path to the
+     * both the tmp and the tmp file
      * This function is called by the constructor
      */
     private void createOutputFilePath(){
@@ -58,7 +63,9 @@ public class AudioHandler {
         String date = dateFormat.format(new Date());
         String audioFile = "GSound_" + date + ".3gp";
 
-        String fileName = soundFileDir.getPath() + File.separator + audioFile;
+        String tmpAudioFile = "GSound_" + date + "tmp" + ".3gp";
+
+        String fileName = soundFileDir.getPath() + File.separator + tmpAudioFile;
 
         outputFilePath = fileName;
 
@@ -79,6 +86,48 @@ public class AudioHandler {
     }
 
     /**
+     * Saves and creates the final audioFile
+     * Function called by the RecordThread in onAccept().
+     */
+    public void saveFinalFile(){
+        String finalFilePath = getDir().getPath() + File.separator + savedFileName;
+
+        FileInputStream tmpFileStream = null;
+        FileOutputStream finalFileStream = null;
+
+        try {
+            File tmpFile = new File(outputFilePath);
+            File finalFile = new File(finalFilePath);
+
+            tmpFileStream = new FileInputStream(tmpFile);
+            finalFileStream = new FileOutputStream(finalFile);
+
+            byte[] buffer = new byte[1024];
+
+            int lenght;
+
+            while((lenght = tmpFileStream.read(buffer)) > 0){
+                finalFileStream.write(buffer, 0, lenght);
+            }
+        }
+        catch(IOException e){
+            Log.d(TAG, "File could not be copied");
+        }
+        finally {
+            try {
+                tmpFileStream.close();
+                finalFileStream.close();
+
+                deleteFile();
+            }
+            catch(IOException e){
+                Log.d(TAG, "File streams could not be closed");
+            }
+        }
+
+    }
+
+    /**
      * Function for creating the directory for the output file
      * This function is called by createOutputFilePath.
      * @return File representing the output directory
@@ -91,7 +140,7 @@ public class AudioHandler {
         else {
             storageDir = Environment.getRootDirectory();
         }
-        return new File(storageDir, ".giraf/snd");
+        return new File(storageDir, ".giraf/croc/snd");
     }
 
     /**
