@@ -8,6 +8,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,11 @@ public class DrawFragment extends Fragment {
 	ImageButton freehandHandlerButton;
 	
 	/**
+	 * Displays previews of current color choices.
+	 */
+	PreviewButton previewButton;
+	
+	/**
 	 * Quick reference to one of the other handler buttons, whichever is active.
 	 */
 	ImageButton activeHandlerButton;
@@ -36,6 +42,11 @@ public class DrawFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (savedInstanceState != null) {
+			// Restore drawStack et al.
+			drawView.drawStack = savedInstanceState.getParcelable("drawstack");
+		}
 		
 		Log.w("MainActivity", "Invalidating DrawView to force onDraw.");
 	}
@@ -48,10 +59,10 @@ public class DrawFragment extends Fragment {
 		
 		drawView = (DrawView)view.findViewById(R.id.drawingview);
 		
-		selectHandlerButton = (ImageButton)view.findViewById(R.id.select_handler_button);
-		selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);
 		freehandHandlerButton = (ImageButton)view.findViewById(R.id.freehand_handler_button);
 		freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
+		selectHandlerButton = (ImageButton)view.findViewById(R.id.select_handler_button);
+		selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);
 		rectHandlerButton = (ImageButton)view.findViewById(R.id.rect_handler_button);
 		rectHandlerButton.setOnClickListener(onRectHandlerButtonClick);
 		lineHandlerButton = (ImageButton)view.findViewById(R.id.line_handler_button);
@@ -59,21 +70,21 @@ public class DrawFragment extends Fragment {
 		ovalHandlerButton = (ImageButton)view.findViewById(R.id.oval_handler_button);
 		ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 		
+		previewButton = (PreviewButton)view.findViewById(R.id.canvasColorPreviewButton);
+		
 		// Set initial handler.
-		drawView.setHandler(new SelectionHandler(getResources()));
-		activeHandlerButton = selectHandlerButton; 
+		drawView.setHandler(new FreehandHandler());
+		activeHandlerButton = freehandHandlerButton; 
 		activeHandlerButton.setEnabled(false);
 		
 		LinearLayout ll = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
 		
 		ColorButton b;
-		b = new ColorButton(drawView, this.getActivity());
+		b = new ColorButton(drawView, previewButton, getActivity().getResources().getColor(R.color.giraf_blue1), this.getActivity());
 		b.setImageResource(R.drawable.blank_100x100);
-		b.setBackgroundColor(getActivity().getResources().getColor(R.color.giraf_blue1));
 		ll.addView(b);
-		b = new ColorButton(drawView, this.getActivity());
+		b = new ColorButton(drawView, previewButton, getActivity().getResources().getColor(R.color.giraf_brown1), this.getActivity());
 		b.setImageResource(R.drawable.blank_100x100);
-		b.setBackgroundColor(getActivity().getResources().getColor(R.color.giraf_brown1));
 		ll.addView(b);
 		
 		return view;
@@ -141,6 +152,9 @@ public class DrawFragment extends Fragment {
 	};
 	
 	public void onSaveInstanceState(Bundle outState) {
-		
+		// Parcel currentDrawStack = Parcel.obtain();
+		// drawView.drawStack.writeToParcel(currentDrawStack, 0);
+		Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
+		outState.putParcelable("drawstack", drawView.drawStack);
 	};
 }

@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-	android:paddingBottom="60dp"
-	android:paddingLeft="60dp"
-	android:paddingRight="60dp"
-	android:paddingTop="60dp"
+    android:paddingBottom="60dp"
+    android:paddingLeft="60dp"
+    android:paddingRight="60dp"
+    android:paddingTop="60dp"
     tools:context=".DrawFragment" >
 
     <dk.aau.cs.giraf.pictocreator.canvas.DrawView
@@ -75,10 +75,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <ImageButton
+            <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxHeight="@dimen/OneHundredPixels"
+                android:maxWidth="@dimen/OneHundredPixels"
+                android:minHeight="100px"
+                android:minWidth="100px"
                 android:src="@drawable/blank_100x100" />
 
         </LinearLayout>

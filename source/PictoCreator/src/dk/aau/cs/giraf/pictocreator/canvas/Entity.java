@@ -1,6 +1,9 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -17,16 +20,16 @@ import android.util.Log;
  * @author lindhart
  *
  */
-public abstract class Entity {
+public abstract class Entity implements Parcelable {
 	/**
 	 * X-coordinate of the Shape, measured by its left edge.
 	 */
-	private float x;
+	private float x = 0;
 	
 	/**
 	 * Y-coordinate of the Shape, measured by its top edge.
 	 */
-	private float y;
+	private float y = 0;
 	 
 	/**
 	 * Retrieve the shape's leftmost X-coordinate.
@@ -48,13 +51,13 @@ public abstract class Entity {
 	 * Width of the Entity's hitbox.
 	 * Try Entity.getGraphic().getWidth() for the displayed width.
 	 */
-	protected float width;
+	protected float width = 0;
 	
 	/**
 	 * Height of the Entity's hitbox.
 	 * Try Entity.getGraphic().getHeight() for the displayed height.
 	 */
-	protected float height;
+	protected float height = 0;
 	
 	/**
 	 * Angle of rotation, in degrees.
@@ -167,6 +170,19 @@ public abstract class Entity {
 		return y+getHeight();
 	}
 	
+	public Entity() {
+	}
+	
+	public Entity(Parcel in) {
+		float[] vals = new float[5];
+		in.readFloatArray(vals);
+		setX(vals[0]);
+		setY(vals[1]);
+		setWidth(vals[2]);
+		setHeight(vals[3]);
+		setAngle(vals[4]);
+	}
+	
 	public float distanceToPoint(float x, float y) {
 		return distanceBetweenPoints(getX(), getY(), x, y);
 	}
@@ -185,6 +201,19 @@ public abstract class Entity {
 
 	public float distanceBetweenPoints(float x1, float y1, float x2, float y2) {
 		return (float)Math.sqrt(Math.abs(x1-x2) + Math.abs(y1-y2));
+	}
+	
+	/**
+	 * Default parcel write for Entity. Stores location (x/y), size (width/height) and rotation (angle).
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeFloatArray(new float[]{getX(), getY(), getWidth(), getHeight(), getAngle()});
+	}
+	
+	@Override
+	public int describeContents() {
+		return 0;
 	}
 	
 }
