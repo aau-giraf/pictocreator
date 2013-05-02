@@ -107,6 +107,10 @@ public class RecordThread implements Runnable {
         catch (InterruptedException interrupt){
             Log.v(TAG, "Interrupted", interrupt);
         }
+        catch (IllegalStateException e){
+            Log.v(TAG, "Illegalstate");
+        }
+
         _interface.decibelUpdate(0);
     }
 
