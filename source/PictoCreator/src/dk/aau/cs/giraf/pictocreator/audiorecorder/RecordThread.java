@@ -181,5 +181,14 @@ public class RecordThread implements Runnable {
 
     }
 
+    /**
+     * Function called when the dialog is ended by ok,
+     * copies the tmp file to the final file and
+     * deletes the tmp save file
+     */
+    public void onAccept(){
+        audioHandler.saveFinalFile();
+    }
+
 
 }
