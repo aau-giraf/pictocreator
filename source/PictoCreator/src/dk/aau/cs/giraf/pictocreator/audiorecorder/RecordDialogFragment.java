@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -54,9 +55,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     ToggleButton recordButton;
 
-    Button okButton;
+    ImageButton okButton;
 
-    Button cancelButton;
+    ImageButton cancelButton;
 
     /**
      * Constructor for the Dialog
@@ -118,9 +119,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         decibelMeter = (DecibelMeterView) view.findViewById(R.id.decibel_meter);
 
-        okButton = (Button) view.findViewById(R.id.positive_dialog_button);
+        okButton = (ImageButton) view.findViewById(R.id.positive_dialog_button);
 
-        cancelButton = (Button) view.findViewById(R.id.negative_dialog_button);
+        cancelButton = (ImageButton) view.findViewById(R.id.negative_dialog_button);
 
         OnClickListener clickListener = new OnClickListener() {
                 public void onClick(View view) {
