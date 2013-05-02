@@ -11,11 +11,13 @@
 
 	<FrameLayout
 		android:id="@+id/camera_preview"
-		android:layout_width="1000dp"
-		android:layout_height="750dp"
-		android:layout_alignParentBottom="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
-		android:layout_alignParentTop="true" >
+		android:layout_toLeftOf="@+id/button_capture"
+		android:layout_marginRight="100dp"
+		android:layout_marginLeft="100dp" >
 
 	</FrameLayout>
 
@@ -33,7 +35,7 @@
 		android:layout_width="100dp"
 		android:layout_height="80dp"
 		android:layout_alignParentRight="true"
-		android:layout_below="@+id/color_effects"
+		android:layout_alignParentTop="true"
 		android:background="@drawable/color_effect_switch"
 		android:textOn=""
 		android:textOff="" />

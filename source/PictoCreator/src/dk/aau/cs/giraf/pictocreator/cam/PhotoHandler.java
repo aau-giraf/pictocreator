@@ -71,7 +71,7 @@ public class PhotoHandler implements PictureCallback {
 		else {
 			storageDir = Environment.getRootDirectory();
 		}
-		return new File(storageDir, "GirafPictures");
+		return new File(storageDir, ".giraf/croc/img");
 	}
 	
 	private boolean hasExternalStorage() {

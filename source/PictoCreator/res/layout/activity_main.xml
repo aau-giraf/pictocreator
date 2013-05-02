@@ -66,6 +66,15 @@
             android:layout_toLeftOf="@+id/toggleFragments"
             android:layout_marginRight="20dp"
             android:background="@drawable/mic_button" />
+        
+        <ImageButton
+            android:id="@+id/start_save_dialog_button"
+            android:layout_width="@dimen/button_height"
+            android:layout_height="@dimen/button_height"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/start_dialog_button"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/save_button" />
 
 
     </RelativeLayout>

@@ -31,6 +31,7 @@ import dk.aau.cs.giraf.oasis.lib.models.*;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.*;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
+import dk.aau.cs.giraf.pictocreator.management.*;
 
 
 public class CrocActivity extends Activity {
