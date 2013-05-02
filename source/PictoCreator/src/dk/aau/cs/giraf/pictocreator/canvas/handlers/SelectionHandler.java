@@ -1,7 +1,9 @@
 package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
@@ -12,13 +14,23 @@ import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 
 public class SelectionHandler extends ActionHandler {
 
-	protected Entity selectedEntity;
+	private Entity selectedEntity;
 	
-	protected int currentPointerId;
+	/**
+	 * The ID of the pointer currently being tracked. Check pointerDown to see
+	 * if one is *actually* being tracked.
+	 */
+	private int currentPointerId;
 
+	/**
+	 * Tracks whether a pointer is currently being tracked.
+	 */
+	private boolean pointerDown = false;
+	
 	/**
 	 * Offset difference between where the pointer was registered, and the
 	 * top-left corner of the selected Entity's hitbox. Used for more natural
@@ -36,13 +48,74 @@ public class SelectionHandler extends ActionHandler {
 	 */
 	protected Paint hlPaint = new Paint();
 	
-	public SelectionHandler() {
+	protected BitmapEntity resizeIcon, rotateIcon, scrapIcon;
+	
+	protected int iconSize = 32;
+	
+	public enum ACTION_MODE {NONE, MOVE, RESIZE, ROTATE};
+	
+	protected ACTION_MODE currentMode = ACTION_MODE.NONE;
+	
+	protected boolean showIcons = false;
+	
+	protected static String getFullIconName(String base, int size) {
+		return String.format("%s_icon_%sx%s", base, size, size);
+	}
+	
+	protected static Bitmap getIconBitmap(String name, int size, Resources res) {
+		return BitmapFactory.decodeResource(res,
+				res.getIdentifier(getFullIconName(name, size), "drawable", "dk.aau.cs.giraf.pictocreator"));
+	}
+	
+	public SelectionHandler(Resources resources) {
 		hlPaint.setStyle(Style.STROKE);
 		hlPaint.setPathEffect(new DashPathEffect(new float[]{10.0f,10.0f,5.0f,10.0f}, 0));
 		hlPaint.setColor(0xFF000000);
 		hlPaint.setStrokeWidth(2);
+		
+		initIcons(resources);
 	}
 
+	private void initIcons(Resources resources) {
+		resizeIcon = new BitmapEntity(getIconBitmap("resize", iconSize, resources));
+		rotateIcon = new BitmapEntity(getIconBitmap("rotate", iconSize, resources));
+		scrapIcon = new BitmapEntity(getIconBitmap("scrap", iconSize, resources));
+	}
+	
+	/**
+	 * Updates the locations of the icon entities based on the selected Entity.
+	 */
+	protected void updateIconLocations() {
+		resizeIcon.setAngle(90);
+		resizeIcon.setX(selectedEntity.getHitboxRight());
+		resizeIcon.setY(selectedEntity.getHitboxBottom());
+		
+		// Rotation around point.
+		// offset.
+		// distance: a^2+b^2=c^2 <=> sqrt(a^2+b^2)=c
+		/*
+		float distance = selectedEntity.distanceToEntity(resizeIcon);
+		float xfact = (float)Math.cos(selectedEntity.getX());
+		float yfact = (float)Math.sin(selectedEntity.getY());
+		*/		
+		
+		rotateIcon.setAngle(180);
+		rotateIcon.setX(selectedEntity.getHitboxLeft()-rotateIcon.getWidth());
+		rotateIcon.setY(selectedEntity.getHitboxBottom());
+		
+		scrapIcon.setX(selectedEntity.getHitboxRight());
+		scrapIcon.setY(selectedEntity.getHitboxTop()-scrapIcon.getHeight());
+	}
+	
+	protected void scrapEntity(EntityGroup drawStack) {
+		drawStack.removeEntity(selectedEntity);
+	}
+	
+	protected void deselect() {
+		selectedEntity = null;
+		currentMode = ACTION_MODE.NONE;
+	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event, EntityGroup drawStack) {
 		// Determine type of action.
@@ -53,42 +126,100 @@ public class SelectionHandler extends ActionHandler {
 		
 		int index = event.getActionIndex();
 		int pointerId = event.getPointerId(index);
-		
-		
+		int action = event.getAction();
 		
 		if (pointerId != currentPointerId) {
 			Log.i(dtag, "Unregistered pointer. Ignoring.");
 		}
 		
+		if (action == MotionEvent.ACTION_UP) {
+			Log.i(dtag, "Pointer raised. Ignoring remainder of logic.");
+			pointerDown = false;
+			currentPointerId = -1;
+			showIcons = true;
+			return true;
+		}
+		
 		float px = event.getX(index);
 		float py = event.getY(index);
 		
-		switch(event.getAction()) {
-		case MotionEvent.ACTION_DOWN : {
-			currentPointerId = pointerId;
-			// Attempt to select an Entity.
-			previousPointerLocation = new FloatPoint(px, py);
-			selectedEntity = drawStack.getCollidedWithPoint(px, py);
+		Log.i(dtag, "Entering phased logic. pointerDown: " + String.valueOf(pointerDown) + ", actioN:" + String.valueOf(action));
+		
+		// Determine action or new Entity selection.
+		if (action == MotionEvent.ACTION_DOWN && !pointerDown) {
 			if (selectedEntity != null) {
-				// Calculate offset for moving.
-				return true;
+				// Attempt to collide with action icon.
+				if (resizeIcon.collidesWithPoint(px, py)) currentMode = ACTION_MODE.RESIZE;
+				else if (rotateIcon.collidesWithPoint(px, py)) currentMode = ACTION_MODE.ROTATE;
+				else if (scrapIcon.collidesWithPoint(px, py)) {
+					scrapEntity(drawStack);
+					deselect();
+				}
+				else if (selectedEntity.collidesWithPoint(px, py)) {
+					currentMode = ACTION_MODE.MOVE;
+				}
+				else {
+					Log.i(dtag, "Attempting to select new Entity.");
+					selectedEntity = drawStack.getCollidedWithPoint(px, py);
+				}
+			} else {
+				Log.i(dtag, "No selected Entity. Trying to find one.");
+				selectedEntity = drawStack.getCollidedWithPoint(px, py);
 			}
-			else return false;
+			
+			if (selectedEntity == null) deselect();
+			else updateIconLocations(); // Icons.
+			
+			// In all cases, register pointer id etc.
+			pointerDown = true;
+			currentPointerId = pointerId;
+			
+			previousPointerLocation = new FloatPoint(px, py);
+			
+			return true; // Handled.
 		}
-		case MotionEvent.ACTION_MOVE : {
-			if (pointerId == currentPointerId && selectedEntity != null) {
-				FloatPoint diff = new FloatPoint(
-						px-previousPointerLocation.x,
-						py-previousPointerLocation.y);
-				selectedEntity.setX(selectedEntity.getX()+diff.x);
-				selectedEntity.setY(selectedEntity.getY()+diff.y);
+		else if (pointerDown && selectedEntity != null) {
+			if (action == MotionEvent.ACTION_MOVE) {
+				boolean handled = false;
+				
+				switch (currentMode) {
+				case MOVE: {
+					FloatPoint diff = new FloatPoint(
+							px-previousPointerLocation.x,
+							py-previousPointerLocation.y);
+					selectedEntity.setX(selectedEntity.getX()+diff.x);
+					selectedEntity.setY(selectedEntity.getY()+diff.y);
+					handled = true;
+					break;
+				}
+				case RESIZE: {
+					// WARNING! Breaks if the resize icon is NOT in the lower-right corner!
+					selectedEntity.setWidth(px-selectedEntity.getX());
+					selectedEntity.setHeight(py-selectedEntity.getY());
+					handled = true;
+					break;
+				}
+				case ROTATE: {
+					Log.i("Selectionhandler.onTouchEvent", "NotImplemented: ROTATION");
+					handled = true;
+					break;
+				}
+				default: {
+					handled = false;
+				}
+				}
+				
 				previousPointerLocation = new FloatPoint(px, py);
-				return true;
+				updateIconLocations(); // Icons.
+				
+				if (currentMode == ACTION_MODE.NONE) showIcons = true;
+				else showIcons = false;
+				
+				return handled;
 			}
-			else return false;
 		}
-		default : return false;
-		}
+		
+		return false;
 	}
 
 	@Override
@@ -105,6 +236,12 @@ public class SelectionHandler extends ActionHandler {
 	public void drawBuffer(Canvas canvas) {
 		if (selectedEntity != null) {
 			drawHighlighted(canvas);
+			
+			if (showIcons) {
+				resizeIcon.draw(canvas);
+				rotateIcon.draw(canvas);
+				scrapIcon.draw(canvas);
+			}
 		}
 	}
 

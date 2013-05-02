@@ -66,7 +66,7 @@ public class DrawFragment extends Fragment {
 		ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 		
 		// Set initial handler.
-		drawView.setHandler(new SelectionHandler());
+		drawView.setHandler(new SelectionHandler(getResources()));
 		activeHandlerButton = selectHandlerButton; 
 		activeHandlerButton.setEnabled(false);
 		
@@ -87,7 +87,7 @@ public class DrawFragment extends Fragment {
 		
 		@Override
 		public void onClick(View view) {
-			drawView.setHandler(new SelectionHandler());
+			drawView.setHandler(new SelectionHandler(getResources()));
 			setActiveButton(selectHandlerButton);
 		}
 	};

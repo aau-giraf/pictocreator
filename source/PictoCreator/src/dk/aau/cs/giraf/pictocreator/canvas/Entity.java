@@ -1,7 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import android.graphics.Canvas;
 import android.util.Log;
 
@@ -186,4 +184,25 @@ public abstract class Entity {
 	 * @param xml
 	 */
 	//public abstract void importXml(XmlPullParser parser);
+	
+	public float distanceToPoint(float x, float y) {
+		return distanceBetweenPoints(getX(), getY(), x, y);
+	}
+	
+	public float distanceToPoint(FloatPoint p) {
+		return distanceToPoint(p.x, p.y);
+	}
+	
+	public float distanceToEntity(Entity e) {
+		return distanceBetweenPoints(e.x, e.y, getX(), getY());
+	}
+	
+	public float distanceBetweenPoints(FloatPoint p1, FloatPoint p2) {
+		return distanceBetweenPoints(p1.x, p1.y, p2.x, p2.y);
+	}
+
+	public float distanceBetweenPoints(float x1, float y1, float x2, float y2) {
+		return (float)Math.sqrt(Math.abs(x1-x2) + Math.abs(y1-y2));
+	}
+	
 }

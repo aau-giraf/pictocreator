@@ -3,7 +3,7 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.Entity;;
 
 public abstract class PrimitiveEntity extends Entity {
 
@@ -42,8 +42,15 @@ public abstract class PrimitiveEntity extends Entity {
 	
 	@Override
 	public void draw(Canvas canvas) {
+		canvas.save();
+		
+		canvas.translate(getX(), getY());
+		canvas.rotate(getAngle());
+		
 		drawWithPaint(canvas, fillPaint); // Fill
 		drawWithPaint(canvas, strokePaint); // Stroke
+		
+		canvas.restore();
 	}
 	
 	public void setStroke(boolean enable){
