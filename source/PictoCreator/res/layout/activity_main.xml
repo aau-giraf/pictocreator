@@ -76,7 +76,6 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/save_button" />
 
-
     </RelativeLayout>
 
     <FrameLayout
