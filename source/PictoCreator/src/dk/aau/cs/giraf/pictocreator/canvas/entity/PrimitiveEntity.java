@@ -50,6 +50,7 @@ public abstract class PrimitiveEntity extends Entity {
 	
 	@Override
 	public void draw(Canvas canvas) {
+		int canvasLayers = canvas.getSaveCount();
 		canvas.save();
 		
 		canvas.translate(getX(), getY());
@@ -58,7 +59,7 @@ public abstract class PrimitiveEntity extends Entity {
 		drawWithPaint(canvas, fillPaint); // Fill
 		drawWithPaint(canvas, strokePaint); // Stroke
 		
-		canvas.restore();
+		canvas.restoreToCount(canvasLayers);
 	}
 
 }

@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
@@ -297,9 +298,11 @@ public class SelectionHandler extends ActionHandler {
 		
 		canvas.save();
 		
-		canvas.translate(selectedEntity.getX(), selectedEntity.getY());
+		RectF hitbox = selectedEntity.getHitbox();
+		
+		canvas.translate(hitbox.left, hitbox.top);
 		canvas.rotate(selectedEntity.getAngle(), selectedEntity.getWidth()/2, selectedEntity.getHeight()/2);
-		canvas.drawRect(0.0f, 0.0f, selectedEntity.getWidth(), selectedEntity.getHeight(), hlPaint);
+		canvas.drawRect(0.0f, 0.0f, hitbox.width(), hitbox.height(), hlPaint);
 		
 		canvas.restore();
 	}

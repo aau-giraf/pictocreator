@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -142,7 +143,7 @@ public abstract class Entity implements Parcelable {
 	 * @return
 	 */
 	public float getHitboxLeft() {
-		return x;
+		return getX();
 	}
 	
 	/**
@@ -150,7 +151,7 @@ public abstract class Entity implements Parcelable {
 	 * @return
 	 */
 	public float getHitboxRight() {
-		return x+getWidth();
+		return getX()+getWidth();
 	}
 	
 	/**
@@ -158,7 +159,7 @@ public abstract class Entity implements Parcelable {
 	 * @return
 	 */
 	public float getHitboxTop() {
-		return y;
+		return getY();
 	}
 	
 	/**
@@ -166,7 +167,7 @@ public abstract class Entity implements Parcelable {
 	 * @return
 	 */
 	public float getHitboxBottom() {
-		return y+getHeight();
+		return getY()+getHeight();
 	}
 	
 	public Entity() {
@@ -213,6 +214,15 @@ public abstract class Entity implements Parcelable {
 	@Override
 	public int describeContents() {
 		return 0;
+	}
+	
+	/**
+	 * Calculates and returns the complete hitbox. Basically made of calls to
+	 * the various getHitbox???? methods.
+	 * @return A RectF of the Entity's hitbox bounds.
+	 */
+	public RectF getHitbox() {
+		return new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
 	}
 	
 }
