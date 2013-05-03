@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * This class handles the creation of the audio storage directory,
@@ -24,11 +26,14 @@ public class AudioHandler {
 
     private String savedFileName;
 
+    Context context;
+
     /**
      * Constructor for the class.
      * Calls function to create the output file.
      */
-    public AudioHandler(){
+    public AudioHandler(Context context){
+        this.context = context;
         createOutputFilePath();
     }
 
@@ -108,6 +113,10 @@ public class AudioHandler {
             while((lenght = tmpFileStream.read(buffer)) > 0){
                 finalFileStream.write(buffer, 0, lenght);
             }
+
+            Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
+                           "to " + finalFilePath, Toast.LENGTH_LONG).show();
+
         }
         catch(IOException e){
             Log.d(TAG, "File could not be copied");
@@ -132,21 +141,9 @@ public class AudioHandler {
      * @return File representing the output directory
      */
     private File getDir() {
-        File storageDir;
-        if(hasExternalStorage()) {
-            storageDir = Environment.getExternalStorageDirectory();
-        }
-        else {
-            storageDir = Environment.getRootDirectory();
-        }
-        return new File(storageDir, ".giraf/croc/snd");
+        File storageDir = context.getCacheDir();;
+
+        return new File(storageDir, "snd");
     }
 
-    /**
-     * Function for figuring out if the device have external storage
-     * @return true if the device have external storage, false otherwise
-     */
-    private boolean hasExternalStorage() {
-        return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
-    }
 }

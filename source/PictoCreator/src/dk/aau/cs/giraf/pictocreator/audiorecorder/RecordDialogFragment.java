@@ -110,7 +110,7 @@ n     */
 
         tmpDialog.setCanceledOnTouchOutside(false);
 
-        handler = new AudioHandler();
+        handler = new AudioHandler(getActivity());
 
         recThread = new RecordThread(handler, this);
 
