@@ -6,7 +6,10 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
+import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment;
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Log;
@@ -19,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 public class DrawFragment extends Fragment {
+	private static final String TAG = "DrawFragment";
 
 	public View view;
 	public DrawView drawView;
@@ -28,6 +32,9 @@ public class DrawFragment extends Fragment {
 	ImageButton lineHandlerButton;
 	ImageButton selectHandlerButton;
 	ImageButton freehandHandlerButton;
+	ImageButton importFragmentButton;
+	
+	CamImportDialogFragment importDialog;
 	
 	/**
 	 * Displays previews of current color choices.
@@ -71,6 +78,9 @@ public class DrawFragment extends Fragment {
 		ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 		
 		previewButton = (PreviewButton)view.findViewById(R.id.canvasColorPreviewButton);
+		
+		importFragmentButton = (ImageButton)view.findViewById(R.id.start_import_dialog_button);
+		importFragmentButton.setOnClickListener(onImportClick);
 		
 		// Set initial handler.
 		drawView.setHandler(new FreehandHandler());
@@ -156,5 +166,14 @@ public class DrawFragment extends Fragment {
 		// drawView.drawStack.writeToParcel(currentDrawStack, 0);
 		Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
 		outState.putParcelable("drawstack", drawView.drawStack);
+	};
+	
+	private final OnClickListener onImportClick = new OnClickListener() {
+		
+		@Override
+		public void onClick(View view) {
+			importDialog = new CamImportDialogFragment();
+			importDialog.show(getActivity().getFragmentManager(), TAG);
+		}
 	};
 }
