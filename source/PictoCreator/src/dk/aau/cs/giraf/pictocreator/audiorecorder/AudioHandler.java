@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -100,33 +101,36 @@ public class AudioHandler {
         FileOutputStream finalFileStream = null;
 
         try {
-            File tmpFile = new File(outputFilePath);
-            File finalFile = new File(finalFilePath);
+            if(outputFilePath != null && finalFilePath != null){
+                File tmpFile = new File(outputFilePath);
+                File finalFile = new File(finalFilePath);
 
-            tmpFileStream = new FileInputStream(tmpFile);
-            finalFileStream = new FileOutputStream(finalFile);
+                tmpFileStream = new FileInputStream(tmpFile);
+                finalFileStream = new FileOutputStream(finalFile);
 
-            byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[1024];
 
-            int lenght;
+                int lenght;
 
-            while((lenght = tmpFileStream.read(buffer)) > 0){
-                finalFileStream.write(buffer, 0, lenght);
+                while((lenght = tmpFileStream.read(buffer)) > 0){
+                    finalFileStream.write(buffer, 0, lenght);
+                }
+
+                Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
+                               "to " + finalFilePath, Toast.LENGTH_LONG).show();
             }
-
-            Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
-                           "to " + finalFilePath, Toast.LENGTH_LONG).show();
-
         }
         catch(IOException e){
             Log.d(TAG, "File could not be copied");
         }
         finally {
             try {
-                tmpFileStream.close();
-                finalFileStream.close();
+                if(tmpFileStream != null && finalFilePath != null){
+                    tmpFileStream.close();
+                    finalFileStream.close();
 
-                deleteFile();
+                    deleteFile();
+                }
             }
             catch(IOException e){
                 Log.d(TAG, "File streams could not be closed");

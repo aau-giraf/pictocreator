@@ -3,6 +3,7 @@ package dk.aau.cs.giraf.pictocreator.management;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager.LayoutParams;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -26,7 +29,7 @@ public class SaveDialogFragment extends DialogFragment{
     private FrameLayout previewView;
     private Pictogram preview;
     private ArrayList<String> tags;
-
+    private Activity parentActivity;
     private ImageButton acceptButton;
 
     private ImageButton cancelButton;
@@ -61,14 +64,16 @@ public class SaveDialogFragment extends DialogFragment{
 
         tmpDialog.setCanceledOnTouchOutside(false);
 
+        parentActivity = getActivity();
+
         ListView listView;
         ArrayAdapter<String> arrayAdapter;
-
+        parentActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if(tags == null){
             setTags(this.tags);
         }
 
-        arrayAdapter  = new ArrayAdapter<String>(getActivity(), R.layout.save_tag, tags);
+        arrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, tags);
 
         view = inflater.inflate(R.layout.save_dialog, container);
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);

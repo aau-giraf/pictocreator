@@ -31,6 +31,7 @@
 
     <EditText
         android:id="@+id/save_input_title"
+        android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -70,6 +71,7 @@
 
     <EditText
         android:id="@+id/save_input_find"
+        android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

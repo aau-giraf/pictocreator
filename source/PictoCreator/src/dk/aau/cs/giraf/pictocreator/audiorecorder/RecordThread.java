@@ -181,8 +181,8 @@ public class RecordThread implements Runnable {
      * and deletes the saved file, if there is any
      */
     public void onCancel(){
-            audioHandler.deleteFile();
-
+        stop();
+        audioHandler.deleteFile();
     }
 
     /**
