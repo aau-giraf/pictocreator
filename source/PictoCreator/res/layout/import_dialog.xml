@@ -51,10 +51,10 @@
     
     <FrameLayout
         android:id="@+id/image_list_frame"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
+        android:layout_width="260dp"
+        android:layout_height="400dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/save_input_find" >
+        android:background="@color/giraf_white1" >
         
         <ListView 
             android:id="@+id/image_names_list"

@@ -18,7 +18,7 @@ import android.widget.ToggleButton;
 
 public class CamFragment extends Fragment {
 	private final static String TAG = "CamFragment";
-	private final static int clickDelay = 500;
+	private final static int clickDelay = 1000;
 	View view;
 	CamPreview camFeed;
 	public PhotoHandler photoHandler;
