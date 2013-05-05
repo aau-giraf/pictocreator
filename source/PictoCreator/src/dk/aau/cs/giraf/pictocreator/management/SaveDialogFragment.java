@@ -1,5 +1,10 @@
+
 package dk.aau.cs.giraf.pictocreator.management;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -7,6 +12,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
@@ -15,11 +21,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 import dk.aau.cs.giraf.pictogram.Pictogram;
 
 public class SaveDialogFragment extends DialogFragment{
@@ -32,7 +41,16 @@ public class SaveDialogFragment extends DialogFragment{
     private Activity parentActivity;
     private ImageButton acceptButton;
 
+    private EditText inputTextLabel;
+
+    private final String defaultTextLabel = "defaultTextLabel";
+    private String textLabel;
+
     private ImageButton cancelButton;
+
+    private StoragePictogram storagePictogram;
+
+    private FileHandler fileHandler;
 
     public SaveDialogFragment(){
         // empty constructor required for DialogFragment
@@ -66,6 +84,10 @@ public class SaveDialogFragment extends DialogFragment{
 
         parentActivity = getActivity();
 
+        storagePictogram = new StoragePictogram(parentActivity);
+
+        fileHandler = new FileHandler(parentActivity, storagePictogram);
+
         ListView listView;
         ArrayAdapter<String> arrayAdapter;
         parentActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -79,6 +101,9 @@ public class SaveDialogFragment extends DialogFragment{
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);
         listView = (ListView) view.findViewById(R.id.save_tags_list);
         listView.setAdapter(arrayAdapter);
+
+        inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
+
         // Log.d(TAG, "Created dialog.");
 
         if(preview != null){
@@ -96,7 +121,7 @@ public class SaveDialogFragment extends DialogFragment{
 
                 @Override
                 public void onClick(View view){
-                    // TODO: Make function to call when dialog is "accepted"
+                    // TODO: Make function to call when dialog is canceled
                     tmpDialog.cancel();
                 }
             });
@@ -105,7 +130,19 @@ public class SaveDialogFragment extends DialogFragment{
 
                 @Override
                 public void onClick(View view){
-                    // TODO: Make function to call when dialog is canceled
+                    textLabel = inputTextLabel.getText().toString();
+
+                    if(textLabel == null){
+                        textLabel = defaultTextLabel;
+                    }
+
+                    fileHandler.saveFinalFiles(textLabel);
+
+                    if(storagePictogram.addPictogram()){
+                        Toast.makeText(parentActivity, "Saved the pictogram :D", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // TODO: Make function to call when dialog is "accepted"
                     tmpDialog.dismiss();
                 }
             });
