@@ -71,7 +71,17 @@ public abstract class ActionHandler extends Entity {
 	
 	/**
 	 * All handlers must define a drawBuffer method that draws their current UI
-	 * output on a passed canvas.
+	 * output on a passed canvas before the bounds are drawn on.
 	 */
-	public abstract void drawBuffer(Canvas canvas);
+	public abstract void drawBufferPreBounds(Canvas canvas);
+	
+	/**
+	 * ActionHandlers can choose to implement another draw call for after the
+	 * bounds have been drawn. SelectionHandler uses this, for example, to draw
+	 * its context icons so they are visible above the bounds area.
+	 * @param canvas
+	 */
+	public void drawBufferPostBounds(Canvas canvas) {
+		
+	}
 }

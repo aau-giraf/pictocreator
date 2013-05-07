@@ -132,7 +132,7 @@ public abstract class ShapeHandler extends ActionHandler {
 	 * @param canvas The canvas to draw onto.
 	 */
 	@Override 
-	public final void drawBuffer(Canvas canvas) {
+	public final void drawBufferPreBounds(Canvas canvas) {
 		if (doDraw) {
 			updateBuffer();
 			bufferedEntity.draw(canvas);
@@ -141,7 +141,7 @@ public abstract class ShapeHandler extends ActionHandler {
 	
 	@Override
 	public void draw(Canvas canvas) {
-		drawBuffer(canvas);
+		drawBufferPreBounds(canvas);
 	}
 	
 	/**

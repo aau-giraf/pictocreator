@@ -106,19 +106,6 @@ public class SelectionHandler extends ActionHandler {
 		scrapIcon.setY(selectedEntity.getHitboxTop()-scrapIcon.getHeight());
 	}
 	
-	protected static FloatPoint rotatePointAroundPoint(FloatPoint p, float angle, FloatPoint pivot) {
-		if (pivot == null) pivot = new FloatPoint(); // Default - around (0,0).
-		
-		FloatPoint fp = new FloatPoint();
-		
-		//p'x =             cos(theta) * (px -     ox) -      sin(theta) * (py -     oy) +      ox
-		fp.x = (float)(Math.cos(angle) * (p.x-pivot.x) - Math.sin(angle) * (p.y-pivot.y) + pivot.x);
-		//p'y =             sin(theta) * (px -     ox) +      cos(theta) * (py -     oy) +      oy
-		fp.y = (float)(Math.sin(angle) * (p.x-pivot.x) + Math.cos(angle) * (p.y-pivot.y) + pivot.y);
-		
-		return fp;
-	}
-	
 	protected void scrapEntity(EntityGroup drawStack) {
 		drawStack.removeEntity(selectedEntity);
 	}
@@ -278,10 +265,15 @@ public class SelectionHandler extends ActionHandler {
 	}
 
 	@Override
-	public void drawBuffer(Canvas canvas) {
+	public void drawBufferPreBounds(Canvas canvas) {
 		if (selectedEntity != null) {
 			drawHighlighted(canvas);
-			
+		}
+	}
+	
+	@Override
+	public void drawBufferPostBounds(Canvas canvas) {
+		if (selectedEntity != null) {
 			if (showIcons) {
 				resizeIcon.draw(canvas);
 				rotateIcon.draw(canvas);
@@ -293,7 +285,7 @@ public class SelectionHandler extends ActionHandler {
 
 	@Override
 	public void draw(Canvas canvas) {
-		drawBuffer(canvas);
+		drawBufferPreBounds(canvas);
 	}
 	
 	/**

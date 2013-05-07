@@ -47,6 +47,8 @@ public class DrawFragment extends Fragment {
 	 */
 	ImageButton activeHandlerButton;
 	
+	LinearLayout colorButtonToolbox;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,17 +90,45 @@ public class DrawFragment extends Fragment {
 		activeHandlerButton = freehandHandlerButton; 
 		activeHandlerButton.setEnabled(false);
 		
-		LinearLayout ll = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
+		colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
 		
-		ColorButton b;
-		b = new ColorButton(drawView, previewButton, getActivity().getResources().getColor(R.color.giraf_blue1), this.getActivity());
-		b.setImageResource(R.drawable.blank_100x100);
-		ll.addView(b);
-		b = new ColorButton(drawView, previewButton, getActivity().getResources().getColor(R.color.giraf_brown1), this.getActivity());
-		b.setImageResource(R.drawable.blank_100x100);
-		ll.addView(b);
+		// Add standard HTML colors to the box.
+		addColorButton(0xFF000000); // Black
+		addColorButton(0xFFFFFFFF); // White
+		addColorButton(0xFF808080); // Gray
+		addColorButton(0xFFC0C0C0); // Silver
+		addColorButton(0xFF800000); // Maroon
+		addColorButton(0xFFFF0000); // Red
+		addColorButton(0xFF808000); // Olive
+		addColorButton(0xFFFFFF00); // Yellow
+		addColorButton(0xFF008000); // Green
+		addColorButton(0xFF00FF00); // Lime
+		addColorButton(0xFF008080); // Teal
+		addColorButton(0xFF00FFFF); // Aqua
+		addColorButton(0xFF000080); // Navy
+		addColorButton(0xFF0000FF); // Blue
+		addColorButton(0xFF800080); // Purple
+		addColorButton(0xFFFF00FF); // Fuchsia
+		
+		
+		previewButton.setStrokeColor(0xFF000000);
+		previewButton.setFillColor(0xFFFFFFFF);
 		
 		return view;
+	}
+	
+	/**
+	 * Adds a new ColorButton with the specified hex color to the color toolbox.
+	 * @param color Color to add. Can have alpha, although we suggest keeping it opaque (0xFFxxxxxx).
+	 * @param cbList LinearLayout instance where the button should be added.
+	 */
+	private void addColorButton(int color) {
+		colorButtonToolbox.addView(
+				new ColorButton(
+						drawView,
+						previewButton,
+						color,
+						this.getActivity()));
 	}
 	
 	/**

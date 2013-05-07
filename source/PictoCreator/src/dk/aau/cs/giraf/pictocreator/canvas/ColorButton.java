@@ -1,5 +1,6 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import dk.aau.cs.giraf.pictocreator.R;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -21,10 +22,16 @@ public class ColorButton extends ImageButton {
 	 */
 	PreviewButton previewButton;
 	
+	/**
+	 * Did we get a longPress before the previous up event?
+	 */
+	boolean longPressDetected = false;
+	
 	final Handler handler = new Handler(); 
 	Runnable mLongPressed = new Runnable() { 
 	    public void run() { 
-	        Log.i("", "Long press!");
+	        // Log.i("", "Long press!");
+	    	longPressDetected = true;
 	        applyStrokeColor();
 	    }   
 	};
@@ -54,6 +61,7 @@ public class ColorButton extends ImageButton {
 		this.drawView = dv;
 		this.previewButton = previewButton;
 		setColor(color);
+		setImageResource(R.drawable.blank_100x100);
 	}
 	
 	protected void applyStrokeColor() {
@@ -77,9 +85,16 @@ public class ColorButton extends ImageButton {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event){
-	    if(event.getAction() == MotionEvent.ACTION_DOWN)
+		int action = event.getAction();
+		
+	    if(action == MotionEvent.ACTION_DOWN) {
+	    	longPressDetected = false; // Reset status.
 	        handler.postDelayed(mLongPressed, 1000); // Initiate the runner for a second's time.
-	    if((event.getAction() == MotionEvent.ACTION_MOVE)||(event.getAction() == MotionEvent.ACTION_UP)) {
+	    }
+	    else if (action == MotionEvent.ACTION_MOVE) {
+	    	handler.removeCallbacks(mLongPressed); // And ignore.
+	    }
+	    else if(action == MotionEvent.ACTION_UP && !longPressDetected) {
 	        handler.removeCallbacks(mLongPressed);
 	        applyFillColor();
 	    }

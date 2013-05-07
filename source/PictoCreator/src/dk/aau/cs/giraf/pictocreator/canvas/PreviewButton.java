@@ -6,8 +6,12 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Paint.Style;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageButton;
 
 /**
@@ -16,32 +20,45 @@ import android.widget.ImageButton;
  * @author lindhart
  */
 public class PreviewButton extends ImageButton {
-
-	private int fillColor;
-	private int strokeColor;
+	private Paint fillPaint = new Paint();
+	private Paint strokePaint = new Paint();
 	
-	public int padding = 4;
-	public int strokeWidth = 4;
+	public int padding = 20;
+	
+	public float getStrokeWidth() {
+		return strokePaint.getStrokeWidth();
+	}
+	
+	public void setStrokeWidth(float width) {
+		strokePaint.setStrokeWidth(width);
+	}
 	
 	public PreviewButton(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		
+		init();
 	}
 
 	public PreviewButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
+		
+		init();
 	}
 
 	public PreviewButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
+		
+		init();
 	}
 
 	private void init() {
 		// Some default coloring.
-		setFillColor(0xFFFFFFFF);
-		setStrokeColor(0xFF000000);
+		setFillColor(0xFFFF00FF);
+		setStrokeColor(0xFFFF0000);
+		setStrokeWidth(4);
+		
+		fillPaint.setStyle(Style.FILL);
+		strokePaint.setStyle(Style.STROKE);
 	}
 	
 	/**
@@ -49,8 +66,8 @@ public class PreviewButton extends ImageButton {
 	 * @param c Color to use. 0 is transparent ("null") while 0xFF?????? is opaque.
 	 */
 	public void setStrokeColor(int c) {
-		strokeColor = c;
-		redraw();
+		strokePaint.setColor(c);
+		this.invalidate();
 	}
 	
 	/**
@@ -58,43 +75,29 @@ public class PreviewButton extends ImageButton {
 	 * @param c Color to use. 0 is transparent ("null") while 0xFF?????? is opaque.
 	 */
 	public void setFillColor(int c) {
-		fillColor = c;
-		redraw();
+		fillPaint.setColor(c);
+		this.invalidate();
 	}
 	
 	/**
 	 * Retrieves the current stroke color in use.
 	 * @return
 	 */
-	public int getStrokeColor() { return strokeColor; }
+	public int getStrokeColor() { return strokePaint.getColor(); }
 	
 	/**
 	 * Retrieves the fill color currently in use.
 	 * @return
 	 */
-	public int getFillColor() { return fillColor; }
+	public int getFillColor() { return fillPaint.getColor(); }
 	
-	/**
-	 * Redraws and resets the Bitmap used to display this button.
-	 */
-	public void redraw() {
-		Bitmap b = Bitmap.createBitmap(this.getWidth()/2, this.getHeight()/2, Config.ARGB_8888);
-		Canvas c = new Canvas(b);
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 		
-		RectF r = new RectF(padding, padding, b.getWidth()-padding, b.getHeight()-padding);
-		
-		Paint p = new Paint();
-		p.setColor(getFillColor());
-		p.setStyle(Style.FILL);
-		c.drawRect(r, p);
-		p.setColor(getStrokeColor());
-		p.setStyle(Style.STROKE);
-		p.setStrokeWidth(strokeWidth);
-		c.drawRect(r, p);
-		
-		this.setImageBitmap(b);
-		
-		// this.setBackgroundColor(getFillColor());
-		
+		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, fillPaint);
+
+		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, strokePaint);
 	}
+
 }

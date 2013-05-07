@@ -116,9 +116,11 @@ public class DrawView extends View {
 		// Drawing order: drawStack, drawBuffer, bounds.
 		drawStack.draw(canvas);
 		
-		if (currentHandler != null) currentHandler.drawBuffer(canvas);
+		if (currentHandler != null) currentHandler.drawBufferPreBounds(canvas);
 		
 		drawBounds(canvas);
+		
+		if (currentHandler != null) currentHandler.drawBufferPostBounds(canvas);
 	}
 
 	@Override
