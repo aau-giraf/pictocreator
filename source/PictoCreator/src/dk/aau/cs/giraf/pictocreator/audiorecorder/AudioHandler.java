@@ -145,7 +145,7 @@ public class AudioHandler {
      * @return File representing the output directory
      */
     private File getDir() {
-        File storageDir = context.getCacheDir();;
+        File storageDir = context.getCacheDir();
 
         return new File(storageDir, "snd");
     }
