@@ -1,10 +1,5 @@
-
 package dk.aau.cs.giraf.pictocreator.management;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -12,13 +7,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View.OnClickListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,7 +22,7 @@ import android.widget.Toast;
 
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
-import dk.aau.cs.giraf.pictogram.Pictogram;
+import dk.aau.cs.giraf.pictogram.*;
 
 public class SaveDialogFragment extends DialogFragment{
     private final static String TAG = "SaveDialog";
@@ -73,6 +66,11 @@ public class SaveDialogFragment extends DialogFragment{
         super.onCreate(SavedInstanceState);
 
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+
+    // public Pictogram(Context context, final String image,
+    //                  final String text, final String audio,
+    //                  final long id) {
+
     }
 
     @Override
@@ -83,6 +81,8 @@ public class SaveDialogFragment extends DialogFragment{
         tmpDialog.setCanceledOnTouchOutside(false);
 
         parentActivity = getActivity();
+
+        // preview = new Pictogram(parentActivity,
 
         storagePictogram = new StoragePictogram(parentActivity);
 
