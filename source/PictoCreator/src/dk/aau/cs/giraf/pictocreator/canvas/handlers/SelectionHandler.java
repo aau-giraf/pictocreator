@@ -49,7 +49,7 @@ public class SelectionHandler extends ActionHandler {
 	 */
 	protected Paint hlPaint = new Paint();
 	
-	protected BitmapEntity resizeIcon, rotateIcon, scrapIcon;
+	protected BitmapEntity resizeIcon, rotateIcon, scrapIcon, flattenIcon;
 	
 	protected int iconSize = 32;
 	
@@ -83,12 +83,16 @@ public class SelectionHandler extends ActionHandler {
 		resizeIcon = new BitmapEntity(getIconBitmap("resize", iconSize, resources));
 		rotateIcon = new BitmapEntity(getIconBitmap("rotate", iconSize, resources));
 		scrapIcon = new BitmapEntity(getIconBitmap("scrap", iconSize, resources));
+		flattenIcon = new BitmapEntity(getIconBitmap("flatten", iconSize, resources));
 	}
 	
 	/**
 	 * Updates the locations of the icon entities based on the selected Entity.
 	 */
 	protected void updateIconLocations() {
+		flattenIcon.setX(selectedEntity.getHitboxLeft()-flattenIcon.getWidth());
+		flattenIcon.setY(selectedEntity.getHitboxTop()-flattenIcon.getHeight());
+		
 		resizeIcon.setAngle(90);
 		resizeIcon.setX(selectedEntity.getHitboxRight());
 		resizeIcon.setY(selectedEntity.getHitboxBottom());
@@ -97,12 +101,7 @@ public class SelectionHandler extends ActionHandler {
 		
 		rotateIcon.setX(selectedEntity.getHitboxLeft()-rotateIcon.getWidth());
 		rotateIcon.setY(selectedEntity.getHitboxBottom());
-		/*
-		Log.i("SelectionHandler.updateIconLocations", "Rotating point: " + String.valueOf(selectedEntity.getAngle()));
-		Log.i("SelectionHandler.updateIconLocations", "Location prior to angle correction: " + rotateIcon.getCenter().toString());
-		rotateIcon.setCenter(rotatePointAroundPoint(rotateIcon.getCenter(), selectedEntity.getAngle(), selectedEntity.getCenter()));
-		Log.i("SelectionHandler.updateIconLocations", "Location after angle correction: " + rotateIcon.getCenter().toString());
-		*/
+
 		scrapIcon.setX(selectedEntity.getHitboxRight());
 		scrapIcon.setY(selectedEntity.getHitboxTop()-scrapIcon.getHeight());
 	}
@@ -122,6 +121,10 @@ public class SelectionHandler extends ActionHandler {
 	
 	protected void scrapEntity(EntityGroup drawStack) {
 		drawStack.removeEntity(selectedEntity);
+	}
+	
+	protected void flattenEntity(EntityGroup drawStack) {
+		Log.e("SelectionHandler.flattenEntity", "Method not yet implemented! The Entity should now be placed on the bottom-most Bitmap.");
 	}
 	
 	protected void deselect() {
@@ -169,6 +172,10 @@ public class SelectionHandler extends ActionHandler {
 				}
 				else if (scrapIcon.collidesWithPoint(px, py)) {
 					scrapEntity(drawStack);
+					deselect();
+				}
+				else if (flattenIcon.collidesWithPoint(px, py)) {
+					flattenEntity(drawStack);
 					deselect();
 				}
 				else if (selectedEntity.collidesWithPoint(px, py)) {
@@ -279,6 +286,7 @@ public class SelectionHandler extends ActionHandler {
 				resizeIcon.draw(canvas);
 				rotateIcon.draw(canvas);
 				scrapIcon.draw(canvas);
+				flattenIcon.draw(canvas);
 			}
 		}
 	}
