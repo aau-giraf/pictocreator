@@ -42,8 +42,8 @@ public class EntityGroup extends Entity {
 	
 	@Override
 	public void draw(Canvas canvas) {
-		for (Entity e : entities){
-			e.draw(canvas);
+		for (int i = entities.size()-1; i >= 0; i--) {
+			entities.get(i).draw(canvas);
 		}
 	}
 	
