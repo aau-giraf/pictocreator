@@ -1,15 +1,18 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment;
+import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment.ImportResultPath;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 public class DrawFragment extends Fragment {
 	private static final String TAG = "DrawFragment";
@@ -172,6 +176,15 @@ public class DrawFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			importDialog = new CamImportDialogFragment();
+			importDialog.setImportPath(new ImportResultPath() {
+				@Override
+				public void onImport(String path) {
+					// Do the import here...
+					// Jojo do your stuff (btw path is the path to chosen image)
+					//Toast.makeText(getActivity(), path, Toast.LENGTH_LONG).show();
+					drawView.loadFromBitmap(BitmapFactory.decodeFile(path));
+				}
+			});
 			importDialog.show(getActivity().getFragmentManager(), TAG);
 		}
 	};

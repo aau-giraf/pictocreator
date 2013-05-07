@@ -31,7 +31,7 @@
         android:layout_below="@+id/image_preview"
         android:background="@drawable/accept_button_xml" />
 		
-	<Button
+	<ImageButton
         android:id="@+id/import_cancel_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -60,6 +60,8 @@
             android:id="@+id/image_names_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:listSelector="@color/croc_selector"
             android:scrollbars="vertical" />
     </FrameLayout>    
 </RelativeLayout>

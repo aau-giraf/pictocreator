@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -169,5 +171,14 @@ public class DrawView extends View {
 						Environment.DIRECTORY_PICTURES), "crocimagetest.jpg")));
 		
 		return doRet;
+	}
+	
+	/**
+	 * Add a new BitmapEntity from a Bitmap source instance.
+	 * @param src The source data.
+	 */
+	public void loadFromBitmap(Bitmap src) {
+		drawStack.addEntity(new BitmapEntity(src));
+		invalidate();
 	}
 }
