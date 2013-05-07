@@ -34,10 +34,14 @@ public class FileHandler {
     public FileHandler(Context context, StoragePictogram storagePictogram){
         this.context = context;
         this.storagePictogram = storagePictogram;
+        String photoFile = "tmpTest/test.jpg";
 
-        imgPath = context.getCacheDir().getPath() + "finalImgName.jpg";
+        // imgPath = Environment.getExternalStorageDirectory().getPath() + File.separator + photoFile;
+        imgPath = context.getCacheDir().getPath() + "/img/"; // + "finalImgName.jpg";
 
-        sndPath = context.getCacheDir().getPath() + "finalSndName.3pg";
+        sndPath = context.getCacheDir().getPath()+ "/snd/";
+        // String finalFilePath = getDir().getPath() + File.separator + savedFileName;
+
 
     }
     public void saveFinalFiles(String textLabel){
@@ -46,21 +50,34 @@ public class FileHandler {
         String image = finalImgPath + textLabel + ".jpg";
         String sound = finalSndPath + textLabel + ".3gp";
 
-        File imgFile = new File(imgPath);
-        File sndFile = new File(sndPath);
+        int imgLength, sndLength;
+
+        File tmpImgFile = new File(imgPath);
+        File[] tmpImgArray = tmpImgFile.listFiles();
+
+        if((imgLength = tmpImgArray.length) > 0){
+            tmpImgFile = tmpImgArray[imgLength - 1];
+        }
+
+        File tmpSndFile = new File(sndPath);
+        File[] tmpSndArray = tmpSndFile.listFiles();
+
+        if((sndLength = tmpSndArray.length) > 0){
+            tmpSndFile = tmpSndArray[sndLength - 1];
+        }
 
         File imageFile = new File(image);
         File soundFile = new File(sound);
 
-        if(imgFile.exists() && imageFile.mkdirs()){
-            copyFile(imgFile, imageFile);
+        if(tmpImgFile.exists() && imageFile.mkdirs()){
+            copyFile(tmpImgFile, imageFile);
             storagePictogram.setImagePath(imageFile.getPath());
         }
         else {
             storagePictogram.setImagePath("");
         }
-        if(sndFile.exists() && soundFile.mkdirs()){
-            copyFile(sndFile, soundFile);
+        if(tmpSndFile.exists() && soundFile.mkdirs()){
+            copyFile(tmpSndFile, soundFile);
             storagePictogram.setAudioPath(soundFile.getPath());
         }
         else {
