@@ -2,10 +2,12 @@ package dk.aau.cs.giraf.pictocreator.management;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import dk.aau.cs.giraf.pictocreator.R;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,16 +15,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class CamImportDialogFragment extends DialogFragment {
 	private final static String TAG = "CamImportDialog";
 	
 	private View view;
-    private ListView listView;
     private Bitmap bitView;
     private ImageView imgView;
     private FrameLayout previewView;
@@ -53,9 +57,10 @@ public class CamImportDialogFragment extends DialogFragment {
                               Bundle savedInstanceState){
         view = inflater.inflate(R.layout.import_dialog, container);
         previewView = (FrameLayout) view.findViewById(R.id.image_preview);
-        listView = (ListView) view.findViewById(R.id.image_names_list);
+        ListView listView = (ListView) view.findViewById(R.id.image_names_list);
         imgsToArray();
         listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(imageSelectClick);
         
         return view;
     }
@@ -82,9 +87,20 @@ public class CamImportDialogFragment extends DialogFragment {
 	}
 	
 	private void changePreview(int position) {
+		previewView.removeAllViews();
 		bitView = BitmapFactory.decodeFile(pathList.get(position));
 		imgView.setImageBitmap(bitView);
 		previewView.addView(imgView);
 	}
+	
+	private final AdapterView.OnItemClickListener imageSelectClick = new AdapterView.OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			Log.d(TAG, String.valueOf(position));
+			changePreview(position);			
+		}
+	};
 	
 }

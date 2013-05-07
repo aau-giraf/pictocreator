@@ -20,19 +20,22 @@ public class StoragePictogram {
     private String audioPath;
     private long author;
     private boolean publicPictogram;
-    private List<String> tags; // tags added by the user which should be converted via generateTagList
-    private HashSet<Tag> tagList;
-    private HashSet<Tag> globalTags;
+    private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
+    private HashSet<Tag> tagList = new HashSet<Tag>();
+    private HashSet<Tag> globalTags = new HashSet<Tag>();
     private long pictogramID;
     private Context context;
     private Helper databaseHelper;
 
     public StoragePictogram(Context context){
         this.context = context;
+        this.databaseHelper = new Helper(this.context);
     }
 
     public StoragePictogram(Context context, String imagePath, String textLabel, String audioPath){
         this.context = context;
+
+        this.databaseHelper = new Helper(this.context);
 
         this.imagePath = imagePath;
         this.textLabel = textLabel;
@@ -103,10 +106,12 @@ public class StoragePictogram {
     private List<Tag> generateTagList(){
         List<Tag> addedTags = new ArrayList<Tag>();
 
-        for(String tag : tags){
-            Tag newTag = insertTag(tag);
+        if(tags.size() > 0){
+            for(String tag : tags){
+                Tag newTag = insertTag(tag);
 
-            addedTags.add(newTag);
+                addedTags.add(newTag);
+            }
         }
 
         return addedTags;
@@ -163,7 +168,7 @@ public class StoragePictogram {
 
         if(media != null){
             List<Tag> addTags = generateTagList();
-            if(addTags != null && addTags.size() > 0){
+            if(addTags.size() > 0){
                 mediaHelper.addTagsToMedia(addTags, media);
             }
         } else {
