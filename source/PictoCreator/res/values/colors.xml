@@ -46,7 +46,9 @@
     <!-- Shadow Colours -->
     <color name="black_shadow">#2A0C0C0C</color>
     
+    <!-- Active theme colors (wrappers) -->
     <color name="croc_head">@color/giraf_green4</color>
     <color name="croc_fragment">@color/giraf_green1</color>
+    <color name="croc_selector">#AAA6D179</color>
     
 </resources>
