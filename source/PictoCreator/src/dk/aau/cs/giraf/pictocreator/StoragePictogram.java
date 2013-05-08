@@ -58,6 +58,10 @@ public class StoragePictogram {
         this.author = author;
     }
 
+    public long getId(){
+        return pictogramID;
+    }
+
     public String getImagePath(){
         return imagePath;
     }
