@@ -157,5 +157,10 @@ n     */
 
         return view;
     }
+    
+    public void onResume() {
+		super.onResume();
+		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+	}
 
 }

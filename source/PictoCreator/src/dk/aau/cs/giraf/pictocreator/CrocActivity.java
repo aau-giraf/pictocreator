@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View.OnClickListener;
@@ -36,6 +37,7 @@ public class CrocActivity extends Activity {
     private ImageButton recordDialogButton;
     private ImageButton saveDialogButton;
     private SaveDialogFragment saveDialog;
+    View decor;
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
@@ -47,9 +49,8 @@ public class CrocActivity extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-        Resources res = getResources();
+        
+        decor = getWindow().getDecorView();
 
         fragSwitch = (ToggleButton)findViewById(R.id.toggleFragments);
 
@@ -93,6 +94,12 @@ public class CrocActivity extends Activity {
             fragTrans = getFragmentManager().beginTransaction();
             fragTrans.replace(R.id.fragmentContainer, drawFragment);
             fragTrans.commit();
+    	}
+    }
+    
+    public void onWindowFocusChanged(boolean hasFocus) {
+    	if(hasFocus) {
+    		decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     	}
     }
 
