@@ -56,7 +56,7 @@ public class CamImportDialogFragment extends DialogFragment {
         
         parentActivity = getActivity();
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        
+
         fileList = new ArrayList<String>();
         pathList = new ArrayList<String>();
         imgView = new ImageView(parentActivity);
@@ -99,6 +99,11 @@ public class CamImportDialogFragment extends DialogFragment {
         return view;
     }
 	
+	public void onResume() {
+		super.onResume();
+		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+	}
+	
 	private void imgsToArray() {
 		
 		int newImgPosition = -1;
@@ -127,8 +132,6 @@ public class CamImportDialogFragment extends DialogFragment {
 		imgView.setImageBitmap(bitView);
 		previewView.addView(imgView);
 	}
-	
-	
 	
 	private final AdapterView.OnItemClickListener imageSelectClick = new AdapterView.OnItemClickListener() {
 
