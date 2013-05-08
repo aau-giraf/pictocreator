@@ -23,6 +23,11 @@ public class FloatPoint {
 		this.y = y;
 	}
 
+	public FloatPoint(FloatPoint src) {
+		x = src.x;
+		y = src.y;
+	}
+
 	public float distance(FloatPoint to){
 		float result = (float)Math.sqrt(Math.abs(x-to.x)+Math.abs(y-to.y));
 		Log.i("FloatPoint.distance", "Distance between "+toString()+" and "+to.toString()+" is "+String.valueOf(result));
@@ -46,11 +51,20 @@ public class FloatPoint {
 		double s = Math.sin(Math.toRadians(amount));
 		
 		// Log.i("FloatPoint.rotate", String.format("Rotating %s by %s around %s.", toString(), amount, pivot.toString()));
+		FloatPoint p = new FloatPoint(pivot);
+		p.x -= x;
+		p.y -= y;
 		
-		x = (float)(pivot.x + c * (x - pivot.x) - s * (y - pivot.y));
-		y = (float)(pivot.y + s * (x - pivot.x) + c * (y - pivot.y));
+		double xn,yn;
 		
-		// Log.i("FloatPoint.rotate", String.format("New point: %s.", toString()));
+		xn = p.x * c - p.y * s;
+		yn = p.x * s + p.y * c;
+		
+		p.x = (float)(xn + x);
+		p.y = (float)(yn + y);
+		
+		x = p.x;
+		y = p.y;
 		
 		return this;
 	}
