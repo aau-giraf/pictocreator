@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
@@ -11,6 +12,7 @@ import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment.ImportRes
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -209,7 +211,8 @@ public class DrawFragment extends Fragment {
 				public void onImport(String path) {
 					// Do the import here...
 					// Jojo do your stuff (btw path is the path to chosen image)
-					Toast.makeText(getActivity(), path, Toast.LENGTH_LONG).show();
+					//Toast.makeText(getActivity(), path, Toast.LENGTH_LONG).show();
+					drawView.loadFromBitmap(BitmapFactory.decodeFile(path));
 				}
 			});
 			importDialog.show(getActivity().getFragmentManager(), TAG);

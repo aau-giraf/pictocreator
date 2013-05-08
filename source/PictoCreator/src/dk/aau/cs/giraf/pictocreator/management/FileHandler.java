@@ -1,9 +1,12 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,9 +22,9 @@ public class FileHandler {
 
     private String imgPath, sndPath;
 
-    private String finalImgPath = Environment.getExternalStorageDirectory().getPath() + "/.giraf/img/";
+    // private File finalImgPath;
 
-    private String finalSndPath = Environment.getExternalStorageDirectory().getPath() + "/.giraf/snd/";
+    // private File finalSndPath;
 
     private static String finalImgName;
 
@@ -34,60 +37,65 @@ public class FileHandler {
     public FileHandler(Context context, StoragePictogram storagePictogram){
         this.context = context;
         this.storagePictogram = storagePictogram;
-        String photoFile = "tmpTest/test.jpg";
-
-        // imgPath = Environment.getExternalStorageDirectory().getPath() + File.separator + photoFile;
-        imgPath = context.getCacheDir().getPath() + "/img/"; // + "finalImgName.jpg";
-
-        sndPath = context.getCacheDir().getPath()+ "/snd/";
-        // String finalFilePath = getDir().getPath() + File.separator + savedFileName;
-
-
     }
+
     public void saveFinalFiles(String textLabel){
         storagePictogram.setTextLabel(textLabel);
 
-        String image = finalImgPath + textLabel + ".jpg";
-        String sound = finalSndPath + textLabel + ".3gp";
+        File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + ".jpg");
+
+        File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + ".3gp");
 
         int imgLength, sndLength;
 
-        File tmpImgFile = new File(imgPath);
+        image.getParentFile().mkdirs();
+        sound.getParentFile().mkdir();
+
+        File tmpImgFile = new File(context.getCacheDir(), "img");
+        tmpImgFile.mkdirs();
         File[] tmpImgArray = tmpImgFile.listFiles();
 
         if((imgLength = tmpImgArray.length) > 0){
             tmpImgFile = tmpImgArray[imgLength - 1];
         }
 
-        File tmpSndFile = new File(sndPath);
+        File tmpSndFile = new File(context.getCacheDir(), "snd");
+        tmpSndFile.mkdirs();
         File[] tmpSndArray = tmpSndFile.listFiles();
 
         if((sndLength = tmpSndArray.length) > 0){
             tmpSndFile = tmpSndArray[sndLength - 1];
         }
 
-        File imageFile = new File(image);
-        File soundFile = new File(sound);
+        // File imageFile = new File(image);
+        // File soundFile = new File(sound);
 
-        if(tmpImgFile.exists() && imageFile.mkdirs()){
-            copyFile(tmpImgFile, imageFile);
-            storagePictogram.setImagePath(imageFile.getPath());
+        if(tmpImgFile.exists()){
+            copyFile(tmpImgFile, image);
+            storagePictogram.setImagePath(image.getPath());
+
         }
         else {
             storagePictogram.setImagePath("");
+            Log.d(TAG, "Images path set to null");
         }
-        if(tmpSndFile.exists() && soundFile.mkdirs()){
-            copyFile(tmpSndFile, soundFile);
-            storagePictogram.setAudioPath(soundFile.getPath());
+        if(tmpSndFile.exists()){
+            copyFile(tmpSndFile, sound);
+            storagePictogram.setAudioPath(sound.getPath());
+
         }
         else {
             storagePictogram.setAudioPath("");
+            Log.d(TAG, "Sound path set to null");
         }
     }
 
     private void copyFile(File from, File to){
         FileInputStream fromFileStream = null;
         FileOutputStream toFileStream = null;
+
+        Log.d(TAG, "From: " + from.getAbsolutePath() + "\n"
+              + "To: " + to.getAbsolutePath());
 
         try {
             fromFileStream = new FileInputStream(from);
@@ -103,11 +111,11 @@ public class FileHandler {
 
         }
         catch(IOException e){
-            Log.d(TAG, "File could not be copied");
+            Log.d(TAG, "File could not be copied" + e.getMessage());
         }
         finally {
             try {
-                if(from.getPath() != null && to.getPath() != null){
+                if(fromFileStream != null && toFileStream != null){
                     fromFileStream.close();
                     toFileStream.close();
                 }

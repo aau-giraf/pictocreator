@@ -2,21 +2,28 @@ package dk.aau.cs.giraf.pictocreator.management;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,6 +40,8 @@ public class SaveDialogFragment extends DialogFragment{
     private ArrayList<String> tags;
     private Activity parentActivity;
     private ImageButton acceptButton;
+
+    private ImageView imgView;
 
     private EditText inputTextLabel;
 
@@ -105,13 +114,46 @@ public class SaveDialogFragment extends DialogFragment{
         inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
 
         // Log.d(TAG, "Created dialog.");
+        int length;
+        Bitmap bitmap = null;
+        // File imgFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "public/");
+        File imgFile = new File(parentActivity.getCacheDir(), "img");
 
-        if(preview != null){
-            preview.renderImage();
-            previewView.addView(preview);
+        imgFile.mkdirs();
 
-            Log.d(TAG, "Set the image, it's super dope now.");
+        Log.d(TAG, "File path: " + imgFile.getPath());
+
+        File[] images = imgFile.listFiles();
+
+        boolean imageDecoded = false;
+
+        if((length = images.length) > 0){
+            Log.d(TAG, "Length of images: " + images.length);
+            imgFile = images[length - 1];
         }
+
+        try {
+            if(imgFile.exists()){
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(imgFile), null, null);
+                imageDecoded = true;
+            }
+        }
+        catch (FileNotFoundException e){
+            Log.e(TAG, "No file was found to decode");
+        }
+
+        imgView = new ImageView(parentActivity);
+        imgView.setImageBitmap(bitmap);
+
+        previewView.addView(imgView);
+
+
+        // if(preview != null){
+        //     preview.renderImage();
+        //     previewView.addView(preview);
+
+        //     Log.d(TAG, "Set the image, it's super dope now.");
+        // }
 
         acceptButton = (ImageButton) view.findViewById(R.id.save_button_positive);
 
