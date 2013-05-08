@@ -32,13 +32,16 @@ public abstract class ActionHandler extends Entity {
 	 */
 	protected Bitmap bufferBitmap;
 	
-	protected int strokeColor;
-	protected int fillColor;
+	private int strokeColor;
+	private int fillColor;
+	private float strokeWidth;
 	
 	public void setStrokeColor(int color) { strokeColor = color; }
 	public int getStrokeColor() { return strokeColor; }
 	public void setFillColor(int color) { fillColor = color; }
 	public int getFillColor() { return fillColor; }
+	public float getStrokeWidth() { return strokeWidth; }
+	public void setStrokeWidth(float width) { strokeWidth = width; }
 	
 	/**
 	 * Primary handling mechanism. On every touch event, this method is invoked

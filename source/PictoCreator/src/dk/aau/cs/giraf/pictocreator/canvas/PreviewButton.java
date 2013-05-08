@@ -12,6 +12,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.ImageButton;
 
 /**
@@ -31,6 +32,7 @@ public class PreviewButton extends ImageButton {
 	
 	public void setStrokeWidth(float width) {
 		strokePaint.setStrokeWidth(width);
+		invalidate();
 	}
 	
 	public PreviewButton(Context context) {
@@ -98,6 +100,21 @@ public class PreviewButton extends ImageButton {
 		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, fillPaint);
 
 		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, strokePaint);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			swapColors();
+			return true;
+		} else return false;
+	}
+	
+	public void swapColors() {
+		int c = fillPaint.getColor();
+		fillPaint.setColor(strokePaint.getColor());
+		strokePaint.setColor(c);
+		invalidate();
 	}
 
 }

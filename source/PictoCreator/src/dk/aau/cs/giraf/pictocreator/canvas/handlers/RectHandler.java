@@ -22,7 +22,8 @@ public class RectHandler extends ShapeHandler {
 	@Override
 	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();
-		this.bufferedEntity = new RectEntity(left, top, right, bottom, fillColor, strokeColor);
+		this.bufferedEntity = new RectEntity(left, top, right, bottom, getFillColor(), getStrokeColor());
+		bufferedEntity.setStrokeWidth(getStrokeWidth());
 		return bufferedEntity;
 	}
 	

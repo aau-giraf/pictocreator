@@ -28,13 +28,24 @@ public class LineHandler extends ShapeHandler {
 	
 	@Override
 	public PrimitiveEntity updateBuffer() {
-		bufferedEntity = new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, strokeColor);
+		bufferedEntity = new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, getStrokeColor());
+		bufferedEntity.setStrokeWidth(getStrokeWidth());
 		return bufferedEntity;
 	}
 	
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
 		drawStack.addEntity(bufferedEntity);
+	}
+	
+	/**
+	 * In order to reduce some ambiguity and usability issues, the line will
+	 * take the fill color as stroke color.
+	 */
+	@Override
+	public void setFillColor(int color) {
+		super.setStrokeColor(color);
+		super.setFillColor(color);
 	}
 
 }

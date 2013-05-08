@@ -16,6 +16,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 
 public class SelectionHandler extends ActionHandler {
 
@@ -305,5 +306,23 @@ public class SelectionHandler extends ActionHandler {
 		canvas.drawRect(0.0f, 0.0f, hitbox.width(), hitbox.height(), hlPaint);
 		
 		canvas.restore();
+	}
+	
+	@Override
+	public void setStrokeColor(int color) {
+		if (selectedEntity != null && selectedEntity.getClass().isAssignableFrom(PrimitiveEntity.class)) {
+			PrimitiveEntity tmp = (PrimitiveEntity)selectedEntity;
+			tmp.setStrokeColor(color);
+		}
+		super.setStrokeColor(color);
+	}
+	
+	@Override
+	public void setFillColor(int color) {
+		if (selectedEntity != null && selectedEntity.getClass().isAssignableFrom(PrimitiveEntity.class)) {
+			PrimitiveEntity tmp = (PrimitiveEntity)selectedEntity;
+			tmp.setFillColor(color);
+		}
+		super.setFillColor(color);
 	}
 }

@@ -61,7 +61,7 @@ public class ColorButton extends ImageButton {
 		this.drawView = dv;
 		this.previewButton = previewButton;
 		setColor(color);
-		setImageResource(R.drawable.blank_100x100);
+		setImageResource(R.drawable.blank_32x32);
 	}
 	
 	protected void applyStrokeColor() {

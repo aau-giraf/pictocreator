@@ -12,6 +12,11 @@ public abstract class PrimitiveEntity extends Entity {
 	
 	public void setFillColor(int color) { fillPaint.setColor(color); }
 	public void setStrokeColor(int color) { strokePaint.setColor(color); }
+	public void setStrokeWidth(float width) { strokePaint.setStrokeWidth(width); }
+	
+	public int getFillColor() { return fillPaint.getColor(); }
+	public int getStrokeColor() { return strokePaint.getColor(); }
+	public float getStrokeWidth() { return strokePaint.getStrokeWidth(); }
 	
 	/**
 	 * Creates a new PrimitiveEntity at a specific location and paint styles.

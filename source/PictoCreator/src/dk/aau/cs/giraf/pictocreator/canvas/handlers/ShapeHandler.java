@@ -63,8 +63,9 @@ public abstract class ShapeHandler extends ActionHandler {
 	public ShapeHandler() {
 		startPoint = endPoint = new FloatPoint(0, 0);
 
-		strokeColor = 0xFF000000;
-		fillColor = 0x55FF0000;
+		setStrokeColor(0xFF000000);
+		setFillColor(0x55FF0000);
+		setStrokeWidth(4);
 	}
 	
 	@Override
@@ -103,7 +104,10 @@ public abstract class ShapeHandler extends ActionHandler {
 			// Validate the pointer ID.
 			if (eventPointerId == this.currentPointerId){
 				// Test for distance between end points to validate even drawing at all.
-				if (startPoint.distance(endPoint) > 1) pushEntity(drawStack);
+				if (startPoint.distance(endPoint) > 1) {
+					pushEntity(drawStack);
+					bufferedEntity = null;
+				}
 				else Log.i(tag, "Shape points are not distinct. Ignoring.");
 
 				doDraw = false;

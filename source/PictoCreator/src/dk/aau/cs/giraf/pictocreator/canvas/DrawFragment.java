@@ -1,5 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import java.util.Currency;
+
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
@@ -22,6 +24,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
 public class DrawFragment extends Fragment {
@@ -82,19 +86,29 @@ public class DrawFragment extends Fragment {
 		ovalHandlerButton = (ImageButton)view.findViewById(R.id.oval_handler_button);
 		ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 		
-		previewButton = (PreviewButton)view.findViewById(R.id.canvasColorPreviewButton);
-		
-		importFragmentButton = (ImageButton)view.findViewById(R.id.start_import_dialog_button);
-		importFragmentButton.setOnClickListener(onImportClick);
+		SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
+		strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
 		
 		// Set initial handler.
 		drawView.setHandler(new FreehandHandler());
 		activeHandlerButton = freehandHandlerButton; 
 		activeHandlerButton.setEnabled(false);
 		
+		View tmp = view.findViewById(R.id.canvasColorPreviewButton);
+		Log.w("DrawFragment.onCreateView", String.format("PreviewButton returned as a %s.", tmp.getClass().toString()));
+		previewButton = (PreviewButton)tmp;
+		previewButton.setStrokeColor(0xFF000000);
+		previewButton.setFillColor(0xFFFFFFFF);
+		drawView.setStrokeColor(previewButton.getStrokeColor());
+		drawView.setFillColor(previewButton.getFillColor());
+		
+		importFragmentButton = (ImageButton)view.findViewById(R.id.start_import_dialog_button);
+		importFragmentButton.setOnClickListener(onImportClick);
+		
 		colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
 		
 		// Add standard HTML colors to the box.
+		addColorButton(0x00000000); // Transparent
 		addColorButton(0xFF000000); // Black
 		addColorButton(0xFFFFFFFF); // White
 		addColorButton(0xFF808080); // Gray
@@ -112,9 +126,9 @@ public class DrawFragment extends Fragment {
 		addColorButton(0xFF800080); // Purple
 		addColorButton(0xFFFF00FF); // Fuchsia
 		
+		colorButtonToolbox.removeViewAt(0); // Remove the placeholder.
 		
-		previewButton.setStrokeColor(0xFF000000);
-		previewButton.setFillColor(0xFFFFFFFF);
+		strokeWidthBar.setProgress(4); // Set default stroke width.
 		
 		return view;
 	}
@@ -180,7 +194,6 @@ public class DrawFragment extends Fragment {
 		public void onClick(View view) {
 			drawView.setHandler(new OvalHandler());
 			setActiveButton(ovalHandlerButton);
-			
 		}
 	};
 	
@@ -190,7 +203,6 @@ public class DrawFragment extends Fragment {
 		public void onClick(View view) {
 			drawView.setHandler(new LineHandler());
 			setActiveButton(lineHandlerButton);
-			
 		}
 	};
 	
@@ -217,5 +229,16 @@ public class DrawFragment extends Fragment {
 			});
 			importDialog.show(getActivity().getFragmentManager(), TAG);
 		}
+	};
+	
+	private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			previewButton.setStrokeWidth(progress);
+			drawView.setStrokeWidth(progress);
+			Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
+		};
+		
+		public void onStopTrackingTouch(SeekBar seekBar) {};
+		public void onStartTrackingTouch(SeekBar seekBar) {};
 	};
 }

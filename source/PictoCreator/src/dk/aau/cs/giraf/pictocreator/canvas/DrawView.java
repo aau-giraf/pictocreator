@@ -31,7 +31,7 @@ public class DrawView extends View {
 	/**
 	 * The currently active handler for touch events.
 	 */
-	ActionHandler currentHandler;
+	protected ActionHandler currentHandler;
 	
 	/**
 	 * Bounds for the image. These bounds will be used when saving to a bitmap,
@@ -41,8 +41,9 @@ public class DrawView extends View {
 	
 	Paint boundsPaint = new Paint();
 	
-	protected int strokeColor = 0xFF000000;
-	protected int fillColor = 0xCCFF0000;
+	private int strokeColor = 0xFF000000;
+	private int fillColor = 0xCCFF0000;
+	private float strokeWidth = 4;
 	
 	public DrawView(Context context) {
 		super(context);
@@ -97,16 +98,29 @@ public class DrawView extends View {
 		this.currentHandler = handler;
 		this.currentHandler.setFillColor(fillColor);
 		this.currentHandler.setStrokeColor(strokeColor);
+		this.currentHandler.setStrokeWidth(strokeWidth);
+	}
+	
+	public ActionHandler getCurrentHandler() {
+		return currentHandler;
 	}
 	
 	public void setFillColor(int color) {
 		this.currentHandler.setFillColor(color);
 		this.fillColor = color;
+		invalidate(); // Handler may need redraw.
 	}
 	
 	public void setStrokeColor(int color) {
 		this.currentHandler.setStrokeColor(color);
 		this.strokeColor = color;
+		invalidate(); // Handler may need redraw.
+	}
+	
+	public void setStrokeWidth(float width) {
+		this.currentHandler.setStrokeWidth(width);
+		this.strokeWidth = width;
+		invalidate();
 	}
 	
 	@Override

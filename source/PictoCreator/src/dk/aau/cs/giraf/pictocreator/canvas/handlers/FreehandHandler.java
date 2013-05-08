@@ -60,7 +60,7 @@ public class FreehandHandler extends ShapeHandler {
 						// Register the ID of the pointer responsible for the down event. This is what we actually track.
 			this.currentPointerId = eventPointerId;
 			
-			bufferedEntity = new FreehandEntity(strokeColor);
+			bufferedEntity = new FreehandEntity(getFillColor());
 			
 			Log.i(tag, "Pointer down. Registering.");
 			
