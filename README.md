@@ -1,5 +1,7 @@
-FILL OUT
+To build:
 
-By Gucci (Faldborg)
+cd source/Pictocreator/
 
-Need submodules.
+ant debug
+
+Be happy.
