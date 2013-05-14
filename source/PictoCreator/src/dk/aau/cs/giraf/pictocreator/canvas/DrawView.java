@@ -191,7 +191,7 @@ public class DrawView extends View {
 		String imageFile = "GImage_canvas.jpg";
 
 		doRet.compress(Bitmap.CompressFormat.JPEG, 100,
-                               new FileOutputStream(new File(this.context.getCacheDir().getAbsolutePath(), "cvs/" + imageFile)));
+                               new FileOutputStream(new File(this.context.getCacheDir(), "cvs/" + imageFile)));
                                                              // Environment.getExternalStoragePublicDirectory(
                                                              // Environment.DIRECTORY_PICTURES),
 

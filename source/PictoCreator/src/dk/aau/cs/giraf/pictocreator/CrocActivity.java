@@ -148,7 +148,7 @@ public class CrocActivity extends Activity {
             public void onClick(View view) {
                 saveDialog = new SaveDialogFragment();
 
-                saveDialog.setPreview(drawFragment.saveBitmap());
+                drawFragment.saveBitmap();
 
                 saveDialog.setPictogram(storagePictogram);
 

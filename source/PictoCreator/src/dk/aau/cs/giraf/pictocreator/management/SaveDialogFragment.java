@@ -116,7 +116,7 @@ public class SaveDialogFragment extends DialogFragment{
         // Log.d(TAG, "Created dialog.");
         int length;
         Bitmap bitmap = null;
-        File imgFile = new File(parentActivity.getCacheDir(), "img");
+        File imgFile = new File(parentActivity.getCacheDir(), "cvs");
 
         imgFile.mkdirs();
 
@@ -132,20 +132,20 @@ public class SaveDialogFragment extends DialogFragment{
             imgFile = images[length - 1];
         }
 
-        // try {
-        //     if(imgFile.exists()){
-        //         bitmap = BitmapFactory.decodeStream(new FileInputStream(imgFile), null, null);
-        //         imageDecoded = true;
-        //     }
-        // }
-        // catch (FileNotFoundException e){
-        //     Log.e(TAG, "No file was found to decode");
-        // }
+        try {
+            if(imgFile.exists()){
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(imgFile), null, null);
+                imageDecoded = true;
+            }
+        }
+        catch (FileNotFoundException e){
+            Log.e(TAG, "No file was found to decode");
+        }
 
         imgView = new ImageView(parentActivity);
 
-        if(preview != null){
-            imgView.setImageBitmap(preview);
+        if(bitmap != null){
+            imgView.setImageBitmap(bitmap);
         }
 
         previewView.addView(imgView);

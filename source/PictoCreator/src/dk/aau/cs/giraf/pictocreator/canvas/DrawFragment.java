@@ -150,15 +150,21 @@ public class DrawFragment extends Fragment {
 	}
 
 
-    public Bitmap saveBitmap(){
-        Bitmap tmp = null;
+    public void saveBitmap(){
+        // Bitmap tmp = null;
+        // try {
+        //     tmp = drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
+        // }
+        // catch (FileNotFoundException e){
+        //     Log.e(TAG, "No file was found to decode");
+        // }
         try {
-            tmp = drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
+            drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
         }
         catch (FileNotFoundException e){
             Log.e(TAG, "No file was found to decode");
         }
-        return tmp;
+
     }
 
 	/**
