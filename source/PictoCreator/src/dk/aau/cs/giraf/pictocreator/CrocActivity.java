@@ -25,19 +25,20 @@ import dk.aau.cs.giraf.pictocreator.management.*;
 public class CrocActivity extends Activity {
 
     private final static String TAG = "CrocMain";
-    private static Intent girafIntent;
+    private Intent girafIntent;
 
-	private FragmentManager fragManager;
-	private FragmentTransaction fragTrans;
-	private ToggleButton fragSwitch;
-	private ImageButton dialogButton;
-	private CamFragment camFragment;
-	private DrawFragment drawFragment;
-	private RecordDialogFragment recordDialog;
+    private FragmentManager fragManager;
+    private FragmentTransaction fragTrans;
+    private ToggleButton fragSwitch;
+    private ImageButton dialogButton;
+    private CamFragment camFragment;
+    private DrawFragment drawFragment;
+    private RecordDialogFragment recordDialog;
     private ImageButton recordDialogButton;
     private ImageButton saveDialogButton;
     private SaveDialogFragment saveDialog;
-    View decor;
+    private StoragePictogram storagePictogram;
+    private View decor;
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
@@ -49,7 +50,10 @@ public class CrocActivity extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+        girafIntent = getIntent();
+        createStoragePictogram();
+
         decor = getWindow().getDecorView();
 
         fragSwitch = (ToggleButton)findViewById(R.id.toggleFragments);
@@ -83,24 +87,39 @@ public class CrocActivity extends Activity {
 
     public void switchFragments(View view) {
 
-    	if(fragSwitch.isChecked()) {
+        if(fragSwitch.isChecked()) {
             camFragment = new CamFragment();
             fragTrans = getFragmentManager().beginTransaction();
             fragTrans.replace(R.id.fragmentContainer, camFragment);
             fragTrans.commit();
-    	}
-    	else if(!fragSwitch.isChecked()) {
+        }
+        else if(!fragSwitch.isChecked()) {
             drawFragment = new DrawFragment();
             fragTrans = getFragmentManager().beginTransaction();
             fragTrans.replace(R.id.fragmentContainer, drawFragment);
             fragTrans.commit();
-    	}
+        }
     }
-    
+
     public void onWindowFocusChanged(boolean hasFocus) {
-    	if(hasFocus) {
-    		decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-    	}
+        if(hasFocus) {
+                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        }
+    }
+
+    /**
+     * <p> Method which creates the pictogram used to store the image on screen.
+     *
+     *
+     */
+    private void createStoragePictogram (){
+        long author;
+        storagePictogram = new StoragePictogram(this);
+
+        if(girafIntent != null){
+            author = girafIntent.getLongExtra("currentGuardianID", 0);
+            storagePictogram.setAuthor(author);
+        }
     }
 
     /**
@@ -122,12 +141,15 @@ public class CrocActivity extends Activity {
                 recordDialog = new RecordDialogFragment();
                 recordDialog.show(getFragmentManager(), TAG);
             }
-	};
+        };
 
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
             public void onClick(View view) {
                 saveDialog = new SaveDialogFragment();
+
+                saveDialog.setPictogram(storagePictogram);
+
                 saveDialog.show(getFragmentManager(), TAG);
             }
-	};
+        };
 }

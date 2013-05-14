@@ -70,6 +70,10 @@ public class SaveDialogFragment extends DialogFragment{
         }
     }
 
+    public void setPictogram(StoragePictogram storageP){
+        this.storagePictogram = storageP;
+    }
+
     @Override
     public void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
@@ -90,13 +94,6 @@ public class SaveDialogFragment extends DialogFragment{
         tmpDialog.setCanceledOnTouchOutside(false);
 
         parentActivity = getActivity();
-
-        // preview = new Pictogram(parentActivity,
-
-        storagePictogram = new StoragePictogram(parentActivity);
-
-        long author = parentActivity.getIntent().getLongExtra("currentGuardianID", 0);
-        storagePictogram.setAuthor(author);
 
         fileHandler = new FileHandler(parentActivity, storagePictogram);
 
