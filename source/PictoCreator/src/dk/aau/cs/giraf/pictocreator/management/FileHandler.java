@@ -14,10 +14,12 @@ import android.os.Environment;
 import android.util.Log;
 import android.content.Context;
 import android.widget.Toast;
+import android.app.Activity;
+import android.content.Intent;
 
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
-public class FileHandler {
+public class FileHandler{
     private static final String TAG = "FileHandler";
 
     private String imgPath, sndPath;
@@ -32,10 +34,10 @@ public class FileHandler {
 
     private StoragePictogram storagePictogram;
 
-    private Context context;
+    private Activity activity;
 
-    public FileHandler(Context context, StoragePictogram storagePictogram){
-        this.context = context;
+    public FileHandler(Activity activity, StoragePictogram storagePictogram){
+        this.activity = activity;
         this.storagePictogram = storagePictogram;
     }
 
@@ -47,25 +49,30 @@ public class FileHandler {
         File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + ".3gp");
 
         int imgLength, sndLength;
+        Intent girafIntent = activity.getIntent();
+        long author = girafIntent.getLongExtra("currentGuardianID", 0);
+
 
         image.getParentFile().mkdirs();
         sound.getParentFile().mkdir();
 
-        File tmpImgFile = new File(context.getCacheDir(), "img");
+        File tmpImgFile = new File(activity.getCacheDir(), "img");
         tmpImgFile.mkdirs();
         File[] tmpImgArray = tmpImgFile.listFiles();
 
-        // todo: this is an assignment in an if statement, why?
-        if((imgLength = tmpImgArray.length) > 0){
+        if(tmpImgArray.length > 0){
+            imgLength = tmpImgArray.length;
             tmpImgFile = tmpImgArray[imgLength - 1];
         }
 
-        File tmpSndFile = new File(context.getCacheDir(), "snd");
+        File tmpSndFile = new File(activity.getCacheDir(), "snd");
         tmpSndFile.mkdirs();
         File[] tmpSndArray = tmpSndFile.listFiles();
 
-        if((sndLength = tmpSndArray.length) > 0){
+        if(tmpSndArray.length > 0){
+            sndLength = tmpSndArray.length;
             tmpSndFile = tmpSndArray[sndLength - 1];
+
         }
 
         // File imageFile = new File(image);

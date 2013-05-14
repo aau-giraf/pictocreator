@@ -76,15 +76,15 @@ public class SaveDialogFragment extends DialogFragment{
 
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 
-    // public Pictogram(Context context, final String image,
-    //                  final String text, final String audio,
-    //                  final long id) {
+        // public Pictogram(Context context, final String image,
+        //                  final String text, final String audio,
+        //                  final long id) {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState){
+                             Bundle savedInstanceState){
         final Dialog tmpDialog = getDialog();
 
         tmpDialog.setCanceledOnTouchOutside(false);
@@ -94,6 +94,9 @@ public class SaveDialogFragment extends DialogFragment{
         // preview = new Pictogram(parentActivity,
 
         storagePictogram = new StoragePictogram(parentActivity);
+
+        long author = parentActivity.getIntent().getLongExtra("currentGuardianID", 0);
+        storagePictogram.setAuthor(author);
 
         fileHandler = new FileHandler(parentActivity, storagePictogram);
 
@@ -116,7 +119,6 @@ public class SaveDialogFragment extends DialogFragment{
         // Log.d(TAG, "Created dialog.");
         int length;
         Bitmap bitmap = null;
-        // File imgFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "public/");
         File imgFile = new File(parentActivity.getCacheDir(), "img");
 
         imgFile.mkdirs();
@@ -127,7 +129,8 @@ public class SaveDialogFragment extends DialogFragment{
 
         boolean imageDecoded = false;
 
-        if((length = images.length) > 0){
+        if(images.length > 0){
+            length = images.length;
             Log.d(TAG, "Length of images: " + images.length);
             imgFile = images[length - 1];
         }
@@ -191,10 +194,10 @@ public class SaveDialogFragment extends DialogFragment{
 
         return view;
     }
-    
+
     public void onResume() {
-		super.onResume();
-		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-	}
+        super.onResume();
+        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+    }
 
 }
