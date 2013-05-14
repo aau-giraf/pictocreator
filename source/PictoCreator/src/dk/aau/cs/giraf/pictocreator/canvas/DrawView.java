@@ -3,8 +3,6 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 
@@ -190,12 +188,10 @@ public class DrawView extends View {
 
 		Bitmap doRet = Bitmap.createBitmap(toRet, imageBounds.left, imageBounds.top, imageBounds.width(), imageBounds.height());
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
-		String date = dateFormat.format(new Date());
-		String imageFile = "GImage_" + date + ".jpg";
+		String imageFile = "GImage_canvas.jpg";
 
 		doRet.compress(Bitmap.CompressFormat.JPEG, 100,
-                               new FileOutputStream(new File(this.context.getCacheDir().getAbsolutePath(), "img/" + imageFile)));
+                               new FileOutputStream(new File(this.context.getCacheDir().getAbsolutePath(), "cvs/" + imageFile)));
                                                              // Environment.getExternalStoragePublicDirectory(
                                                              // Environment.DIRECTORY_PICTURES),
 

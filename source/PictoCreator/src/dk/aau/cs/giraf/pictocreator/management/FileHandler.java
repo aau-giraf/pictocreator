@@ -56,7 +56,7 @@ public class FileHandler{
         image.getParentFile().mkdirs();
         sound.getParentFile().mkdir();
 
-        File tmpImgFile = new File(activity.getCacheDir(), "img");
+        File tmpImgFile = new File(activity.getCacheDir(), "cvs");
         tmpImgFile.mkdirs();
         File[] tmpImgArray = tmpImgFile.listFiles();
 
