@@ -36,7 +36,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_below="@+id/save_preview"
-        android:layout_marginBottom="60dp" />
+        android:layout_marginBottom="60dp"
+        android:hint="Pictogram navn"/>
 
     <ImageButton
         android:id="@+id/save_button_positive"
