@@ -1,10 +1,12 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -176,9 +178,14 @@ public class SaveDialogFragment extends DialogFragment{
                 @Override
                 public void onClick(View view){
                     textLabel = inputTextLabel.getText().toString();
+                    Log.d(TAG, "TextLabel: " + textLabel);
 
-                    if(textLabel == null){
-                        textLabel = defaultTextLabel;
+                    if(textLabel.matches("") || textLabel == null){
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
+                        String date = dateFormat.format(new Date());
+                        String label = "GPictogram_" + date;
+                        Log.d(TAG, "TextLavel was empty/null, replaced with " + label);
+                        textLabel = label;
                     }
 
                     fileHandler.saveFinalFiles(textLabel);
