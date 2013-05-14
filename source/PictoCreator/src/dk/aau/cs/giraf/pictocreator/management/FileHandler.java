@@ -108,12 +108,12 @@ public class FileHandler{
 
             byte[] buffer = new byte[1024];
 
-            int length;
+            int length = fromFileStream.read(buffer);
 
-            do {
-                length = fromFileStream.read(buffer);
+            while(length > 0){
                 toFileStream.write(buffer, 0, length);
-            } while(length > 0);
+                length = fromFileStream.read(buffer);
+            }
         }
         catch(IOException e){
             Log.d(TAG, "File could not be copied" + e.getMessage());

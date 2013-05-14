@@ -36,7 +36,7 @@ public class SaveDialogFragment extends DialogFragment{
 
     private View view;
     private FrameLayout previewView;
-    private Pictogram preview;
+    private Bitmap preview;
     private ArrayList<String> tags;
     private Activity parentActivity;
     private ImageButton acceptButton;
@@ -58,7 +58,7 @@ public class SaveDialogFragment extends DialogFragment{
         // empty constructor required for DialogFragment
     }
 
-    public void setPreview(Pictogram preview){
+    public void setPreview(Bitmap preview){
         this.preview = preview;
     }
 
@@ -132,18 +132,21 @@ public class SaveDialogFragment extends DialogFragment{
             imgFile = images[length - 1];
         }
 
-        try {
-            if(imgFile.exists()){
-                bitmap = BitmapFactory.decodeStream(new FileInputStream(imgFile), null, null);
-                imageDecoded = true;
-            }
-        }
-        catch (FileNotFoundException e){
-            Log.e(TAG, "No file was found to decode");
-        }
+        // try {
+        //     if(imgFile.exists()){
+        //         bitmap = BitmapFactory.decodeStream(new FileInputStream(imgFile), null, null);
+        //         imageDecoded = true;
+        //     }
+        // }
+        // catch (FileNotFoundException e){
+        //     Log.e(TAG, "No file was found to decode");
+        // }
 
         imgView = new ImageView(parentActivity);
-        imgView.setImageBitmap(bitmap);
+
+        if(preview != null){
+            imgView.setImageBitmap(preview);
+        }
 
         previewView.addView(imgView);
 
