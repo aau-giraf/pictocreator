@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -146,6 +147,8 @@ public class CrocActivity extends Activity {
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
             public void onClick(View view) {
                 saveDialog = new SaveDialogFragment();
+
+                saveDialog.setPreview(drawFragment.saveBitmap());
 
                 saveDialog.setPictogram(storagePictogram);
 
