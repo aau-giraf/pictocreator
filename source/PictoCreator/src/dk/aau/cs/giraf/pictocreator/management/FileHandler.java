@@ -55,6 +55,7 @@ public class FileHandler {
         tmpImgFile.mkdirs();
         File[] tmpImgArray = tmpImgFile.listFiles();
 
+        // todo: this is an assignment in an if statement, why?
         if((imgLength = tmpImgArray.length) > 0){
             tmpImgFile = tmpImgArray[imgLength - 1];
         }
@@ -73,18 +74,15 @@ public class FileHandler {
         if(tmpImgFile.exists()){
             copyFile(tmpImgFile, image);
             storagePictogram.setImagePath(image.getPath());
-
-        }
-        else {
+        } else {
             storagePictogram.setImagePath("");
             Log.d(TAG, "Images path set to null");
         }
+
         if(tmpSndFile.exists()){
             copyFile(tmpSndFile, sound);
             storagePictogram.setAudioPath(sound.getPath());
-
-        }
-        else {
+        } else {
             storagePictogram.setAudioPath("");
             Log.d(TAG, "Sound path set to null");
         }
