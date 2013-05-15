@@ -12,7 +12,8 @@ import android.content.Intent;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
 /**
- * 
+ * Class used for handling of files
+ *
  * @author Croc
  *
  */
@@ -20,10 +21,6 @@ public class FileHandler{
     private static final String TAG = "FileHandler";
 
     private String imgPath, sndPath;
-
-    // private File finalImgPath;
-
-    // private File finalSndPath;
 
     private static String finalImgName;
 
@@ -34,18 +31,19 @@ public class FileHandler{
     private Activity activity;
 
     /**
-     * 
-     * @param activity
-     * @param storagePictogram
+     * Constructor for the class
+     * @param activity The activity which was used to call the FileHandler
+     * @param storagePictogram The StoragePictogram to use for storage
      */
     public FileHandler(Activity activity, StoragePictogram storagePictogram){
-        this.activity = activity;
+        this.activity = activity;n
         this.storagePictogram = storagePictogram;
     }
 
     /**
-     * 
-     * @param textLabel
+     * Function for saving the image- and audio-files (if they exists)
+     * on the devices external storage
+     * @param textLabel The textLabel/name for the Pictogram to store
      */
     public void saveFinalFiles(String textLabel){
         storagePictogram.setTextLabel(textLabel);
@@ -99,9 +97,9 @@ public class FileHandler{
     }
 
     /**
-     * 
-     * @param from
-     * @param to
+     * Method for copying file.
+     * @param from The file to copy form
+     * @param to The File to Copy to
      */
     private void copyFile(File from, File to){
         FileInputStream fromFileStream = null;

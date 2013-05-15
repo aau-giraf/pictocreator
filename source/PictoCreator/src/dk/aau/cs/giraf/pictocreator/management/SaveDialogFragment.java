@@ -32,7 +32,8 @@ import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
 /**
- * 
+ * Dialog used for saving a Pictogram
+ *
  * @author Croc
  *
  */
@@ -60,23 +61,23 @@ public class SaveDialogFragment extends DialogFragment{
     private FileHandler fileHandler;
 
     /**
-     * 
+     * Constructor for the Dialog
      */
     public SaveDialogFragment(){
         // empty constructor required for DialogFragment
     }
 
     /**
-     * 
-     * @param preview
+     * Method for setting the preview in the dialog
+     * @param preview The bitmap to preview
      */
     public void setPreview(Bitmap preview){
         this.preview = preview;
     }
 
     /**
-     * 
-     * @param tags
+     * Method for associating tags to the pictogram
+     * @param tags The list of tags to associate to the pictogram
      */
     public void setTags(Collection<String> tags){
         //this.tags = (ArrayList<String>) tags;
@@ -87,15 +88,14 @@ public class SaveDialogFragment extends DialogFragment{
     }
 
     /**
-     * 
-     * @param storageP
+     * Setter for the StoragePictogram variable
+     * @param storageP The StoragePictogram to set
      */
     public void setPictogram(StoragePictogram storageP){
         this.storagePictogram = storageP;
     }
-
     /**
-     * 
+     * Method called when the dialog is first created
      */
     @Override
     public void onCreate(Bundle SavedInstanceState){
@@ -110,7 +110,7 @@ public class SaveDialogFragment extends DialogFragment{
     }
 
     /**
-     * 
+     * Method called when the view for the dialog is created
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -218,7 +218,7 @@ public class SaveDialogFragment extends DialogFragment{
     }
 
     /**
-     * 
+     * Method called when the dialog is resumed
      */
     public void onResume() {
         super.onResume();
