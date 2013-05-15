@@ -183,7 +183,6 @@ public class SaveDialogFragment extends DialogFragment{
 
                 @Override
                 public void onClick(View view){
-                    // TODO: Make function to call when dialog is canceled
                     tmpDialog.cancel();
                 }
             });
@@ -209,7 +208,6 @@ public class SaveDialogFragment extends DialogFragment{
                         Toast.makeText(parentActivity, "Saved the pictogram :D", Toast.LENGTH_SHORT).show();
                     }
 
-                    // TODO: Make function to call when dialog is "accepted"
                     tmpDialog.dismiss();
                 }
             });
