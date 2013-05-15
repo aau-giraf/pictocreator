@@ -2,15 +2,10 @@ package dk.aau.cs.giraf.pictocreator.management;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
-import dk.aau.cs.giraf.pictocreator.*;
 import dk.aau.cs.giraf.pictocreator.R;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -28,6 +22,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Croc
+ *
+ */
 public class CamImportDialogFragment extends DialogFragment {
 	private final static String TAG = "CamImportDialog";
 	
@@ -46,10 +45,16 @@ public class CamImportDialogFragment extends DialogFragment {
     
     private Activity parentActivity;
     
+    /**
+     * 
+     */
     public CamImportDialogFragment() {
     	//Empty
     }
 	
+    /**
+     * 
+     */
 	@Override
     public void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
@@ -62,6 +67,9 @@ public class CamImportDialogFragment extends DialogFragment {
         imgView = new ImageView(parentActivity);
     }
 	
+	/**
+	 * 
+	 */
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState){
@@ -99,11 +107,17 @@ public class CamImportDialogFragment extends DialogFragment {
         return view;
     }
 	
+	/**
+	 * 
+	 */
 	public void onResume() {
 		super.onResume();
 		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 	}
 	
+	/**
+	 * 
+	 */
 	private void imgsToArray() {
 		
 		int newImgPosition = -1;
@@ -125,6 +139,10 @@ public class CamImportDialogFragment extends DialogFragment {
 		arrayAdapter = new ArrayAdapter<String>(parentActivity, R.layout.import_listview_text, fileList);
 	}
 	
+	/**
+	 * 
+	 * @param position
+	 */
 	private void changePreview(int position) {
 		previewView.removeAllViews();
 		currentListPosition = position;
@@ -133,6 +151,9 @@ public class CamImportDialogFragment extends DialogFragment {
 		previewView.addView(imgView);
 	}
 	
+	/**
+	 * 
+	 */
 	private final AdapterView.OnItemClickListener imageSelectClick = new AdapterView.OnItemClickListener() {
 
 		@Override
@@ -144,10 +165,19 @@ public class CamImportDialogFragment extends DialogFragment {
 		}
 	};
 	
+	/**
+	 * 
+	 * @author Croc
+	 *
+	 */
 	public interface ImportResultPath {
 		void onImport(String path);
 	}
 	
+	/**
+	 * 
+	 * @param importPath
+	 */
 	public void setImportPath(ImportResultPath importPath) {
 		resultPath = importPath;
 	}

@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
-import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;

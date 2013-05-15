@@ -1,24 +1,21 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import android.os.Environment;
 import android.util.Log;
-import android.content.Context;
-import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
 
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
+/**
+ * 
+ * @author Croc
+ *
+ */
 public class FileHandler{
     private static final String TAG = "FileHandler";
 
@@ -36,11 +33,20 @@ public class FileHandler{
 
     private Activity activity;
 
+    /**
+     * 
+     * @param activity
+     * @param storagePictogram
+     */
     public FileHandler(Activity activity, StoragePictogram storagePictogram){
         this.activity = activity;
         this.storagePictogram = storagePictogram;
     }
 
+    /**
+     * 
+     * @param textLabel
+     */
     public void saveFinalFiles(String textLabel){
         storagePictogram.setTextLabel(textLabel);
 
@@ -75,9 +81,6 @@ public class FileHandler{
 
         }
 
-        // File imageFile = new File(image);
-        // File soundFile = new File(sound);
-
         if(tmpImgFile.exists()){
             copyFile(tmpImgFile, image);
             storagePictogram.setImagePath(image.getPath());
@@ -95,6 +98,11 @@ public class FileHandler{
         }
     }
 
+    /**
+     * 
+     * @param from
+     * @param to
+     */
     private void copyFile(File from, File to){
         FileInputStream fromFileStream = null;
         FileOutputStream toFileStream = null;

@@ -1,7 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import android.util.Log;
-
 /**
  * The AngleRectF is an improvement upon the basic RectF in the standard
  * framework. It uses a more complex method to model the rotated rectangle

@@ -4,7 +4,6 @@ import dk.aau.cs.giraf.pictocreator.R;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
 

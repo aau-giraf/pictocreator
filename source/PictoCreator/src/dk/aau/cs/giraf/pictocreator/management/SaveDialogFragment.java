@@ -14,7 +14,6 @@ import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
@@ -31,8 +30,12 @@ import android.widget.Toast;
 
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
-import dk.aau.cs.giraf.pictogram.*;
 
+/**
+ * 
+ * @author Croc
+ *
+ */
 public class SaveDialogFragment extends DialogFragment{
     private final static String TAG = "SaveDialog";
 
@@ -56,14 +59,25 @@ public class SaveDialogFragment extends DialogFragment{
 
     private FileHandler fileHandler;
 
+    /**
+     * 
+     */
     public SaveDialogFragment(){
         // empty constructor required for DialogFragment
     }
 
+    /**
+     * 
+     * @param preview
+     */
     public void setPreview(Bitmap preview){
         this.preview = preview;
     }
 
+    /**
+     * 
+     * @param tags
+     */
     public void setTags(Collection<String> tags){
         //this.tags = (ArrayList<String>) tags;
         this.tags = new ArrayList<String>();
@@ -72,10 +86,17 @@ public class SaveDialogFragment extends DialogFragment{
         }
     }
 
+    /**
+     * 
+     * @param storageP
+     */
     public void setPictogram(StoragePictogram storageP){
         this.storagePictogram = storageP;
     }
 
+    /**
+     * 
+     */
     @Override
     public void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
@@ -88,6 +109,9 @@ public class SaveDialogFragment extends DialogFragment{
 
     }
 
+    /**
+     * 
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -115,7 +139,6 @@ public class SaveDialogFragment extends DialogFragment{
 
         inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
 
-        // Log.d(TAG, "Created dialog.");
         int length;
         Bitmap bitmap = null;
         File imgFile = new File(parentActivity.getCacheDir(), "cvs");
@@ -151,14 +174,6 @@ public class SaveDialogFragment extends DialogFragment{
         }
 
         previewView.addView(imgView);
-
-
-        // if(preview != null){
-        //     preview.renderImage();
-        //     previewView.addView(preview);
-
-        //     Log.d(TAG, "Set the image, it's super dope now.");
-        // }
 
         acceptButton = (ImageButton) view.findViewById(R.id.save_button_positive);
 
@@ -202,6 +217,9 @@ public class SaveDialogFragment extends DialogFragment{
         return view;
     }
 
+    /**
+     * 
+     */
     public void onResume() {
         super.onResume();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);

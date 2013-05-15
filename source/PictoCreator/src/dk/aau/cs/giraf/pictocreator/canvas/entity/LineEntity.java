@@ -1,7 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
-import java.util.Vector;
-
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 
 import android.graphics.Canvas;

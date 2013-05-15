@@ -1,10 +1,8 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import java.util.Currency;
 import java.io.FileNotFoundException;
 
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
@@ -12,9 +10,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment.ImportResultPath;
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Toast;
 
 public class DrawFragment extends Fragment {
 	private static final String TAG = "DrawFragment";
@@ -151,13 +146,6 @@ public class DrawFragment extends Fragment {
 
 
     public void saveBitmap(){
-        // Bitmap tmp = null;
-        // try {
-        //     tmp = drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
-        // }
-        // catch (FileNotFoundException e){
-        //     Log.e(TAG, "No file was found to decode");
-        // }
         try {
             drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
         }
