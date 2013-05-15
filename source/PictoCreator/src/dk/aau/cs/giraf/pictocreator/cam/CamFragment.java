@@ -15,7 +15,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
-
+/**
+ * Fragment class for the camera part of the application
+ *
+ * @author Croc
+ *
+ */
 public class CamFragment extends Fragment {
 	private final static String TAG = "CamFragment";
 	private final static int clickDelay = 1000;
@@ -25,9 +30,12 @@ public class CamFragment extends Fragment {
 	ImageButton captureButton, switchButton;
 	ToggleButton colorEffectButton;
 	FrameLayout preview;
-	
+
 	private Activity parentActivity;
-	
+
+	/**
+	 * Method called when the fragment is fist created
+	 */
 	@Override
 	public void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
@@ -35,15 +43,18 @@ public class CamFragment extends Fragment {
 
 		photoHandler = new PhotoHandler(parentActivity);
 		camFeed = new CamPreview(parentActivity);
-		
+
 	}
-	
+
+	/**
+	 * Method for creating the view for the fragment
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		view = inflater.inflate(R.layout.cam_fragment, container, false);
-		
+
 		preview = (FrameLayout)view.findViewById(R.id.camera_preview);
 		preview.addView(camFeed);
 		captureButton = (ImageButton)view.findViewById(R.id.button_capture);
@@ -52,44 +63,45 @@ public class CamFragment extends Fragment {
 		colorEffectButton.setOnClickListener(colorClick);
 		switchButton = (ImageButton)view.findViewById(R.id.switch_cam);
 		switchButton.setOnClickListener(switchClick);
-		
+
 		if(!camFeed.hasMultiCams) {
 			switchButton.setEnabled(false);
 		}
 		return view;
 	}
-	
+
 	/**
-	 * 	
-	 * @param v
+	 * On click listener to capture photos
+	 * @param view The view which is clicked
 	 */
-	public void capturePhoto(View v) {
+	public void capturePhoto(View view) {
 		camFeed.takePicture(shutterCall, null, photoHandler);
 	}
-	
+
 	/**
-	 * 
+	 * Method called when the fragment is resumed
 	 */
 	@Override
 	public void onResume() {
 		super.onResume();
 	}
-	
+
 	/**
-	 * 
+	 * Method called when the fragment is paused
 	 */
 	@Override
 	public void onPause() {
 		super.onPause();
 	}
-	
+
+	/**
+	 * On click listener for switching between cameras
+	 * @param view The view which is clicked
+	 */
 	private void switchCam(View view) {
 		camFeed.switchCam();
 	}
-	
-	/**
-	 * 
-	 */
+
 	private final ShutterCallback shutterCall = new ShutterCallback() {
 		@Override
 		public void onShutter() {
@@ -97,7 +109,7 @@ public class CamFragment extends Fragment {
 			//provide the shutter sound when snapping a photo
 		}
 	};
-	
+
 	private final OnClickListener captureClick = new OnClickListener() {
 
 		@Override
@@ -112,7 +124,7 @@ public class CamFragment extends Fragment {
 			}, clickDelay);
 		}
 	};
-	
+
 	private final OnClickListener colorClick = new OnClickListener() {
 
 		@Override
@@ -124,11 +136,11 @@ public class CamFragment extends Fragment {
 				camFeed.setColorEffect(Camera.Parameters.EFFECT_NONE);
 			}
 		}
-		
+
 	};
-	
+
 	private final OnClickListener switchClick = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View view) {
 			camFeed.switchCam();

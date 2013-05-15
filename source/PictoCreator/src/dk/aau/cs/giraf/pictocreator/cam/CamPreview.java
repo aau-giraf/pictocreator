@@ -9,10 +9,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
-*
-* @author Croc
-*
-*/
+ * Class used for the preview of the camera
+ *
+ * @author Croc
+ *
+ */
 public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    private final static String TAG = "CamPreview";
 
@@ -26,9 +27,9 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    boolean hasMultiCams = false;
 
    /**
-    *
-    * @param context
-    * @param attrs
+    * Constructor for the class
+    * @param context The context in which the preview is created
+    * @param attrs The attributes for the preview
     */
    public CamPreview(Context context, AttributeSet attrs) {
        super(context, attrs);
@@ -38,8 +39,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param context
+    * Constructor for the class
+    * @param context The context in which the preview is created
     */
    public CamPreview(Context context) {
        super(context);
@@ -49,11 +50,11 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param holder
-    * @param format
-    * @param width
-    * @param height
+    * Method called when the surface have changed (if the orientation is changed
+    * @param holder The holder for the surface
+    * @param format The format of the surface
+    * @param width The width of the surface
+    * @param height The height for the surface
     */
    @Override
    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -85,8 +86,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param holder
+    * Method called when the surface is first created
+    * @param holder The holder for the surface
     */
    @Override
    public void surfaceCreated(SurfaceHolder holder) {
@@ -99,8 +100,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param holder
+    * Method called when the surface is destroyed
+    * @param holder The holder for the surface
     */
    @Override
    public void surfaceDestroyed(SurfaceHolder holder) {
@@ -114,10 +115,11 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param width
-    * @param height
-    * @param parameters
+    * Method for calculating the best size of the preview
+    * Called by {@link #surfaceChanged}
+    * @param width The width of the surface
+    * @param height The height of the surface
+    * @param parameters The parameters of the camera
     * @return
     */
    private Camera.Size getBestPreviewSize(int width, int height, Camera.Parameters parameters) {
@@ -143,9 +145,9 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param cameraID
-    * @return
+    * Method for accessing a camera by id
+    * @param cameraID Id of the camera to get
+    * @return The camera associated with the id
     */
    public static Camera getCamera(int cameraID) {
        Camera camera = null;
@@ -158,7 +160,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
+    * Method for releasing the camera
     */
    private void releaseCamera() {
        if (cam != null) {
@@ -166,15 +168,22 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
            cam = null;
        }
    }
-   
+
+   /**
+    * Method for setting the color effect of the camera
+    * @param params The color effect to set for the camera
+    */
    public void setColorEffect(String params) {
 	   Camera.Parameters current = cam.getParameters();
-	   
+
 	   current.setColorEffect(params);
-	   
+
 	   cam.setParameters(current);
    }
-   
+
+   /**
+    * Method for switching between cameras
+    */
    public void switchCam() {
        try {
            cam.stopPreview();
@@ -207,10 +216,9 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @return
+    * Method for checking whether the device has more than one camera
+    * @return True if the device have two cameras, false if not
     */
-   
    public boolean hasMultipleCam() {
        /* Dat method, x_x */
        Camera.CameraInfo camInfo = new Camera.CameraInfo();
@@ -238,7 +246,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
+    * Method for configuration of the surface holder
     */
    private void configureHolder() {
        holder = getHolder();
@@ -247,17 +255,17 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    *
-    * @param shutter
-    * @param raw
-    * @param jpeg
+    * Method called when a picture is taken
+    * @param shutter Callback for the image capture moment
+    * @param raw Callback for raw image data
+    * @param jpeg Callback for JPEG image data, see {@link PhotoHandler}
     */
    public void takePicture(Camera.ShutterCallback shutter, Camera.PictureCallback raw, Camera.PictureCallback jpeg) {
        cam.takePicture(shutter, raw, jpeg);
    }
 
    /**
-    *
+    * Method for starting the camera preview
     */
    public void startPreview() {
        try {
@@ -267,4 +275,3 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        }
    }
 }
-

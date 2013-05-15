@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * Simpler Point implementation that allows floats. Fuckin' odd that they use
  * floats for coordinates but integers for point coordinates.
- * @author lindhart
+ * @author Croc
  *
  */
 public class FloatPoint {

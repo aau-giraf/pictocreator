@@ -79,7 +79,7 @@ public class AudioHandler {
 
     /**
      * Function for deleting the saved file,
-     * This function is called by RecordThread in the cancel() function.
+     * This function is called by {@link RecordThread} in the cancel() function.
      */
     public void deleteFile(){
             File tmpFile = new File(outputFilePath);
@@ -92,7 +92,7 @@ public class AudioHandler {
 
     /**
      * Saves and creates the final audioFile
-     * Function called by the RecordThread in onAccept().
+     * Function called by the {@link RecordThread} in onAccept().
      */
     public void saveFinalFile(){
         String finalFilePath = getDir().getPath() + File.separator + savedFileName;
@@ -141,7 +141,7 @@ public class AudioHandler {
 
     /**
      * Function for creating the directory for the output file
-     * This function is called by createOutputFilePath.
+     * This function is called by {@link #createOutputFilePath()}.
      * @return File representing the output directory
      */
     private File getDir() {

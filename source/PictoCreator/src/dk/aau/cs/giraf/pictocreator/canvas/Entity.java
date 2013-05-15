@@ -17,7 +17,7 @@ import android.util.Log;
  * transformations to a canvas before passing the draw call on to the Graphic.
  * If you hadn't noticed, the namin convention and general design is inspired by
  * ChevyRay's Flashpunk.
- * @author lindhart
+ * @author Croc
  *
  */
 public abstract class Entity implements Parcelable {

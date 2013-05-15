@@ -11,7 +11,7 @@ import android.view.MotionEvent;
  * events. It is responsible for the results of interactions.
  * Some handlers are RectHandler, ElipseHandler, LineHandler, FreedrawHandler
  * and SelectionHandler.
- * @author lindhart
+ * @author Croc
  *
  */
 public abstract class ActionHandler extends Entity {

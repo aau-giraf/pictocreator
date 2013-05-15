@@ -7,7 +7,7 @@ import android.os.Parcel;
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
  * objects and their movement, or to ensure a specific drawing order.
- * @author lindhart
+ * @author Croc
  */
 public class EntityGroup extends Entity {
 

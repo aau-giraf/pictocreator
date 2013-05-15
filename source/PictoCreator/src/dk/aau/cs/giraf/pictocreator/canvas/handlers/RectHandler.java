@@ -14,7 +14,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.RectEntity;
  * a corner of the rect. Further movement resizes and places the opposing
  * corner of the rectangle. Lifting the finger saves the rectangle on the
  * stack.
- * @author lindhart
+ * @author Croc
  *
  */
 public class RectHandler extends ShapeHandler {

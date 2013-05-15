@@ -12,7 +12,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 /**
  * An ActionHandler specifically for drawing shapes. This aggregates such
  * things as stroke and fill color.
- * @author lindhart
+ * @author Croc
  */
 public abstract class ShapeHandler extends ActionHandler {
 

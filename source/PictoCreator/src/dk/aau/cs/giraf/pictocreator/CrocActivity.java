@@ -22,7 +22,12 @@ import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.management.*;
 
-
+/**
+ * Main class for the Croc app
+ *
+ * @author Croc
+ *
+ */
 public class CrocActivity extends Activity {
 
     private final static String TAG = "CrocMain";
@@ -47,8 +52,11 @@ public class CrocActivity extends Activity {
     // public static final String APP_ACTIVITYNAME = "appActivityName";
     // public static final String APP_COLOR = "appBackgroundColor";
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    /**
+     * Function called when the activity is first created
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -79,6 +87,9 @@ public class CrocActivity extends Activity {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,6 +97,10 @@ public class CrocActivity extends Activity {
         return true;
     }
 
+    /**
+     * On click function for switching between {@link CamFragment} and {@link DrawFragment}.
+     * @param view The view which is clicked.
+     */
     public void switchFragments(View view) {
 
         if(fragSwitch.isChecked()) {
@@ -102,9 +117,12 @@ public class CrocActivity extends Activity {
         }
     }
 
+    /**
+     *
+     */
     public void onWindowFocusChanged(boolean hasFocus) {
         if(hasFocus) {
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
         }
     }
 
@@ -124,9 +142,9 @@ public class CrocActivity extends Activity {
     }
 
     /**
-     *
-     * @param context
-     * @return
+     * Function for checking whether a camera is available at the device
+     * @param context The context in which the function is called
+     * @return True if a camera is found on the device, false otherwise
      */
     private boolean checkForCamera(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
@@ -137,6 +155,9 @@ public class CrocActivity extends Activity {
         }
     }
 
+    /**
+     * On click listener to show the {@link RecordDialogFragment}
+     */
     private final OnClickListener showRecorderClick = new OnClickListener() {
             public void onClick(View view) {
                 recordDialog = new RecordDialogFragment();
@@ -144,6 +165,9 @@ public class CrocActivity extends Activity {
             }
         };
 
+    /**
+     * On click listener to show the {@link SaveDialogFragment}
+     */
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
             public void onClick(View view) {
                 saveDialog = new SaveDialogFragment();

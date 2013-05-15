@@ -14,30 +14,10 @@ import dk.aau.cs.giraf.pictocreator.R;
 
 /**
  * Class for the dialog used for recording in the croc application
- * The class implement RecordInterface,
+ * The class extends {@link DialogFragment} and implement {@link RecordInterface}
  * this is done to bind the decibelmeter and the recorder together
  *
  * @author Croc
- */
-
-/*
-  How to use:
-
-  Copy-Paste the below, and make sure the layout have a button with id:start_dialog_button,
-  then everything should work fine
-
-  final RecordDialogFragment recordDialog = new RecordDialogFragment();
-
-  OnClickListener clickListener = new OnClickListener() {
-  public void onClick(View view) {
-  recordDialog.show(getFragmentManager(), TAG);
-  }
-  };
-
-  Button dialogButton = (Button) findViewById(R.id.start_dialog_button);
-
-  dialogButton.setOnClickListener(clickListener);
-
  */
 public class RecordDialogFragment extends DialogFragment implements RecordInterface {
 
@@ -61,7 +41,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     /**
      * Constructor for the Dialog
      * Left empty on purpose
-n     */
+     */
     public RecordDialogFragment() {
 
     }
@@ -87,7 +67,7 @@ n     */
     }
 
     /**
-     *
+     * Method called when the dialog is first created
      */
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -99,7 +79,7 @@ n     */
     }
 
     /**
-     *
+     * Method called when the view for the dialog is created
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +101,9 @@ n     */
         acceptButton = (ImageButton) view.findViewById(R.id.record_positive_button);
 
         cancelButton = (ImageButton) view.findViewById(R.id.record_negative_button);
-
+        /**
+         * On click listener for recording audio
+         */
         OnClickListener clickListener = new OnClickListener() {
                 public void onClick(View view) {
                     if (((ToggleButton) view).isChecked()) {
@@ -157,7 +139,10 @@ n     */
 
         return view;
     }
-    
+
+    /**
+     * Method called when the dialog is resumed
+     */
     public void onResume() {
 		super.onResume();
 		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);

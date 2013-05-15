@@ -8,7 +8,7 @@ import android.util.Log;
  * as two vectors (TL-BL and TL-TR). Since rectangles are otherwise uniform,
  * This is perhaps the most elegant way to represent rectangles since almost
  * every property can be derived from these two properties (and an offset).
- * @author lindhart
+ * @author Croc
  *
  */
 public class AngleRectF {

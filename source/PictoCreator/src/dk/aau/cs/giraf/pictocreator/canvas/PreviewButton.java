@@ -18,7 +18,7 @@ import android.widget.ImageButton;
 /**
  * The preview button is optimally displayed close to regular ColorButtons and
  * signals the current color state for fill and stroke.
- * @author lindhart
+ * @author Croc
  */
 public class PreviewButton extends ImageButton {
 	private Paint fillPaint = new Paint();
