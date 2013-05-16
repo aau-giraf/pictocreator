@@ -36,7 +36,7 @@ public class FileHandler{
      * @param storagePictogram The StoragePictogram to use for storage
      */
     public FileHandler(Activity activity, StoragePictogram storagePictogram){
-        this.activity = activity;n
+        this.activity = activity;
         this.storagePictogram = storagePictogram;
     }
 
