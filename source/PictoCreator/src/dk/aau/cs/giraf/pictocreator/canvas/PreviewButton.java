@@ -76,13 +76,13 @@ public class PreviewButton extends ImageButton {
 	
 	/**
 	 * Retrieves the current stroke color in use.
-	 * @return
+	 * @return Returns the currently previewed stroke colour as ARGB.
 	 */
 	public int getStrokeColor() { return strokePaint.getColor(); }
 	
 	/**
 	 * Retrieves the fill color currently in use.
-	 * @return
+	 * @return Returns the currently previewed fill colour as ARGB.
 	 */
 	public int getFillColor() { return fillPaint.getColor(); }
 	
