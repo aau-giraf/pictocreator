@@ -120,21 +120,12 @@ public class RecordThread implements Runnable {
      */
     @Override
     public void run(){
-
-        // if(startAmpl == 0){
-        //     startAmpl = mediaRecorder.getMaxAmplitude();
-        //     Log.d(TAG, "startAmpl was 0, updated to: " + startAmpl);
-        // }
-
         while(isRunning){
             try {
                 Thread.sleep(500);
                 decibel = (getAmplitudeEMA() / 10000) - 1.0;
-                // decibel = amplitudeToDecibel(mediaRecorder.getMaxAmplitude());
                 Log.d(TAG, "getAmplitudeEMA: " + getAmplitudeEMA());
                 _interface.decibelUpdate(decibel);
-                Log.d(TAG, "Update value: " + (decibel));
-                // Log.i("Noise", Double.toString((getAmplitudeEMA() % 100)) + " Db" );
             }
             catch (InterruptedException e) {
                 Log.e(TAG, "Interrupted");
