@@ -46,56 +46,87 @@ public class AngleRectF {
 		return topRightVector;
 	}
 
+	/**
+	 * Sets the top-right vector of the rectangle. That is, the vector going
+	 * from the top-left corner to the top-right corner.
+	 * @param x New X-coordinate.
+	 * @param y New Y-coordinate.
+	 */
 	public void setTopRightVector(float x, float y) {
 		this.topRightVector.x = x;
 		this.topRightVector.y = y;
 	}
 	
 	/**
-	 * @param topRightVector the topRightVector to set
+	 * Sets the top-right vector of the rectangle. That is, the vector going
+	 * from the top-left corner to the top-right corner.
+	 * @param topRightVector The new point of the vector.
 	 */
 	public void setTopRightVector(FloatPoint topRightVector) {
 		this.topRightVector = topRightVector;
 	}
 
 	/**
-	 * @return the bottomLeftVector
+	 * @return the bottomLeftVector. That is, the vector going from the
+	 * top-left corner to the bottom-left corner.
 	 */
 	public FloatPoint getBottomLeftVector() {
 		return bottomLeftVector;
 	}
 
+	/**
+	 * Sets a new bottom-left corner. That is, the vector going from the
+	 * top-left to the bottom-left corner.
+	 * @param x X-coordinate of the new point.
+	 * @param y Y-coordinate of the new point.
+	 */
 	public void setBottomLeftVector(float x, float y) {
 		this.bottomLeftVector.x = x;
 		this.bottomLeftVector.y = y;
 	}
 	
 	/**
-	 * @param bottomLeftVector the bottomLeftVector to set
+	 * Sets a new bottom-left corner. That is, the vector going from the
+	 * top-left to the bottom-left corner.
+	 * @param bottomLeftVector New point of the vector.
 	 */
 	public void setBottomLeftVector(FloatPoint bottomLeftVector) {
 		this.bottomLeftVector = bottomLeftVector;
 	}
 
 	/**
-	 * @return the offset
+	 * Retrieves the offset of the rectangle. This is the starting point of the
+	 * top-right and bottom-left vectors.
+	 * @return The offset itself.
 	 */
 	public FloatPoint getOffset() {
 		return offset;
 	}
 
 	/**
-	 * @param offset the offset to set
+	 * Sets the offset of the rectangle. This is the starting point of the
+	 * top-right and bottom-left rectangles.
+	 * @param offset The new offset point.
 	 */
 	public void setOffset(FloatPoint offset) {
 		this.offset = offset;
 	}
 	
+	/**
+	 * Sets the offset of the rectangle. This is the starting point of the
+	 * top-right and bottom-left rectangles.
+	 * @param x X-coordinate of the new offset.
+	 * @param y Y-coordinate of the new offset.
+	 */
 	public void setOffset(float x, float y) {
 		this.offset.x = x;
 		this.offset.y = y;
 	}
 	
+	/**
+	 * Creates a new AngleRectF as a point in (0,0) with vectors (0,0) and
+	 * (0,0).
+	 */
 	public AngleRectF() {
 	}
 	
@@ -135,13 +166,17 @@ public class AngleRectF {
 	}
 	
 	/**
-	 * 
-	 * @param angle
+	 * Set a new absolute angle of rotation for the rectangle.
+	 * @param angle The new angle, in degrees.
 	 */
 	public void setAngle(float angle) {
 		this.angle = angle;
 	}
 	
+	/**
+	 * Retrieves the current angle of the rectangle, in degrees.
+	 * @return The current angle, in degrees.
+	 */
 	public float getAngle() {
 		return angle;
 	}

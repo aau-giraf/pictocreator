@@ -33,18 +33,28 @@ public abstract class Entity implements Parcelable {
 	 
 	/**
 	 * Retrieve the shape's leftmost X-coordinate.
-	 * @return
+	 * @return The X-coordinate.
 	 */
 	public float getX() { return this.x; }
 	
 	/**
 	 * Retrieve the shape's topmost Y-coordinate.
-	 * @return
+	 * @return The Y-coordinate.
 	 */
 	public float getY() { return this.y; }
 	
+	/**
+	 * Sets the X-coordinate of this Entity. In most Entity subclasses, this
+	 * is the top-left corner of the hitbox.
+	 * @param x The new X-coordinate.
+	 */
 	public void setX(float x) { this.x = x; }
 	
+	/**
+	 * Sets the Y-coordinate of this Entity. In most Entity subclasses, this
+	 * is the top-left corner of the hitbox.
+	 * @param y
+	 */
 	public void setY(float y) { this.y = y; }
 	
 	/**
@@ -64,10 +74,28 @@ public abstract class Entity implements Parcelable {
 	 */
 	protected float angle;
 	
+	/**
+	 * Retrieves the declared height of the Entity.
+	 * @return The height of the Entity.
+	 */
 	public float getHeight() { return this.height; }
+	
+	/**
+	 * Retrieves the declared width of the Entity.
+	 * @return The height of the Entity.
+	 */
 	public float getWidth() { return this.width; }
 		
+	/**
+	 * Sets a new height for the Entity.
+	 * @param height New height.
+	 */
 	public void setHeight(float height) { this.height = height; }
+	
+	/**
+	 * Sets a new width for the Entity.
+	 * @param width New width.
+	 */
 	public void setWidth(float width) { this.width = width; }
 	
 	/**
@@ -88,12 +116,31 @@ public abstract class Entity implements Parcelable {
 	 */
 	public void rotateBy(float value) { this.angle += value; }
 	
+	/**
+	 * Retrieves the center point of th Entity. The default implementation
+	 * retrieves this as (x+width/2, y+height/2), but subclasses and rotation
+	 * will affect the result. Please see the relevant documentation.
+	 * @return The center point of the Entity.
+	 */
 	public FloatPoint getCenter() { return new FloatPoint(this.x + this.width/2, this.y + this.height/2); }
 	
+	/**
+	 * Sets a new center for the Entity. For consistency, this method should
+	 * be overriden in Entity subclasses where the center and rotation concepts
+	 * are drastically changed.
+	 * @param p New center point.
+	 */
 	public void setCenter(FloatPoint p) {
 		setCenter(p.x, p.y);
 	}
 	
+	/**
+	 * Sets a new center for the Entity. For consistency, this method should
+	 * be overriden in Entity subclasses where the center and rotation concepts
+	 * are drastically changed.
+	 * @param x New X-coordinate for the center.
+	 * @param y New Y-coordinate for the center.
+	 */
 	public void setCenter(float x, float y) {
 		setX(x-getWidth()/2);
 		setY(y-getHeight()/2);
@@ -140,7 +187,7 @@ public abstract class Entity implements Parcelable {
 	
 	/**
 	 * Retrieve the coordinates for the leftmost point in the hitbox.
-	 * @return
+	 * @return The X-coordinate of the leftmost hitbox edge.
 	 */
 	public float getHitboxLeft() {
 		return getX();
@@ -148,7 +195,7 @@ public abstract class Entity implements Parcelable {
 	
 	/**
 	 * Retrieve the coordinates for the rightmost point in the hitbox.
-	 * @return
+	 * @return The X-coordinate of the rightmost hitbox edge.
 	 */
 	public float getHitboxRight() {
 		return getX()+getWidth();
@@ -156,7 +203,7 @@ public abstract class Entity implements Parcelable {
 	
 	/**
 	 * Retrieve the coordinates for the topmost point in the hitbox.
-	 * @return
+	 * @return The Y-coordinate of the topmost hitbox edge.
 	 */
 	public float getHitboxTop() {
 		return getY();
@@ -164,15 +211,31 @@ public abstract class Entity implements Parcelable {
 	
 	/**
 	 * Retrieve the coordinates for the bottommost point in the hitbox.
-	 * @return
+	 * @return The Y-coordinate of the bottommost hitbox edge.
 	 */
 	public float getHitboxBottom() {
 		return getY()+getHeight();
 	}
 	
+	/**
+	 * Creates a new Entity at (0,0) with no dimensions.
+	 */
 	public Entity() {
 	}
 	
+	/**
+	 * Attempts to unpack a basic Entity from a parcel. Expects the Parcel to
+	 * have been packaged by Entity itself in a previous execution, or the
+	 * Parcel to contain data in this order:
+	 * <ul>
+	 * <li>float:x-coordinate</li>
+	 * <li>float:y-coordinate</li>
+	 * <li>float:width</li>
+	 * <li>float:height</li>
+	 * <li>float:angle</li>
+	 * </ul>
+	 * @param in The parcel to unpack from.
+	 */
 	public Entity(Parcel in) {
 		float[] vals = new float[5];
 		in.readFloatArray(vals);
@@ -183,22 +246,55 @@ public abstract class Entity implements Parcelable {
 		setAngle(vals[4]);
 	}
 	
+	/**
+	 * Distance from the Entity's top-left corner to a specified point.
+	 * @param x X-coordinate of the point to check against.
+	 * @param y Y-coordinate of the point to check against.
+	 * @return The distance between the two points.
+	 */
 	public float distanceToPoint(float x, float y) {
 		return distanceBetweenPoints(getX(), getY(), x, y);
 	}
 	
+	/**
+	 * Distance from the Entity's top-left corner to a specified point.
+	 * @param p Point to calculate against.
+	 * @return The distance between the two points.
+	 */
 	public float distanceToPoint(FloatPoint p) {
 		return distanceToPoint(p.x, p.y);
 	}
 	
+	/**
+	 * Calculates the distance between two Entity objects.
+	 * <i><b>Warning:<b> it cannot be guaranteed that the results are
+	 * consistent across Entity subtypes.</i>
+	 * @param e The Entity to measure to.
+	 * @return The distance between the Entity objects, measured by their
+	 * top-left corners. 
+	 */
 	public float distanceToEntity(Entity e) {
 		return distanceBetweenPoints(e.x, e.y, getX(), getY());
 	}
 	
+	/**
+	 * Support method. Calculate the distance between two specific points.
+	 * @param p1 The first point.
+	 * @param p2 The second point.
+	 * @return The distance between the two points.
+	 */
 	public float distanceBetweenPoints(FloatPoint p1, FloatPoint p2) {
 		return distanceBetweenPoints(p1.x, p1.y, p2.x, p2.y);
 	}
 
+	/**
+	 * Support method. Calculate the distance between two specific points.
+	 * @param x1 X-coordinate of the first point.
+	 * @param y1 Y-coordinate of the first point.
+	 * @param x2 X-coordinate of the second point.
+	 * @param y2 Y-coordinate of the second point.
+	 * @return The distance between the two points.
+	 */
 	public float distanceBetweenPoints(float x1, float y1, float x2, float y2) {
 		return (float)Math.sqrt(Math.abs(x1-x2) + Math.abs(y1-y2));
 	}
