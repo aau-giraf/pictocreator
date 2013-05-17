@@ -47,7 +47,7 @@ public class CamFragment extends Fragment {
 	}
 
 	/**
-	 * Method for creating the view for the fragment
+	 * Method for creating the fragment view
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
