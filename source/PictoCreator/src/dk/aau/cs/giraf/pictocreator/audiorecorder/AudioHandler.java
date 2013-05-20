@@ -78,6 +78,7 @@ public class AudioHandler {
     /**
      * Function for deleting the saved file,
      * This function is called by {@link RecordThread} in the cancel() function.
+     * This function is also called by {@link #saveFinalFile} when file is copied
      */
     public void deleteFile(){
             File tmpFile = new File(outputFilePath);
