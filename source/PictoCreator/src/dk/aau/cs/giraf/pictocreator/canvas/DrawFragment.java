@@ -25,18 +25,57 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+/**
+ * The DrawFragment is the part of Croc that handles free-form drawing with
+ * multiple tools. The basic layout draw_fragment.xml is expanded procedurally
+ * with a number of colouring options and action tools in the constructor and
+ * initialisation code.
+ * @author lindhart
+ */
 public class DrawFragment extends Fragment {
+
 	private static final String TAG = "DrawFragment";
 
+	/**
+	 * 
+	 */
 	public View view;
+	
+	/**
+	 * The DrawView contained within this fragment. A lot of communication goes
+	 * more or less transparently through, which makes this reference useful.
+	 */
 	public DrawView drawView;
 
-	ImageButton rectHandlerButton;
-	ImageButton ovalHandlerButton;
-	ImageButton lineHandlerButton;
-	ImageButton selectHandlerButton;
-	ImageButton freehandHandlerButton;
-	ImageButton importFragmentButton;
+	/**
+	 * Button for the RectHandler ActionHandler.
+	 */
+	protected ImageButton rectHandlerButton;
+	
+	/**
+	 * Button for the OvalHandler ActionHandler.
+	 */
+	protected ImageButton ovalHandlerButton;
+	
+	/**
+	 * Button for the LineHandler ActionHandler.
+	 */
+	protected ImageButton lineHandlerButton;
+	
+	/**
+	 * Button for the SelectionHandler ActionHandler.
+	 */
+	protected ImageButton selectHandlerButton;
+	
+	/**
+	 * Button for the FreehandHandler ActionHandler (HANDLE!).
+	 */
+	protected ImageButton freehandHandlerButton;
+	
+	/**
+	 * Button for the import action for importing Bitmaps.
+	 */
+	protected ImageButton importFragmentButton;
 
 	CamImportDialogFragment importDialog;
 
@@ -50,6 +89,9 @@ public class DrawFragment extends Fragment {
 	 */
 	ImageButton activeHandlerButton;
 
+	/**
+	 * The LinearLayout view that contains all choosable colours.
+	 */
 	LinearLayout colorButtonToolbox;
 
 	@Override
@@ -144,7 +186,12 @@ public class DrawFragment extends Fragment {
 						this.getActivity()));
 	}
 
-
+	/**
+	 * Instructs the DrawView to flatten its current draw stack and save it as
+	 * a Bitmap.
+	 * @todo Write documentation on where it is saved due to the heavy
+	 * side-effecting we failed to avoid.
+	 */
     public void saveBitmap(){
         try {
             drawView.saveToBitmap(Bitmap.Config.ARGB_8888);

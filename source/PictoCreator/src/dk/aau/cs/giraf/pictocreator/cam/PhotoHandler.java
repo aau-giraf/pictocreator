@@ -30,7 +30,7 @@ public class PhotoHandler implements PictureCallback {
     }
 
     /**
-     * Method called when a picture i taken
+     * Method called when a picture is taken
      * @param data The image data to save
      * @param camera The camera used to capture the picture
      */

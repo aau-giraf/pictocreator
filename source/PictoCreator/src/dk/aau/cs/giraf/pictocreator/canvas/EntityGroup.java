@@ -1,5 +1,6 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import android.graphics.Canvas;
 import android.os.Parcel;
@@ -11,19 +12,36 @@ import android.os.Parcel;
  */
 public class EntityGroup extends Entity {
 
+	/**
+	 * List of all the entities kept in the EntityGroup. Consider it a stack
+	 * for the purposes of rendering.
+	 */
 	protected ArrayList<Entity> entities = new ArrayList<Entity>();
 
+	/**
+	 * Creates an empty EntityGroup ready for service.
+	 */
 	public EntityGroup() {};
 	
+	/**
+	 * Creates an EntityGroup based on the contents of a Parcel structure.
+	 * @param in The Parcel to open. EntityGroup expects that the next
+	 * ArrayList in the parcel is meant for EntityGroup. 
+	 */
 	public EntityGroup(Parcel in) {
 		super(in);
 		
 		entities = in.readArrayList(ArrayList.class.getClassLoader());
 	}
 	
-	public void addEntity(Entity toAdd)	{
+	/**
+	 * Push a new entity onto the group's list.
+	 * @param toAdd The Entity to add.
+	 */
+	public void addEntity(Entity toAdd) {
 		if (entities.contains(toAdd)) 		{
 			// Throw something. Possibly a vase.
+			throw new InvalidParameterException("Cannot add an Entity twice. Remove it first.");
 		}
 		else {
 			// entities.add(toAdd);
@@ -31,9 +49,14 @@ public class EntityGroup extends Entity {
 		}
 	}
 	
+	/**
+	 * Removes an Entity from the stack.
+	 * @param toRemove The Entity to remove.
+	 * @return The Entity itself. Good for chaining or quick assignment.
+	 * Returns null if the Entity is not in the group.
+	 */
 	public Entity removeEntity(Entity toRemove)	{
-		if (entities.contains(toRemove))
-		{
+		if (entities.contains(toRemove)) {
 			entities.remove(toRemove);
 			return toRemove;
 		}
@@ -47,6 +70,10 @@ public class EntityGroup extends Entity {
 		}
 	}
 	
+	/**
+	 * Retrieves the number of Entities kept in the group.
+	 * @return The number as returned by entities.size();
+	 */
 	public int size() {
 		return entities.size();
 	}
