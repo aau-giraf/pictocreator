@@ -121,7 +121,7 @@ public class AudioHandler {
             }
         }
         catch(IOException e){
-            Log.d(TAG, "File could not be copied");
+            Log.d(TAG, "File could not be copied", e.fillInStackTrace());
         }
         finally {
             try {
@@ -133,7 +133,7 @@ public class AudioHandler {
                 }
             }
             catch(IOException e){
-                Log.d(TAG, "File streams could not be closed");
+                Log.d(TAG, "File streams could not be closed", e.fillInStackTrace());
             }
         }
 

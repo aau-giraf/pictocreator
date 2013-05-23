@@ -73,7 +73,7 @@ public class RecordThread implements Runnable {
 
             }
             catch (IllegalStateException ex){
-                Log.e(TAG, "Fucked the order in the media recorder up!");
+                Log.e(TAG, "Fucked the order in the media recorder up!", ex.fillInStackTrace());
             }
 
             recordThread.start();
@@ -83,7 +83,7 @@ public class RecordThread implements Runnable {
                 mediaRecorder.start();
             }
             catch (IOException ex){
-                Log.e(TAG, "Something else fucked the media recorder up");
+                Log.e(TAG, "Something else fucked the media recorder up", ex.fillInStackTrace());
             }
             startAmpl = 10;
             Log.d(TAG, "Start ampl: " + startAmpl);
@@ -108,7 +108,7 @@ public class RecordThread implements Runnable {
             Log.v(TAG, "Interrupted", interrupt);
         }
         catch (IllegalStateException e){
-            Log.v(TAG, "Illegalstate");
+            Log.v(TAG, "Illegalstate", e.fillInStackTrace());
         }
 
         _interface.decibelUpdate(0);
@@ -137,7 +137,7 @@ public class RecordThread implements Runnable {
                 // Log.i("Noise", Double.toString((getAmplitudeEMA() % 100)) + " Db" );
             }
             catch (InterruptedException e) {
-                Log.e(TAG, "Interrupted");
+                Log.e(TAG, "Thread interrupted.", e.fillInStackTrace());
             }
         }
     }
