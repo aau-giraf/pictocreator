@@ -6,7 +6,7 @@ import android.graphics.drawable.shapes.OvalShape;
 
 /**
  * Simple Entity. It is basically a visible rect.
- * @author lindhart
+ * @author Croc
  *
  */
 public class OvalEntity extends PrimitiveEntity {

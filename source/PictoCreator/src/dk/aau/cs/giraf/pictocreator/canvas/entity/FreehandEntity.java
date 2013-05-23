@@ -11,6 +11,14 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.Log;
 
+/**
+ * An Entity class representing a freehand drawing sequence. Freehand drawings
+ * are registered with the available data points from touch events, typically.
+ * However, since touch events are very scarce, we interpolate touch points
+ * with simple lines. This gives the impression of freehand drawing in all but
+ * the most minimal of TEpS (Touch Events per Second).
+ * @author lindhart
+ */
 public class FreehandEntity extends PrimitiveEntity {
 
 	/**
@@ -21,6 +29,10 @@ public class FreehandEntity extends PrimitiveEntity {
 	 */
 	protected FloatPoint basePoint = new FloatPoint();
 	
+	/**
+	 * List of all drawPoints. Consider them ordered, so the draw sequence is
+	 * intact.
+	 */
 	protected ArrayList<FloatPoint> drawPoints = new ArrayList<FloatPoint>();
 
 	/**
@@ -99,6 +111,14 @@ public class FreehandEntity extends PrimitiveEntity {
 				hitbox.left+basePoint.x, hitbox.top+basePoint.y, hitbox.right+basePoint.x, hitbox.bottom+basePoint.y));
 	}
 	
+	/**
+	 * Updates the current hitbox by challenging it with a specific point. This
+	 * is used when a new point is added in lieu of recalculating the entire
+	 * point collection. If the point is an outlier compared to the current
+	 * hitbox, the hitbox is expanded accordingly.
+	 * @param x The X-coordinate of the new point.
+	 * @param y The Y-coordinate of the new point.
+	 */
 	protected void updateHitbox(float x, float y) {
 		hitbox.left = Math.min(hitbox.left, x);
 		hitbox.right = Math.max(hitbox.right, x);
@@ -108,8 +128,10 @@ public class FreehandEntity extends PrimitiveEntity {
 	}
 	
 	/**
-	 * Challenges the current hitbox with some point. The hitbox will be
-	 * expanded to encompass the new point if it is outside the current bounds.
+	 * Updates the current hitbox by challenging it with a specific point. This
+	 * is used when a new point is added in lieu of recalculating the entire
+	 * point collection. If the point is an outlier compared to the current
+	 * hitbox, the hitbox is expanded accordingly.
 	 * @param p The point to challenge with.
 	 */
 	protected void updateHitbox(FloatPoint p) {

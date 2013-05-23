@@ -1,32 +1,26 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import android.os.Environment;
 import android.util.Log;
-import android.content.Context;
-import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
 
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
+/**
+ * Class used for handling of files
+ *
+ * @author Croc
+ *
+ */
 public class FileHandler{
     private static final String TAG = "FileHandler";
 
     private String imgPath, sndPath;
-
-    // private File finalImgPath;
-
-    // private File finalSndPath;
 
     private static String finalImgName;
 
@@ -36,11 +30,21 @@ public class FileHandler{
 
     private Activity activity;
 
+    /**
+     * Constructor for the class
+     * @param activity The activity which was used to call the FileHandler
+     * @param storagePictogram The StoragePictogram to use for storage
+     */
     public FileHandler(Activity activity, StoragePictogram storagePictogram){
         this.activity = activity;
         this.storagePictogram = storagePictogram;
     }
 
+    /**
+     * Function for saving the image- and audio-files (if they exists)
+     * on the devices external storage
+     * @param textLabel The textLabel/name for the Pictogram to store
+     */
     public void saveFinalFiles(String textLabel){
         storagePictogram.setTextLabel(textLabel);
 
@@ -75,9 +79,6 @@ public class FileHandler{
 
         }
 
-        // File imageFile = new File(image);
-        // File soundFile = new File(sound);
-
         if(tmpImgFile.exists()){
             copyFile(tmpImgFile, image);
             storagePictogram.setImagePath(image.getPath());
@@ -95,6 +96,11 @@ public class FileHandler{
         }
     }
 
+    /**
+     * Method for copying file.
+     * @param from The file to copy form
+     * @param to The File to Copy to
+     */
     private void copyFile(File from, File to){
         FileInputStream fromFileStream = null;
         FileOutputStream toFileStream = null;

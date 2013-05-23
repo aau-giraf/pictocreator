@@ -5,37 +5,65 @@ import android.util.Log;
 /**
  * Simpler Point implementation that allows floats. Fuckin' odd that they use
  * floats for coordinates but integers for point coordinates.
- * @author lindhart
+ * @author Croc
  *
  */
 public class FloatPoint {
 
+	/**
+	 * X-coordinate of the point.
+	 */
 	public float x;
+	
+	/**
+	 * Y-coordinate of the point.
+	 */
 	public float y;
 	
+	/**
+	 * Creates a new FloatPoint at (0,0).
+	 */
 	public FloatPoint() {
 		this.x = this.y = 0;
 	}
 	
+	/**
+	 * Creats a new FloatPoint with specific coordinates.
+	 * @param x X-coordinate.
+	 * @param y Y-coordinate.
+	 */
 	public FloatPoint(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * Creates a new FloatPoint at the same coordinates as another FloatPoint.
+	 * @param src The source to copy coordinates from.
+	 */
 	public FloatPoint(FloatPoint src) {
 		x = src.x;
 		y = src.y;
 	}
 
+	/**
+	 * Calculates the distance from this FloatPoint to another FloatPoint.
+	 * @param to The other FloatPoint.
+	 * @return Distance between the points.
+	 */
 	public float distance(FloatPoint to){
 		float result = (float)Math.sqrt(Math.abs(x-to.x)+Math.abs(y-to.y));
 		Log.i("FloatPoint.distance", "Distance between "+toString()+" and "+to.toString()+" is "+String.valueOf(result));
 		return result;
 	}
 	
+	/**
+	 * Returns a human-readable coordinate in the form "(x,y)".
+	 */
 	public String toString(){
-		return "("+String.valueOf(x)+","+String.valueOf(y)+")";
+		// return "("+String.valueOf(x)+","+String.valueOf(y)+")";
+		return String.format("(%s,%s)", x, y);
 	}
 	
 	/**
@@ -94,7 +122,7 @@ public class FloatPoint {
 	
 	/**
 	 * Returns the magnitude of the point (VECTOR! MERDE!)
-	 * @return
+	 * @return The magnitude ("length") of the vector.
 	 */
 	public double getLength() {
 		return Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));

@@ -11,7 +11,7 @@ import android.view.MotionEvent;
  * events. It is responsible for the results of interactions.
  * Some handlers are RectHandler, ElipseHandler, LineHandler, FreedrawHandler
  * and SelectionHandler.
- * @author lindhart
+ * @author Croc
  *
  */
 public abstract class ActionHandler extends Entity {
@@ -36,11 +36,41 @@ public abstract class ActionHandler extends Entity {
 	private int fillColor;
 	private float strokeWidth;
 	
+	/**
+	 * Sets the colour of the shape's stroke (border colouring).
+	 * @param color The new colour in ARGB format. Hint: 0xFF000000 is opaque
+	 * black.
+	 */
 	public void setStrokeColor(int color) { strokeColor = color; }
+	
+	/**
+	 * Retrieves the current stroke colour in ARGB format.
+	 * @return The active stroke colour.
+	 */
 	public int getStrokeColor() { return strokeColor; }
+	
+	/**
+	 * Sets the fill colouring used.
+	 * @param color The new colour in ARGB format. 0xFF000000 is opaque black.
+	 */
 	public void setFillColor(int color) { fillColor = color; }
+	
+	/**
+	 * Retrieves the currently active fill colour.
+	 * @return The fill colour, in ARGB format.
+	 */
 	public int getFillColor() { return fillColor; }
+	
+	/**
+	 * Retrieves the current stroke width (border thickness).
+	 * @return The current stroke width.
+	 */
 	public float getStrokeWidth() { return strokeWidth; }
+	
+	/**
+	 * Sets a new stroke width.
+	 * @param width The new width.
+	 */
 	public void setStrokeWidth(float width) { strokeWidth = width; }
 	
 	/**

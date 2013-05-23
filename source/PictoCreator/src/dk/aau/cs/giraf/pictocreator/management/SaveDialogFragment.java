@@ -14,7 +14,6 @@ import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
@@ -31,8 +30,13 @@ import android.widget.Toast;
 
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
-import dk.aau.cs.giraf.pictogram.*;
 
+/**
+ * Dialog used for saving a Pictogram
+ *
+ * @author Croc
+ *
+ */
 public class SaveDialogFragment extends DialogFragment{
     private final static String TAG = "SaveDialog";
 
@@ -56,14 +60,25 @@ public class SaveDialogFragment extends DialogFragment{
 
     private FileHandler fileHandler;
 
+    /**
+     * Constructor for the Dialog
+     */
     public SaveDialogFragment(){
         // empty constructor required for DialogFragment
     }
 
+    /**
+     * Method for setting the preview in the dialog
+     * @param preview The bitmap to preview
+     */
     public void setPreview(Bitmap preview){
         this.preview = preview;
     }
 
+    /**
+     * Method for associating tags to the pictogram
+     * @param tags The list of tags to associate to the pictogram
+     */
     public void setTags(Collection<String> tags){
         //this.tags = (ArrayList<String>) tags;
         this.tags = new ArrayList<String>();
@@ -72,10 +87,16 @@ public class SaveDialogFragment extends DialogFragment{
         }
     }
 
+    /**
+     * Setter for the StoragePictogram variable
+     * @param storageP The StoragePictogram to set
+     */
     public void setPictogram(StoragePictogram storageP){
         this.storagePictogram = storageP;
     }
-
+    /**
+     * Method called when the dialog is first created
+     */
     @Override
     public void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
@@ -88,6 +109,9 @@ public class SaveDialogFragment extends DialogFragment{
 
     }
 
+    /**
+     * Method called when the view for the dialog is created
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -115,7 +139,6 @@ public class SaveDialogFragment extends DialogFragment{
 
         inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
 
-        // Log.d(TAG, "Created dialog.");
         int length;
         Bitmap bitmap = null;
         File imgFile = new File(parentActivity.getCacheDir(), "cvs");
@@ -152,14 +175,6 @@ public class SaveDialogFragment extends DialogFragment{
 
         previewView.addView(imgView);
 
-
-        // if(preview != null){
-        //     preview.renderImage();
-        //     previewView.addView(preview);
-
-        //     Log.d(TAG, "Set the image, it's super dope now.");
-        // }
-
         acceptButton = (ImageButton) view.findViewById(R.id.save_button_positive);
 
         cancelButton = (ImageButton) view.findViewById(R.id.save_button_negative);
@@ -168,7 +183,6 @@ public class SaveDialogFragment extends DialogFragment{
 
                 @Override
                 public void onClick(View view){
-                    // TODO: Make function to call when dialog is canceled
                     tmpDialog.cancel();
                 }
             });
@@ -194,7 +208,6 @@ public class SaveDialogFragment extends DialogFragment{
                         Toast.makeText(parentActivity, "Saved the pictogram :D", Toast.LENGTH_SHORT).show();
                     }
 
-                    // TODO: Make function to call when dialog is "accepted"
                     tmpDialog.dismiss();
                 }
             });
@@ -202,6 +215,9 @@ public class SaveDialogFragment extends DialogFragment{
         return view;
     }
 
+    /**
+     * Method called when the dialog is resumed
+     */
     public void onResume() {
         super.onResume();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);

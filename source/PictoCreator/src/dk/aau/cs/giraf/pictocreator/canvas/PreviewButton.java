@@ -1,24 +1,17 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.Paint.Style;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
 
 /**
  * The preview button is optimally displayed close to regular ColorButtons and
  * signals the current color state for fill and stroke.
- * @author lindhart
+ * @author Croc
  */
 public class PreviewButton extends ImageButton {
 	private Paint fillPaint = new Paint();
@@ -83,13 +76,13 @@ public class PreviewButton extends ImageButton {
 	
 	/**
 	 * Retrieves the current stroke color in use.
-	 * @return
+	 * @return Returns the currently previewed stroke colour as ARGB.
 	 */
 	public int getStrokeColor() { return strokePaint.getColor(); }
 	
 	/**
 	 * Retrieves the fill color currently in use.
-	 * @return
+	 * @return Returns the currently previewed fill colour as ARGB.
 	 */
 	public int getFillColor() { return fillPaint.getColor(); }
 	

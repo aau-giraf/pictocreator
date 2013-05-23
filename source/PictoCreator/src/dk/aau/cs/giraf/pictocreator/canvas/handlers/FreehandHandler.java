@@ -14,7 +14,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 /**
  * The FreehandHandler is a kinda-sorta ShapeHandler. The shape is not
  * well-defined, but follows the same basic rules.
- * @author lindhart
+ * @author Croc
  *
  */
 public class FreehandHandler extends ShapeHandler {

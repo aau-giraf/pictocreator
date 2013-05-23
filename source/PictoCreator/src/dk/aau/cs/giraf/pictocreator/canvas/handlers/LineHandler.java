@@ -10,7 +10,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 
 /**
  * The LineHandler class allows drawing straight lines. Simple stuff.
- * @author lindhart
+ * @author Croc
  */
 public class LineHandler extends ShapeHandler {
 

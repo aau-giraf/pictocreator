@@ -33,7 +33,7 @@ public class DecibelMeterView extends View {
 
     /**
      * Constructor for the view
-     * @param context The context which the view is created in
+     * @param context The context in which the view is created
      */
     public DecibelMeterView(Context context){
         super(context);
@@ -41,7 +41,7 @@ public class DecibelMeterView extends View {
 
     /**
      * Constructor for the view
-     * @param context The context which the view is created in
+     * @param context The context in which the view is created
      * @param attrs The attributes for the view, defined by XML
      */
     public DecibelMeterView(Context context, AttributeSet attrs){

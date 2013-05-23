@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -79,7 +77,8 @@ public class AudioHandler {
 
     /**
      * Function for deleting the saved file,
-     * This function is called by RecordThread in the cancel() function.
+     * This function is called by {@link RecordThread} in the cancel() function.
+     * This function is also called by {@link #saveFinalFile} when file is copied
      */
     public void deleteFile(){
             File tmpFile = new File(outputFilePath);
@@ -92,7 +91,7 @@ public class AudioHandler {
 
     /**
      * Saves and creates the final audioFile
-     * Function called by the RecordThread in onAccept().
+     * Function called by the {@link RecordThread} in onAccept().
      */
     public void saveFinalFile(){
         String finalFilePath = getDir().getPath() + File.separator + savedFileName;
@@ -141,7 +140,7 @@ public class AudioHandler {
 
     /**
      * Function for creating the directory for the output file
-     * This function is called by createOutputFilePath.
+     * This function is called by {@link #createOutputFilePath()}.
      * @return File representing the output directory
      */
     private File getDir() {

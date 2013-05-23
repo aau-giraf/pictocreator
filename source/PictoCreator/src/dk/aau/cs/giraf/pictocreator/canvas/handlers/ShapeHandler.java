@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
-import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
@@ -12,25 +11,47 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 /**
  * An ActionHandler specifically for drawing shapes. This aggregates such
  * things as stroke and fill color.
- * @author lindhart
+ * @author Croc
  */
 public abstract class ShapeHandler extends ActionHandler {
 
 	/**
-	 * Support values. calcRectBounds will normalize these to fit a proper
-	 * rectangle from startPoint and endPoint.
+	 * Support value. calcRectBounds will set these to proper bounds for
+	 * whatever shape is being drawn.
+	 * Left edge.
 	 */
-	protected float left,top,right,bottom;
+	protected float left;
+	
+	/**
+	 * Support value. calcRectBounds will set these to proper bounds for
+	 * whatever shape is being drawn.
+	 * Top edge.
+	 */
+	protected float top;
+	
+	/**
+	 * Support value. calcRectBounds will set these to proper bounds for
+	 * whatever shape is being drawn.
+	 * Right edge.
+	 */
+	protected float right;
+	
+	/**
+	 * Support value. calcRectBounds will set these to proper bounds for
+	 * whatever shape is being drawn.
+	 * Bottom edge.
+	 */
+	protected float bottom;
 	
 	/**
 	 * Location where the registered pointer first was seen.
 	 */
-	protected FloatPoint startPoint;
+	protected FloatPoint startPoint = new FloatPoint();
 	
 	/**
 	 * Most recent location of the registered pointer.
 	 */
-	protected FloatPoint endPoint;
+	protected FloatPoint endPoint = new FloatPoint();
 	
 	/**
 	 * The ID of the pointer we're tracking for our handling.
@@ -46,6 +67,11 @@ public abstract class ShapeHandler extends ActionHandler {
 	 */
 	protected PrimitiveEntity bufferedEntity;
 	
+	/**
+	 * If true, the ActionHandler will request the subclass to render itself.
+	 * In most subclasses of ShapeHandler, this simply entails drawing the
+	 * currently buffered/WIP PrimitiveEntity.
+	 */
 	protected boolean doDraw;
 
 	@Override
@@ -60,9 +86,11 @@ public abstract class ShapeHandler extends ActionHandler {
 		if (bufferedEntity != null) bufferedEntity.setFillColor(color);
 	}
 	
+	/**
+	 * Creats a new ShapeHandler with default values for colors and stroke
+	 * width.
+	 */
 	public ShapeHandler() {
-		startPoint = endPoint = new FloatPoint(0, 0);
-
 		setStrokeColor(0xFF000000);
 		setFillColor(0x55FF0000);
 		setStrokeWidth(4);
