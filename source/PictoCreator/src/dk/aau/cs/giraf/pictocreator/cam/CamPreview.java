@@ -20,7 +20,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    Camera cam;
    Size previewSize;
    SurfaceHolder holder;
-   //Default settings for camera (not all systems report correctly when asked)
+   //Default settings for camera (not all systems report correctly when queried)
    int defaultCameraID = 0;
    int frontCameraID = 1;
    int currentCameraID = 0;
@@ -50,7 +50,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    }
 
    /**
-    * Method called when the surface have changed (if the orientation is changed
+    * Method called when the surface changes
     * @param holder The holder for the surface
     * @param format The format of the surface
     * @param width The width of the surface
