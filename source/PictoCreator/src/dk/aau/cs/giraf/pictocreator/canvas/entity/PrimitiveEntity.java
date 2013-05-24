@@ -54,17 +54,9 @@ public abstract class PrimitiveEntity extends Entity {
 	public abstract void drawWithPaint(Canvas canvas, Paint paint);
 	
 	@Override
-	public void draw(Canvas canvas) {
-		int canvasLayers = canvas.getSaveCount();
-		canvas.save();
-		
-		canvas.translate(getX(), getY());
-		canvas.rotate(getAngle(), getWidth()/2, getHeight()/2);
-		
+	public void doDraw(Canvas canvas) {
 		drawWithPaint(canvas, fillPaint); // Fill
 		drawWithPaint(canvas, strokePaint); // Stroke
-		
-		canvas.restoreToCount(canvasLayers);
 	}
 
 }

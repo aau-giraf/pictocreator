@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageButton;
 
 /**
@@ -29,30 +30,6 @@ public class ColorButton extends ImageButton {
 	PreviewButton previewButton;
 	
 	/**
-	 * Did we get a longPress before the previous up event?
-	 */
-	boolean longPressDetected = false;
-	
-	/**
-	 * 
-	 */
-	final Handler handler = new Handler();
-	
-	/**
-	 * A Runnable, used to properly detect a long press (>1000ms) when the user
-	 * touches the color button. We use this to figure out whether the user
-	 * wanted to apply a fill colour (short press) or a stroke colour (long
-	 * press).
-	 */
-	Runnable mLongPressed = new Runnable() { 
-	    public void run() { 
-	        // Log.i("", "Long press!");
-	    	longPressDetected = true;
-	        applyStrokeColor();
-	    }   
-	};
-	
-	/**
 	 * The actual DrawView where we perform drawing operations. Its colors are
 	 * updated to reflect those currently chosen.
 	 */
@@ -73,7 +50,7 @@ public class ColorButton extends ImageButton {
 		super(context);
 		init(drawView, previewButton, color, context);
 	}
-
+	
 	/**
 	 * Creates a new ColorButton. Requires expanded arguments, but should be
 	 * ready for use like any retrieved View once initialised.
@@ -123,6 +100,10 @@ public class ColorButton extends ImageButton {
 		this.previewButton = previewButton;
 		setColor(color);
 		setImageResource(R.drawable.blank_32x32);
+		
+		// Set the proper listeners.
+		this.setOnLongClickListener(onLongClick);
+		this.setOnClickListener(onClick);
 	}
 	
 	/**
@@ -161,22 +142,19 @@ public class ColorButton extends ImageButton {
 		setBackgroundColor(c);
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent event){
-		int action = event.getAction();
-		
-	    if(action == MotionEvent.ACTION_DOWN) {
-	    	longPressDetected = false; // Reset status.
-	        handler.postDelayed(mLongPressed, 1000); // Initiate the runner for a second's time.
-	    }
-	    else if (action == MotionEvent.ACTION_MOVE) {
-	    	handler.removeCallbacks(mLongPressed); // And ignore.
-	    }
-	    else if(action == MotionEvent.ACTION_UP && !longPressDetected) {
-	        handler.removeCallbacks(mLongPressed);
-	        applyFillColor();
-	    }
-	    return super.onTouchEvent(event);
-	}
-
+	protected OnClickListener onClick = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			applyFillColor();
+		}
+	};
+	
+	protected OnLongClickListener onLongClick = new OnLongClickListener() {
+		@Override
+		public boolean onLongClick(View v) {
+			applyStrokeColor();
+			return true;
+		}
+	};
+	
 }

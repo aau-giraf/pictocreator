@@ -31,14 +31,8 @@ public class BitmapEntity extends Entity {
 	}
 	
 	@Override
-	public void draw(Canvas canvas) {
-		canvas.save();
-		
-		canvas.translate(getX(), getY());
-		canvas.rotate(getAngle(), getWidth()/2, getHeight()/2);
+	public void doDraw(Canvas canvas) {
 		canvas.drawBitmap(internalBitmap, 0, 0, null);
-		
-		canvas.restore();
 	}
 
 }
