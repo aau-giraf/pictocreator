@@ -182,6 +182,7 @@ public class RecordThread implements Runnable {
      * deletes the tmp save file
      */
     public void onAccept(){
+        stop();
         audioHandler.saveFinalFile();
     }
 
