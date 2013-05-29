@@ -115,8 +115,8 @@ public class AudioHandler {
                     finalFileStream.write(buffer, 0, lenght);
                 }
 
-                Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
-                               "to " + finalFilePath, Toast.LENGTH_LONG).show();
+                // Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
+                //                "to " + finalFilePath, Toast.LENGTH_LONG).show();
             }
         }
         catch(IOException e){
