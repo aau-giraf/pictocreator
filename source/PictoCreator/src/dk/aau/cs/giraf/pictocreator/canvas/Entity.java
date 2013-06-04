@@ -147,11 +147,32 @@ public abstract class Entity implements Parcelable {
 	}
 	
 	/**
-	 * All Shape subtypes must override and implement the onDraw method. They
-	 * are responsible for drawing themselves to the passed canvas.
-	 * @param canvas
+	 * The basic drawing method encompasses overriding doDraw with
+	 * non-translating canvas actions. You are free, however, to override
+	 * this draw method itself - in this case, you are responsible for
+	 * correctly placing Canvas prior to usage.
+	 * @param canvas The Canvas object to draw onto.
 	 */
-	public abstract void draw(Canvas canvas);
+	public void draw(Canvas canvas) {
+		int canvasLayers = canvas.getSaveCount();
+		canvas.save();
+		
+		canvas.translate(getX(), getY());
+		canvas.rotate(getAngle(), getWidth()/2, getHeight()/2);
+		
+		doDraw(canvas);
+		
+		canvas.restoreToCount(canvasLayers);
+	}
+	
+	/**
+	 * Method stub for post-translation drawing on the canvas. It is
+	 * recommended that new Entity subclasses override this and simply draw
+	 * to the canvas, allowing the primary Entity draw implementation to
+	 * handle translating and rotating the canvas correctly.
+	 * @param canvas The Canvas to draw upon.
+	 */
+	protected void doDraw(Canvas canvas) {}
 	
 	/**
 	 * Simple rectangular non-rotated collision detection at a specific point.

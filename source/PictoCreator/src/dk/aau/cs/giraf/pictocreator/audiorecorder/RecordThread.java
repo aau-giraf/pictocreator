@@ -16,7 +16,7 @@ public class RecordThread implements Runnable {
 
     private static final String TAG = "RecordThread";
 
-    private static final double EMA_FILTER = 0.6;
+    private static final int startAmpl = 33000;
 
     int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
     int outputFormat = MediaRecorder.OutputFormat.THREE_GPP;
@@ -27,10 +27,6 @@ public class RecordThread implements Runnable {
     AudioHandler audioHandler;
 
     MediaRecorder mediaRecorder = null;
-
-    private double startAmpl = 0;
-
-    private double ema = 0.0;
 
     private double decibel = 0;
 
@@ -85,7 +81,6 @@ public class RecordThread implements Runnable {
             catch (IOException ex){
                 Log.e(TAG, "Something else fucked the media recorder up", ex.fillInStackTrace());
             }
-            startAmpl = 10;
             Log.d(TAG, "Start ampl: " + startAmpl);
         }
     }
@@ -123,26 +118,16 @@ public class RecordThread implements Runnable {
         while(isRunning){
             try {
                 Thread.sleep(500);
-                decibel = (getAmplitudeEMA() / 10000) - 1.0;
-                Log.d(TAG, "getAmplitudeEMA: " + getAmplitudeEMA());
+                // The value is divided by 2000 to give a value within range
+                // of the decibel-meter
+                decibel = getAmplitude() / 2000;
+                Log.d(TAG, "Amplitude: " + decibel);
                 _interface.decibelUpdate(decibel);
             }
             catch (InterruptedException e) {
                 Log.e(TAG, "Thread interrupted.", e.fillInStackTrace());
             }
         }
-    }
-
-    /**
-     * Function for converting amplitude to decibel
-     * @param amplitude The amplitude to convert
-     * @return Decibel value of the amplitude
-     */
-    private double amplitudeToDecibel(int amplitude){
-        // Formular from Wikipedia
-        double tmpDecibel = 20 * Math.log10(amplitude / startAmpl);
-        Log.d(TAG, "tmpDecibel: " + tmpDecibel);
-        return tmpDecibel;
     }
 
     /**
@@ -155,16 +140,6 @@ public class RecordThread implements Runnable {
         else
             return 0;
 
-    }
-
-    /**
-     * Function for converting amplitude to ema
-     * @return ema value of the amplitude
-     */
-    public double getAmplitudeEMA() {
-        double amp =  getAmplitude();
-        ema = EMA_FILTER * amp + (1.0 - EMA_FILTER) * ema;
-        return ema;
     }
 
     /**
@@ -182,6 +157,7 @@ public class RecordThread implements Runnable {
      * deletes the tmp save file
      */
     public void onAccept(){
+        stop();
         audioHandler.saveFinalFile();
     }
 
