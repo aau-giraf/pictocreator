@@ -34,164 +34,164 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
  */
 public class DrawFragment extends Fragment {
 
-	private static final String TAG = "DrawFragment";
+        private static final String TAG = "DrawFragment";
 
-	/**
-	 * 
-	 */
-	public View view;
-	
-	/**
-	 * The DrawView contained within this fragment. A lot of communication goes
-	 * more or less transparently through, which makes this reference useful.
-	 */
-	public DrawView drawView;
+        /**
+         *
+         */
+        public View view;
 
-	/**
-	 * Button for the RectHandler ActionHandler.
-	 */
-	protected ImageButton rectHandlerButton;
-	
-	/**
-	 * Button for the OvalHandler ActionHandler.
-	 */
-	protected ImageButton ovalHandlerButton;
-	
-	/**
-	 * Button for the LineHandler ActionHandler.
-	 */
-	protected ImageButton lineHandlerButton;
-	
-	/**
-	 * Button for the SelectionHandler ActionHandler.
-	 */
-	protected ImageButton selectHandlerButton;
-	
-	/**
-	 * Button for the FreehandHandler ActionHandler (HANDLE!).
-	 */
-	protected ImageButton freehandHandlerButton;
-	
-	/**
-	 * Button for the import action for importing Bitmaps.
-	 */
-	protected ImageButton importFragmentButton;
+        /**
+         * The DrawView contained within this fragment. A lot of communication goes
+         * more or less transparently through, which makes this reference useful.
+         */
+        public DrawView drawView;
 
-	CamImportDialogFragment importDialog;
+        /**
+         * Button for the RectHandler ActionHandler.
+         */
+        protected ImageButton rectHandlerButton;
 
-	/**
-	 * Displays previews of current color choices.
-	 */
-	PreviewButton previewButton;
+        /**
+         * Button for the OvalHandler ActionHandler.
+         */
+        protected ImageButton ovalHandlerButton;
 
-	/**
-	 * Quick reference to one of the other handler buttons, whichever is active.
-	 */
-	ImageButton activeHandlerButton;
+        /**
+         * Button for the LineHandler ActionHandler.
+         */
+        protected ImageButton lineHandlerButton;
 
-	/**
-	 * The LinearLayout view that contains all choosable colours.
-	 */
-	LinearLayout colorButtonToolbox;
+        /**
+         * Button for the SelectionHandler ActionHandler.
+         */
+        protected ImageButton selectHandlerButton;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        /**
+         * Button for the FreehandHandler ActionHandler (HANDLE!).
+         */
+        protected ImageButton freehandHandlerButton;
 
-		if (savedInstanceState != null) {
-			// Restore drawStack et al.
-			drawView.drawStack = savedInstanceState.getParcelable("drawstack");
-		}
+        /**
+         * Button for the import action for importing Bitmaps.
+         */
+        protected ImageButton importFragmentButton;
 
-		Log.w("MainActivity", "Invalidating DrawView to force onDraw.");
-	}
+        CamImportDialogFragment importDialog;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        /**
+         * Displays previews of current color choices.
+         */
+        PreviewButton previewButton;
 
-		view = inflater.inflate(R.layout.draw_fragment, container, false);
+        /**
+         * Quick reference to one of the other handler buttons, whichever is active.
+         */
+        ImageButton activeHandlerButton;
 
-		drawView = (DrawView)view.findViewById(R.id.drawingview);
+        /**
+         * The LinearLayout view that contains all choosable colours.
+         */
+        LinearLayout colorButtonToolbox;
 
-		freehandHandlerButton = (ImageButton)view.findViewById(R.id.freehand_handler_button);
-		freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
-		selectHandlerButton = (ImageButton)view.findViewById(R.id.select_handler_button);
-		selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);
-		rectHandlerButton = (ImageButton)view.findViewById(R.id.rect_handler_button);
-		rectHandlerButton.setOnClickListener(onRectHandlerButtonClick);
-		lineHandlerButton = (ImageButton)view.findViewById(R.id.line_handler_button);
-		lineHandlerButton.setOnClickListener(onLineHandlerButtonClick);
-		ovalHandlerButton = (ImageButton)view.findViewById(R.id.oval_handler_button);
-		ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
 
-		SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
-		strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
+                if (savedInstanceState != null) {
+                        // Restore drawStack et al.
+                        drawView.drawStack = savedInstanceState.getParcelable("drawstack");
+                }
 
-		// Set initial handler.
-		drawView.setHandler(new FreehandHandler());
-		activeHandlerButton = freehandHandlerButton;
-		activeHandlerButton.setEnabled(false);
+                Log.w("MainActivity", "Invalidating DrawView to force onDraw.");
+        }
 
-		View tmp = view.findViewById(R.id.canvasColorPreviewButton);
-		Log.w("DrawFragment.onCreateView", String.format("PreviewButton returned as a %s.", tmp.getClass().toString()));
-		previewButton = (PreviewButton)tmp;
-		previewButton.setStrokeColor(0xFF000000);
-		previewButton.setFillColor(0xFFFFFFFF);
-		drawView.setStrokeColor(previewButton.getStrokeColor());
-		drawView.setFillColor(previewButton.getFillColor());
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
 
-		importFragmentButton = (ImageButton)view.findViewById(R.id.start_import_dialog_button);
-		importFragmentButton.setOnClickListener(onImportClick);
+                view = inflater.inflate(R.layout.draw_fragment, container, false);
 
-		colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
+                drawView = (DrawView)view.findViewById(R.id.drawingview);
 
-		// Add standard HTML colors to the box.
-		addColorButton(0x00000000); // Transparent
-		addColorButton(0xFF000000); // Black
-		addColorButton(0xFFFFFFFF); // White
-		addColorButton(0xFF808080); // Gray
-		addColorButton(0xFFC0C0C0); // Silver
-		addColorButton(0xFF800000); // Maroon
-		addColorButton(0xFFFF0000); // Red
-		addColorButton(0xFF808000); // Olive
-		addColorButton(0xFFFFFF00); // Yellow
-		addColorButton(0xFF008000); // Green
-		addColorButton(0xFF00FF00); // Lime
-		addColorButton(0xFF008080); // Teal
-		addColorButton(0xFF00FFFF); // Aqua
-		addColorButton(0xFF000080); // Navy
-		addColorButton(0xFF0000FF); // Blue
-		addColorButton(0xFF800080); // Purple
-		addColorButton(0xFFFF00FF); // Fuchsia
+                freehandHandlerButton = (ImageButton)view.findViewById(R.id.freehand_handler_button);
+                freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
+                selectHandlerButton = (ImageButton)view.findViewById(R.id.select_handler_button);
+                selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);
+                rectHandlerButton = (ImageButton)view.findViewById(R.id.rect_handler_button);
+                rectHandlerButton.setOnClickListener(onRectHandlerButtonClick);
+                lineHandlerButton = (ImageButton)view.findViewById(R.id.line_handler_button);
+                lineHandlerButton.setOnClickListener(onLineHandlerButtonClick);
+                ovalHandlerButton = (ImageButton)view.findViewById(R.id.oval_handler_button);
+                ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 
-		colorButtonToolbox.removeViewAt(0); // Remove the placeholder.
+                SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
+                strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
 
-		strokeWidthBar.setProgress(4); // Set default stroke width.
+                // Set initial handler.
+                drawView.setHandler(new FreehandHandler());
+                activeHandlerButton = freehandHandlerButton;
+                activeHandlerButton.setEnabled(false);
 
-		return view;
-	}
+                View tmp = view.findViewById(R.id.canvasColorPreviewButton);
+                Log.w("DrawFragment.onCreateView", String.format("PreviewButton returned as a %s.", tmp.getClass().toString()));
+                previewButton = (PreviewButton)tmp;
+                previewButton.setStrokeColor(0xFF000000);
+                previewButton.setFillColor(0xFF000000);
+                drawView.setStrokeColor(previewButton.getStrokeColor());
+                drawView.setFillColor(previewButton.getFillColor());
 
-	/**
-	 * Adds a new ColorButton with the specified hex color to the color toolbox.
-	 * @param color Color to add. Can have alpha, although we suggest keeping it opaque (0xFFxxxxxx).
-	 * @param cbList LinearLayout instance where the button should be added.
-	 */
-	private void addColorButton(int color) {
-		colorButtonToolbox.addView(
-				new ColorButton(
-						drawView,
-						previewButton,
-						color,
-						this.getActivity()));
-	}
+                importFragmentButton = (ImageButton)view.findViewById(R.id.start_import_dialog_button);
+                importFragmentButton.setOnClickListener(onImportClick);
 
-	/**
-	 * Instructs the DrawView to flatten its current draw stack and save it as
-	 * a Bitmap.
-	 * @todo Write documentation on where it is saved due to the heavy
-	 * side-effecting we failed to avoid.
-	 */
+                colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
+
+                // Add standard HTML colors to the box.
+                addColorButton(0x00000000); // Transparent
+                addColorButton(0xFF000000); // Black
+                addColorButton(0xFFFFFFFF); // White
+                addColorButton(0xFF808080); // Gray
+                addColorButton(0xFFC0C0C0); // Silver
+                addColorButton(0xFF800000); // Maroon
+                addColorButton(0xFFFF0000); // Red
+                addColorButton(0xFF808000); // Olive
+                addColorButton(0xFFFFFF00); // Yellow
+                addColorButton(0xFF008000); // Green
+                addColorButton(0xFF00FF00); // Lime
+                addColorButton(0xFF008080); // Teal
+                addColorButton(0xFF00FFFF); // Aqua
+                addColorButton(0xFF000080); // Navy
+                addColorButton(0xFF0000FF); // Blue
+                addColorButton(0xFF800080); // Purple
+                addColorButton(0xFFFF00FF); // Fuchsia
+
+                colorButtonToolbox.removeViewAt(0); // Remove the placeholder.
+
+                strokeWidthBar.setProgress(4); // Set default stroke width.
+
+                return view;
+        }
+
+        /**
+         * Adds a new ColorButton with the specified hex color to the color toolbox.
+         * @param color Color to add. Can have alpha, although we suggest keeping it opaque (0xFFxxxxxx).
+         * @param cbList LinearLayout instance where the button should be added.
+         */
+        private void addColorButton(int color) {
+                colorButtonToolbox.addView(
+                                new ColorButton(
+                                                drawView,
+                                                previewButton,
+                                                color,
+                                                this.getActivity()));
+        }
+
+        /**
+         * Instructs the DrawView to flatten its current draw stack and save it as
+         * a Bitmap.
+         * @todo Write documentation on where it is saved due to the heavy
+         * side-effecting we failed to avoid.
+         */
     public void saveBitmap(){
         try {
             drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
@@ -202,98 +202,98 @@ public class DrawFragment extends Fragment {
 
     }
 
-	/**
-	 * Shorthand for switching active handler button. Better than serious code redundancy.
-	 * @param button The ImageButton to disable. The currently disabled button will be re-enabled.
-	 */
-	protected void setActiveButton(ImageButton button) {
-		activeHandlerButton.setEnabled(true); // Enable previous.
-		activeHandlerButton = button; // Switch out active.
-		activeHandlerButton.setEnabled(false); // Disable new active.
-	}
+        /**
+         * Shorthand for switching active handler button. Better than serious code redundancy.
+         * @param button The ImageButton to disable. The currently disabled button will be re-enabled.
+         */
+        protected void setActiveButton(ImageButton button) {
+                activeHandlerButton.setEnabled(true); // Enable previous.
+                activeHandlerButton = button; // Switch out active.
+                activeHandlerButton.setEnabled(false); // Disable new active.
+        }
 
-	private final OnClickListener onSelectHandlerButtonClick = new OnClickListener() {
+        private final OnClickListener onSelectHandlerButtonClick = new OnClickListener() {
 
-		@Override
-		public void onClick(View view) {
-			drawView.setHandler(new SelectionHandler(getResources()));
-			setActiveButton(selectHandlerButton);
-		}
-	};
+                @Override
+                public void onClick(View view) {
+                        drawView.setHandler(new SelectionHandler(getResources()));
+                        setActiveButton(selectHandlerButton);
+                }
+        };
 
-	private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
+        private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
 
-		@Override
-		public void onClick(View view) {
-			drawView.setHandler(new FreehandHandler());
-			setActiveButton(freehandHandlerButton);
-		}
-	};
+                @Override
+                public void onClick(View view) {
+                        drawView.setHandler(new FreehandHandler());
+                        setActiveButton(freehandHandlerButton);
+                }
+        };
 
-	/**
-	 * Click handler for the RectHandler. It sets the active handler in
-	 * DrawView and marks itself as "in use".
-	 */
-	private final OnClickListener onRectHandlerButtonClick = new OnClickListener() {
+        /**
+         * Click handler for the RectHandler. It sets the active handler in
+         * DrawView and marks itself as "in use".
+         */
+        private final OnClickListener onRectHandlerButtonClick = new OnClickListener() {
 
-		@Override
-		public void onClick(View view) {
-			drawView.setHandler(new RectHandler());
-			setActiveButton(rectHandlerButton);
-		}
-	};
+                @Override
+                public void onClick(View view) {
+                        drawView.setHandler(new RectHandler());
+                        setActiveButton(rectHandlerButton);
+                }
+        };
 
-	private final OnClickListener onOvalHandlerButtonClick = new OnClickListener() {
+        private final OnClickListener onOvalHandlerButtonClick = new OnClickListener() {
 
-		@Override
-		public void onClick(View view) {
-			drawView.setHandler(new OvalHandler());
-			setActiveButton(ovalHandlerButton);
-		}
-	};
+                @Override
+                public void onClick(View view) {
+                        drawView.setHandler(new OvalHandler());
+                        setActiveButton(ovalHandlerButton);
+                }
+        };
 
-	private final OnClickListener onLineHandlerButtonClick = new OnClickListener() {
+        private final OnClickListener onLineHandlerButtonClick = new OnClickListener() {
 
-		@Override
-		public void onClick(View view) {
-			drawView.setHandler(new LineHandler());
-			setActiveButton(lineHandlerButton);
-		}
-	};
+                @Override
+                public void onClick(View view) {
+                        drawView.setHandler(new LineHandler());
+                        setActiveButton(lineHandlerButton);
+                }
+        };
 
-	public void onSaveInstanceState(Bundle outState) {
-		// Parcel currentDrawStack = Parcel.obtain();
-		// drawView.drawStack.writeToParcel(currentDrawStack, 0);
-		Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
-		outState.putParcelable("drawstack", drawView.drawStack);
-	};
+        public void onSaveInstanceState(Bundle outState) {
+                // Parcel currentDrawStack = Parcel.obtain();
+                // drawView.drawStack.writeToParcel(currentDrawStack, 0);
+                Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
+                outState.putParcelable("drawstack", drawView.drawStack);
+        };
 
-	private final OnClickListener onImportClick = new OnClickListener() {
+        private final OnClickListener onImportClick = new OnClickListener() {
 
-		@Override
-		public void onClick(View view) {
-			importDialog = new CamImportDialogFragment();
-			importDialog.setImportPath(new ImportResultPath() {
-				@Override
-				public void onImport(String path) {
-					// Do the import here...
-					// Jojo do your stuff (btw path is the path to chosen image)
-					//Toast.makeText(getActivity(), path, Toast.LENGTH_LONG).show();
-					drawView.loadFromBitmap(BitmapFactory.decodeFile(path));
-				}
-			});
-			importDialog.show(getActivity().getFragmentManager(), TAG);
-		}
-	};
+                @Override
+                public void onClick(View view) {
+                        importDialog = new CamImportDialogFragment();
+                        importDialog.setImportPath(new ImportResultPath() {
+                                @Override
+                                public void onImport(String path) {
+                                        // Do the import here...
+                                        // Jojo do your stuff (btw path is the path to chosen image)
+                                        //Toast.makeText(getActivity(), path, Toast.LENGTH_LONG).show();
+                                        drawView.loadFromBitmap(BitmapFactory.decodeFile(path));
+                                }
+                        });
+                        importDialog.show(getActivity().getFragmentManager(), TAG);
+                }
+        };
 
-	private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-			previewButton.setStrokeWidth(progress);
-			drawView.setStrokeWidth(progress);
-			Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
-		};
+        private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        previewButton.setStrokeWidth(progress);
+                        drawView.setStrokeWidth(progress);
+                        Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
+                };
 
-		public void onStopTrackingTouch(SeekBar seekBar) {};
-		public void onStartTrackingTouch(SeekBar seekBar) {};
-	};
+                public void onStopTrackingTouch(SeekBar seekBar) {};
+                public void onStartTrackingTouch(SeekBar seekBar) {};
+        };
 }
