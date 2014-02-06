@@ -108,13 +108,24 @@ public abstract class Entity implements Parcelable {
 	 * Set the angle of rotation for this Entity.
 	 * @param angle The new angle.
 	 */
-	public void setAngle(float angle) { this.angle = angle; }
+	public void setAngle(float angle) {
+		rotate(-this.angle); // Rotate to 0.0.
+		rotate(angle); // Rotate to new angle.
+	}
 	
 	/**
 	 * Rotates the Entity by a relative amount.
 	 * @param value The amount to rotate by.
 	 */
-	public void rotateBy(float value) { this.angle += value; }
+	public void rotate(float value) {
+		this.angle += value;
+		/* A hitbox-relevant rotation is performed by four calculations:
+		 * - calculate center point.
+		 * - rotate TL around center point.
+		 * - rotate TR vector around center point.
+		 * - rotate BL vector around center point.
+		 */
+	}
 	
 	/**
 	 * Retrieves the center point of th Entity. The default implementation

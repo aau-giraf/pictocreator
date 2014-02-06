@@ -171,7 +171,6 @@ public abstract class ShapeHandler extends ActionHandler {
 		}
 	}
 	
-	@Override
 	public void draw(Canvas canvas) {
 		drawBufferPreBounds(canvas);
 	}

@@ -309,7 +309,7 @@ public class SelectionHandler extends ActionHandler {
 					float currentAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
 					
 					// selectedEntity.setAngle(getAngle(selectedEntity.getCenter(), new FloatPoint(px, py))-previousAngle);
-					selectedEntity.rotateBy(currentAngle-previousAngle);
+					selectedEntity.rotate(currentAngle-previousAngle);
 					
 					previousAngle = currentAngle;
 					
@@ -386,7 +386,6 @@ public class SelectionHandler extends ActionHandler {
 		}
 	}
 
-	@Override
 	public void draw(Canvas canvas) {
 		drawBufferPreBounds(canvas);
 	}

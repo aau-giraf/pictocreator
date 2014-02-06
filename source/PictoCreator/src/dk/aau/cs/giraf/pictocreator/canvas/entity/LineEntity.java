@@ -9,7 +9,6 @@ import android.graphics.Paint;
  * The LineEntity class represents a straight line, point A to point B. For
  * hitbox purposes, the LineEntity is considered a rectangle.
  * @author lindhart
- *
  */
 public class LineEntity extends PrimitiveEntity {
 	

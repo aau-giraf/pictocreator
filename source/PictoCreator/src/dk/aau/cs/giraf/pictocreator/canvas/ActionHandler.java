@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  * @author Croc
  *
  */
-public abstract class ActionHandler extends Entity {
+public abstract class ActionHandler {
 
 	/**
 	 * The drawing buffer. Modify this to suit. This buffer will always been
