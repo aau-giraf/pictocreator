@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="horizontal"
+	android:background="@null"
+	android:paddingBottom="60dp"
+	android:paddingLeft="60dp"
+	android:paddingRight="60dp"
+	android:paddingTop="60dp" >
+
+	<FrameLayout
+		android:id="@+id/camera_preview"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_toLeftOf="@+id/button_capture"
+		android:layout_marginRight="100dp"
+		android:layout_marginLeft="100dp" >
+
+	</FrameLayout>
+
+	<ImageButton
+		android:id="@+id/button_capture"
+		android:layout_width="100dp"
+		android:layout_height="140dp"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+      	android:background="@drawable/cam_hack_button"
+      	android:src="@drawable/cam" />
+
+	<ToggleButton
+		android:id="@+id/color_effects"
+		android:layout_width="100dp"
+		android:layout_height="80dp"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:background="@drawable/color_effect_switch"
+		android:textOn=""
+		android:textOff="" />
+
+	<ImageButton
+		android:id="@+id/switch_cam"
+		android:layout_width="100dp"
+		android:layout_height="80dp"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:background="@drawable/cam_facing_button"/>
+
+</RelativeLayout><!-- From: file:/D:/Windows%207/Dokumenter/SVN/P6%20-%20SW615F14/Temp%20Git/PictoCreator/res/layout/cam_fragment.xml -->

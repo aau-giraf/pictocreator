@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="PictoCreatorOasisLibUnspecified.aar" >
+        <source path="D:\Windows 7\Dokumenter\SVN\P6 - SW615F14\Temp Git\PictoCreator\build\exploded-bundles\PictoCreatorOasisLibUnspecified.aar\assets" />
+    </dataSet>
+    <dataSet config="PictoCreatorPictogramLibUnspecified.aar" >
+        <source path="D:\Windows 7\Dokumenter\SVN\P6 - SW615F14\Temp Git\PictoCreator\build\exploded-bundles\PictoCreatorPictogramLibUnspecified.aar\assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="D:\Windows 7\Dokumenter\SVN\P6 - SW615F14\Temp Git\PictoCreator\assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="D:\Windows 7\Dokumenter\SVN\P6 - SW615F14\Temp Git\PictoCreator\build-types\debug\assets" />
+    </dataSet>
+
+</merger>
