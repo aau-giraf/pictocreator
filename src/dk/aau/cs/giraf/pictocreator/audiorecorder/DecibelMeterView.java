@@ -84,7 +84,7 @@ public class DecibelMeterView extends View {
 
         for(int i = meterSize - 1; i >= 0 ; i--){
             y = y + padding;
-            if(((_level - 0.1) * meterSize) >  (i - 0.5)){
+            if(((getLevel() - 0.1) * meterSize) >  (i - 0.5)){
                 drawable.getPaint().setColor(meterColors[i]);
             }
             else {

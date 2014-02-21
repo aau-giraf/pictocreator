@@ -24,9 +24,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     private View view;
 
-    AudioHandler handler;
+    private AudioHandler handler;
 
-    DecibelMeterView decibelMeter;
+    private DecibelMeterView decibelMeter;
 
     private RecordThread recThread;
 
