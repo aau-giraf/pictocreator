@@ -28,7 +28,7 @@ public class LineHandler extends ShapeHandler {
 	
 	@Override
 	public PrimitiveEntity updateBuffer() {
-		bufferedEntity = new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, getStrokeColor());
+		bufferedEntity = new LineEntity(startPoint.x, startPoint.y, endPoint.x, endPoint.y, getFillColor(), getStrokeColor());
 		bufferedEntity.setStrokeWidth(getStrokeWidth());
 		return bufferedEntity;
 	}

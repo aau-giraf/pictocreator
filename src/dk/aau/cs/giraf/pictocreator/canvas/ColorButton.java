@@ -102,6 +102,8 @@ public class ColorButton extends ImageButton {
 		// Set the proper listeners.
 		this.setOnLongClickListener(onLongClick);
 		this.setOnClickListener(onClick);
+
+        previewButton.assignReference(this);
 	}
 	
 	/**
@@ -121,6 +123,7 @@ public class ColorButton extends ImageButton {
 		drawView.setFillColor(getColor());
 		previewButton.setFillColor(getColor());
 	}
+
 
 	/**
 	 * Retrieves this ColorButton's bound colour.
@@ -154,5 +157,10 @@ public class ColorButton extends ImageButton {
 			return true;
 		}
 	};
+
+    public void applyColor(int fillColor, int strokeColor){
+        drawView.setFillColor(fillColor);
+        drawView.setStrokeColor(strokeColor);
+    }
 	
 }

@@ -42,7 +42,6 @@ public class PreviewButton extends ImageButton {
 
 	public PreviewButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		
 		init();
 	}
 
@@ -102,12 +101,18 @@ public class PreviewButton extends ImageButton {
 			return true;
 		} else return false;
 	}
-	
+
 	public void swapColors() {
 		int c = fillPaint.getColor();
 		fillPaint.setColor(strokePaint.getColor());
 		strokePaint.setColor(c);
+        if(_colorbutton != null)
+            _colorbutton.applyColor(fillPaint.getColor(), strokePaint.getColor());
 		invalidate();
 	}
+    private ColorButton _colorbutton;
+    public void assignReference(ColorButton colorButton){
+        this._colorbutton = colorButton;
+    }
 
 }
