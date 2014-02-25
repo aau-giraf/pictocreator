@@ -25,8 +25,8 @@ public class LineEntity extends PrimitiveEntity {
 	 * @param y2 Second Y-coordinate.
 	 * @param strokeColor Colour of the line.
 	 */
-	public LineEntity(float x1, float y1, float x2, float y2, int strokeColor) {
-		super(0, strokeColor);
+	public LineEntity(float x1, float y1, float x2, float y2, int fillColor, int strokeColor) {
+		super(fillColor, strokeColor);
 		
 		setX(x1);
 		setY(y1);

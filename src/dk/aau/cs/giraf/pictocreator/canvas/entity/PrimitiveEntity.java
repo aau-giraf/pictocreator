@@ -38,6 +38,8 @@ public abstract class PrimitiveEntity extends Entity {
 	}
 	
 	public PrimitiveEntity(int fillColor, int strokeColor) {
+        strokePaint.setColor(strokeColor);
+        fillPaint.setColor(fillColor);
 		strokePaint.setStyle(Style.STROKE);
 		fillPaint.setStyle(Style.FILL);
 	}
