@@ -66,7 +66,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        try {
            cam.stopPreview();
        } catch (Exception e) {
-           Log.d(TAG, "Lol, you tried to stop a non-existent preview");
+           Log.d(TAG, "You tried to stop a non-existent preview");
        }
        releaseCamera();
        cam = getCamera(defaultCameraID);

@@ -54,9 +54,9 @@ public class RecordThread implements Runnable {
             recordThread = new Thread(this);
 
             if(mediaRecorder == null){
-                Log.d(TAG, "beginning init og MedioRecorder");
+                Log.d(TAG, "beginning init og MediaRecorder");
                 mediaRecorder = new MediaRecorder();
-                Log.d(TAG, "mediaRecorder intilized");
+                Log.d(TAG, "mediaRecorder initialized");
             }
 
             try {
@@ -67,7 +67,7 @@ public class RecordThread implements Runnable {
 
             }
             catch (IllegalStateException ex){
-                Log.e(TAG, "Fucked the order in the media recorder up!", ex.fillInStackTrace());
+                Log.e(TAG, "The order in the media recorder is not correct!", ex.fillInStackTrace());
             }
 
             recordThread.start();
@@ -77,7 +77,7 @@ public class RecordThread implements Runnable {
                 mediaRecorder.start();
             }
             catch (IOException ex){
-                Log.e(TAG, "Something else fucked the media recorder up", ex.fillInStackTrace());
+                Log.e(TAG, "Could not prepare or start the mediaRecorder", ex.fillInStackTrace());
             }
             Log.d(TAG, "Start ampl: " + startAmpl);
         }

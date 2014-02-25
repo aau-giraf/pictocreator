@@ -58,20 +58,20 @@ public class AudioHandler {
 
         if(!soundFileDir.exists() && !soundFileDir.mkdirs()) {
             Log.d(TAG, "Cannot create directory for the sound");
-            return;
         }
+        else {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+            String date = dateFormat.format(new Date());
+            String audioFile = "GSound_" + date + ".3gp";
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
-        String date = dateFormat.format(new Date());
-        String audioFile = "GSound_" + date + ".3gp";
+            String tmpAudioFile = "GSound_" + date + "tmp" + ".3gp";
 
-        String tmpAudioFile = "GSound_" + date + "tmp" + ".3gp";
+            String fileName = soundFileDir.getPath() + File.separator + tmpAudioFile;
 
-        String fileName = soundFileDir.getPath() + File.separator + tmpAudioFile;
+            outputFilePath = fileName;
 
-        outputFilePath = fileName;
-
-        savedFileName = audioFile;
+            savedFileName = audioFile;
+        }
     }
 
     /**
@@ -108,10 +108,10 @@ public class AudioHandler {
 
                 byte[] buffer = new byte[1024];
 
-                int lenght;
+                int length;
 
-                while((lenght = tmpFileStream.read(buffer)) > 0){
-                    finalFileStream.write(buffer, 0, lenght);
+                while((length = tmpFileStream.read(buffer)) > 0){
+                    finalFileStream.write(buffer, 0, length);
                 }
 
                 // Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
