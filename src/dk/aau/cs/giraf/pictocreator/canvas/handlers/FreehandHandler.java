@@ -29,6 +29,7 @@ public class FreehandHandler extends ShapeHandler {
 	@Override
 	public PrimitiveEntity updateBuffer() {
 		// The FreehandEntity should manage to handle itself.
+        bufferedEntity.setStrokeWidth(getStrokeWidth());
 		return bufferedEntity;
 	}
 
