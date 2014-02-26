@@ -97,7 +97,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCanvas"
             android:layout_marginRight="20dp"
-            android:background="@drawable/mic_button" />
+            android:background="@drawable/mic_button"
+            android:adjustViewBounds="true" />
 
         <ImageButton
             android:id="@+id/start_save_dialog_button"
@@ -116,7 +117,8 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="0.88"
-        android:background="@drawable/fragment_background" >
+        android:background="@drawable/fragment_background"
+        android:longClickable="false">
 
     </FrameLayout>
 
