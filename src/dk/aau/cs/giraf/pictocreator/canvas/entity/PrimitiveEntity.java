@@ -38,10 +38,10 @@ public abstract class PrimitiveEntity extends Entity {
 	}
 	
 	public PrimitiveEntity(int fillColor, int strokeColor) {
+        strokePaint.setStyle(Style.STROKE);
         strokePaint.setColor(strokeColor);
+        fillPaint.setStyle(Style.FILL);
         fillPaint.setColor(fillColor);
-		strokePaint.setStyle(Style.STROKE);
-		fillPaint.setStyle(Style.FILL);
 	}
 	
 	/**
@@ -57,8 +57,8 @@ public abstract class PrimitiveEntity extends Entity {
 	
 	@Override
 	public void doDraw(Canvas canvas) {
-		drawWithPaint(canvas, fillPaint); // Fill
-		drawWithPaint(canvas, strokePaint); // Stroke
+        drawWithPaint(canvas, fillPaint); // Fill
+        drawWithPaint(canvas, strokePaint); // Stroke
 	}
 
 }

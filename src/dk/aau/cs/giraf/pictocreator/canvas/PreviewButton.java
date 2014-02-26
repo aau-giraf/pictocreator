@@ -111,6 +111,7 @@ public class PreviewButton extends ImageButton {
 		invalidate();
 	}
     private ColorButton _colorbutton;
+
     public void assignReference(ColorButton colorButton){
         this._colorbutton = colorButton;
     }
