@@ -85,7 +85,7 @@ public class SelectionHandler extends ActionHandler {
 	/**
 	 * Square size of the icons. The icons will be resized to iconSizeXiconSize.
 	 */
-	protected int iconSize = 32;
+	protected int iconSize = 64;
 	
 	/**
 	 * The ACTION_MODE enum makes explicit the various modes that
@@ -114,25 +114,23 @@ public class SelectionHandler extends ActionHandler {
 	/**
 	 * Support method that returns the full resource file name of an icon name.
 	 * @param base Base name of the icon (for example "resize", "rotate", etc).
-	 * @param size Size of the icon to retrieve. Expects a square icon is available.
 	 * @return The full name of the icon to be retrieved from the application context.
 	 */
-	protected static String getFullIconName(String base, int size) {
-		return String.format("%s_icon_%sx%s", base, size, size);
+	protected static String getFullIconName(String base) {
+		return String.format("%s_icon", base);
 	}
 	
 	/**
 	 * Retrieves the actual Bitmap resource for an icon.
 	 * @param name Base name of the icon (for example "resize" or "scrap").
-	 * @param size Size of the icon to retrieve. By default, 32, 64 and 100
 	 * pixels variants are built into the package.
 	 * @param res The source Resource collection to look in.
 	 * @return The matching Bitmap is returned, ready to use. If not found, 
 	 * behaviour is undefined.
 	 */
-	protected static Bitmap getIconBitmap(String name, int size, Resources res) {
+	protected static Bitmap getIconBitmap(String name, Resources res) {
 		return BitmapFactory.decodeResource(res,
-				res.getIdentifier(getFullIconName(name, size), "drawable", "dk.aau.cs.giraf.pictocreator"));
+				res.getIdentifier(getFullIconName(name), "drawable", "dk.aau.cs.giraf.pictocreator"));
 	}
 	
 	/**
@@ -157,10 +155,10 @@ public class SelectionHandler extends ActionHandler {
 	 * @param resources Source Resource collection, passed from the constructor.
 	 */
 	private void initIcons(Resources resources) {
-		resizeIcon = new BitmapEntity(getIconBitmap("resize", iconSize, resources));
-		rotateIcon = new BitmapEntity(getIconBitmap("rotate", iconSize, resources));
-		scrapIcon = new BitmapEntity(getIconBitmap("scrap", iconSize, resources));
-		flattenIcon = new BitmapEntity(getIconBitmap("flatten", iconSize, resources));
+		resizeIcon = new BitmapEntity(getIconBitmap("resize", resources),iconSize);
+		rotateIcon = new BitmapEntity(getIconBitmap("rotate", resources),iconSize);
+		scrapIcon = new BitmapEntity(getIconBitmap("scrap", resources),iconSize);
+		flattenIcon = new BitmapEntity(getIconBitmap("flatten", resources),iconSize);
 	}
 	
 	/**
@@ -169,13 +167,10 @@ public class SelectionHandler extends ActionHandler {
 	protected void updateIconLocations() {
 		flattenIcon.setX(selectedEntity.getHitboxLeft()-flattenIcon.getWidth());
 		flattenIcon.setY(selectedEntity.getHitboxTop()-flattenIcon.getHeight());
-		
-		resizeIcon.setAngle(90);
+
 		resizeIcon.setX(selectedEntity.getHitboxRight());
 		resizeIcon.setY(selectedEntity.getHitboxBottom());
-		
-		rotateIcon.setAngle(180);
-		
+
 		rotateIcon.setX(selectedEntity.getHitboxLeft()-rotateIcon.getWidth());
 		rotateIcon.setY(selectedEntity.getHitboxBottom());
 
@@ -226,6 +221,8 @@ public class SelectionHandler extends ActionHandler {
 		int index = event.getActionIndex();
 		int pointerId = event.getPointerId(index);
 		int action = event.getAction();
+
+
 		
 		if (pointerId != currentPointerId) {
 			Log.i(dtag, "Unregistered pointer. Ignoring.");
@@ -312,7 +309,6 @@ public class SelectionHandler extends ActionHandler {
 					selectedEntity.rotateBy(currentAngle-previousAngle);
 					
 					previousAngle = currentAngle;
-					
 					handled = true;
 					break;
 				}
@@ -342,17 +338,10 @@ public class SelectionHandler extends ActionHandler {
 	 * @return The angle, in <b>degrees</b>. Use Math.toRadians to convert.
 	 */
 	public static float getAngle(FloatPoint fromPoint, FloatPoint toPoint) {
-	    double dx = toPoint.x - fromPoint.x;
-	    // Minus to correct for coord re-mapping
-	    double dy = -(toPoint.y - fromPoint.y);
+	    double dx = (toPoint.x - fromPoint.x);
+	    double dy = (toPoint.y - fromPoint.y);
 
 	    double inRads = Math.atan2(dy,dx);
-
-	    // We need to map to coord system when 0 degree is at 3 O'clock, 270 at 12 O'clock
-	    if (inRads < 0)
-	        inRads = Math.abs(inRads);
-	    else
-	        inRads = 2*Math.PI - inRads;
 
 	    return (float)Math.toDegrees(inRads);
 	}
