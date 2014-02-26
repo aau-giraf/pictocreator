@@ -41,30 +41,30 @@ public class FreehandEntity extends PrimitiveEntity {
 	
 	/**
 	 * Create a new FreehandEntity with a specific stroke color. 
-	 * @param strokeColor Hexadecimal color. Alpha channel: higher > more opaque.
+	 * @param color Hexadecimal color. Alpha channel: higher > more opaque.
 	 */
-	public FreehandEntity(int strokeColor) {
-		super(0, 0, 0, 0, strokeColor, strokeColor);
-	}
+	public FreehandEntity(int color) {
+        super(0, 0, 0, 0, color, color);
+    }
 
-	@Override
-	public void drawWithPaint(Canvas canvas, Paint paint) {
-		if (drawPoints.size() <= 1) return; // Don't draw trivial.
-		
-		paint = new Paint(paint); // Copy.
-		paint.setStyle(Style.STROKE);
-		
-		Log.i("FreehandEntity.drawWithPaint", String.format("Drawing with basePoint %s and first point %s", basePoint.toString(), drawPoints.get(0).toString()));
-		
-		Path p = new Path();
-		FloatPoint tp;
-		for (int i = 1; i < drawPoints.size(); i++) {
-			tp = drawPoints.get(i);
-			p.lineTo(tp.x, tp.y);
-		}
-		
-		canvas.drawPath(p, paint);
-	}
+    @Override
+    public void drawWithPaint(Canvas canvas, Paint paint) {
+        if (drawPoints.size() <= 1) return; // Don't draw trivial.
+
+        paint = new Paint(paint); // Copy.
+        paint.setStyle(Style.STROKE);
+
+        Log.i("FreehandEntity.drawWithPaint", String.format("Drawing with basePoint %s and first point %s", basePoint.toString(), drawPoints.get(0).toString()));
+
+        Path p = new Path();
+        FloatPoint tp;
+        for (int i = 1; i < drawPoints.size(); i++) {
+            tp = drawPoints.get(i);
+            p.lineTo(tp.x, tp.y);
+        }
+
+        canvas.drawPath(p, paint);
+    }
 
 	/**
 	 * Add a new point to the Entity.
