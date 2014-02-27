@@ -108,13 +108,15 @@ public abstract class Entity implements Parcelable {
 	 * Set the angle of rotation for this Entity.
 	 * @param angle The new angle.
 	 */
-	public void setAngle(float angle) { this.angle = angle; }
-	
+	public void setAngle(float angle) {
+        this.angle = angle % 360;
+    }
+
 	/**
 	 * Rotates the Entity by a relative amount.
 	 * @param value The amount to rotate by.
 	 */
-	public void rotateBy(float value) { this.angle += value; }
+	public void rotateBy(float value) { setAngle(this.angle + value); }
 	
 	/**
 	 * Retrieves the center point of th Entity. The default implementation
@@ -181,23 +183,11 @@ public abstract class Entity implements Parcelable {
 	 * @return True if the point is within the hitbox, false otherwise.
 	 */
 	public boolean collidesWithPoint(float x, float y) {
-		if (getAngle() != 0) { // Unrotate the point and compare it to a bare rect.
-			double c = Math.cos(-getAngle());
-			double s = Math.sin(-getAngle());
-			
-			Log.i("Entity.collidesWithPoint",
-					String.format("Unrotating %s by %s degrees.", new FloatPoint(x, y).toString(), String.valueOf(-getAngle())));
-			x = (float)(getX() + c * (x - getX()) - s * (y - getY()));
-			y = (float)(getY() + s * (x - getX()) + c * (y - getY()));
-			Log.i("Entity.collidesWithPoint",
-					String.format("New points is %s.", new FloatPoint(x, y).toString()));
-		}
-		
 		return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
 				(getHitboxTop() <= y && y <= getHitboxBottom());
 	}
-	
-	/**
+
+    /**
 	 * Simple rectangular non-rotated collision detection at a specific point.
 	 * @param p The point to check.
 	 * @return True if the point is within the hitbox, false otherwise.
@@ -210,33 +200,33 @@ public abstract class Entity implements Parcelable {
 	 * Retrieve the coordinates for the leftmost point in the hitbox.
 	 * @return The X-coordinate of the leftmost hitbox edge.
 	 */
-	public float getHitboxLeft() {
-		return getX();
-	}
-	
+	public float getHitboxLeft(){
+        return getX();
+    }
+
 	/**
 	 * Retrieve the coordinates for the rightmost point in the hitbox.
 	 * @return The X-coordinate of the rightmost hitbox edge.
 	 */
-	public float getHitboxRight() {
-		return getX()+getWidth();
-	}
-	
+	public float getHitboxRight(){
+        return getX()+getWidth();
+    }
+
 	/**
 	 * Retrieve the coordinates for the topmost point in the hitbox.
 	 * @return The Y-coordinate of the topmost hitbox edge.
 	 */
-	public float getHitboxTop() {
-		return getY();
-	}
-	
+	public float getHitboxTop(){
+        return getY();
+    }
+
 	/**
 	 * Retrieve the coordinates for the bottommost point in the hitbox.
 	 * @return The Y-coordinate of the bottommost hitbox edge.
 	 */
-	public float getHitboxBottom() {
-		return getY()+getHeight();
-	}
+	public float getHitboxBottom(){
+        return getY()+getHeight();
+    };
 	
 	/**
 	 * Creates a new Entity at (0,0) with no dimensions.
