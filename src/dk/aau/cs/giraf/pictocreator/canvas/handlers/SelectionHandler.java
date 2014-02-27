@@ -401,7 +401,7 @@ public class SelectionHandler extends ActionHandler {
 	
 	@Override
 	public void setStrokeColor(int color) {
-		if (selectedEntity != null && selectedEntity.getClass().isAssignableFrom(PrimitiveEntity.class)) {
+		if (selectedEntity != null && ((Object)selectedEntity).getClass().isAssignableFrom(PrimitiveEntity.class)) {
 			PrimitiveEntity tmp = (PrimitiveEntity)selectedEntity;
 			tmp.setStrokeColor(color);
 		}
@@ -410,7 +410,7 @@ public class SelectionHandler extends ActionHandler {
 	
 	@Override
 	public void setFillColor(int color) {
-		if (selectedEntity != null && selectedEntity.getClass().isAssignableFrom(PrimitiveEntity.class)) {
+		if (selectedEntity != null && ((Object)selectedEntity).getClass().isAssignableFrom(PrimitiveEntity.class)) {
 			PrimitiveEntity tmp = (PrimitiveEntity)selectedEntity;
 			tmp.setFillColor(color);
 		}
