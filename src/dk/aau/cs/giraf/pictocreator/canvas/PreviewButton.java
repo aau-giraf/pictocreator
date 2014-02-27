@@ -93,27 +93,11 @@ public class PreviewButton extends ImageButton {
 
 		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, strokePaint);
 	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			swapColors();
-			return true;
-		} else return false;
-	}
 
 	public void swapColors() {
 		int c = fillPaint.getColor();
 		fillPaint.setColor(strokePaint.getColor());
 		strokePaint.setColor(c);
-        if(_colorbutton != null)
-            _colorbutton.applyColor(fillPaint.getColor(), strokePaint.getColor());
-		invalidate();
+        invalidate();
 	}
-    private ColorButton _colorbutton;
-
-    public void assignReference(ColorButton colorButton){
-        this._colorbutton = colorButton;
-    }
-
 }
