@@ -138,6 +138,7 @@ public class DrawFragment extends Fragment {
                 previewButton = (PreviewButton)tmp;
                 previewButton.setStrokeColor(0xFF000000);
                 previewButton.setFillColor(0xFF000000);
+                previewButton.setOnClickListener(onPreviewButtonClick);
                 drawView.setStrokeColor(previewButton.getStrokeColor());
                 drawView.setFillColor(previewButton.getFillColor());
 
@@ -299,5 +300,14 @@ public class DrawFragment extends Fragment {
 				public void onStopTrackingTouch(SeekBar seekBar) {};
                 @Override
 				public void onStartTrackingTouch(SeekBar seekBar) {};
+        };
+
+        private final OnClickListener onPreviewButtonClick = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previewButton.swapColors();
+                drawView.setFillColor(previewButton.getFillColor());
+                drawView.setStrokeColor(previewButton.getStrokeColor());
+            }
         };
 }
