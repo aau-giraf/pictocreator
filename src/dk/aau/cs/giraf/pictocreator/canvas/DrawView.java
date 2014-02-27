@@ -290,7 +290,7 @@ public class DrawView extends View {
 	 * @param src The source data.
 	 */
 	public void loadFromBitmap(Bitmap src) {
-		drawStack.addEntity(new BitmapEntity(src));
+		drawStack.addEntity(new BitmapEntity(src,30));
 		invalidate();
 	}
 }

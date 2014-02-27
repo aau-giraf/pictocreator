@@ -37,7 +37,7 @@ public class BitmapEntity extends Entity {
      * @param size The size of the bitmap.
      */
     public BitmapEntity(Bitmap src, int size) {
-        internalBitmap = Bitmap.createScaledBitmap(src, size, size, true);
+        internalBitmap = Bitmap.createScaledBitmap(src, src.getWidth() * size / 100, src.getHeight() * size / 100, true);
 
         setHeight(internalBitmap.getHeight());
         setWidth(internalBitmap.getWidth());
