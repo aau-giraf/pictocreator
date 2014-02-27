@@ -322,7 +322,7 @@ public abstract class Entity implements Parcelable {
 	public int describeContents() {
 		return 0;
 	}
-	
+
 	/**
 	 * Calculates and returns the complete hitbox. Basically made of calls to
 	 * the various getHitbox???? methods.
