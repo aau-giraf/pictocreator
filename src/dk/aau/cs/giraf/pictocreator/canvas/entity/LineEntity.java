@@ -2,6 +2,7 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 
 /**
@@ -36,7 +37,9 @@ public class LineEntity extends PrimitiveEntity {
 	
 	@Override
 	public void drawWithPaint(Canvas canvas, Paint paint) {
-		canvas.drawLine(0, 0, endPoint.x, endPoint.y, paint);
+        Log.i("LineEntity.drawWithPaint",
+                String.format("Drawing line with starting point (%s,%s) with color %s", endPoint.x, endPoint.y, paint.getColor()));
+        canvas.drawLine(0, 0, endPoint.x, endPoint.y, paint);
 	}
 
 	@Override

@@ -308,6 +308,7 @@ public class DrawFragment extends Fragment {
                 previewButton.swapColors();
                 drawView.setFillColor(previewButton.getFillColor());
                 drawView.setStrokeColor(previewButton.getStrokeColor());
+                Log.i("DrawFragment", String.format("Swapping colors from %s to %s", previewButton.getStrokeColor(), previewButton.getFillColor()));
             }
         };
 }

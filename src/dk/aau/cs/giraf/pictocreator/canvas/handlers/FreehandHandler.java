@@ -87,6 +87,7 @@ public class FreehandHandler extends ShapeHandler {
 			else if (eventPointerId == this.currentPointerId){
 				pushEntity(drawStack);
 				doDraw = false;
+                bufferedEntity = null;
 			}
 			else Log.w(tag, "Index did not match. Ignoring event.");
 		}
