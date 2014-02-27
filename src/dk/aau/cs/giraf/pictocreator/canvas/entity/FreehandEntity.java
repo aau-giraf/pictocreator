@@ -44,7 +44,9 @@ public class FreehandEntity extends PrimitiveEntity {
 	 * @param color Hexadecimal color. Alpha channel: higher > more opaque.
 	 */
 	public FreehandEntity(int color) {
-        super(0, 0, 0, 0, color, color);
+        super(color, color);
+        setX(0);
+        setY(0);
     }
 
     @Override
@@ -54,7 +56,8 @@ public class FreehandEntity extends PrimitiveEntity {
         paint = new Paint(paint); // Copy.
         paint.setStyle(Style.STROKE);
 
-        Log.i("FreehandEntity.drawWithPaint", String.format("Drawing with basePoint %s and first point %s", basePoint.toString(), drawPoints.get(0).toString()));
+        Log.i("FreehandEntity.drawWithPaint",
+                String.format("Drawing with basePoint %s and first point %s, color %s", basePoint.toString(), drawPoints.get(0).toString(), paint.getColor()));
 
         Path p = new Path();
         FloatPoint tp;
