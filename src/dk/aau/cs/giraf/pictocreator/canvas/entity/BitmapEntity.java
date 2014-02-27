@@ -29,7 +29,20 @@ public class BitmapEntity extends Entity {
 		setHeight(internalBitmap.getHeight());
 		setWidth(internalBitmap.getWidth());
 	}
-	
+
+    /**
+     * Creates a new BitmapEntity object, copying a source Bitmap as its
+     * content.
+     * @param src The Bitmap to copy and use.
+     * @param size The size of the bitmap.
+     */
+    public BitmapEntity(Bitmap src, int size) {
+        internalBitmap = Bitmap.createScaledBitmap(src, size, size, true);
+
+        setHeight(internalBitmap.getHeight());
+        setWidth(internalBitmap.getWidth());
+    }
+
 	@Override
 	public void doDraw(Canvas canvas) {
 		canvas.drawBitmap(internalBitmap, 0, 0, null);
