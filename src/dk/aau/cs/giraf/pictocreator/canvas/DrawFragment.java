@@ -3,6 +3,7 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 import java.io.FileNotFoundException;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -77,8 +78,11 @@ public class DrawFragment extends Fragment {
          */
         protected ImageButton importFragmentButton;
 
+        protected ImageButton clearButton;
+
         CamImportDialogFragment importDialog;
 
+        ClearDialogFragment clearDialog;
         /**
          * Displays previews of current color choices.
          */
@@ -124,6 +128,10 @@ public class DrawFragment extends Fragment {
                 lineHandlerButton.setOnClickListener(onLineHandlerButtonClick);
                 ovalHandlerButton = (ImageButton)view.findViewById(R.id.oval_handler_button);
                 ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
+
+                clearButton = (ImageButton)view.findViewById(R.id.clearButton);
+                clearButton.setOnClickListener(onClearButtonClick);
+                //clearButton
 
                 SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
                 strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
@@ -244,6 +252,8 @@ public class DrawFragment extends Fragment {
                 }
         };
 
+
+
         private final OnClickListener onOvalHandlerButtonClick = new OnClickListener() {
 
                 @Override
@@ -262,6 +272,23 @@ public class DrawFragment extends Fragment {
                 }
         };
 
+        private final OnClickListener  onClearButtonClick = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG,"Clear Button clicked");
+
+
+
+
+                clearDialog = new ClearDialogFragment();
+                clearDialog.setDrawView(drawView);
+                clearDialog.show(getActivity().getFragmentManager(), TAG);
+
+
+            }
+        };
+
+
         @Override
 		public void onSaveInstanceState(Bundle outState) {
                 // Parcel currentDrawStack = Parcel.obtain();
@@ -269,6 +296,9 @@ public class DrawFragment extends Fragment {
                 Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
                 outState.putParcelable("drawstack", drawView.drawStack);
         };
+
+
+
 
         private final OnClickListener onImportClick = new OnClickListener() {
 
