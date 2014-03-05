@@ -73,6 +73,10 @@ public abstract class Entity implements Parcelable {
 	 * Angle of rotation, in degrees.
 	 */
 	protected float angle;
+
+    private FloatPoint hitboxTopLeft = null;
+    private float hitboxWidth = 0;
+    private float hitboxHeigth = 0;
 	
 	/**
 	 * Retrieves the declared height of the Entity.
@@ -109,14 +113,16 @@ public abstract class Entity implements Parcelable {
 	 * @param angle The new angle.
 	 */
 	public void setAngle(float angle) {
-        this.angle = angle % 360;
+        this.angle = (angle + 360) % 360;
     }
 
 	/**
 	 * Rotates the Entity by a relative amount.
 	 * @param value The amount to rotate by.
 	 */
-	public void rotateBy(float value) { setAngle(this.angle + value); }
+	public void rotateBy(float value) {
+        setAngle(this.angle + value);
+    }
 	
 	/**
 	 * Retrieves the center point of th Entity. The default implementation
@@ -201,7 +207,10 @@ public abstract class Entity implements Parcelable {
 	 * @return The X-coordinate of the leftmost hitbox edge.
 	 */
 	public float getHitboxLeft(){
-        return getX();
+        if (hitboxTopLeft == null)
+            return getX();
+        else
+            return hitboxTopLeft.x;
     }
 
 	/**
@@ -209,7 +218,10 @@ public abstract class Entity implements Parcelable {
 	 * @return The X-coordinate of the rightmost hitbox edge.
 	 */
 	public float getHitboxRight(){
-        return getX()+getWidth();
+        if (hitboxTopLeft == null)
+            return getX()+getWidth();
+        else
+            return hitboxTopLeft.x + hitboxWidth;
     }
 
 	/**
@@ -217,7 +229,10 @@ public abstract class Entity implements Parcelable {
 	 * @return The Y-coordinate of the topmost hitbox edge.
 	 */
 	public float getHitboxTop(){
-        return getY();
+        if (hitboxTopLeft == null)
+            return getY();
+        else
+            return hitboxTopLeft.y;
     }
 
 	/**
@@ -225,8 +240,11 @@ public abstract class Entity implements Parcelable {
 	 * @return The Y-coordinate of the bottommost hitbox edge.
 	 */
 	public float getHitboxBottom(){
-        return getY()+getHeight();
-    };
+        if (hitboxTopLeft == null)
+            return getY()+getHeight();
+        else
+            return hitboxTopLeft.y + hitboxHeigth;
+    }
 	
 	/**
 	 * Creates a new Entity at (0,0) with no dimensions.
@@ -329,7 +347,58 @@ public abstract class Entity implements Parcelable {
 	 * @return A RectF of the Entity's hitbox bounds.
 	 */
 	public RectF getHitbox() {
+        changeHitbox();
 		return new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
 	}
-	
+
+    /**
+     * Changes the hitbox of the entity by using calculations of a rotation matrix.
+     * It finds the top left corner of the hitbox and the width and height so it can calculate the rest of the corners
+     */
+    private void changeHitbox(){
+        FloatPoint one = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
+        FloatPoint two = rotationMatrix((getWidth()/2), -(getHeight()/2));
+        FloatPoint three = rotationMatrix((getWidth()/2), (getHeight()/2));
+        FloatPoint four = rotationMatrix( -(getWidth()/2), (getHeight()/2));
+
+        hitboxTopLeft = new FloatPoint(findMin(one.x, two.x, three.x, four.x), findMin(one.y, two.y, three.y, four.y));
+        hitboxWidth = (getCenter().x - hitboxTopLeft.x)*2;
+        hitboxHeigth = (getCenter().y - hitboxTopLeft.y)*2;
+    }
+
+    /**
+     * Finds the minimum value of the 4 parameters.
+     * This could be done differntly with 3 Math.min calls, but a function is written for readability.
+     * @param f1
+     * @param f2
+     * @param f3
+     * @param f4
+     * @return the minimum value
+     */
+    private float findMin(float f1, float f2, float f3, float f4){
+        float minimumValue = f1;
+
+        if(f2 < minimumValue)
+            minimumValue = f2;
+        if(f3 < minimumValue)
+            minimumValue = f3;
+        if(f4 < minimumValue)
+            minimumValue = f4;
+
+        return minimumValue;
+    }
+
+    /**
+     * Rotation matric formula used to rotate the corners of the entity and draw the hitbox around it.
+     * @param x the x value of the corner.
+     * @param y the y value of the corner.
+     * @return a rotated point.
+     */
+    private FloatPoint rotationMatrix(float x, float y){
+        float angleRadians = (float)Math.toRadians(getAngle());
+        return new FloatPoint(
+                (float)(x*Math.cos(angleRadians)- y*Math.sin(angleRadians)) + getCenter().x,
+                (float)(x*Math.sin(angleRadians) + y*Math.cos(angleRadians))+getCenter().y);
+
+    }
 }
