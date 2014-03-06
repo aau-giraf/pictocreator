@@ -148,11 +148,11 @@ public class AngleRectF {
 	 * @param amount
 	 */
 	public void rotate(float amount) {
-			this.angle += amount;
-			while (angle > 360) angle -= 360;
-		
-			rotatePoint(this.topRightVector, amount, getOffset());
-			rotatePoint(this.bottomLeftVector, amount, getOffset());
+        this.angle += amount;
+        this.angle %= 360;
+
+        rotatePoint(this.topRightVector, amount, getOffset());
+        rotatePoint(this.bottomLeftVector, amount, getOffset());
 	}
 	
 	private static FloatPoint rotatePoint(FloatPoint p, float amount, FloatPoint pivot) {

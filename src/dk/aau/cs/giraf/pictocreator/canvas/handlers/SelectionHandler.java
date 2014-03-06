@@ -393,9 +393,7 @@ public class SelectionHandler extends ActionHandler {
 		RectF hitbox = selectedEntity.getHitbox();
 		
 		canvas.translate(hitbox.left, hitbox.top);
-		canvas.rotate(selectedEntity.getAngle(), selectedEntity.getWidth()/2, selectedEntity.getHeight()/2);
 		canvas.drawRect(0.0f, 0.0f, hitbox.width(), hitbox.height(), hlPaint);
-		
 		canvas.restore();
 	}
 	

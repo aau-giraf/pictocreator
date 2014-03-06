@@ -27,18 +27,6 @@ public class RectHandler extends ShapeHandler {
 		return bufferedEntity;
 	}
 	
-	/**
-	 * Helper function that recalculates the bounds of the rectangle based on
-	 * start and end points.
-	 */
-	@Override
-	protected void calcRectBounds(){
-		top = Math.min(startPoint.y, endPoint.y);
-		bottom = Math.max(startPoint.y, endPoint.y);
-		left = Math.min(startPoint.x, endPoint.x);
-		right = Math.max(startPoint.x, endPoint.x);
-	}
-	
 	@Override
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
