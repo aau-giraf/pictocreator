@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,6 +106,7 @@ public class DrawFragment extends Fragment {
                 if (savedInstanceState != null) {
                         // Restore drawStack et al.
                         drawView.drawStack = savedInstanceState.getParcelable("drawstack");
+                        drawView.invalidate();
                 }
 
                 Log.w("MainActivity", "Invalidating DrawView to force onDraw.");
@@ -201,13 +203,13 @@ public class DrawFragment extends Fragment {
          * @todo Write documentation on where it is saved due to the heavy
          * side-effecting we failed to avoid.
          */
-    public void saveBitmap(){
-        try {
-            drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
-        }
-        catch (FileNotFoundException e){
-            Log.e(TAG, "No file was found to decode");
-        }
+        public void saveBitmap(){
+            try {
+                drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
+            }
+            catch (FileNotFoundException e){
+                Log.e(TAG, "No file was found to decode");
+            }
 
     }
 
@@ -291,10 +293,13 @@ public class DrawFragment extends Fragment {
 
         @Override
 		public void onSaveInstanceState(Bundle outState) {
-                // Parcel currentDrawStack = Parcel.obtain();
-                // drawView.drawStack.writeToParcel(currentDrawStack, 0);
-                Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
-                outState.putParcelable("drawstack", drawView.drawStack);
+            // Parcel currentDrawStack = Parcel.obtain();
+            // drawView.drawStack.writeToParcel(currentDrawStack, 0);
+            super.onSaveInstanceState(outState);
+            Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
+            outState.putParcelable("drawstack", drawView.drawStack);
+
+
         };
 
 
