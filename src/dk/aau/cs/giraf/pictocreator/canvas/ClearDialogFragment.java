@@ -13,6 +13,7 @@ import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.DecibelMeterView;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordThread;
+import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 
 /**
  * Created by Praetorian on 05-03-14.
@@ -79,6 +80,11 @@ public class ClearDialogFragment extends DialogFragment {
                 if(drawView != null && drawView.drawStack != null){
                     drawView.drawStack.entities.clear();
                     drawView.invalidate();
+
+                    /*Neeeded as selectionhandler would have a deleted item selected otherwise*/
+                    if (drawView.currentHandler instanceof SelectionHandler)
+                        ((SelectionHandler)drawView.currentHandler).deselect();
+
                 }
 
                 tmpDialog.dismiss();
@@ -91,6 +97,7 @@ public class ClearDialogFragment extends DialogFragment {
     public void setDrawView(DrawView drawView){
         this.drawView = drawView;
     }
+
     /**
      * Method called when the dialog is resumed
      */
