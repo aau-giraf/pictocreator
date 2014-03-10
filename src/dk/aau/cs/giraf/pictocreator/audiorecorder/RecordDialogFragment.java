@@ -3,13 +3,20 @@ package dk.aau.cs.giraf.pictocreator.audiorecorder;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
+import android.media.SoundPool;
+import android.media.SoundPool.OnLoadCompleteListener;
+import android.media.AudioManager;
+import android.content.Context;
 
 /**
  * Class for the dialog used for recording in the croc application
@@ -21,6 +28,10 @@ import dk.aau.cs.giraf.pictocreator.R;
 public class RecordDialogFragment extends DialogFragment implements RecordInterface {
 
     private static final String TAG = "RecordDialogFragment";
+
+    //Variables for soundPreview
+    boolean loaded;
+    private int soundID;
 
     private View view;
 
@@ -36,7 +47,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     private ImageButton cancelButton;
 
+    private Button playButton;
 
+    private Button stopPlayButton;
     /**
      * Constructor for the Dialog
      * Left empty on purpose
@@ -75,6 +88,18 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         int style = DialogFragment.STYLE_NO_TITLE;
 
         setStyle(style, 0);
+
+        // Prepare the sound for previewing
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                       int status) {
+                loaded = true;
+                playSound();
+            }
+        });
+
     }
 
     /**
@@ -100,6 +125,31 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         acceptButton = (ImageButton) view.findViewById(R.id.record_positive_button);
 
         cancelButton = (ImageButton) view.findViewById(R.id.record_negative_button);
+
+        playButton = (Button) view.findViewById(R.id.playButton);
+
+        stopPlayButton = (Button) view.findViewById(R.id.stopPlayButton);
+
+        /*
+        * On click listener for play recording
+        * */
+        OnClickListener playClickListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopMusic();
+                loadMusic();
+            }
+        };
+
+        /*
+        * On click listener for stop playing recording
+        * */
+        OnClickListener stopClikListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopMusic();
+            }
+        };
         /**
          * On click listener for recording audio
          */
@@ -115,12 +165,14 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                     }
                 }
             };
-
+        stopPlayButton.setOnClickListener(stopClikListener);
+        playButton.setOnClickListener(playClickListener);
         cancelButton.setOnClickListener(new OnClickListener(){
 
                 @Override
                 public void onClick(View view){
                     recThread.onCancel();
+                    stopMusic();
                     //Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
                 }
@@ -140,6 +192,15 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         return view;
     }
 
+
+    public void stopMusic(){
+        soundPool.stop(soundIDPlaying);
+    }
+
+    public void loadMusic(){
+        soundID = soundPool.load(handler.getFilePath(),100000);
+    }
+
     /**
      * Method called when the dialog is resumed
      */
@@ -149,4 +210,20 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 	}
 
+    private SoundPool soundPool;
+    int soundIDPlaying;
+    public void playSound(){
+        AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float volume = actualVolume / maxVolume;
+
+        // Is the sound loaded already?
+        if (loaded) {
+            soundIDPlaying = soundPool.play(soundID, volume, volume, 1, 0, 1f);
+            Log.e(TAG, "Played sound");
+        }
+    }
 }

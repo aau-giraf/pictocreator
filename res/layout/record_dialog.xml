@@ -21,7 +21,27 @@
         class="dk.aau.cs.giraf.pictocreator.audiorecorder.DecibelMeterView" >
 
     </view>
-    <LinearLayout
+
+      <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
+
+          <Button
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Afspil"
+              android:id="@+id/playButton" />
+
+          <Button
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Stop"
+              android:id="@+id/stopPlayButton" />
+
+      </LinearLayout>
+
+      <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
