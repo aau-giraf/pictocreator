@@ -47,9 +47,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     private ImageButton cancelButton;
 
-    private Button playButton;
+    private ImageButton playButton;
 
-    private Button stopPlayButton;
+    private ImageButton stopPlayButton;
     /**
      * Constructor for the Dialog
      * Left empty on purpose
@@ -126,9 +126,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         cancelButton = (ImageButton) view.findViewById(R.id.record_negative_button);
 
-        playButton = (Button) view.findViewById(R.id.playButton);
+        playButton = (ImageButton) view.findViewById(R.id.playButton);
 
-        stopPlayButton = (Button) view.findViewById(R.id.stopPlayButton);
+        stopPlayButton = (ImageButton) view.findViewById(R.id.stopPlayButton);
 
         /*
         * On click listener for play recording

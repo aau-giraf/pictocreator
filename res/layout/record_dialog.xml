@@ -18,28 +18,10 @@
         android:layout_width="45dp"
         android:layout_height="150dp"
         android:layout_margin="20dp"
-        class="dk.aau.cs.giraf.pictocreator.audiorecorder.DecibelMeterView" >
+        class="dk.aau.cs.giraf.pictocreator.audiorecorder.DecibelMeterView"
+        android:layout_marginTop="20dp">
 
     </view>
-
-      <LinearLayout
-          android:orientation="vertical"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent">
-
-          <Button
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Afspil"
-              android:id="@+id/playButton" />
-
-          <Button
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Stop"
-              android:id="@+id/stopPlayButton" />
-
-      </LinearLayout>
 
       <LinearLayout
         android:layout_width="wrap_content"
@@ -48,28 +30,34 @@
 
       <ToggleButton
           android:id="@+id/record_button"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="80dp"
+          android:layout_height="80dp"
           android:layout_gravity="center_horizontal|center_vertical"
           android:layout_margin="20dp"
-          android:background="@drawable/toggle_button_background"
+          android:background="@drawable/record_icon"
           android:gravity="bottom|center_horizontal"
           android:textOff=""
-          android:textOn="" />
+          android:textOn=""
+          android:checked="false" />
 
-      <TextView
-          android:id="@+id/textView1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginRight="20dp"
-          android:layout_marginLeft="20dp"
-          android:background="@android:color/darker_gray"
-          android:gravity="center_horizontal"
-          android:text="@string/textViewText"
-          android:textAppearance="?android:attr/textAppearanceMedium" >
+          <ImageButton
+              android:layout_width="50dp"
+              android:layout_height="50dp"
+              android:id="@+id/playButton"
+              android:layout_gravity="center"
+              android:focusableInTouchMode="false"
+              android:background="@drawable/play_icon"
+              android:adjustViewBounds="false"
+              android:layout_marginBottom="10dp" />
 
-      </TextView>
-    </LinearLayout>
+          <ImageButton
+              android:layout_width="50dp"
+              android:layout_height="50dp"
+              android:id="@+id/stopPlayButton"
+              android:layout_gravity="center"
+              android:background="@drawable/stop_icon" />
+
+      </LinearLayout>
   </LinearLayout>
 
   <LinearLayout
