@@ -205,7 +205,7 @@ public class SelectionHandler extends ActionHandler {
 	 * Simply deselects the Entity by setting selectedEntity to null and 
 	 * resetting to default action mode.
 	 */
-	protected void deselect() {
+	public void deselect() {
 		selectedEntity = null;
 		currentMode = ACTION_MODE.NONE;
 	}
