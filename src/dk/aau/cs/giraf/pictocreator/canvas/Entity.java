@@ -74,9 +74,9 @@ public abstract class Entity implements Parcelable {
 	 */
 	protected float angle;
 
-    private FloatPoint hitboxTopLeft = null;
-    private float hitboxWidth = 0;
-    private float hitboxHeigth = 0;
+    protected FloatPoint hitboxTopLeft = null;
+    protected float hitboxWidth = 0;
+    protected float hitboxHeigth = 0;
 	
 	/**
 	 * Retrieves the declared height of the Entity.
@@ -355,7 +355,7 @@ public abstract class Entity implements Parcelable {
      * Changes the hitbox of the entity by using calculations of a rotation matrix.
      * It finds the top left corner of the hitbox and the width and height so it can calculate the rest of the corners
      */
-    private void changeHitbox(){
+    protected void changeHitbox(){
         FloatPoint one = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
         FloatPoint two = rotationMatrix((getWidth()/2), -(getHeight()/2));
         FloatPoint three = rotationMatrix((getWidth()/2), (getHeight()/2));
@@ -368,7 +368,7 @@ public abstract class Entity implements Parcelable {
 
     /**
      * Finds the minimum value of the 4 parameters.
-     * This could be done differntly with 3 Math.min calls, but a function is written for readability.
+     * This could be done differently with 3 Math.min calls, but a function is written for readability.
      * @param f1
      * @param f2
      * @param f3
@@ -394,7 +394,7 @@ public abstract class Entity implements Parcelable {
      * @param y the y value of the corner.
      * @return a rotated point.
      */
-    private FloatPoint rotationMatrix(float x, float y){
+    protected FloatPoint rotationMatrix(float x, float y){
         float angleRadians = (float)Math.toRadians(getAngle());
         return new FloatPoint(
                 (float)(x*Math.cos(angleRadians)- y*Math.sin(angleRadians)) + getCenter().x,
