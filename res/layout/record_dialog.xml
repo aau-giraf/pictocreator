@@ -34,7 +34,7 @@
           android:layout_height="80dp"
           android:layout_gravity="center_horizontal|center_vertical"
           android:layout_margin="20dp"
-          android:background="@drawable/record_icon"
+          android:background="@drawable/record_button_xml"
           android:gravity="bottom|center_horizontal"
           android:textOff=""
           android:textOn=""
@@ -46,7 +46,7 @@
               android:id="@+id/playButton"
               android:layout_gravity="center"
               android:focusableInTouchMode="false"
-              android:background="@drawable/play_icon"
+              android:background="@drawable/play_button_xml"
               android:adjustViewBounds="false"
               android:layout_marginBottom="10dp" />
 
@@ -55,7 +55,8 @@
               android:layout_height="50dp"
               android:id="@+id/stopPlayButton"
               android:layout_gravity="center"
-              android:background="@drawable/stop_icon" />
+              android:background="@drawable/stop_preiview_xml"
+              android:baselineAlignBottom="false" />
 
       </LinearLayout>
   </LinearLayout>
