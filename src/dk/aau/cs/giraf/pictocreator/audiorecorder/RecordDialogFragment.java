@@ -158,10 +158,14 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 				public void onClick(View view) {
                     if (((ToggleButton) view).isChecked()) {
                         recThread.start();
+                        recordButton.setChecked(true);
+                        recordButton.setPressed(true);
                     }
                     else {
                         recThread.stop();
                         decibelMeter.setLevel(0);
+                        recordButton.setChecked(false);
+                        recordButton.setPressed(false);
                     }
                 }
             };

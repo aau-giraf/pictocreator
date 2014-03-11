@@ -71,7 +71,7 @@
       android:layout_width="70dp"
       android:layout_height="70dp"
       android:layout_margin="20dp"
-      android:background="@drawable/accept_button_xml" />
+      android:background="@drawable/save_record_xml" />
 
   <ImageButton
       android:id="@+id/record_negative_button"

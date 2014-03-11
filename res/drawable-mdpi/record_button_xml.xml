@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:state_pressed="true" >
+    <item android:state_checked="false" >
         <layer-list >
-            <item android:drawable="@drawable/fragment_button_pressed" />
+            <item android:drawable="@drawable/fragment_button_normal" />
             <item android:drawable="@drawable/record_icon" />
         </layer-list>
     </item>
-    <item>
+    <item android:state_checked="true" >
         <layer-list >
-            <item android:drawable="@drawable/fragment_button_normal" />
+            <item android:drawable="@drawable/fragment_button_pressed_colour_change" />
             <item android:drawable="@drawable/record_icon" />
         </layer-list>
     </item>
