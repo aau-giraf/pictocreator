@@ -6,6 +6,7 @@
     <color name="giraf_green2">#33CC66</color>
     <color name="giraf_green3">#0FAF72</color>
     <color name="giraf_green4">#009933</color>
+    <color name="giraf_green5">#95BC6D</color>
     
     <!-- Giraf Red Colours -->
     <color name="giraf_red1">#F392B6</color>
@@ -49,6 +50,7 @@
     <!-- Active theme colors (wrappers) -->
     <color name="croc_head">@color/giraf_green4</color>
     <color name="croc_fragment">@color/giraf_green1</color>
+    <color name="croc_fragment_pressed">@color/giraf_green5</color>
     <color name="croc_selector">#AAA6D179</color>
     
 </resources>

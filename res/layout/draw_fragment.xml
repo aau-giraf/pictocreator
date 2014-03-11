@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/clearButton"
                 android:clickable="true"
-                android:background="@drawable/clear_icon"
+                android:background="@drawable/clear_button_xml"
                 android:layout_below="@+id/extraToolbox"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"

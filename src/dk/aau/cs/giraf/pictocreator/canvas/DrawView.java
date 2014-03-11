@@ -125,6 +125,9 @@ public class DrawView extends View {
 		boundsPaint.setColor(0xAA777777);
 		boundsPaint.setStrokeWidth(5);
 		boundsPaint.setStyle(Style.FILL);
+
+        //Get draw stack from singleton
+        this.setDrawStack(DrawStackSingleton.getInstance().getSavedData());
 	}
 
 	@Override
@@ -167,6 +170,10 @@ public class DrawView extends View {
 		this.currentHandler.setStrokeWidth(strokeWidth);
 	}
 
+    public void setDrawStack(EntityGroup stack){
+        drawStack = stack;
+    }
+
 	/**
 	 * Retrieves the ActionHandler currently active.
 	 * @return The current ActionHandler - reference.
@@ -207,12 +214,16 @@ public class DrawView extends View {
 		invalidate();
 	}
 
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.w("DrawView",  "Invalidated. Redrawing.");
 
 		// Drawing order: drawStack, drawBuffer, bounds.
 		drawStack.draw(canvas);
+
+        //Save drawStack in singleton
+        DrawStackSingleton.getInstance().mySavedData = drawStack;
 
 		if (currentHandler != null) currentHandler.drawBufferPreBounds(canvas);
 
