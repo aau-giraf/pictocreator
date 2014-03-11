@@ -19,6 +19,7 @@ public class LineEntity extends PrimitiveEntity {
 	 */
 	protected FloatPoint lineVector;
     protected FloatPoint endPoint = new FloatPoint();
+    private final float JITTER_MAX = 20;
 
 	/**
 	 * Creates a new LineEntity going through specific point.s
@@ -41,7 +42,7 @@ public class LineEntity extends PrimitiveEntity {
 	@Override
 	public void drawWithPaint(Canvas canvas, Paint paint) {
         Log.i("LineEntity.drawWithPaint",
-                String.format("Drawing line with starting point (%s,%s) with color %s", lineVector.x, lineVector.y, paint.getColor()));
+                String.format("Drawing line with starting point (%s,%s) with color %s", getX(), getY(), paint.getColor()));
 
         canvas.drawLine(0, 0, lineVector.x, lineVector.y, paint);
 	}
@@ -90,8 +91,10 @@ public class LineEntity extends PrimitiveEntity {
 
     @Override
     public FloatPoint getCenter() {
-        return new FloatPoint(Math.min(getX(), endPoint.x) + getWidth()/2, Math.min(getY(), endPoint.y) + getHeight()/2);
+        return new FloatPoint(getX() + lineVector.x/2, getY() + lineVector.y/2);
+        //return new FloatPoint(Math.min(getX(), endPoint.x) + getWidth()/2, Math.min(getY(), endPoint.y) + getHeight()/2);
     }
+
     @Override
     public void draw(Canvas canvas) {
         int canvasLayers = canvas.getSaveCount();
@@ -109,17 +112,33 @@ public class LineEntity extends PrimitiveEntity {
     protected void changeHitbox(){
         FloatPoint one;
         FloatPoint two;
-        if (getX() < endPoint.x && getY() < endPoint.y || getX() > endPoint.x && getY() > endPoint.y){
-            one = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
-            two = rotationMatrix((getWidth()/2), (getHeight()/2));
-        }
-        else{
-            one = rotationMatrix((getWidth()/2), -(getHeight()/2));
-            two = rotationMatrix( -(getWidth()/2), (getHeight()/2));
-        }
+
+        one = rotationMatrix(lineVector.x/2, lineVector.y/2);
+        two = rotationMatrix(-lineVector.x/2, -lineVector.y/2);
 
         hitboxTopLeft = new FloatPoint(Math.min(one.x, two.x), Math.min(one.y, two.y));
         hitboxWidth = (getCenter().x - hitboxTopLeft.x)*2;
         hitboxHeigth = (getCenter().y - hitboxTopLeft.y)*2;
+    }
+
+    @Override
+    public boolean collidesWithPoint(float x, float y) {
+        return distanceFromPointToVector(x, y) < JITTER_MAX &&
+                getHitboxTop() - JITTER_MAX < y &&
+                getHitboxBottom() + JITTER_MAX > y &&
+                getHitboxLeft() - JITTER_MAX < x &&
+                getHitboxRight() + JITTER_MAX > x;
+    }
+
+    /**
+     *
+     * @param px
+     * @param py
+     * @return
+     */
+    private float distanceFromPointToVector(float px, float py){
+        return (float) ((Math.abs(lineVector.y*px - lineVector.x*py - getX()*(getY()+lineVector.y) + (getX()+lineVector.x)*getY()))/
+                (Math.sqrt(Math.pow(lineVector.x, 2) + Math.pow(lineVector.y, 2))));
+
     }
 }
