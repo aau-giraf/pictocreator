@@ -55,6 +55,7 @@ public class BitmapEntity extends Entity {
      * Sets a new height for the Entity.
      * @param height New height.
      */
+    @Override
     public void setHeight(float height) {
         this.height = height;
         createPicture(this.width,this.height);
@@ -64,13 +65,20 @@ public class BitmapEntity extends Entity {
      * Sets a new width for the Entity.
      * @param width New width.
      */
+    @Override
     public void setWidth(float width) {
         this.width = width;
         createPicture(this.width,this.height);
     }
 
+    /**
+     * This function creates the picture. Furthermore it makes it able to scale the picture.
+     *
+     * @param width is the width of the picture
+     * @param height is the height of the picture
+     */
     private void createPicture(float width, float height){
-        if(width != 0 && height != 0)
+        if(width != 0 && height != 0 && theRealBitmap != null)
             internalBitmap = Bitmap.createScaledBitmap(theRealBitmap, (int)width, (int)height, true);
     }
 }
