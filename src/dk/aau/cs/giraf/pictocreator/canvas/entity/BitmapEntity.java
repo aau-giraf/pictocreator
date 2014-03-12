@@ -17,6 +17,7 @@ public class BitmapEntity extends Entity {
 	 * always being cloned when placed. 
 	 */
 	protected Bitmap internalBitmap;
+    private Bitmap theRealBitmap;
 	
 	/**
 	 * Creates a new BitmapEntity object, copying a source Bitmap as its
@@ -24,8 +25,9 @@ public class BitmapEntity extends Entity {
 	 * @param src The Bitmap to copy and use.
 	 */
 	public BitmapEntity(Bitmap src) {
-		internalBitmap = Bitmap.createBitmap(src);
-		
+		theRealBitmap = src;
+        createPicture(src.getHeight(),src.getWidth());
+
 		setHeight(internalBitmap.getHeight());
 		setWidth(internalBitmap.getWidth());
 	}
@@ -37,8 +39,8 @@ public class BitmapEntity extends Entity {
      * @param size The size of the bitmap.
      */
     public BitmapEntity(Bitmap src, int size) {
-        internalBitmap = Bitmap.createScaledBitmap(src, src.getWidth() * size / 100, src.getHeight() * size / 100, true);
-
+        theRealBitmap = src;
+        createPicture(src.getWidth() * size / 100,src.getHeight() * size / 100);
         setHeight(internalBitmap.getHeight());
         setWidth(internalBitmap.getWidth());
     }
@@ -48,4 +50,27 @@ public class BitmapEntity extends Entity {
 		canvas.drawBitmap(internalBitmap, 0, 0, null);
 	}
 
+
+    /**
+     * Sets a new height for the Entity.
+     * @param height New height.
+     */
+    public void setHeight(float height) {
+        this.height = height;
+        createPicture(this.width,this.height);
+    }
+
+    /**
+     * Sets a new width for the Entity.
+     * @param width New width.
+     */
+    public void setWidth(float width) {
+        this.width = width;
+        createPicture(this.width,this.height);
+    }
+
+    private void createPicture(float width, float height){
+        if(width != 0 && height != 0)
+            internalBitmap = Bitmap.createScaledBitmap(theRealBitmap, (int)width, (int)height, true);
+    }
 }
