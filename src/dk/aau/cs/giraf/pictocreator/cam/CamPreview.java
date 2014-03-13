@@ -25,6 +25,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    int frontCameraID = 1;
    int currentCameraID = 0;
    boolean hasMultiCams = false;
+   private String camEffect = Camera.Parameters.EFFECT_NONE;
 
    /**
     * Constructor for the class
@@ -76,6 +77,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        params.setPreviewSize(previewSize.width, previewSize.height);
        requestLayout();
        cam.setParameters(params);
+       camEffect = params.getColorEffect();
 
        try{
            cam.setPreviewDisplay(holder);
@@ -179,6 +181,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
 	   current.setColorEffect(params);
 
 	   cam.setParameters(current);
+       camEffect = params;
+       Log.i(TAG,camEffect);
    }
 
    /**
@@ -189,7 +193,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
            cam.stopPreview();
        }
        catch (Exception e) {
-           Log.d(TAG, "Lol, you tried to stop a non-existent preview");
+           Log.d(TAG, "You tried to stop a non-existent preview");
        }
        releaseCamera();
 
@@ -270,6 +274,7 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    public void startPreview() {
        try {
            cam.startPreview();
+           setColorEffect(camEffect);
        } catch (Exception e) {
            Log.d(TAG, "Something went horribly wrong in starting preview");
        }

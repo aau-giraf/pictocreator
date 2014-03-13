@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -93,14 +94,6 @@ public class CamFragment extends Fragment {
 		super.onPause();
 	}
 
-	/**
-	 * On click listener for switching between cameras
-	 * @param view The view which is clicked
-	 */
-	private void switchCam(View view) {
-		camFeed.switchCam();
-	}
-
 	private final ShutterCallback shutterCall = new ShutterCallback() {
 		@Override
 		public void onShutter() {
@@ -130,7 +123,8 @@ public class CamFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 			if(colorEffectButton.isChecked()) {
-				camFeed.setColorEffect(Camera.Parameters.EFFECT_MONO);
+                camFeed.setColorEffect(Camera.Parameters.EFFECT_MONO);
+
 			}
 			else if(!colorEffectButton.isChecked()) {
 				camFeed.setColorEffect(Camera.Parameters.EFFECT_NONE);
@@ -143,7 +137,7 @@ public class CamFragment extends Fragment {
 
 		@Override
 		public void onClick(View view) {
-			camFeed.switchCam();
+            camFeed.switchCam();
 		}
 	};
 
