@@ -107,6 +107,12 @@ public abstract class Entity implements Parcelable {
 	 * @return The current angle of rotation.
 	 */
 	public float getAngle() { return angle; }
+
+    /**
+     * Retrieve the angle of rotation for this Entity in radians.
+     * @return The current angle of rotation in radians.
+     */
+    public float getRadiansAngle(){ return (float)Math.toRadians(getAngle()); }
 	
 	/**
 	 * Set the angle of rotation for this Entity.
@@ -130,7 +136,7 @@ public abstract class Entity implements Parcelable {
 	 * will affect the result. Please see the relevant documentation.
 	 * @return The center point of the Entity.
 	 */
-	public FloatPoint getCenter() { return new FloatPoint(this.x + this.width/2, this.y + this.height/2); }
+	public FloatPoint getCenter() { return new FloatPoint(getX() + getWidth()/2, getY() + getHeight()/2); }
 	
 	/**
 	 * Sets a new center for the Entity. For consistency, this method should
@@ -395,10 +401,9 @@ public abstract class Entity implements Parcelable {
      * @return a rotated point.
      */
     protected FloatPoint rotationMatrix(float x, float y){
-        float angleRadians = (float)Math.toRadians(getAngle());
         return new FloatPoint(
-                (float)(x*Math.cos(angleRadians)- y*Math.sin(angleRadians)) + getCenter().x,
-                (float)(x*Math.sin(angleRadians) + y*Math.cos(angleRadians))+getCenter().y);
+                (float)(x*Math.cos(getRadiansAngle()) - y*Math.sin(getRadiansAngle())) + getCenter().x,
+                (float)(x*Math.sin(getRadiansAngle()) + y*Math.cos(getRadiansAngle())) + getCenter().y);
 
     }
 }
