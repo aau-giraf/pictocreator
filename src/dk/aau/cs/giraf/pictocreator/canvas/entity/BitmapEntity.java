@@ -3,6 +3,7 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 
 /**
  * The Bitmap entity quite simply displays a Bitmap at a specified location.
@@ -80,5 +81,36 @@ public class BitmapEntity extends Entity {
     private void createPicture(float width, float height){
         if(width != 0 && height != 0 && theRealBitmap != null)
             internalBitmap = Bitmap.createScaledBitmap(theRealBitmap, (int)width, (int)height, true);
+    }
+
+    /**
+     * The four points are calculated using a rotation matrix, since they are different when the rectangle is rotated.
+     * The clicked point is then compared to the four sides, to check whether it is a right rotation of them.
+     * @param x The X-coordinate of the point to check.
+     * @param y The Y-coordinate of the point to check.
+     * @return
+     */
+    @Override
+    public boolean collidesWithPoint(float x, float y){
+        FloatPoint P = new FloatPoint(x,y);
+        FloatPoint A = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
+        FloatPoint B = rotationMatrix((getWidth()/2), -(getHeight()/2));
+        FloatPoint C = rotationMatrix((getWidth()/2), (getHeight()/2));
+        FloatPoint D = rotationMatrix( -(getWidth()/2), (getHeight()/2));
+
+        return (rightOrientation(A, B, P) && rightOrientation(B, C, P) && rightOrientation(C, D, P) && rightOrientation(D, A, P));
+    }
+
+    /**
+     * This function is used to check whether a point is a right rotation of a side.
+     * If the clicked point is a right rotation of all the sides in the rectangle it means it is inside of it.
+     * This was used to improve the collision detection for rotated rectangles.
+     * @param a the start point of a vector
+     * @param b the endpoint of a vector
+     * @param p the clicked point
+     * @return
+     */
+    private Boolean rightOrientation(FloatPoint a, FloatPoint b, FloatPoint p){
+        return (b.y-a.y)*(p.x-b.x)<=(p.y-b.y)*(b.x-a.x);
     }
 }
