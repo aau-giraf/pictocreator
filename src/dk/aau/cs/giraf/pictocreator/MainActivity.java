@@ -25,7 +25,7 @@ import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
  * @author Croc
  *
  */
-public class CrocActivity extends Activity {
+public class MainActivity extends Activity {
 
     private final static String TAG = "CrocMain";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";

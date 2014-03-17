@@ -28,7 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-import dk.aau.cs.giraf.pictocreator.CrocActivity;
+import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
@@ -220,7 +220,7 @@ public class SaveDialogFragment extends DialogFragment{
                     }
 
                     if(service){
-                        Intent returnIntent = new Intent(CrocActivity.getActionResult());
+                        Intent returnIntent = new Intent(MainActivity.getActionResult());
                         returnIntent.putExtra("pictogramId", storagePictogram.getId());
                         parentActivity.setResult(Activity.RESULT_OK, returnIntent);
 

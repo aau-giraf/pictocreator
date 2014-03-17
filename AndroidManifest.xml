@@ -28,7 +28,7 @@
         android:label="Pictocreator"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="dk.aau.cs.giraf.pictocreator.CrocActivity"
+            android:name=".MainActivity"
             android:label="Pictocreator"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize"
