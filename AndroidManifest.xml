@@ -24,7 +24,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/croc_logo"
+        android:icon="@drawable/pictocreator_logo"
         android:label="Pictocreator"
         android:theme="@style/AppTheme" >
         <activity
