@@ -208,7 +208,7 @@ public class SaveDialogFragment extends DialogFragment{
                     if(textLabel.matches("") || textLabel == null){
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
                         String date = dateFormat.format(new Date());
-                        String label = "GPictogram_" + date;
+                        String label = "Pictogram_" + date;
                         Log.d(TAG, "TextLavel was empty/null, replaced with " + label);
                         textLabel = label;
                     }
@@ -216,7 +216,7 @@ public class SaveDialogFragment extends DialogFragment{
                     fileHandler.saveFinalFiles(textLabel);
 
                     if(storagePictogram.addPictogram()){
-                        Toast.makeText(parentActivity, "Saved the pictogram :D", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(parentActivity, "Pictogram gemt", Toast.LENGTH_SHORT).show();
                     }
 
                     if(service){

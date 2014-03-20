@@ -47,9 +47,9 @@ public class FileHandler{
     public void saveFinalFiles(String textLabel){
         storagePictogram.setTextLabel(textLabel);
 
-        File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + ".jpg");
+        File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
 
-        File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + ".3gp");
+        File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + "-" + System.currentTimeMillis() + ".3gp");
 
         int imgLength, sndLength;
 

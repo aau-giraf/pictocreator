@@ -249,7 +249,7 @@ public class StoragePictogram {
     public boolean addPictogram(){
         Media media;
         MediaHelper mediaHelper = databaseHelper.mediaHelper;
-        boolean retVal = true;
+        boolean retVal = false;
 
         media = generateMedia();
 
@@ -258,8 +258,7 @@ public class StoragePictogram {
             if(addTags.size() > 0){
                 mediaHelper.addTagsToMedia(addTags, media);
             }
-        } else {
-            retVal = false;
+            retVal = true;
         }
 
         return retVal;
