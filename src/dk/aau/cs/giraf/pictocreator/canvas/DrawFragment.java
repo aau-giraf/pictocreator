@@ -278,15 +278,9 @@ public class DrawFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Clear Button clicked");
-
-
-
-
                 clearDialog = new ClearDialogFragment();
                 clearDialog.setDrawView(drawView);
                 clearDialog.show(getActivity().getFragmentManager(), TAG);
-
-
             }
         };
 
