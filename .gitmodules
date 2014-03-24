@@ -4,3 +4,15 @@
 [submodule "OasisLib"]
 	path = OasisLib
 	url = http://cs-cust06-int.cs.aau.dk/git-ro/oasis-lib
+[submodule "GIRAF_Components"]
+	path = GIRAF_Components
+	url = http://cs-cust06-int.cs.aau.dk/git-ro/giraf-component.git
+[submodule "pictosearch"]
+	path = pictosearch
+	url = http://cs-cust06-int.cs.aau.dk/git-ro/pictosearch.git
+[submodule "Ambilwarna"]
+	path = Ambilwarna
+	url = http://cs-cust06-int.cs.aau.dk/git-ro/ambilwarna.git
+[submodule "CategoryLib"]
+	path = CategoryLib
+	url = http://cs-cust06-int.cs.aau.dk/git-ro/category-lib
