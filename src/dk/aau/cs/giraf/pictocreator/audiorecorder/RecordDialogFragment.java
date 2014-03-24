@@ -2,6 +2,7 @@ package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -11,8 +12,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
+
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
 import android.media.AudioManager;
@@ -50,12 +54,13 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private ImageButton playButton;
 
     private ImageButton stopPlayButton;
+
+    private LinearLayout recordLayout;
     /**
      * Constructor for the Dialog
      * Left empty on purpose
      */
     public RecordDialogFragment() {
-
     }
 
     /**
@@ -130,6 +135,11 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         stopPlayButton = (ImageButton) view.findViewById(R.id.stopPlayButton);
 
+        recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
+        if (BackgroundSingleton.getInstance().background != null)
+            recordLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
+        else
+            recordLayout.setBackgroundResource(R.drawable.fragment_background);
         /*
         * On click listener for play recording
         * */

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +15,12 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
@@ -42,9 +45,11 @@ public class MainActivity extends Activity {
     private DrawFragment drawFragment;
     private RecordDialogFragment recordDialog;
     private ImageButton recordDialogButton, saveDialogButton, helpDialogButton;
-    private SaveDialogFragment saveDialog;
+
     private HelpDialogFragment helpDialog;
     private RelativeLayout topLayout;
+    private SaveDialogFragment saveDialog;
+
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
@@ -55,13 +60,28 @@ public class MainActivity extends Activity {
     // public static final String APP_ACTIVITYNAME = "appActivityName";
     // public static final String APP_COLOR = "appBackgroundColor";
 
+    private int colorDarken(int color, float darkening){
+        float[] tempHSV = {0.0f,0.0f,0.0f};
+        Color.colorToHSV(color, tempHSV);
+
+        tempHSV[2] -= (darkening % tempHSV[2]);
+        return Color.HSVToColor(tempHSV);
+    }
+
+    private GradientDrawable getGradientColor(int color, float defaultDarken){
+        int[] colors = {colorDarken(color, 0.2f + defaultDarken), colorDarken(color, defaultDarken)};
+
+        return  new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
+    }
+
+    private Drawable fragmentBackground;
+
     /**
      * Function called when the activity is first created
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_main);
 
@@ -72,25 +92,30 @@ public class MainActivity extends Activity {
         decor = getWindow().getDecorView();
 
         topLayout = (RelativeLayout) findViewById(R.id.topLayer);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int color = extras.getInt("appBackgroundColor");
-            float[] tempHSV = {0.0f,0.0f,0.0f};
-            Color.colorToHSV(color,tempHSV);
-            tempHSV[2] -=  (0.2 % tempHSV[2]);
+            BackgroundSingleton.getInstance().background = getGradientColor(color,0.0f);
+            topLayout.setBackgroundDrawable(getGradientColor(color, 0.3f));
 
-            int[] colors = {Color.HSVToColor(tempHSV), color };
-            GradientDrawable g = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
-            decor.setBackgroundDrawable(g);
-
-            topLayout.setBackgroundDrawable(g);
+            decor.setBackgroundDrawable(getGradientColor(color, 0.0f));
         }
         else{
             decor.setBackgroundResource(R.drawable.fragment_background);
             topLayout.setBackgroundResource(R.drawable.head_background);
         }
 
+        assignUIObjects();
 
+        //Check for camera last
+        //If no cam found, disable the fragment switch button
+        if(!checkForCamera(this)) {
+            camSwitch.setEnabled(false);
+        }
+    }
+
+    private void assignUIObjects() {
         canvasSwitch = (ToggleButton)findViewById(R.id.toggleCanvas);
         camSwitch = (ToggleButton)findViewById(R.id.toggleCam);
 
@@ -108,15 +133,9 @@ public class MainActivity extends Activity {
 
         saveDialogButton = (ImageButton)findViewById(R.id.start_save_dialog_button);
         saveDialogButton.setOnClickListener(showLabelMakerClick);
-        
+
         helpDialogButton = (ImageButton)findViewById(R.id.help_button);
         helpDialogButton.setOnClickListener(showHelpClick);
-
-        //Check for camera last
-        //If no cam found, disable the fragment switch button
-        if(!checkForCamera(this)) {
-            camSwitch.setEnabled(false);
-        }
     }
 
     /**

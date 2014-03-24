@@ -19,9 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
 /**
  * Dialog for importing pictures taken by camera to the canvas
@@ -42,6 +44,7 @@ public class CamImportDialogFragment extends DialogFragment {
     private File[] imgFiles;
     private ImageButton acceptButton;
     private ImageButton cancelButton;
+    private LinearLayout importDialogLayout;
     ImportResultPath resultPath;
     int currentListPosition;
 
@@ -104,6 +107,12 @@ public class CamImportDialogFragment extends DialogFragment {
         imgsToArray();
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(imageSelectClick);
+
+        importDialogLayout = (LinearLayout)view.findViewById(R.id.importDialogLayout);
+        if(BackgroundSingleton.getInstance().background != null)
+            importDialogLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
+        else
+            importDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
         return view;
     }

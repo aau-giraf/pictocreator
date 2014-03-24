@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
 public class HelpDialogFragment extends DialogFragment{
 	private final static String TAG = "HelpDialog";
@@ -24,6 +27,7 @@ public class HelpDialogFragment extends DialogFragment{
     private ImageView imgView;
     private ArrayList<Integer> helpResourceList;
     private ImageButton closeButton, prevButton, nextButton;
+    private LinearLayout helpDialogLayout;
     private int currentDrawable;
     private int iterator = 0;
 
@@ -105,6 +109,12 @@ public class HelpDialogFragment extends DialogFragment{
         		}
         	}
         });
+
+        helpDialogLayout = (LinearLayout)view.findViewById(R.id.helpDialogLayout);
+        if(BackgroundSingleton.getInstance().background != null)
+            helpDialogLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
+        else
+            helpDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
         return view;
     }

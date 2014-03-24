@@ -26,11 +26,13 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
+import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
 /**
  * Dialog used for saving a Pictogram
@@ -56,6 +58,7 @@ public class SaveDialogFragment extends DialogFragment{
     private String textLabel;
 
     private ImageButton cancelButton;
+    private LinearLayout saveDialogLayout;
 
     private StoragePictogram storagePictogram;
 
@@ -185,6 +188,12 @@ public class SaveDialogFragment extends DialogFragment{
         }
 
         previewView.addView(imgView);
+
+        saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
+        if(BackgroundSingleton.getInstance().background != null)
+            saveDialogLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
+        else
+            saveDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
         acceptButton = (ImageButton) view.findViewById(R.id.save_button_positive);
 

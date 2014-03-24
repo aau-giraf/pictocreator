@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/fragment_background" >
+    android:id="@+id/importDialogLayout">
     
 <RelativeLayout
 	android:layout_width="wrap_content"
