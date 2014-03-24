@@ -10,9 +10,9 @@
 [submodule "pictosearch"]
 	path = pictosearch
 	url = http://cs-cust06-int.cs.aau.dk/git-ro/pictosearch.git
-[submodule "Ambilwarna"]
-	path = Ambilwarna
-	url = http://cs-cust06-int.cs.aau.dk/git-ro/ambilwarna.git
-[submodule "CategoryLib"]
-	path = CategoryLib
-	url = http://cs-cust06-int.cs.aau.dk/git-ro/category-lib.git
+[submodule "ambilwarna"]
+	path = ambilwarna
+	url = http://cs-cust06-int.cs.aau.dk/git/ambilwarna.git
+[submodule "category-lib"]
+	path = category-lib
+	url = http://cs-cust06-int.cs.aau.dk/git/category-lib.git
