@@ -6,17 +6,19 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
-import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 
@@ -42,6 +44,7 @@ public class MainActivity extends Activity {
     private ImageButton recordDialogButton, saveDialogButton, helpDialogButton;
     private SaveDialogFragment saveDialog;
     private HelpDialogFragment helpDialog;
+    private RelativeLayout topLayout;
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
@@ -58,6 +61,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
         mainIntent = getIntent();
@@ -65,7 +70,27 @@ public class MainActivity extends Activity {
         createStoragePictogram();
 
         decor = getWindow().getDecorView();
-        
+
+        topLayout = (RelativeLayout) findViewById(R.id.topLayer);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int color = extras.getInt("appBackgroundColor");
+            float[] tempHSV = {0.0f,0.0f,0.0f};
+            Color.colorToHSV(color,tempHSV);
+            tempHSV[2] -=  (0.2 % tempHSV[2]);
+
+            int[] colors = {Color.HSVToColor(tempHSV), color };
+            GradientDrawable g = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
+            decor.setBackgroundDrawable(g);
+
+            topLayout.setBackgroundDrawable(g);
+        }
+        else{
+            decor.setBackgroundResource(R.drawable.fragment_background);
+            topLayout.setBackgroundResource(R.drawable.head_background);
+        }
+
+
         canvasSwitch = (ToggleButton)findViewById(R.id.toggleCanvas);
         camSwitch = (ToggleButton)findViewById(R.id.toggleCam);
 
@@ -200,9 +225,6 @@ public class MainActivity extends Activity {
         @Override
 		public void onClick(View view) {
             saveDialog = new SaveDialogFragment();
-
-            if (drawFragment.drawView.getCurrentHandler() instanceof SelectionHandler)
-                ((SelectionHandler)drawFragment.drawView.getCurrentHandler()).deselect();
 
             drawFragment.saveBitmap();
 

@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.12"
-        android:background="@drawable/head_background"
         android:orientation="horizontal"
-        android:padding="5dp" >
+        android:padding="5dp"
+        android:id="@+id/topLayer">
 
         <!-- Logo and title -->
 
@@ -117,7 +117,6 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="0.88"
-        android:background="@drawable/fragment_background"
         android:longClickable="false">
 
     </FrameLayout>
