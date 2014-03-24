@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 
@@ -199,6 +200,9 @@ public class MainActivity extends Activity {
         @Override
 		public void onClick(View view) {
             saveDialog = new SaveDialogFragment();
+
+            if (drawFragment.drawView.getCurrentHandler() instanceof SelectionHandler)
+                ((SelectionHandler)drawFragment.drawView.getCurrentHandler()).deselect();
 
             drawFragment.saveBitmap();
 
