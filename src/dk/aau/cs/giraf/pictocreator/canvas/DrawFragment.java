@@ -280,36 +280,11 @@ public class DrawFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Clear Button clicked");
-                /*clearDialog = new ClearDialogFragment();
+                clearDialog = new ClearDialogFragment();
                 clearDialog.setDrawView(drawView);
-                clearDialog.show(getActivity().getFragmentManager(), TAG);*/
-                dialogTest(v);
-
+                clearDialog.show(getActivity().getFragmentManager(), TAG);
             }
         };
-
-    //Assume dialogTest is called as the onClick function of a GButton
-    private void dialogTest(View v)
-    {
-        GDialog diag = new GDialog(v.getContext(),
-                "Ryd tegnebræt?",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(drawView != null && drawView.drawStack != null){
-                            drawView.drawStack.entities.clear();
-                            drawView.invalidate();
-
-                    /*Neeeded as selectionhandler would have a deleted item selected otherwise*/
-                            if (drawView.currentHandler instanceof SelectionHandler)
-                                ((SelectionHandler)drawView.currentHandler).deselect();
-
-                        }
-
-                    }
-                });
-        diag.show();
-    }
 
 
         @Override

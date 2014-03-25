@@ -6,9 +6,11 @@ import java.util.List;
 
 import android.content.Context;
 import dk.aau.cs.giraf.oasis.lib.Helper;
-import dk.aau.cs.giraf.oasis.lib.controllers.MediaHelper;
-import dk.aau.cs.giraf.oasis.lib.controllers.TagsHelper;
-import dk.aau.cs.giraf.oasis.lib.models.Media;
+import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
+import dk.aau.cs.giraf.oasis.lib.controllers.PictogramTagController;
+import dk.aau.cs.giraf.oasis.lib.controllers.TagController;
+import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
+import dk.aau.cs.giraf.oasis.lib.models.PictogramTag;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
 
 /**
@@ -144,12 +146,12 @@ public class StoragePictogram {
      */
     private Tag insertTag(String tag){
         Tag newTag = null;
-        TagsHelper tagsHelper = databaseHelper.tagsHelper;
+        TagController tagsHelper = databaseHelper.tagsHelper;
         boolean added = false;
 
         if(!globalTags.isEmpty()){
             for(Tag t : globalTags){
-                if(t.getCaption().equals(tag)){
+                if(t.getName().equals(tag)){
                     newTag = t;
                     added = true;
                     break;
@@ -159,7 +161,7 @@ public class StoragePictogram {
 
         if(!added){
             newTag = new Tag(tag);
-            long tagId;
+            int tagId;
             tagId = tagsHelper.insertTag(newTag);
             newTag.setId(tagId);
         }
@@ -191,13 +193,14 @@ public class StoragePictogram {
      * @param type The type of the media
      * @return The newly generated Media
      */
-    private Media makeMedia(String path, String type){
-        Media media = null;
+    private Pictogram makeMedia(String path, String type){
+        Pictogram media = null;
         String[] validTypes = {"sound", "word", "image"};
 
         for(String t : validTypes){
             if(t.equalsIgnoreCase(type)){
-                media = new Media(textLabel, path, publicPictogram, type, author);
+                media = new Pictogram();
+                //media = new Media(textLabel, path, publicPictogram, type, author);
                 break;
             }
         }
@@ -210,11 +213,11 @@ public class StoragePictogram {
      * @param media The media to insert
      * @return the newly inserted Media
      */
-    private Media insertMedia(Media media){
-        MediaHelper mediaHelper = databaseHelper.mediaHelper;
-        long mediaId;
+    private Pictogram insertMedia(Pictogram media){
+        PictogramController pictogramHelper = databaseHelper.pictogramHelper;
+        int mediaId;
 
-        mediaId = mediaHelper.insertMedia(media);
+        mediaId = pictogramHelper.insertPictogram(media);
         media.setId(mediaId);
 
         return media;
@@ -224,19 +227,19 @@ public class StoragePictogram {
      * Method for generation of image and sound media
      * @return The generated Media
      */
-    private Media generateMedia(){
-        Media pictureMedia =  makeMedia(imagePath, "image");
-        MediaHelper mediaHelper = databaseHelper.mediaHelper;
+    private Pictogram generateMedia(){
+        Pictogram pictureMedia =  makeMedia(imagePath, "image");
+        PictogramController pictogramHelper = databaseHelper.pictogramHelper;
 
         pictureMedia = insertMedia(pictureMedia);
         pictogramID = pictureMedia.getId();
 
         if(!audioPath.equals("") && audioPath != null){
             // this part is pretty dumb:
-            Media audioMedia = makeMedia(audioPath, "sound");
+            Pictogram audioMedia = makeMedia(audioPath, "sound");
             audioMedia = insertMedia(audioMedia);
 
-            mediaHelper.attachSubMediaToMedia(audioMedia, pictureMedia);
+            //pictogramHelper.attachSubMediaToMedia(audioMedia, pictureMedia);
         }
 
         return pictureMedia;
@@ -247,8 +250,8 @@ public class StoragePictogram {
      * @return True if the pictogram was successfully added, false otherwise
      */
     public boolean addPictogram(){
-        Media media;
-        MediaHelper mediaHelper = databaseHelper.mediaHelper;
+        Pictogram media;
+        PictogramTagController pictogramHelper = databaseHelper.pictogramTagHelper;
         boolean retVal = false;
 
         media = generateMedia();
@@ -256,7 +259,7 @@ public class StoragePictogram {
         if(media != null){
             List<Tag> addTags = generateTagList();
             if(addTags.size() > 0){
-                mediaHelper.addTagsToMedia(addTags, media);
+                //pictogramHelper.addTagsToMedia(addTags, media);
             }
             retVal = true;
         }
