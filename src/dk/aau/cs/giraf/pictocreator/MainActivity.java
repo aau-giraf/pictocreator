@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
+
+import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
@@ -44,7 +46,7 @@ public class MainActivity extends Activity {
     private CamFragment camFragment;
     private DrawFragment drawFragment;
     private RecordDialogFragment recordDialog;
-    private ImageButton recordDialogButton, saveDialogButton, helpDialogButton;
+    private GButton recordDialogButton, saveDialogButton, helpDialogButton;
 
     private HelpDialogFragment helpDialog;
     private RelativeLayout topLayout;
@@ -128,13 +130,13 @@ public class MainActivity extends Activity {
         canvasSwitch.setChecked(true);
         canvasSwitch.setClickable(false);
 
-        recordDialogButton = (ImageButton)findViewById(R.id.start_record_dialog_button);
+        recordDialogButton = (GButton)findViewById(R.id.start_record_dialog_button);
         recordDialogButton.setOnClickListener(showRecorderClick);
 
-        saveDialogButton = (ImageButton)findViewById(R.id.start_save_dialog_button);
+        saveDialogButton = (GButton)findViewById(R.id.start_save_dialog_button);
         saveDialogButton.setOnClickListener(showLabelMakerClick);
 
-        helpDialogButton = (ImageButton)findViewById(R.id.help_button);
+        helpDialogButton = (GButton)findViewById(R.id.help_button);
         helpDialogButton.setOnClickListener(showHelpClick);
     }
 

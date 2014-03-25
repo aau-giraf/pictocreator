@@ -81,12 +81,14 @@
             android:orientation="vertical">
 
             <dk.aau.cs.giraf.gui.GButton
-                android:id="@+id/start_import_dialog_button"
+                android:drawableLeft="@drawable/import_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/import_button"
+                android:layout_height="@dimen/button_height"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:layout_marginTop="100dp"
-                android:layout_centerInParent="true" />
+                android:clickable="true"
+                android:id="@+id/start_import_dialog_button" />
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"
@@ -109,8 +111,8 @@
 
             <dk.aau.cs.giraf.gui.GButton
                 android:drawableLeft="@drawable/clear_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="50dp"

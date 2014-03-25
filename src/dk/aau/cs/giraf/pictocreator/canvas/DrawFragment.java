@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialog;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
@@ -79,9 +80,9 @@ public class DrawFragment extends Fragment {
         /**
          * Button for the import action for importing Bitmaps.
          */
-        protected ImageButton importFragmentButton;
+        protected GButton importFragmentButton;
 
-        protected ImageButton clearButton;
+        protected GButton clearButton;
 
         CamImportDialogFragment importDialog;
 
@@ -133,7 +134,7 @@ public class DrawFragment extends Fragment {
                 ovalHandlerButton = (ImageButton)view.findViewById(R.id.oval_handler_button);
                 ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 
-                clearButton = (ImageButton)view.findViewById(R.id.clearButton);
+                clearButton = (GButton)view.findViewById(R.id.clearButton);
                 clearButton.setOnClickListener(onClearButtonClick);
                 //clearButton
 
@@ -154,7 +155,7 @@ public class DrawFragment extends Fragment {
                 drawView.setStrokeColor(previewButton.getStrokeColor());
                 drawView.setFillColor(previewButton.getFillColor());
 
-                importFragmentButton = (ImageButton)view.findViewById(R.id.start_import_dialog_button);
+                importFragmentButton = (GButton)view.findViewById(R.id.start_import_dialog_button);
                 importFragmentButton.setOnClickListener(onImportClick);
 
                 colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
