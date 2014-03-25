@@ -22,14 +22,14 @@
             android:layout_centerVertical="true"
             android:src="@drawable/pictocreator_logo" />
 
-        <ImageButton
+        <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/help_button"
             android:layout_width="@dimen/button_height"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/crocLogo"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/help_button_xml" />
+            android:background="@drawable/help_button" />
 
 		<!-- Text view removed because title is not needed...
         <TextView
@@ -55,7 +55,7 @@
             android:text="Croc\nSettings" />
          -->
 		
-		<ImageButton
+		<dk.aau.cs.giraf.gui.GButton
 		    android:id="@+id/quit_button"
 		    android:layout_width="@dimen/button_height"
 		    android:layout_height="@dimen/button_height"
@@ -63,51 +63,51 @@
 		    android:layout_alignParentRight="true"
 		    android:layout_marginRight="20dp"
 		    android:layout_marginLeft="60dp"
-		    android:background="@drawable/quit_button_xml"
+		    android:background="@drawable/cancel_button"
 		    android:onClick="doExit" />
 		
-		<ToggleButton
+		<dk.aau.cs.giraf.gui.GButton
 		    android:id="@+id/toggleCam"
 		    android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/quit_button"
             android:layout_marginRight="20dp"
-            android:background="@drawable/head_cam_switch"
+            android:background="@drawable/cam"
             android:onClick="switchFragments"
             android:textOn=""
             android:textOff="" />
 		
-        <ToggleButton
+        <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/toggleCanvas"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCam"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/head_canvas_switch"
+            android:background="@drawable/brush"
             android:onClick="switchFragments"
             android:textOn=""
             android:textOff="" />
 
-        <ImageButton
+        <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/start_record_dialog_button"
             android:layout_width="@dimen/button_height"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCanvas"
             android:layout_marginRight="20dp"
-            android:background="@drawable/mic_button"
+            android:background="@drawable/mic"
             android:adjustViewBounds="true" />
 
-        <ImageButton
+        <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/start_save_dialog_button"
             android:layout_width="@dimen/button_height"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/start_record_dialog_button"
             android:layout_marginRight="20dp"
-            android:background="@drawable/save_button" />
+            android:background="@drawable/save" />
 
     </RelativeLayout>
 
