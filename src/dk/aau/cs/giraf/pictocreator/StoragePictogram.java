@@ -1,10 +1,16 @@
 package dk.aau.cs.giraf.pictocreator;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.io.*;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramTagController;
@@ -23,13 +29,12 @@ public class StoragePictogram {
 
     private String imagePath;
     private String textLabel;
-    private String audioPath;
-    private long author;
-    private boolean publicPictogram;
+    private File audioFile;
+    private int author;
+    private int publicPictogram = 1; //temporary since we do not have a checkbox implemented for this
     private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
-    private HashSet<Tag> tagList = new HashSet<Tag>();
     private HashSet<Tag> globalTags = new HashSet<Tag>();
-    private long pictogramID;
+    private int pictogramID;
     private Context context;
     private Helper databaseHelper;
 
@@ -47,16 +52,16 @@ public class StoragePictogram {
      * @param context The context in which the StoragePictogram is created
      * @param imagePath Path to the image-file used by the pictogram
      * @param textLabel The text-label/name of the pictogram
-     * @param audioPath Path to the audio-file used by the pictogram
+     * @param audioFile The audio-file used by the pictogram
      */
-    public StoragePictogram(Context context, String imagePath, String textLabel, String audioPath){
+    public StoragePictogram(Context context, String imagePath, String textLabel, File audioFile){
         this.context = context;
 
         this.databaseHelper = new Helper(this.context);
 
         this.imagePath = imagePath;
         this.textLabel = textLabel;
-        this.audioPath = audioPath;
+        this.audioFile = audioFile;
     }
 
     /**
@@ -69,25 +74,25 @@ public class StoragePictogram {
 
     /**
      * Setter for the textLabel variable
-     * @param textLabel TextLabet to set
+     * @param textLabel TextLabel to set
      */
     public void setTextLabel(String textLabel){
         this.textLabel = textLabel;
     }
 
     /**
-     * Setter for the audioPath
-     * @param audioPath The audioPath to set
+     * Setter for the audioFile
+     * @param audioFile The audioFile to set
      */
-    public void setAudioPath(String audioPath){
-        this.audioPath = audioPath;
+    public void setAudioFile(File audioFile){
+        this.audioFile = audioFile;
     }
 
     /**
      * Setter for the author variable
      * @param author The author to set
      */
-    public void setAuthor(long author){
+    public void setAuthor(int author){
         this.author = author;
     }
 
@@ -95,7 +100,7 @@ public class StoragePictogram {
      * Getter for the pictogramID variable
      * @return The pictogramID
      */
-    public long getId(){
+    public int getId(){
         return pictogramID;
     }
 
@@ -116,18 +121,18 @@ public class StoragePictogram {
     }
 
     /**
-     * Getter for the audioPath variable
-     * @return The audioPath
+     * Getter for the audioFile variable
+     * @return The audioFile
      */
-    public String getAudioPath(){
-        return audioPath;
+    public File getAudioFile(){
+        return audioFile;
     }
 
     /**
      * Getter for the author variable
      * @return The author
      */
-    public long getAuthor(){
+    public int getAuthor(){
         return author;
     }
 
@@ -188,61 +193,62 @@ public class StoragePictogram {
     }
 
     /**
-     * Method for generation of media given a path and type
-     * @param path The path to use for the media
-     * @param type The type of the media
-     * @return The newly generated Media
+     * Method for generation of image given a path
+     * @param path The path to use for the image
+     * @return The newly generated image
      */
-    private Pictogram makeMedia(String path, String type){
-        Pictogram media = null;
-        String[] validTypes = {"sound", "word", "image"};
+    private Pictogram makeImage(String path){
+        Pictogram pictogram = new Pictogram();
 
-        for(String t : validTypes){
-            if(t.equalsIgnoreCase(type)){
-                media = new Pictogram();
-                //media = new Media(textLabel, path, publicPictogram, type, author);
-                break;
+        pictogram.setImage(BitmapFactory.decodeFile(path));
+        pictogram.setName(textLabel);
+        pictogram.setPub(publicPictogram);
+        pictogram.setInlineText(textLabel); //@todo requires a change when the textbox for this is created
+        pictogram.setAuthor(author);
+
+        return pictogram;
+    }
+
+    /**
+     * Method for inserting pictogram into the database
+     * @param pictogram The pictogram to insert
+     * @return the newly inserted pictogram
+     */
+    private Pictogram insertPictogram(Pictogram pictogram){
+        PictogramController pictogramHelper = databaseHelper.pictogramHelper;
+
+
+        pictogramID = pictogramHelper.insertPictogram(pictogram);
+        pictogram.setId(pictogramID);
+
+        return pictogram;
+    }
+
+    /**
+     * Method for generation of pictogram
+     * @return The generated pictogram
+     */
+    private Pictogram generatePictogram(){
+        Pictogram pictogram =  makeImage(imagePath);
+
+        if(audioFile != null){
+            byte[] b = new byte[(int) audioFile.length()];
+            try{
+                FileInputStream fileInputStream = new FileInputStream(audioFile);
+                fileInputStream.read(b);
+                fileInputStream.close();
+            }catch (FileNotFoundException e) {
+                Log.e(TAG, "Audio file not found " + e.getMessage());
+            } catch (IOException e) {
+                Log.e(TAG, "Could not convert audio file to byte array " + e.getMessage());
             }
+            pictogram.setSoundDataBytes(b);
         }
 
-        return media;
-    }
 
-    /**
-     * Method for inserting Media into the database
-     * @param media The media to insert
-     * @return the newly inserted Media
-     */
-    private Pictogram insertMedia(Pictogram media){
-        PictogramController pictogramHelper = databaseHelper.pictogramHelper;
-        int mediaId;
+        pictogram = insertPictogram(pictogram);
 
-        mediaId = pictogramHelper.insertPictogram(media);
-        media.setId(mediaId);
-
-        return media;
-    }
-
-    /**
-     * Method for generation of image and sound media
-     * @return The generated Media
-     */
-    private Pictogram generateMedia(){
-        Pictogram pictureMedia =  makeMedia(imagePath, "image");
-        PictogramController pictogramHelper = databaseHelper.pictogramHelper;
-
-        pictureMedia = insertMedia(pictureMedia);
-        pictogramID = pictureMedia.getId();
-
-        if(!audioPath.equals("") && audioPath != null){
-            // this part is pretty dumb:
-            Pictogram audioMedia = makeMedia(audioPath, "sound");
-            audioMedia = insertMedia(audioMedia);
-
-            //pictogramHelper.attachSubMediaToMedia(audioMedia, pictureMedia);
-        }
-
-        return pictureMedia;
+        return pictogram;
     }
 
     /**
@@ -250,16 +256,19 @@ public class StoragePictogram {
      * @return True if the pictogram was successfully added, false otherwise
      */
     public boolean addPictogram(){
-        Pictogram media;
-        PictogramTagController pictogramHelper = databaseHelper.pictogramTagHelper;
+        Pictogram pictogram;
+        PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         boolean retVal = false;
 
-        media = generateMedia();
+        pictogram = generatePictogram();
 
-        if(media != null){
+        if(pictogram != null){
             List<Tag> addTags = generateTagList();
             if(addTags.size() > 0){
-                //pictogramHelper.addTagsToMedia(addTags, media);
+                for(Tag t : addTags)
+                {
+                    tagHelper.insertPictogramTag(new PictogramTag(pictogram.getId(), t.getId()));
+                }
             }
             retVal = true;
         }
