@@ -111,7 +111,7 @@
 
             <dk.aau.cs.giraf.gui.GButton
                 android:drawableLeft="@drawable/clear_icon"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"
