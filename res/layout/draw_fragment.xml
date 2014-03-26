@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+
             <ImageButton
                 android:id="@+id/select_handler_button"
                 android:layout_width="wrap_content"
@@ -79,17 +80,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/start_import_dialog_button"
+            <dk.aau.cs.giraf.gui.GButton
+                android:drawableLeft="@drawable/import_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/import_cam_button"
-                android:layout_marginTop="100dp" />
+                android:layout_height="@dimen/button_height"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="100dp"
+                android:clickable="true"
+                android:id="@+id/start_import_dialog_button" />
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/blank_100x100" />
 
             <TextView
@@ -105,17 +110,16 @@
                 android:layout_height="wrap_content"
                 android:max="20" />
 
-            <ImageButton
+            <dk.aau.cs.giraf.gui.GButton
+                android:drawableLeft="@drawable/clear_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/clearButton"
-                android:clickable="true"
-                android:background="@drawable/clear_button_xml"
-                android:layout_below="@+id/extraToolbox"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+                android:layout_height="@dimen/button_height"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:layout_marginTop="50dp"
-                android:layout_gravity="center" />
+                android:clickable="true"
+                android:id="@+id/clearButton" />
+
         </LinearLayout>
     </ScrollView>
 
