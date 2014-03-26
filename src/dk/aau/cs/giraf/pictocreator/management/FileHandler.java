@@ -85,9 +85,9 @@ public class FileHandler{
 
         if(tmpSndFile.exists()){
             copyFile(tmpSndFile, sound);
-            storagePictogram.setAudioPath(sound.getPath());
+            storagePictogram.setAudioFile(sound);
         } else {
-            storagePictogram.setAudioPath("");
+            storagePictogram.setAudioFile(null);
             Log.d(TAG, "Sound path set to null");
         }
     }

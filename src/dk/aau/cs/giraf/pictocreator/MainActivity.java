@@ -244,17 +244,17 @@ public class MainActivity extends Activity {
      *
      */
     private void createStoragePictogram (){
-        long author;
+        int author;
         storagePictogram = new StoragePictogram(this);
 
         if(mainIntent != null){
             String action = mainIntent.getAction();
 
             if(action != "dk.aau.cs.giraf.CREATEPICTOGRAM"){
-                author = mainIntent.getLongExtra("currentGuardianID", 0);
+                author = mainIntent.getIntExtra("currentGuardianID", 0);
                 this.service = false;
             } else {
-                author = mainIntent.getLongExtra("author", 0);
+                author = mainIntent.getIntExtra("author", 0);
                 this.service = true;
             }
 
