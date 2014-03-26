@@ -26,7 +26,7 @@
 
             android:drawableLeft="@drawable/help_button"
             android:id="@+id/help_button"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/crocLogo"
@@ -60,7 +60,7 @@
 		
 		<dk.aau.cs.giraf.gui.GButton
 		    android:id="@+id/quit_button"
-		    android:layout_width="@dimen/button_width"
+		    android:layout_width="wrap_content"
 		    android:layout_height="@dimen/button_height"
 		    android:layout_centerVertical="true"
 		    android:layout_alignParentRight="true"
@@ -77,9 +77,9 @@
             android:layout_toLeftOf="@+id/quit_button"
             android:layout_marginRight="20dp"
             android:background="@drawable/head_cam_switch"
-            android:onClick="switchFragments"
             android:textOn=""
-            android:textOff="" />
+            android:textOff=""
+            android:onClick="switchFragments" />
 		
         <ToggleButton
             android:id="@+id/toggleCanvas"
@@ -89,13 +89,13 @@
             android:layout_toLeftOf="@+id/toggleCam"
             android:layout_marginLeft="20dp"
             android:background="@drawable/head_canvas_switch"
-            android:onClick="switchFragments"
             android:textOn=""
-            android:textOff="" />
+            android:textOff=""
+            android:onClick="switchFragments" />
 
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/start_record_dialog_button"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCanvas"
@@ -105,7 +105,7 @@
 
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/start_save_dialog_button"
-            android:layout_width="@dimen/button_width"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/start_record_dialog_button"
