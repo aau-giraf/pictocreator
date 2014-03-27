@@ -35,6 +35,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     //Variables for soundPreview
     boolean loaded;
+
     private int soundID;
 
     private View view;
@@ -56,6 +57,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private ImageButton stopPlayButton;
 
     private LinearLayout recordLayout;
+
     /**
      * Constructor for the Dialog
      * Left empty on purpose
@@ -136,6 +138,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         stopPlayButton = (ImageButton) view.findViewById(R.id.stopPlayButton);
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
+
         if (BackgroundSingleton.getInstance().background != null)
             recordLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
         else
@@ -170,12 +173,14 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                         recThread.start();
                         recordButton.setChecked(true);
                         recordButton.setPressed(true);
+                        recordButton.setBackgroundResource(R.drawable.stop_preiview_xml);
                     }
                     else {
                         recThread.stop();
                         decibelMeter.setLevel(0);
                         recordButton.setChecked(false);
                         recordButton.setPressed(false);
+                        recordButton.setBackgroundResource(R.drawable.record_button_xml);
                     }
                 }
             };
