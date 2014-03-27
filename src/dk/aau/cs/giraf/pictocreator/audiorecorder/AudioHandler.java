@@ -47,6 +47,13 @@ public class AudioHandler {
             return null;
         }
     }
+    public String getFinalPath(){
+        if(savedFileName != null)
+            return  getDir().getPath() + File.separator + savedFileName;
+        else
+            return  null;
+
+    }
 
     /**
      * Function for creating the tmp output file, and the path to the

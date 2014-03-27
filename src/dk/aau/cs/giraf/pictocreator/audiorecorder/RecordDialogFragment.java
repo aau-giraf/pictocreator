@@ -2,7 +2,9 @@ package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -14,13 +16,24 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
+
+import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
+import dk.aau.cs.giraf.pictogram.AudioPlayer;
 
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
 import android.media.AudioManager;
 import android.content.Context;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Class for the dialog used for recording in the croc application
@@ -54,10 +67,11 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     private ImageButton playButton;
 
-    private ImageButton stopPlayButton;
-
     private LinearLayout recordLayout;
 
+    int soundIDPlaying;
+
+    private MediaPlayer mediaPlayer;
     /**
      * Constructor for the Dialog
      * Left empty on purpose
@@ -75,14 +89,14 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         final double dbValue = decibelValue;
 
         decibelMeter.post(new Runnable() {
-                /**
-                 * Function to run when the Thread is started
-                 */
-                @Override
-                public void run(){
-                    decibelMeter.setLevel(dbValue);
-                }
-            });
+            /**
+             * Function to run when the Thread is started
+             */
+            @Override
+            public void run() {
+                decibelMeter.setLevel(dbValue);
+            }
+        });
     }
 
     /**
@@ -96,17 +110,35 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         setStyle(style, 0);
 
-        // Prepare the sound for previewing
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-        soundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId,
-                                       int status) {
-                loaded = true;
-                playSound();
+            public void onPrepared(MediaPlayer mp) {
+
+                mediaPlayer.setVolume(volume, volume);
+                isPlaying = true;
+                mediaPlayer.start();
             }
         });
 
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                isPlaying = false;
+                switchLayoutPlayStopButton();
+            }
+        });
+    }
+
+    boolean isPlaying = false;
+    private void switchLayoutPlayStopButton(){
+        if(isPlaying){
+            playButton.setBackgroundResource(R.drawable.stop_preiview_xml);
+        }
+        else{
+            playButton.setBackgroundResource(R.drawable.play_button_xml);
+        }
     }
 
     /**
@@ -135,7 +167,6 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         playButton = (ImageButton) view.findViewById(R.id.playButton);
 
-        stopPlayButton = (ImageButton) view.findViewById(R.id.stopPlayButton);
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
 
@@ -143,21 +174,11 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
             recordLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
         else
             recordLayout.setBackgroundResource(R.drawable.fragment_background);
-        /*
-        * On click listener for play recording
-        * */
-        OnClickListener playClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopMusic();
-                loadMusic();
-            }
-        };
 
         /*
         * On click listener for stop playing recording
         * */
-        OnClickListener stopClikListener = new OnClickListener() {
+        OnClickListener stopClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 stopMusic();
@@ -181,17 +202,18 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                         recordButton.setChecked(false);
                         recordButton.setPressed(false);
                         recordButton.setBackgroundResource(R.drawable.record_button_xml);
+                        hasRecorded = true;
                     }
                 }
             };
-        stopPlayButton.setOnClickListener(stopClikListener);
         playButton.setOnClickListener(playClickListener);
-        cancelButton.setOnClickListener(new OnClickListener(){
 
+        cancelButton.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view){
                     recThread.onCancel();
                     stopMusic();
+                    hasRecorded = false;
                     //Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
                 }
@@ -202,6 +224,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                 @Override
                 public void onClick(View view){
                     recThread.onAccept();
+                    hasRecorded = false;
                     tmpDialog.dismiss();
                 }
             });
@@ -213,13 +236,38 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
 
     public void stopMusic(){
-        soundPool.stop(soundIDPlaying);
+        mediaPlayer.stop();
     }
 
+    private float volume;
     public void loadMusic(){
-        soundID = soundPool.load(handler.getFilePath(),100000);
+        try{
+
+            AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
+            float actualVolume = (float) audioManager
+                    .getStreamVolume(AudioManager.STREAM_MUSIC);
+            float maxVolume = (float) audioManager
+                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            volume = actualVolume / maxVolume;
+            mediaPlayer.reset();
+            FileInputStream temp;
+            if(!hasRecorded){
+                Log.i(TAG, "loading file: " + handler.getFinalPath());
+                temp = new FileInputStream(handler.getFinalPath());
+            }
+            else{
+                Log.i(TAG, "loading file: " + handler.getFilePath());
+                temp = new FileInputStream(handler.getFilePath());
+            }
+            mediaPlayer.setDataSource(temp.getFD());
+            mediaPlayer.prepareAsync();
+        }
+        catch (IOException e){
+            Log.e(TAG, "Could not load music");
+        }
     }
 
+    boolean hasRecorded;
     /**
      * Method called when the dialog is resumed
      */
@@ -229,20 +277,18 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 		view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 	}
 
-    private SoundPool soundPool;
-    int soundIDPlaying;
-    public void playSound(){
-        AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
-        float actualVolume = (float) audioManager
-                .getStreamVolume(AudioManager.STREAM_MUSIC);
-        float maxVolume = (float) audioManager
-                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        float volume = actualVolume / maxVolume;
-
-        // Is the sound loaded already?
-        if (loaded) {
-            soundIDPlaying = soundPool.play(soundID, volume, volume, 1, 0, 1f);
-            Log.e(TAG, "Played sound");
+    /*
+    * On click listener for play recording
+    * */
+    OnClickListener playClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(isPlaying)
+                stopMusic();
+            else
+                loadMusic();
+            isPlaying = !isPlaying;
+            switchLayoutPlayStopButton();
         }
-    }
+    };
 }

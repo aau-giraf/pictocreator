@@ -50,14 +50,6 @@
               android:adjustViewBounds="false"
               android:layout_marginBottom="10dp" />
 
-          <ImageButton
-              android:layout_width="50dp"
-              android:layout_height="50dp"
-              android:id="@+id/stopPlayButton"
-              android:layout_gravity="center"
-              android:background="@drawable/stop_preiview_xml"
-              android:baselineAlignBottom="false" />
-
       </LinearLayout>
   </LinearLayout>
 
