@@ -21,31 +21,32 @@
 
 	</FrameLayout>
 
-	<ImageButton
+	<dk.aau.cs.giraf.gui.GButton
 		android:id="@+id/button_capture"
-		android:layout_width="100dp"
-		android:layout_height="140dp"
+        android:layout_height="100dp"
+		android:layout_width="160dp"
+        android:layout_centerInParent="true"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-      	android:background="@drawable/cam_hack_button"
-      	android:src="@drawable/cam" />
+      	android:drawableLeft="@drawable/cam"
+      	/>
 
-	<ToggleButton
+	<dk.aau.cs.giraf.gui.GToggleButton
 		android:id="@+id/color_effects"
-		android:layout_width="100dp"
+		android:layout_width="110dp"
 		android:layout_height="80dp"
+        android:layout_centerInParent="true"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentTop="true"
-		android:background="@drawable/color_effect_switch"
-		android:textOn=""
-		android:textOff="" />
+		android:drawableLeft="@drawable/bw_icon" />
 
-	<ImageButton
+	<dk.aau.cs.giraf.gui.GButton
 		android:id="@+id/switch_cam"
-		android:layout_width="100dp"
+		android:layout_width="110dp"
 		android:layout_height="80dp"
+        android:layout_centerInParent="true"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
-		android:background="@drawable/cam_facing_button"/>
+		android:drawableLeft="@drawable/cam_facing"/>
 
 </RelativeLayout>

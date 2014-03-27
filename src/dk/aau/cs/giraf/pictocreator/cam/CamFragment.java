@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
+
+import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 /**
  * Fragment class for the camera part of the application
@@ -27,8 +30,8 @@ public class CamFragment extends Fragment {
 	View view;
 	CamPreview camFeed;
 	public PhotoHandler photoHandler;
-	ImageButton captureButton, switchButton;
-	ToggleButton colorEffectButton;
+	GButton captureButton, switchButton;
+    GToggleButton colorEffectButton;
 	FrameLayout preview;
 
 	private Activity parentActivity;
@@ -57,11 +60,11 @@ public class CamFragment extends Fragment {
 
 		preview = (FrameLayout)view.findViewById(R.id.camera_preview);
 		preview.addView(camFeed);
-		captureButton = (ImageButton)view.findViewById(R.id.button_capture);
+		captureButton = (GButton)view.findViewById(R.id.button_capture);
 		captureButton.setOnClickListener(captureClick);
-		colorEffectButton = (ToggleButton)view.findViewById(R.id.color_effects);
-		colorEffectButton.setOnClickListener(colorClick);
-		switchButton = (ImageButton)view.findViewById(R.id.switch_cam);
+		colorEffectButton = (GToggleButton)view.findViewById(R.id.color_effects);
+		colorEffectButton.SetOnClickListener(colorClick);
+		switchButton = (GButton)view.findViewById(R.id.switch_cam);
 		switchButton.setOnClickListener(switchClick);
 
 		if(!camFeed.hasMultiCams) {
@@ -122,11 +125,12 @@ public class CamFragment extends Fragment {
 
 		@Override
 		public void onClick(View view) {
-			if(colorEffectButton.isChecked()) {
+
+			if(colorEffectButton.IsPressed()) {
                 camFeed.setColorEffect(Camera.Parameters.EFFECT_MONO);
 
 			}
-			else if(!colorEffectButton.isChecked()) {
+			else if(!colorEffectButton.IsPressed()) {
 				camFeed.setColorEffect(Camera.Parameters.EFFECT_NONE);
 			}
 		}
