@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
         decor = getWindow().getDecorView();
 
         topLayout = (RelativeLayout) findViewById(R.id.topLayer);
-
+        BackgroundSingleton.getInstance().background = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int color = extras.getInt("appBackgroundColor");
