@@ -69,29 +69,23 @@
 		    android:drawableLeft="@drawable/cancel_button"
 		    android:onClick="doExit" />
 		
-		<ToggleButton
+		<dk.aau.cs.giraf.gui.GToggleButton
 		    android:id="@+id/toggleCam"
 		    android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/quit_button"
             android:layout_marginRight="20dp"
-            android:background="@drawable/head_cam_switch"
-            android:textOn=""
-            android:textOff=""
-            android:onClick="switchFragments" />
+            android:background="@drawable/head_cam_switch" />
 		
-        <ToggleButton
+        <dk.aau.cs.giraf.gui.GToggleButton
             android:id="@+id/toggleCanvas"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCam"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/head_canvas_switch"
-            android:textOn=""
-            android:textOff=""
-            android:onClick="switchFragments" />
+            android:background="@drawable/head_canvas_switch" />
 
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/start_record_dialog_button"

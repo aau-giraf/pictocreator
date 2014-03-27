@@ -63,7 +63,7 @@ public class CamFragment extends Fragment {
 		captureButton = (GButton)view.findViewById(R.id.button_capture);
 		captureButton.setOnClickListener(captureClick);
 		colorEffectButton = (GToggleButton)view.findViewById(R.id.color_effects);
-		colorEffectButton.SetOnClickListener(colorClick);
+		colorEffectButton.setOnClickListener(colorClick);
 		switchButton = (GButton)view.findViewById(R.id.switch_cam);
 		switchButton.setOnClickListener(switchClick);
 
@@ -126,11 +126,11 @@ public class CamFragment extends Fragment {
 		@Override
 		public void onClick(View view) {
 
-			if(colorEffectButton.IsPressed()) {
+			if(colorEffectButton.isPressed()) {
                 camFeed.setColorEffect(Camera.Parameters.EFFECT_MONO);
 
 			}
-			else if(!colorEffectButton.IsPressed()) {
+			else if(!colorEffectButton.isPressed()) {
 				camFeed.setColorEffect(Camera.Parameters.EFFECT_NONE);
 			}
 		}
