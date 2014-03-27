@@ -76,7 +76,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/quit_button"
             android:layout_marginRight="20dp"
-            android:background="@drawable/head_cam_switch" />
+            android:drawableLeft="@drawable/cam" />
 		
         <dk.aau.cs.giraf.gui.GToggleButton
             android:id="@+id/toggleCanvas"
@@ -85,7 +85,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCam"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/head_canvas_switch" />
+            android:drawableLeft="@drawable/brush" />
 
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/start_record_dialog_button"

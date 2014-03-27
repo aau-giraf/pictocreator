@@ -161,8 +161,9 @@ public class MainActivity extends Activity {
     private final OnClickListener toggleClickCamCanvas = new OnClickListener() {
         @Override
         public void onClick(View view){
-            Log.e(TAG,"we made it here");
+            Log.e(TAG,String.format("Cam: %b, Canvas %b",camSwitch.isPressed(),canvasSwitch.isPressed()));
             if(camSwitch.isPressed()) {
+                Log.e(TAG,"Switch to Cam");
                 camSwitch.setClickable(false);
                 canvasSwitch.setPressed(false);
                 canvasSwitch.setClickable(true);
@@ -174,6 +175,7 @@ public class MainActivity extends Activity {
             }
 
             if(canvasSwitch.isPressed()) {
+                Log.e(TAG,"Switch to Canvas");
                 canvasSwitch.setClickable(false);
                 camSwitch.setPressed(false);
                 camSwitch.setClickable(true);
