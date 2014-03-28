@@ -22,7 +22,7 @@ public class AudioHandler {
 
     private String outputFilePath = null;
 
-    private String savedFileName;
+    private static String savedFileName;
 
     Context context;
 
@@ -77,7 +77,8 @@ public class AudioHandler {
 
             outputFilePath = fileName;
 
-            savedFileName = audioFile;
+            if(savedFileName == "" || savedFileName == null)
+                savedFileName = audioFile;
         }
     }
 
@@ -109,6 +110,10 @@ public class AudioHandler {
             if(outputFilePath != null && finalFilePath != null){
                 File tmpFile = new File(outputFilePath);
                 File finalFile = new File(finalFilePath);
+                if(finalFile.exists()){
+                    finalFile.delete();
+                    finalFile = new File(finalFilePath);
+                }
 
                 tmpFileStream = new FileInputStream(tmpFile);
                 finalFileStream = new FileOutputStream(finalFile);
