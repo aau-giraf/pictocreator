@@ -23,22 +23,22 @@
         android:layout_marginBottom="100dp"
         android:layout_centerHorizontal="true" />
     
-    <ImageButton
+    <dk.aau.cs.giraf.gui.GVerifyButton
         android:id="@+id/import_ok_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/image_preview"
-        android:background="@drawable/accept_button_xml" />
+        android:text=""
+        android:layout_below="@+id/image_preview"/>
 		
-	<ImageButton
+	<dk.aau.cs.giraf.gui.GCancelButton
         android:id="@+id/import_cancel_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@+id/import_ok_button"
         android:layout_below="@+id/image_preview"
         android:layout_marginLeft="40dp"
-        android:background="@drawable/cancel_button_xml" />
+        android:text=""/>
   
 </RelativeLayout>
 <RelativeLayout
@@ -56,12 +56,11 @@
         android:layout_alignParentLeft="true"
         android:background="@color/giraf_white1" >
         
-        <ListView 
+        <dk.aau.cs.giraf.gui.GList
             android:id="@+id/image_names_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
-            android:listSelector="@color/croc_selector"
             android:scrollbars="vertical" />
     </FrameLayout>    
 </RelativeLayout>

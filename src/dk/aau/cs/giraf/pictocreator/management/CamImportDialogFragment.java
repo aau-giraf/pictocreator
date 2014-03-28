@@ -22,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import dk.aau.cs.giraf.gui.GCancelButton;
+import dk.aau.cs.giraf.gui.GList;
+import dk.aau.cs.giraf.gui.GVerifyButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
@@ -40,10 +44,10 @@ public class CamImportDialogFragment extends DialogFragment {
     private FrameLayout previewView;
     private ArrayList<String> fileList, pathList;
     private ArrayAdapter<String> arrayAdapter;
-    private ListView listView;
+    private GList listView;
     private File[] imgFiles;
-    private ImageButton acceptButton;
-    private ImageButton cancelButton;
+    private GVerifyButton acceptButton;
+    private GCancelButton cancelButton;
     private LinearLayout importDialogLayout;
     ImportResultPath resultPath;
     int currentListPosition;
@@ -83,8 +87,9 @@ public class CamImportDialogFragment extends DialogFragment {
 
         view = inflater.inflate(R.layout.import_dialog, container);
         previewView = (FrameLayout) view.findViewById(R.id.image_preview);
-        listView = (ListView) view.findViewById(R.id.image_names_list);
-        acceptButton = (ImageButton) view.findViewById(R.id.import_ok_button);
+        listView = (GList) view.findViewById(R.id.image_names_list);
+
+        acceptButton = (GVerifyButton) view.findViewById(R.id.import_ok_button);
         acceptButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,7 +102,8 @@ public class CamImportDialogFragment extends DialogFragment {
                     importDialog.dismiss();
                 }
             });
-        cancelButton = (ImageButton) view.findViewById(R.id.import_cancel_button);
+
+        cancelButton = (GCancelButton) view.findViewById(R.id.import_cancel_button);
         cancelButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {

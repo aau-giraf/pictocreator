@@ -21,6 +21,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialog;
+import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
@@ -86,7 +87,7 @@ public class DrawFragment extends Fragment {
 
         CamImportDialogFragment importDialog;
 
-        ClearDialogFragment clearDialog;
+        GDialogMessage clearDialog;
         /**
          * Displays previews of current color choices.
          */
@@ -281,9 +282,24 @@ public class DrawFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Clear Button clicked");
-                clearDialog = new ClearDialogFragment();
-                clearDialog.setDrawView(drawView);
-                clearDialog.show(getActivity().getFragmentManager(), TAG);
+
+                clearDialog = new GDialogMessage(v.getContext(),"Ryd tegnebræt?",onAcceptClearCanvasClick);
+                clearDialog.show();
+            }
+        };
+
+        private final OnClickListener onAcceptClearCanvasClick = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(drawView != null && drawView.drawStack != null){
+                    drawView.drawStack.entities.clear();
+                    drawView.invalidate();
+
+                    /*Neeeded as selectionhandler would have a deleted item selected otherwise*/
+                    if (drawView.currentHandler instanceof SelectionHandler)
+                        ((SelectionHandler)drawView.currentHandler).deselect();
+
+                }
             }
         };
 
