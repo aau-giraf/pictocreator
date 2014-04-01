@@ -28,27 +28,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-      <ToggleButton
+      <dk.aau.cs.giraf.gui.GToggleButton
           android:id="@+id/record_button"
           android:layout_width="80dp"
           android:layout_height="80dp"
           android:layout_gravity="center_horizontal|center_vertical"
           android:layout_margin="20dp"
-          android:background="@drawable/record_button_xml"
+          android:drawableLeft="@drawable/record_icon"
           android:gravity="bottom|center_horizontal"
           android:textOff=""
           android:textOn=""
           android:checked="false" />
 
-          <ImageButton
+          <dk.aau.cs.giraf.gui.GButton
               android:layout_width="50dp"
               android:layout_height="50dp"
               android:id="@+id/playButton"
               android:layout_gravity="center"
               android:focusableInTouchMode="false"
-              android:background="@drawable/play_button_xml"
-              android:adjustViewBounds="false"
-              android:layout_marginBottom="10dp" />
+              android:drawableLeft="@drawable/play_icon"
+              android:adjustViewBounds="false" />
 
       </LinearLayout>
   </LinearLayout>
@@ -58,19 +57,22 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal" >
 
-  <ImageButton
+  <dk.aau.cs.giraf.gui.GButton
       android:id="@+id/record_positive_button"
       android:layout_width="70dp"
       android:layout_height="70dp"
-      android:layout_margin="20dp"
-      android:background="@drawable/save_record_xml" />
+      android:layout_margin="10dp"
+      android:drawableLeft="@drawable/save"
+      android:layout_toLeftOf="@+id/record_negative_button"/>
 
-  <ImageButton
+  <dk.aau.cs.giraf.gui.GButton
       android:id="@+id/record_negative_button"
       android:layout_width="70dp"
       android:layout_height="70dp"
-      android:layout_margin="20dp"
-      android:background="@drawable/cancel_button_xml" />
+      android:layout_margin="10dp"
+      android:drawableLeft="@drawable/cancel_icon"
+      android:layout_toRightOf="@+id/record_positive_button"
+       />
 
   </LinearLayout>
 
