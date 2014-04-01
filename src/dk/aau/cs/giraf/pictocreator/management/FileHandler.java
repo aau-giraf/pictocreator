@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
+import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 
 /**
  * Class used for handling of files
@@ -44,8 +45,9 @@ public class FileHandler{
      * on the devices external storage
      * @param textLabel The textLabel/name for the Pictogram to store
      */
-    public void saveFinalFiles(String textLabel){
+    public void saveFinalFiles(String textLabel, String inlineText){
         storagePictogram.setTextLabel(textLabel);
+        storagePictogram.setinlineTextLabel(inlineText);
 
         File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
 

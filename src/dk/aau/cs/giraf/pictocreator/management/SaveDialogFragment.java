@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -29,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
@@ -48,18 +51,22 @@ public class SaveDialogFragment extends DialogFragment{
     private Bitmap preview;
     private ArrayList<String> tags;
     private Activity parentActivity;
-    private ImageButton acceptButton;
+    private GButton acceptButton;
 
     private ImageView imgView;
 
     private EditText inputTextLabel;
+    private EditText inlineTextLabel;
+
 
     private final String defaultTextLabel = "defaultTextLabel";
     private String textLabel;
+    private String inlineText;
 
-    private ImageButton cancelButton;
+    private GButton cancelButton;
     private LinearLayout saveDialogLayout;
 
+    private CheckBox publicStatus;
     private StoragePictogram storagePictogram;
 
     private FileHandler fileHandler;
@@ -152,6 +159,9 @@ public class SaveDialogFragment extends DialogFragment{
         listView.setAdapter(arrayAdapter);
 
         inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
+        inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
+
+        publicStatus = (CheckBox) view.findViewById(R.id.public_status);
 
         int length;
         Bitmap bitmap = null;
@@ -195,9 +205,9 @@ public class SaveDialogFragment extends DialogFragment{
         else
             saveDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
-        acceptButton = (ImageButton) view.findViewById(R.id.save_button_positive);
+        acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
 
-        cancelButton = (ImageButton) view.findViewById(R.id.save_button_negative);
+        cancelButton = (GButton) view.findViewById(R.id.save_button_negative);
 
         cancelButton.setOnClickListener(new OnClickListener(){
 
@@ -212,6 +222,7 @@ public class SaveDialogFragment extends DialogFragment{
                 @Override
                 public void onClick(View view){
                     textLabel = inputTextLabel.getText().toString();
+                    inlineText = inlineTextLabel.getText().toString();
                     Log.d(TAG, "TextLabel: " + textLabel);
 
                     if(textLabel.matches("") || textLabel == null){
@@ -222,7 +233,9 @@ public class SaveDialogFragment extends DialogFragment{
                         textLabel = label;
                     }
 
-                    fileHandler.saveFinalFiles(textLabel);
+                    fileHandler.saveFinalFiles(textLabel, inlineText);
+
+                    storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
 
                     if(storagePictogram.addPictogram()){
                         Toast.makeText(parentActivity, "Pictogram gemt", Toast.LENGTH_SHORT).show();

@@ -29,6 +29,7 @@ public class StoragePictogram {
 
     private String imagePath;
     private String textLabel;
+    private String inlineTextLabel;
     private File audioFile;
     private int author;
     private int publicPictogram = 1; //temporary since we do not have a checkbox implemented for this
@@ -54,13 +55,14 @@ public class StoragePictogram {
      * @param textLabel The text-label/name of the pictogram
      * @param audioFile The audio-file used by the pictogram
      */
-    public StoragePictogram(Context context, String imagePath, String textLabel, File audioFile){
+    public StoragePictogram(Context context, String imagePath, String textLabel, String inlineTextLabel, File audioFile){
         this.context = context;
 
         this.databaseHelper = new Helper(this.context);
 
         this.imagePath = imagePath;
         this.textLabel = textLabel;
+        this.inlineTextLabel = inlineTextLabel;
         this.audioFile = audioFile;
     }
 
@@ -80,6 +82,15 @@ public class StoragePictogram {
         this.textLabel = textLabel;
     }
 
+
+    /**
+     * Setter for the inlineTextLabel variable
+     * @param inlineTextLabel inlineTextLabel to set
+     */
+    public void setinlineTextLabel(String inlineTextLabel){
+        this.inlineTextLabel = inlineTextLabel;
+    }
+
     /**
      * Setter for the audioFile
      * @param audioFile The audioFile to set
@@ -94,6 +105,14 @@ public class StoragePictogram {
      */
     public void setAuthor(int author){
         this.author = author;
+    }
+
+    /**
+     * Setter for the publicPictogram variable
+     * @param publicPictogram The publicPictogram to set
+     */
+    public void setpublicPictogram(int publicPictogram){
+        this.publicPictogram = publicPictogram;
     }
 
     /**
@@ -203,7 +222,7 @@ public class StoragePictogram {
         pictogram.setImage(BitmapFactory.decodeFile(path));
         pictogram.setName(textLabel);
         pictogram.setPub(publicPictogram);
-        pictogram.setInlineText(textLabel); //@todo requires a change when the textbox for this is created
+        pictogram.setInlineText(inlineTextLabel);
         pictogram.setAuthor(author);
 
         return pictogram;
@@ -260,6 +279,7 @@ public class StoragePictogram {
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         boolean retVal = false;
 
+        Log.e("TestGem", String.format("Navn: %s, Inline: %s, Audio: %s, Author: %s, public: %s, Image: %s", textLabel, inlineTextLabel, audioFile.getPath(), author, publicPictogram, imagePath));
         pictogram = generatePictogram();
 
         if(pictogram != null){

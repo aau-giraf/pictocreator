@@ -43,29 +43,63 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_below="@+id/save_preview"
-        android:layout_marginBottom="60dp"
-        android:hint="Pictogram navn"/>
+        android:hint="Pictogram navn"
+        android:layout_marginBottom="10dp" />
 
-    <ImageButton
+      <EditText
+          android:id="@+id/edit_inline_text"
+          android:singleLine="true"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:layout_below="@+id/save_input_title"
+          android:layout_marginBottom="10dp"
+          android:hint="Titel på pictogram" />
+
+      <dk.aau.cs.giraf.gui.GButton
         android:id="@+id/save_button_positive"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/save_input_title"
+        android:layout_below="@+id/public_text"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/accept_button_xml"/>
+        android:drawableLeft="@drawable/ok_icon"/>
 
-    <ImageButton
+      <dk.aau.cs.giraf.gui.GButton
         android:id="@+id/save_button_negative"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@+id/save_button_positive"
-        android:layout_below="@+id/save_input_title"
+        android:layout_below="@+id/public_text"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:background="@drawable/cancel_button_xml"/>
+        android:drawableLeft="@drawable/cancel_icon"/>
+
+
+      <TextView
+          android:id="@+id/public_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Offentlig:"
+          android:textSize="15sp"
+          android:layout_below="@+id/edit_inline_text"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_marginBottom="10dp"
+          android:textColor="@color/croc_head" />
+
+      <CheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text=""
+          android:id="@+id/public_status"
+          android:layout_below="@+id/edit_inline_text"
+          android:layout_toRightOf="@+id/public_text"
+          android:layout_above="@+id/save_button_positive"
+          android:layout_marginLeft="10dp"
+          android:checked="true" />
 
 
   </RelativeLayout>
