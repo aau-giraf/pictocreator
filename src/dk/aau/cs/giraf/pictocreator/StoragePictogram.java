@@ -236,7 +236,6 @@ public class StoragePictogram {
     private Pictogram insertPictogram(Pictogram pictogram){
         PictogramController pictogramHelper = databaseHelper.pictogramHelper;
 
-
         pictogramID = pictogramHelper.insertPictogram(pictogram);
         pictogram.setId(pictogramID);
 
@@ -279,7 +278,6 @@ public class StoragePictogram {
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         boolean retVal = false;
 
-        Log.e("TestGem", String.format("Navn: %s, Inline: %s, Audio: %s, Author: %s, public: %s, Image: %s", textLabel, inlineTextLabel, audioFile.getPath(), author, publicPictogram, imagePath));
         pictogram = generatePictogram();
 
         if(pictogram != null){

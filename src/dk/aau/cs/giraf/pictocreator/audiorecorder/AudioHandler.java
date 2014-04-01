@@ -47,9 +47,9 @@ public class AudioHandler {
             return null;
         }
     }
-    public String getFinalPath(){
+    public static String getFinalPath(){
         if(savedFileName != null)
-            return  getDir().getPath() + File.separator + savedFileName;
+            return  savedFileName;
         else
             return  null;
 
@@ -78,7 +78,7 @@ public class AudioHandler {
             outputFilePath = fileName;
 
             if(savedFileName == "" || savedFileName == null)
-                savedFileName = audioFile;
+                savedFileName = getDir().getPath() + File.separator + audioFile;
         }
     }
 
@@ -101,7 +101,7 @@ public class AudioHandler {
      * Function called by the {@link RecordThread} in onAccept().
      */
     public void saveFinalFile(){
-        String finalFilePath = getDir().getPath() + File.separator + savedFileName;
+        String finalFilePath = savedFileName;
 
         FileInputStream tmpFileStream = null;
         FileOutputStream finalFileStream = null;

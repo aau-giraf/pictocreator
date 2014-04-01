@@ -67,15 +67,10 @@ public class FileHandler{
             tmpImgFile = tmpImgArray[imgLength - 1];
         }
 
-        File tmpSndFile = new File(activity.getCacheDir(), "snd");
-        tmpSndFile.mkdirs();
-        File[] tmpSndArray = tmpSndFile.listFiles();
+        File tmpSndFile = null;
+        if(AudioHandler.getFinalPath() != null)
+          tmpSndFile = new File(AudioHandler.getFinalPath());
 
-        if(tmpSndArray.length > 0){
-            sndLength = tmpSndArray.length;
-            tmpSndFile = tmpSndArray[sndLength - 1];
-
-        }
 
         if(tmpImgFile.exists()){
             copyFile(tmpImgFile, image);
@@ -85,13 +80,8 @@ public class FileHandler{
             Log.d(TAG, "Images path set to null");
         }
 
-        if(tmpSndFile.exists()){
-            copyFile(tmpSndFile, sound);
-            storagePictogram.setAudioFile(sound);
-        } else {
-            storagePictogram.setAudioFile(null);
-            Log.d(TAG, "Sound path set to null");
-        }
+
+        storagePictogram.setAudioFile(tmpSndFile);
     }
 
     /**
