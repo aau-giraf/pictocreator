@@ -3,9 +3,11 @@ package dk.aau.cs.giraf.pictocreator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -15,11 +17,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ToggleButton;
-
-import java.io.File;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
@@ -29,6 +27,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
+import dk.aau.cs.giraf.pictogram.PictoFactory;
 
 /**
  * Main class for the Croc app
@@ -49,7 +48,7 @@ public class MainActivity extends Activity {
     private CamFragment camFragment;
     private DrawFragment drawFragment;
     private RecordDialogFragment recordDialog;
-    private GButton recordDialogButton, saveDialogButton, helpDialogButton;
+    private GButton recordDialogButton, saveDialogButton, loadDialogButton, helpDialogButton;
 
     private HelpDialogFragment helpDialog;
     private RelativeLayout topLayout;
@@ -58,6 +57,7 @@ public class MainActivity extends Activity {
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
+    private int author;
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
@@ -143,6 +143,9 @@ public class MainActivity extends Activity {
         saveDialogButton = (GButton)findViewById(R.id.start_save_dialog_button);
         saveDialogButton.setOnClickListener(showLabelMakerClick);
 
+        loadDialogButton = (GButton)findViewById(R.id.start_load_dialog_button);
+        loadDialogButton.setOnClickListener(showPictosearchClick);
+
         helpDialogButton = (GButton)findViewById(R.id.help_button);
         helpDialogButton.setOnClickListener(showHelpClick);
     }
@@ -206,7 +209,6 @@ public class MainActivity extends Activity {
      *
      */
     private void createStoragePictogram (){
-        int author;
         storagePictogram = new StoragePictogram(this);
 
         if(mainIntent != null){
@@ -265,6 +267,17 @@ public class MainActivity extends Activity {
             saveDialog.show(getFragmentManager(), TAG);
         }
     };
+
+
+    /**
+     * On click listener that opens Pictosearch
+     */
+    private final OnClickListener showPictosearchClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            callPictosearch();
+        }
+    };
         
     private final OnClickListener showHelpClick = new OnClickListener() {
     	@Override
@@ -284,5 +297,55 @@ public class MainActivity extends Activity {
     
     public void doExit(View v){
     	this.finish();
+    }
+
+    /**
+     * Opens pictosearch application, so pictograms can be loaded into pictocreator.
+     */
+    private void callPictosearch() {
+        Intent intent = new Intent();
+
+        try{
+            intent.setComponent(new ComponentName( "dk.aau.cs.giraf.pictosearch",  "dk.aau.cs.giraf.pictosearch.PictoAdminMain"));
+            intent.putExtra("currentGuardianID", author);
+            intent.putExtra("purpose", "single");
+
+            startActivityForResult(intent, RESULT_FIRST_USER);
+        } catch (Exception e){
+            Log.e(TAG, e + ": Pictosearch is not installed.");
+        }
+    }
+
+    /**
+     * This method gets the pictogram that are returned by pictosearch.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){
+            loadPictogram(data);
+        }
+    }
+
+    /**
+     * Loads the pictogram into the canvas by getting it from the database.
+     * TODO: Check if the pictogram has a drawstack, if it does load the drawstack, if not load the bitmap.
+     * @param data The data returned from pictosearch.
+     */
+    private void loadPictogram(Intent data){
+        try{
+            int pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
+
+            Bitmap pictogram = (PictoFactory.getPictogram(this, pictogramID).getImageData());
+
+            drawFragment.drawView.loadFromBitmap(pictogram);
+        }catch(Exception e){
+            Log.e(TAG, e + ": No pictogram returned.");
+        }
+
     }
 }

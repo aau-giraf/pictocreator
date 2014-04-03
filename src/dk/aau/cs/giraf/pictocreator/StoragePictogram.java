@@ -10,6 +10,7 @@ import java.io.*;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
@@ -45,7 +46,11 @@ public class StoragePictogram {
      */
     public StoragePictogram(Context context){
         this.context = context;
-        this.databaseHelper = new Helper(this.context);
+        try{
+            this.databaseHelper = new Helper(this.context);
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -57,9 +62,11 @@ public class StoragePictogram {
      */
     public StoragePictogram(Context context, String imagePath, String textLabel, String inlineTextLabel, File audioFile){
         this.context = context;
-
-        this.databaseHelper = new Helper(this.context);
-
+        try{
+            this.databaseHelper = new Helper(this.context);
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         this.imagePath = imagePath;
         this.textLabel = textLabel;
         this.inlineTextLabel = inlineTextLabel;
