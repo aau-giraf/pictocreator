@@ -44,8 +44,9 @@
     <color name="med_gradient">#1000</color>
     <color name="gloss_gradient">#2FFFFFFF</color>
     
-    <!-- Shadow Colours -->
+    <!-- Black Colours -->
     <color name="black_shadow">#2A0C0C0C</color>
+    <color name="black">#FF000000</color>
     
     <!-- Active theme colors (wrappers) -->
     <color name="croc_head">@color/giraf_green4</color>
