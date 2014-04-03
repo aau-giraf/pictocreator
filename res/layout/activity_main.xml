@@ -113,7 +113,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/start_record_dialog_button"
             android:layout_marginRight="20dp"
-            android:drawableLeft="@drawable/ok_icon" />
+            android:drawableLeft="@drawable/load_pictogram" />
 
     </RelativeLayout>
 
