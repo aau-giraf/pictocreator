@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
@@ -197,8 +198,8 @@ public class SelectionHandler extends ActionHandler {
 	 * simply convert the Entity to a Bitmap (confusing the metaphor)?
 	 */
 	protected void flattenEntity(EntityGroup drawStack) {
-		Log.e("SelectionHandler.flattenEntity", "Method not yet implemented! The Entity should now be placed on the bottom-most Bitmap.");
-		// throw new UnsupportedOperationException("Flattening is not yet implemented.");
+        drawStack.moveToBack(this.selectedEntity);
+        DrawStackSingleton.getInstance().mySavedData = drawStack;
 	}
 	
 	/**

@@ -34,7 +34,12 @@ public class EntityGroup extends Entity {
 		
 		entities = in.readArrayList(ArrayList.class.getClassLoader());
 	}
-	
+
+    public void moveToBack(Entity entity){
+        int index = entities.indexOf(entity);
+        entities.remove(index);
+        entities.add(entities.size(), entity);
+    }
 	/**
 	 * Push a new entity onto the group's list.
 	 * @param toAdd The Entity to add.
