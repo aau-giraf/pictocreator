@@ -226,11 +226,13 @@ public class SaveDialogFragment extends DialogFragment{
                     Log.d(TAG, "TextLabel: " + textLabel);
 
                     if(textLabel.matches("") || textLabel == null){
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
+                        Toast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
+                        return;
+                        /*SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
                         String date = dateFormat.format(new Date());
                         String label = "Pictogram_" + date;
                         Log.d(TAG, "TextLavel was empty/null, replaced with " + label);
-                        textLabel = label;
+                        textLabel = label;*/
                     }
 
                     fileHandler.saveFinalFiles(textLabel, inlineText);
