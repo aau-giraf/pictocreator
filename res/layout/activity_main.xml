@@ -102,9 +102,18 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/button_height"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/start_record_dialog_button"
+            android:layout_toLeftOf="@+id/start_load_dialog_button"
             android:layout_marginRight="20dp"
             android:drawableLeft="@drawable/save" />
+
+        <dk.aau.cs.giraf.gui.GButton
+            android:id="@+id/start_load_dialog_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/start_record_dialog_button"
+            android:layout_marginRight="20dp"
+            android:drawableLeft="@drawable/ok_icon" />
 
     </RelativeLayout>
 
