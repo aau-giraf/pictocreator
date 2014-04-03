@@ -23,6 +23,7 @@ import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialog;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
@@ -291,6 +292,7 @@ public class DrawFragment extends Fragment {
         private final OnClickListener onAcceptClearCanvasClick = new OnClickListener() {
             @Override
             public void onClick(View v) {
+                AudioHandler.resetSound();
                 if(drawView != null && drawView.drawStack != null){
                     drawView.drawStack.entities.clear();
                     drawView.invalidate();

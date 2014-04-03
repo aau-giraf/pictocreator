@@ -54,6 +54,9 @@ public class AudioHandler {
             return  null;
 
     }
+    public static void resetSound(){
+        savedFileName = null;
+    }
 
     /**
      * Function for creating the tmp output file, and the path to the
