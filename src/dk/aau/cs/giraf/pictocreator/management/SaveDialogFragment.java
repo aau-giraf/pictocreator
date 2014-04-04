@@ -234,6 +234,12 @@ public class SaveDialogFragment extends DialogFragment{
 
                 storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
 
+                if(!(tags != null) && !(tags.isEmpty())){
+                    for(String t : tags){
+                        storagePictogram.addTag(t);
+                    }
+                }
+
                 if (storagePictogram.addPictogram()) {
                     Toast.makeText(parentActivity, "Pictogram gemt", Toast.LENGTH_SHORT).show();
                 }

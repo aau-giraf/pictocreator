@@ -75,7 +75,7 @@
         android:layout_below="@+id/public_text"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:drawableLeft="@drawable/cancel_icon"/>
+        android:drawableLeft="@drawable/cancel_button"/>
 
 
       <TextView
@@ -118,7 +118,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/save_list_frame" />
+        android:layout_alignRight="@+id/save_list_frame"
+        android:hint="Tilføj nøgleord her"/>
 
     <FrameLayout
         android:id="@+id/save_list_frame"

@@ -35,7 +35,6 @@ public class StoragePictogram {
     private int author;
     private int publicPictogram = 1; //temporary since we do not have a checkbox implemented for this
     private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
-    private HashSet<Tag> globalTags = new HashSet<Tag>();
     private int pictogramID;
     private Context context;
     private Helper databaseHelper;
@@ -178,24 +177,11 @@ public class StoragePictogram {
     private Tag insertTag(String tag){
         Tag newTag = null;
         TagController tagsHelper = databaseHelper.tagsHelper;
-        boolean added = false;
 
-        if(!globalTags.isEmpty()){
-            for(Tag t : globalTags){
-                if(t.getName().equals(tag)){
-                    newTag = t;
-                    added = true;
-                    break;
-                }
-            }
-        }
-
-        if(!added){
-            newTag = new Tag(tag);
-            int tagId;
-            tagId = tagsHelper.insertTag(newTag);
-            newTag.setId(tagId);
-        }
+        newTag = new Tag(tag);
+        int tagId;
+        tagId = tagsHelper.insertTag(newTag);
+        newTag.setId(tagId);
 
         return newTag;
     }
