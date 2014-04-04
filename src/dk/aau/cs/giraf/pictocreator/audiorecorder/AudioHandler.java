@@ -20,7 +20,7 @@ public class AudioHandler {
 
     private static final String TAG = "AudioHandler";
 
-    private String outputFilePath = null;
+    private String tempOutputFilePath = null;
 
     private static String savedFileName;
 
@@ -40,20 +40,20 @@ public class AudioHandler {
      * @return A string representing the file path for the audiofile
      */
     public String getFilePath(){
-        if(outputFilePath != null){
-            return outputFilePath;
-        }
-        else {
-            return null;
-        }
+        return tempOutputFilePath;
     }
-    public static String getFinalPath(){
-        if(savedFileName != null)
-            return  savedFileName;
-        else
-            return  null;
 
+    /**
+     * Getter for savedFileName, which is the final sound path
+     * @return String savedFileName
+     */
+    public static String getFinalPath(){
+        return savedFileName;
     }
+
+    /**
+     * Set the savedFileName to null
+     */
     public static void resetSound(){
         savedFileName = null;
     }
@@ -78,7 +78,7 @@ public class AudioHandler {
 
             String fileName = soundFileDir.getPath() + File.separator + tmpAudioFile;
 
-            outputFilePath = fileName;
+            tempOutputFilePath = fileName;
 
             if(savedFileName == "" || savedFileName == null)
                 savedFileName = getDir().getPath() + File.separator + audioFile;
@@ -90,13 +90,12 @@ public class AudioHandler {
      * This function is called by {@link RecordThread} in the cancel() function.
      * This function is also called by {@link #saveFinalFile} when file is copied
      */
-    public void deleteFile(){
-            File tmpFile = new File(outputFilePath);
+    public void deleteTempFile(){
+        File tmpFile = new File(tempOutputFilePath);
 
-            if(tmpFile.exists()){
-                tmpFile.delete();
-            }
-
+        if(tmpFile.exists()){
+            tmpFile.delete();
+        }
     }
 
     /**
@@ -110,8 +109,8 @@ public class AudioHandler {
         FileOutputStream finalFileStream = null;
 
         try {
-            if(outputFilePath != null && finalFilePath != null){
-                File tmpFile = new File(outputFilePath);
+            if(tempOutputFilePath != null && finalFilePath != null){
+                File tmpFile = new File(tempOutputFilePath);
                 File finalFile = new File(finalFilePath);
                 if(finalFile.exists()){
                     finalFile.delete();
@@ -128,9 +127,6 @@ public class AudioHandler {
                 while((length = tmpFileStream.read(buffer)) > 0){
                     finalFileStream.write(buffer, 0, length);
                 }
-
-                // Toast.makeText(context, "File copied to from: " + outputFilePath + "\n" +
-                //                "to " + finalFilePath, Toast.LENGTH_LONG).show();
             }
         }
         catch(IOException e){
@@ -142,7 +138,7 @@ public class AudioHandler {
                     tmpFileStream.close();
                     finalFileStream.close();
 
-                    deleteFile();
+                    deleteTempFile();
                 }
             }
             catch(IOException e){

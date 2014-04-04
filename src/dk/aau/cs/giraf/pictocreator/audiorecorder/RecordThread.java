@@ -146,7 +146,7 @@ public class RecordThread implements Runnable {
      */
     public void onCancel(){
         stop();
-        audioHandler.deleteFile();
+        audioHandler.deleteTempFile();
     }
 
     /**
