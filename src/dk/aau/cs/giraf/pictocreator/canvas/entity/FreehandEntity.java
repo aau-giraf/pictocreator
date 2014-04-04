@@ -127,6 +127,11 @@ public class FreehandEntity extends PrimitiveEntity {
 		
 		hitbox.top = Math.min(hitbox.top, y);
 		hitbox.bottom = Math.max(hitbox.bottom, y);
+
+        hitboxTopLeft = new FloatPoint(hitbox.left + basePoint.x, hitbox.top + basePoint.y);
+
+        setWidth((getCenter().x - basePoint.x)*2);
+        setHeight((getCenter().y- basePoint.y)*2);
 	}
 	
 	/**
@@ -139,25 +144,25 @@ public class FreehandEntity extends PrimitiveEntity {
 	protected void updateHitbox(FloatPoint p) {
 		updateHitbox(p.x, p.y);
 	}
-	
+
 	@Override
 	public float getHitboxLeft() {
-		return hitbox.left + getX();
+		return hitboxTopLeft.x;
 	}
 	
 	@Override
 	public float getHitboxTop() {
-		return hitbox.top + getY();
+		return hitboxTopLeft.y;
 	}
 	
 	@Override
 	public float getHitboxRight() {
-		return hitbox.right + getX();
+		return hitboxTopLeft.x + hitbox.width();
 	}
 	
 	@Override
 	public float getHitboxBottom() {
-		return hitbox.bottom + getY();
+		return hitboxTopLeft.y + hitbox.height();
 	}
 	
 	@Override
@@ -181,5 +186,17 @@ public class FreehandEntity extends PrimitiveEntity {
 	public float getY() {
 		return basePoint.y;
 	}
-	
+
+    @Override
+    public RectF getHitbox() {
+        calculateHitbox();
+        return new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
+    }
+
+    @Override
+    public FloatPoint getCenter() {
+        return new FloatPoint(hitboxTopLeft.x + (hitbox.width()/2), hitboxTopLeft.y + (hitbox.height()/2));
+    }
+
+
 }
