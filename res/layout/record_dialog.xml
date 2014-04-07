@@ -70,7 +70,7 @@
       android:layout_width="70dp"
       android:layout_height="70dp"
       android:layout_margin="10dp"
-      android:drawableLeft="@drawable/cancel_icon"
+      android:drawableLeft="@drawable/gcancel_icon"
       android:layout_toRightOf="@+id/record_positive_button"
        />
 
