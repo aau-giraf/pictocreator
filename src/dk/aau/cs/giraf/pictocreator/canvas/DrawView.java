@@ -304,4 +304,13 @@ public class DrawView extends View {
 		drawStack.addEntity(new BitmapEntity(src,30));
 		invalidate();
 	}
+
+    /**
+     * Add a new BitmapEntity from a Bitmap source instance with the option to scale the bitmap.
+     * @param src The source data.
+     */
+    public void loadFromBitmap(Bitmap src, int scale) {
+        drawStack.addEntity(new BitmapEntity(src, scale));
+        invalidate();
+    }
 }
