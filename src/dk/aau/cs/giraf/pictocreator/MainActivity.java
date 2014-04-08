@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
@@ -302,7 +303,7 @@ public class MainActivity extends Activity {
     /**
      * Opens pictosearch application, so pictograms can be loaded into pictocreator.
      */
-    private void callPictosearch() {
+    private void callPictosearch(){
         Intent intent = new Intent();
 
         try{
@@ -312,6 +313,7 @@ public class MainActivity extends Activity {
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e){
+            Toast.makeText( this, "Pictosearch er ikke installeret.", Toast.LENGTH_LONG).show();
             Log.e(TAG, e + ": Pictosearch is not installed.");
         }
     }
