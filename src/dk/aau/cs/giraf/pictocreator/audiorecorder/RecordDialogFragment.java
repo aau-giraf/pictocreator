@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import dk.aau.cs.giraf.gui.GButton;
@@ -73,6 +74,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private LinearLayout recordLayout;
 
     int soundIDPlaying;
+
+    private Boolean recordingExists;
+
+    private boolean hasRecorded;
 
     private MediaPlayer mediaPlayer;
     /**
@@ -178,7 +183,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         cancelButton = (GButton) view.findViewById(R.id.record_negative_button);
 
         playButton = (GButton) view.findViewById(R.id.playButton);
-        playButton.setEnabled((new File(handler.getFinalPath()).exists()));
+        recordingExists = (new File(handler.getFinalPath()).exists());
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
 
@@ -220,6 +225,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                         hasRecorded = true;
                         playButton.setEnabled(true);
                         acceptButton.setEnabled(true);
+                        recordingExists = true;
                     }
                 }
             };
@@ -228,10 +234,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         cancelButton.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    recThread.onCancel();
                     stopMusic();
+                    recThread.onCancel();
                     hasRecorded = false;
-                    //Toast.makeText(getActivity(), "File deleted", Toast.LENGTH_LONG).show();
                     tmpDialog.cancel();
                 }
             });
@@ -240,6 +245,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
                 @Override
                 public void onClick(View view){
+                    stopMusic();
                     recThread.onAccept();
                     hasRecorded = false;
                     tmpDialog.dismiss();
@@ -284,7 +290,6 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         }
     }
 
-    boolean hasRecorded;
     /**
      * Method called when the dialog is resumed
      */
@@ -300,12 +305,17 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     OnClickListener playClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(isPlaying)
-                stopMusic();
-            else
-                loadMusic();
-            isPlaying = !isPlaying;
-            switchLayoutPlayStopButton();
+            if(recordingExists){
+                if(isPlaying)
+                    stopMusic();
+                else
+                    loadMusic();
+                isPlaying = !isPlaying;
+                switchLayoutPlayStopButton();
+            }
+            else{
+                Toast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
+            }
         }
     };
 }
