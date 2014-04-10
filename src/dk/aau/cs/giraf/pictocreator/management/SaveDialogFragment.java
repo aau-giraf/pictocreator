@@ -86,6 +86,7 @@ public class SaveDialogFragment extends DialogFragment{
         // empty constructor required for DialogFragment
     }
 
+
     /**
      * Method for setting the preview in the dialog
      * @param preview The bitmap to preview
@@ -170,7 +171,7 @@ public class SaveDialogFragment extends DialogFragment{
 
         publicStatus = (CheckBox) view.findViewById(R.id.public_status);
 
-        int length;
+
         Bitmap bitmap = null;
         File imgFile = new File(parentActivity.getCacheDir(), "cvs");
 
@@ -182,24 +183,14 @@ public class SaveDialogFragment extends DialogFragment{
 
         boolean imageDecoded = false;
 
-        if(images.length > 0){
-            length = images.length;
-            Log.d(TAG, "Length of images: " + images.length);
-            imgFile = images[length - 1];
-        }
-
-        try {
-            if(imgFile.exists()){
-                bitmap = BitmapFactory.decodeStream(new FileInputStream(imgFile), null, null);
-                imageDecoded = true;
-            }
-        }
-        catch (FileNotFoundException e){
-            Log.e(TAG, "No file was found to decode");
+        if(preview != null)
+        {
+            bitmap = preview;
         }
 
         imgView = new ImageView(parentActivity);
 
+        Log.e(TAG, "bitmap" + (bitmap == null));
         if(bitmap != null){
             imgView.setImageBitmap(bitmap);
         }
@@ -242,7 +233,7 @@ public class SaveDialogFragment extends DialogFragment{
                         textLabel = label;*/
                 }
 
-                fileHandler.saveFinalFiles(textLabel, inlineText);
+                fileHandler.saveFinalFiles(textLabel, inlineText, preview);
 
                 storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
 

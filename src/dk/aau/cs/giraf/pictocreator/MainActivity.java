@@ -26,6 +26,7 @@ import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 import dk.aau.cs.giraf.pictogram.PictoFactory;
@@ -253,21 +254,29 @@ public class MainActivity extends Activity {
         }
     };
 
+
+    private void DeselectEntity(){
+        this.drawFragment.DeselectEntity();
+    }
     /**
      * On click listener to show the {@link SaveDialogFragment}
      */
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
         @Override
 		public void onClick(View view) {
+            DeselectEntity();
+
             saveDialog = new SaveDialogFragment();
-
-            drawFragment.saveBitmap();
-
             saveDialog.setService(service);
             saveDialog.setPictogram(storagePictogram);
+            saveDialog.setPreview(getBitmap());
             saveDialog.show(getFragmentManager(), TAG);
         }
     };
+
+    private Bitmap getBitmap(){
+        return this.drawFragment.drawView.getFlattenedBitmap(Bitmap.Config.ARGB_8888);
+    }
 
 
     /**

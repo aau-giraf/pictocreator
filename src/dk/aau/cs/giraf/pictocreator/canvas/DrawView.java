@@ -260,22 +260,6 @@ public class DrawView extends View {
 		canvas.drawRect(right, boundsPaint);
 		canvas.drawRect(below, boundsPaint);
 	}
-
-	/**
-	 * Saves the bitmap to a predetermined path (why the *fuck*?)
-	 * @return File object pointing to the saved Bitmap.
-	 * @throws FileNotFoundException
-	 * @todo Refactor the API. DrawView was never intended to handle the saving itself.
-	 */
-	public File saveToBitmap(Bitmap.Config config) throws FileNotFoundException {
-		String imageFile = "GImage_canvas.jpg";
-
-		File retF = new File(this.context.getCacheDir(), "cvs/" + imageFile);
-		
-		getFlattenedBitmap(config).compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(retF));
-
-		return retF;
-	}
 	
 	/**
 	 * Flattens the draw stack and returns it as a Bitmap.
