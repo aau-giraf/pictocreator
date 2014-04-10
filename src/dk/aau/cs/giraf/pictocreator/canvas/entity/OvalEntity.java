@@ -32,8 +32,10 @@ public class OvalEntity extends PrimitiveEntity {
     @Override
     public boolean collidesWithPoint(float x, float y) {
         float radAngle = (float)Math.toRadians(getAngle());
-        return ((Math.pow(Math.cos(radAngle)*(x-getCenter().x)+Math.sin(radAngle)*(y-getCenter().y),2)/Math.pow(getWidth()/2,2))+
-                (Math.pow(Math.sin(radAngle)*(x-getCenter().x)-Math.cos(radAngle)*(y-getCenter().y),2)/Math.pow(getHeight()/2,2))) <= 1;
+        float tempwidth = getWidth() + getStrokeWidth() * 2;
+        float tempheight = getHeight() + getStrokeWidth() * 2;
+        return ((Math.pow(Math.cos(radAngle)*(x-getCenter().x)+Math.sin(radAngle)*(y-getCenter().y),2)/Math.pow(tempwidth/2,2))+
+                (Math.pow(Math.sin(radAngle)*(x-getCenter().x)-Math.cos(radAngle)*(y-getCenter().y),2)/Math.pow(tempheight/2,2))) <= 1;
     }
 
 }

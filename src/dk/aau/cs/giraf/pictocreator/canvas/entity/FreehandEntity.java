@@ -147,22 +147,34 @@ public class FreehandEntity extends PrimitiveEntity {
 
 	@Override
 	public float getHitboxLeft() {
-		return hitboxTopLeft.x;
+        if(hitboxTopLeft != null)
+		    return hitboxTopLeft.x;
+        else
+            return 0.0f;
 	}
 	
 	@Override
 	public float getHitboxTop() {
-		return hitboxTopLeft.y;
+        if(hitboxTopLeft != null)
+            return hitboxTopLeft.y;
+        else
+            return 0.0f;
 	}
 	
 	@Override
 	public float getHitboxRight() {
-		return hitboxTopLeft.x + hitbox.width();
+        if(hitboxTopLeft != null && hitbox != null)
+		    return hitboxTopLeft.x + hitbox.width();
+        else
+            return 0.0f;
 	}
 	
 	@Override
 	public float getHitboxBottom() {
-		return hitboxTopLeft.y + hitbox.height();
+        if(hitboxTopLeft != null && hitbox != null)
+		    return hitboxTopLeft.y + hitbox.height();
+        else
+            return 0.0f;
 	}
 	
 	@Override

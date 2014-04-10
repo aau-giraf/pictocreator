@@ -35,11 +35,13 @@ public class RectEntity extends PrimitiveEntity {
      */
     @Override
     public boolean collidesWithPoint(float x, float y){
+        float tempheight = getHeight() + getStrokeWidth() * 2;
+        float tempwidth = getWidth() + getStrokeWidth() * 2;
         FloatPoint P = new FloatPoint(x,y);
-        FloatPoint A = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
-        FloatPoint B = rotationMatrix((getWidth()/2), -(getHeight()/2));
-        FloatPoint C = rotationMatrix((getWidth()/2), (getHeight()/2));
-        FloatPoint D = rotationMatrix( -(getWidth()/2), (getHeight()/2));
+        FloatPoint A = rotationMatrix( -(tempwidth/2), -(tempheight/2));
+        FloatPoint B = rotationMatrix((tempwidth/2), -(tempheight/2));
+        FloatPoint C = rotationMatrix((tempwidth/2), (tempheight/2));
+        FloatPoint D = rotationMatrix( -(tempwidth/2), (tempheight/2));
 
         return (rightOrientation(A, B, P) && rightOrientation(B, C, P) && rightOrientation(C, D, P) && rightOrientation(D, A, P));
     }
