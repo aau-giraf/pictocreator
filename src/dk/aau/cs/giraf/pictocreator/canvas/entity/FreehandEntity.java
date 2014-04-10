@@ -149,34 +149,50 @@ public class FreehandEntity extends PrimitiveEntity {
 
 	@Override
 	public float getHitboxLeft() {
-        if(hitboxTopLeft != null)
-		    return hitboxTopLeft.x;
-        else
-            return 0.0f;
+        float returnVal = Float.MAX_VALUE;
+        for(int i = 0; i < drawPoints.size(); i++){
+            float temp = rotationMatrix(drawPoints.get(i).x + basePoint.x - getCenter().x,drawPoints.get(i).y + basePoint.y - getCenter().y).x;
+            if(temp < returnVal)
+                returnVal = temp;
+        }
+
+        return returnVal;
 	}
 	
 	@Override
 	public float getHitboxTop() {
-        if(hitboxTopLeft != null)
-            return hitboxTopLeft.y;
-        else
-            return 0.0f;
+        float returnVal = Float.MAX_VALUE;
+        for(int i = 0; i < drawPoints.size(); i++){
+            float temp = rotationMatrix(drawPoints.get(i).x + basePoint.x - getCenter().x,drawPoints.get(i).y + basePoint.y - getCenter().y).y;
+            if(temp < returnVal)
+                returnVal = temp;
+        }
+
+        return returnVal;
 	}
 	
 	@Override
 	public float getHitboxRight() {
-        if(hitboxTopLeft != null && hitbox != null)
-		    return hitboxTopLeft.x + hitbox.width();
-        else
-            return 0.0f;
+        float returnVal = 0;
+        for(int i = 0; i < drawPoints.size(); i++){
+            float temp = rotationMatrix(drawPoints.get(i).x + basePoint.x - getCenter().x,drawPoints.get(i).y + basePoint.y - getCenter().y).x;
+            if(temp > returnVal)
+                returnVal = temp;
+        }
+
+        return returnVal;
 	}
 	
 	@Override
 	public float getHitboxBottom() {
-        if(hitboxTopLeft != null && hitbox != null)
-		    return hitboxTopLeft.y + hitbox.height();
-        else
-            return 0.0f;
+        float returnVal = 0;
+        for(int i = 0; i < drawPoints.size(); i++){
+            float temp = rotationMatrix(drawPoints.get(i).x + basePoint.x - getCenter().x,drawPoints.get(i).y + basePoint.y - getCenter().y).y;
+            if(temp > returnVal)
+                returnVal = temp;
+        }
+
+        return returnVal;
 	}
 	
 	@Override
