@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.os.Parcel;
+import android.util.Log;
+import android.widget.Toast;
+
+import dk.aau.cs.giraf.oasis.lib.models.Tag;
 
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
@@ -45,12 +49,7 @@ public class EntityGroup extends Entity {
 	 * @param toAdd The Entity to add.
 	 */
 	public void addEntity(Entity toAdd) {
-		if (entities.contains(toAdd)) 		{
-			// Throw something. Possibly a vase.
-			throw new InvalidParameterException("Cannot add an Entity twice. Remove it first.");
-		}
-		else {
-			// entities.add(toAdd);
+		if (!entities.contains(toAdd)){
 			entities.add(0, toAdd);
 		}
 	}
@@ -74,6 +73,7 @@ public class EntityGroup extends Entity {
 		for (int i = entities.size()-1; i >= 0; i--) {
 			entities.get(i).draw(canvas);
 		}
+        Log.e("EntityGroup",entities.size() + "");
 	}
 	
 	/**

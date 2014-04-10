@@ -14,6 +14,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import dk.aau.cs.giraf.gui.GDialogAlert;
+import dk.aau.cs.giraf.gui.R;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 
 /**
@@ -214,13 +218,37 @@ public class DrawView extends View {
 		invalidate();
 	}
 
+    private void clearCanvas(){
+        this.drawStack.entities.clear();
+        DrawStackSingleton.getInstance().mySavedData.entities.clear();
+        invalidate();
+    }
+
+    GDialogAlert diag = new GDialogAlert(this.getContext(),
+    R.drawable.ic_launcher,
+            "For mange elementer",
+            "Du har desværre tegnet for meget, tegnebrættet ryddes derfor.",
+            new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    });
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.w("DrawView",  "Invalidated. Redrawing.");
 
 		// Drawing order: drawStack, drawBuffer, bounds.
-		drawStack.draw(canvas);
+        try{
+		    drawStack.draw(canvas);
+        }
+        catch(NullPointerException e){
+            if(!diag.isShowing())
+                diag.show();
+            clearCanvas();
+        }
+
 
         //Save drawStack in singleton
         DrawStackSingleton.getInstance().mySavedData = drawStack;
@@ -238,9 +266,10 @@ public class DrawView extends View {
 		// We need some way of messaging a "dirty" state of parts of the draw stack.
 		invalidate();
 
-		if (currentHandler.onTouchEvent(event, drawStack)) {
-			return true;
-		} else return false;
+        if (currentHandler.onTouchEvent(event, drawStack)) {
+            return true;
+        } else return false;
+
 	}
 
 	/**
