@@ -10,7 +10,6 @@
 
     <uses-permission
         android:name="android.permission.RECORD_AUDIO" />
-
     <uses-permission
         android:name="android.permission.CAMERA" />
     <uses-permission
@@ -27,6 +26,7 @@
         android:icon="@drawable/pictocreator_logo"
         android:label="Pictocreator"
         android:theme="@style/AppTheme" >
+        android:largeHeap="true"
         <activity
             android:name=".MainActivity"
             android:label="Pictocreator"
