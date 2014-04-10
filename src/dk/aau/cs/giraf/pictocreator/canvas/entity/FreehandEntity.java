@@ -219,8 +219,10 @@ public class FreehandEntity extends PrimitiveEntity {
     @Override
     public boolean collidesWithPoint(float x, float y) {
         for (int i = 0; i < drawPoints.size() - 1; i++){
-            FloatPoint tempStart = new FloatPoint(drawPoints.get(i).x + getX(), drawPoints.get(i).y + getY());
-            FloatPoint tempEnd = new FloatPoint(drawPoints.get(i+1).x + getX(), drawPoints.get(i+1).y + getY());
+            FloatPoint tempStart = new FloatPoint(drawPoints.get(i).x + getX() - getCenter().x, drawPoints.get(i).y + getY() - getCenter().y);
+            FloatPoint tempEnd = new FloatPoint(drawPoints.get(i+1).x + getX() - getCenter().x, drawPoints.get(i+1).y + getY() - getCenter().y);
+            tempStart = rotationMatrix(tempStart.x, tempStart.y);
+            tempEnd = rotationMatrix(tempEnd.x, tempEnd.y);
 
             float top = Math.min(tempEnd.y, tempStart.y);
             float bottom = Math.max(tempEnd.y, tempStart.y);
@@ -238,13 +240,9 @@ public class FreehandEntity extends PrimitiveEntity {
     }
 
     private float distanceFromPointToVector(float px, float py, FloatPoint start, FloatPoint end){
-        FloatPoint newLineVector = new FloatPoint();
         FloatPoint lineVector = new FloatPoint(end.x - start.x, end.y - start.y);
-        newLineVector.x = (float)(lineVector.x*Math.cos(getRadiansAngle()) - lineVector.y*Math.sin(getRadiansAngle()));
-        newLineVector.y = (float)(lineVector.x*Math.sin(getRadiansAngle()) + lineVector.y*Math.cos(getRadiansAngle()));
 
-        return (float) ((Math.abs(newLineVector.y*px - newLineVector.x*py - start.x *end.y + end.x*start.y))/
-                (Math.sqrt(Math.pow(newLineVector.x, 2) + Math.pow(newLineVector.y, 2))));
+        return (float) ((Math.abs(lineVector.y*px - lineVector.x*py - start.x *end.y + end.x*start.y))/
+                (Math.sqrt(Math.pow(lineVector.x, 2) + Math.pow(lineVector.y, 2))));
     }
-
 }
