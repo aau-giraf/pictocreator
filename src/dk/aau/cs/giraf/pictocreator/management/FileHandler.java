@@ -1,11 +1,15 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
@@ -45,7 +49,7 @@ public class FileHandler{
      * on the devices external storage
      * @param textLabel The textLabel/name for the Pictogram to store
      */
-    public void saveFinalFiles(String textLabel, String inlineText){
+    public void saveFinalFiles(String textLabel, String inlineText, Bitmap bitmap){
         storagePictogram.setTextLabel(textLabel);
         storagePictogram.setinlineTextLabel(inlineText);
 
@@ -59,12 +63,25 @@ public class FileHandler{
         sound.getParentFile().mkdir();
 
         File tmpImgFile = new File(activity.getCacheDir(), "cvs");
-        tmpImgFile.mkdirs();
-        File[] tmpImgArray = tmpImgFile.listFiles();
+        tmpImgFile.delete();
+        tmpImgFile = new File(activity.getCacheDir(), "cvs");
 
-        if(tmpImgArray.length > 0){
-            imgLength = tmpImgArray.length;
-            tmpImgFile = tmpImgArray[imgLength - 1];
+        //Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        //write the bytes in file
+        try{
+            FileOutputStream fos = new FileOutputStream(tmpImgFile);
+            fos.write(bitmapdata);
+        }
+        catch (FileNotFoundException e){
+            Log.e(TAG, e.getMessage());
+        }
+        catch (IOException e)
+        {
+            Log.e(TAG,e.getMessage());
         }
 
         File tmpSndFile = null;

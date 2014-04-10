@@ -191,7 +191,6 @@ public class DrawFragment extends Fragment {
         /**
          * Adds a new ColorButton with the specified hex color to the color toolbox.
          * @param color Color to add. Can have alpha, although we suggest keeping it opaque (0xFFxxxxxx).
-         * @param cbList LinearLayout instance where the button should be added.
          */
         private void addColorButton(int color) {
                 colorButtonToolbox.addView(
@@ -201,22 +200,6 @@ public class DrawFragment extends Fragment {
                                                 color,
                                                 this.getActivity()));
         }
-
-        /**
-         * Instructs the DrawView to flatten its current draw stack and save it as
-         * a Bitmap.
-         * @todo Write documentation on where it is saved due to the heavy
-         * side-effecting we failed to avoid.
-         */
-        public void saveBitmap(){
-            try {
-                drawView.saveToBitmap(Bitmap.Config.ARGB_8888);
-            }
-            catch (FileNotFoundException e){
-                Log.e(TAG, "No file was found to decode");
-            }
-
-    }
 
         /**
          * Shorthand for switching active handler button. Better than serious code redundancy.
@@ -298,13 +281,17 @@ public class DrawFragment extends Fragment {
                     drawView.invalidate();
 
                     /*Neeeded as selectionhandler would have a deleted item selected otherwise*/
-                    if (drawView.currentHandler instanceof SelectionHandler)
-                        ((SelectionHandler)drawView.currentHandler).deselect();
+                    DeselectEntity();
 
                 }
             }
         };
 
+
+        public void DeselectEntity(){
+            if (drawView.currentHandler instanceof SelectionHandler)
+                ((SelectionHandler)drawView.currentHandler).deselect();
+        }
 
         @Override
 		public void onSaveInstanceState(Bundle outState) {
