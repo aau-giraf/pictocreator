@@ -1,11 +1,13 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
@@ -210,5 +212,39 @@ public class FreehandEntity extends PrimitiveEntity {
         return new FloatPoint(hitboxTopLeft.x + (hitbox.width()/2), hitboxTopLeft.y + (hitbox.height()/2));
     }
 
+
+
+    private final float JITTER_MAX = 20;
+
+    @Override
+    public boolean collidesWithPoint(float x, float y) {
+        for (int i = 0; i < drawPoints.size() - 1; i++){
+            FloatPoint tempStart = new FloatPoint(drawPoints.get(i).x + getX(), drawPoints.get(i).y + getY());
+            FloatPoint tempEnd = new FloatPoint(drawPoints.get(i+1).x + getX(), drawPoints.get(i+1).y + getY());
+
+            float top = Math.min(tempEnd.y, tempStart.y);
+            float bottom = Math.max(tempEnd.y, tempStart.y);
+            float left = Math.min(tempEnd.x,tempStart.x);
+            float right = Math.max(tempEnd.x,tempStart.x);
+
+            if(distanceFromPointToVector(x, y, tempStart, tempEnd) < JITTER_MAX &&
+                top - JITTER_MAX < y &&
+                bottom + JITTER_MAX > y &&
+                left - JITTER_MAX < x &&
+                right + JITTER_MAX > x)
+                return true;
+        }
+        return false;
+    }
+
+    private float distanceFromPointToVector(float px, float py, FloatPoint start, FloatPoint end){
+        FloatPoint newLineVector = new FloatPoint();
+        FloatPoint lineVector = new FloatPoint(end.x - start.x, end.y - start.y);
+        newLineVector.x = (float)(lineVector.x*Math.cos(getRadiansAngle()) - lineVector.y*Math.sin(getRadiansAngle()));
+        newLineVector.y = (float)(lineVector.x*Math.sin(getRadiansAngle()) + lineVector.y*Math.cos(getRadiansAngle()));
+
+        return (float) ((Math.abs(newLineVector.y*px - newLineVector.x*py - start.x *end.y + end.x*start.y))/
+                (Math.sqrt(Math.pow(newLineVector.x, 2) + Math.pow(newLineVector.y, 2))));
+    }
 
 }

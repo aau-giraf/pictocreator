@@ -147,12 +147,24 @@ public class SaveDialogFragment extends DialogFragment{
         view = inflater.inflate(R.layout.save_dialog, container);
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);
 
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.saveDialogLayout);
+        layout.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev)
+            {
+                InputMethodManager in = (InputMethodManager) parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
 
         inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
         inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
 
         tagInputFind = (EditText) view.findViewById(R.id.save_input_find);
         tagInputFind.setNextFocusDownId(R.id.save_input_find);
+
         tagsListView = (ListView) view.findViewById(R.id.save_tags_list);
         tagsListView.setAdapter(tagArrayAdapter);
 
