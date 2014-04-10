@@ -141,13 +141,18 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     boolean isPlaying = false;
     private void switchLayoutPlayStopButton(){
-        if(isPlaying){
-            playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.stop_icon), null, null, null);
-            Log.i(TAG, "changed to stop icon");
+        try{
+            if(isPlaying){
+                playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.stop_icon), null, null, null);
+                Log.i(TAG, "changed to stop icon");
+            }
+            else{
+                playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.play_icon), null, null, null);
+                Log.i(TAG, "changed to play icon");
+            }
         }
-        else{
-            playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.play_icon), null, null, null);
-            Log.i(TAG, "changed to play icon");
+        catch(IllegalStateException e){
+            Log.e(TAG, e.getMessage());
         }
 
         //Did not work with invalidate so had to use dirty fix, reference:

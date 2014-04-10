@@ -190,7 +190,6 @@ public class SaveDialogFragment extends DialogFragment{
 
         imgView = new ImageView(parentActivity);
 
-        Log.e(TAG, "bitmap" + (bitmap == null));
         if(bitmap != null){
             imgView.setImageBitmap(bitmap);
         }
