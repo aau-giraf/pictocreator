@@ -252,7 +252,7 @@ public class SaveDialogFragment extends DialogFragment{
                 }
 
                 if (storagePictogram.addPictogram()) {
-                    Toast.makeText(parentActivity, "Pictogram gemt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
                 }
 
                 if (service) {
