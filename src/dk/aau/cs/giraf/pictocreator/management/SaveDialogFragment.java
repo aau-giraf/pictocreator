@@ -39,7 +39,6 @@ import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
-import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
 /**
  * Dialog used for saving a Pictogram
@@ -197,10 +196,7 @@ public class SaveDialogFragment extends DialogFragment{
         previewView.addView(imgView);
 
         saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        if(BackgroundSingleton.getInstance().background != null)
-            saveDialogLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
-        else
-            saveDialogLayout.setBackgroundResource(R.drawable.fragment_background);
+        saveDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
         acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
 

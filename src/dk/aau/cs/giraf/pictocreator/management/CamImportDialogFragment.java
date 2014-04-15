@@ -27,7 +27,6 @@ import dk.aau.cs.giraf.gui.GCancelButton;
 import dk.aau.cs.giraf.gui.GList;
 import dk.aau.cs.giraf.gui.GVerifyButton;
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
 /**
  * Dialog for importing pictures taken by camera to the canvas
@@ -115,10 +114,7 @@ public class CamImportDialogFragment extends DialogFragment {
         listView.setOnItemClickListener(imageSelectClick);
 
         importDialogLayout = (LinearLayout)view.findViewById(R.id.importDialogLayout);
-        if(BackgroundSingleton.getInstance().background != null)
-            importDialogLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
-        else
-            importDialogLayout.setBackgroundResource(R.drawable.fragment_background);
+        importDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
         return view;
     }

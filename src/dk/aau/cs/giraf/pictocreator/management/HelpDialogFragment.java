@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 
 public class HelpDialogFragment extends DialogFragment{
 	private final static String TAG = "HelpDialog";
@@ -112,10 +111,7 @@ public class HelpDialogFragment extends DialogFragment{
         });
 
         helpDialogLayout = (LinearLayout)view.findViewById(R.id.helpDialogLayout);
-        if(BackgroundSingleton.getInstance().background != null)
-            helpDialogLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
-        else
-            helpDialogLayout.setBackgroundResource(R.drawable.fragment_background);
+        helpDialogLayout.setBackgroundResource(R.drawable.fragment_background);
 
         return view;
     }

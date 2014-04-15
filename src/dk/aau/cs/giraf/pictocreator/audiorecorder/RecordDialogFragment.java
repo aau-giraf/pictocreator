@@ -23,7 +23,6 @@ import dk.aau.cs.giraf.gui.GCancelButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 import dk.aau.cs.giraf.pictogram.AudioPlayer;
 
 import android.media.SoundPool;
@@ -191,14 +190,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recordingExists = (new File(handler.getFinalPath()).exists());
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
-
-        if (BackgroundSingleton.getInstance().background != null)
-            recordLayout.setBackgroundDrawable(BackgroundSingleton.getInstance().background);
-        else
-            recordLayout.setBackgroundResource(R.drawable.fragment_background);
+        recordLayout.setBackgroundResource(R.drawable.fragment_background);
 
         /*
-        * On click listener for stop playing recording
+        * On click listener for stop playing re+cording
         * */
         OnClickListener stopClickListener = new OnClickListener() {
             @Override

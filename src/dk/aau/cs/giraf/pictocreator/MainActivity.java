@@ -24,7 +24,6 @@ import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
-import dk.aau.cs.giraf.pictocreator.canvas.BackgroundSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
@@ -99,19 +98,10 @@ public class MainActivity extends Activity {
         decor = getWindow().getDecorView();
 
         topLayout = (RelativeLayout) findViewById(R.id.topLayer);
-        BackgroundSingleton.getInstance().background = null;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            int color = extras.getInt("appBackgroundColor");
-            BackgroundSingleton.getInstance().background = getGradientColor(color,0.0f);
-            topLayout.setBackgroundDrawable(getGradientColor(color, 0.3f));
 
-            decor.setBackgroundDrawable(getGradientColor(color, 0.0f));
-        }
-        else{
-            decor.setBackgroundResource(R.drawable.fragment_background);
-            topLayout.setBackgroundResource(R.drawable.head_background);
-        }
+        decor.setBackgroundResource(R.drawable.fragment_background);
+        topLayout.setBackgroundResource(R.drawable.head_background);
+
 
         assignUIObjects();
 
