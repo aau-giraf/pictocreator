@@ -13,107 +13,77 @@
         android:padding="5dp"
         android:id="@+id/topLayer">
 
-        <!-- Logo and title -->
-
-        <ImageView
-            android:id="@+id/crocLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/pictocreator_logo" />
-
         <dk.aau.cs.giraf.gui.GButton
-
-            android:drawableLeft="@drawable/help_button"
+            android:drawableTop="@drawable/help_button"
             android:id="@+id/help_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_height"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/crocLogo"
             android:layout_marginLeft="20dp"
             android:clickable="true"
-            android:layout_centerInParent="true"/>
+            android:text="Hjælp" />
 
-		<!-- Text view removed because title is not needed...
-        <TextView
-                android:id="@+id/crocTitle"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="@dimen/button_height"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@+id/crocLogo"
-                android:gravity="center"
-                android:text="CROC" />
-        -->
-
-        <!-- Buttons -->
-
-		<!-- Settings button not needed for current prototype...
-        <Button
-            android:id="@+id/settings"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
+        <dk.aau.cs.giraf.gui.GButton
+            android:id="@+id/start_save_dialog_button"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:text="Croc\nSettings" />
-         -->
-		
-		<dk.aau.cs.giraf.gui.GButton
-		    android:id="@+id/quit_button"
-		    android:layout_width="wrap_content"
-		    android:layout_height="@dimen/button_height"
-		    android:layout_centerVertical="true"
-		    android:layout_alignParentRight="true"
-		    android:layout_marginRight="20dp"
-		    android:layout_marginLeft="60dp"
-		    android:drawableLeft="@drawable/cancel_button"
-		    android:onClick="doExit" />
-		
-		<dk.aau.cs.giraf.gui.GToggleButton
-		    android:id="@+id/toggleCam"
-		    android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/quit_button"
+            android:layout_toLeftOf="@+id/start_load_dialog_button"
             android:layout_marginRight="20dp"
-            android:drawableLeft="@drawable/cam" />
-		
+            android:drawableTop="@drawable/save"
+            android:text="Gem"/>
+
+        <dk.aau.cs.giraf.gui.GButton
+            android:id="@+id/start_load_dialog_button"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/start_record_dialog_button"
+            android:layout_marginRight="20dp"
+            android:drawableTop="@drawable/load_pictogram"
+            android:text="Indlæs"/>
+
+        <dk.aau.cs.giraf.gui.GButton
+            android:id="@+id/start_record_dialog_button"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/toggleCanvas"
+            android:layout_marginRight="20dp"
+            android:drawableTop="@drawable/mic"
+            android:adjustViewBounds="true"
+            android:text="Optag"/>
+
         <dk.aau.cs.giraf.gui.GToggleButton
             android:id="@+id/toggleCanvas"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/toggleCam"
             android:layout_marginLeft="20dp"
             android:drawableLeft="@drawable/brush" />
 
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/start_record_dialog_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_height"
+        <dk.aau.cs.giraf.gui.GToggleButton
+            android:id="@+id/toggleCam"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/toggleCanvas"
+            android:layout_toLeftOf="@+id/quit_button"
             android:layout_marginRight="20dp"
-            android:drawableLeft="@drawable/mic"
-            android:adjustViewBounds="true" />
+            android:drawableTop="@drawable/cam"
+            />
 
         <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/start_save_dialog_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_height"
+            android:id="@+id/quit_button"
+            android:layout_width="64dp"
+            android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/start_load_dialog_button"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:drawableLeft="@drawable/save" />
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/start_load_dialog_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_height"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/start_record_dialog_button"
-            android:layout_marginRight="20dp"
-            android:drawableLeft="@drawable/load_pictogram" />
+            android:layout_marginLeft="60dp"
+            android:drawableTop="@drawable/cancel_button"
+            android:onClick="doExit"
+            android:text="Luk"/>
 
     </RelativeLayout>
 

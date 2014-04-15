@@ -19,52 +19,63 @@
         android:background="@color/giraf_white1" />
 
     <ScrollView
-        android:id="@+id/drawToolbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/selectionView"
+        android:layout_width="96dp"
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/drawingview">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
+            <dk.aau.cs.giraf.gui.GRadioGroup
+                android:id="@+id/myRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
 
-            <ImageButton
-                android:id="@+id/select_handler_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/draw_select"
-                android:scaleType="fitStart" />
+                <dk.aau.cs.giraf.gui.GToggleButton
+                    android:id="@+id/select_handler_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/draw_select"
+                    android:scaleType="fitStart"
+                    android:text="Vælger"/>
 
-            <ImageButton
-                android:id="@+id/freehand_handler_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/draw_freehand"
-                android:scaleType="fitStart" />
+                <dk.aau.cs.giraf.gui.GToggleButton
+                    android:id="@+id/freehand_handler_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/draw_freehand"
+                    android:scaleType="fitStart"
+                    android:text="Frihånd"/>
 
-            <ImageButton
-                android:id="@+id/rect_handler_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/draw_rect"
-                android:scaleType="fitStart" />
+                <dk.aau.cs.giraf.gui.GToggleButton
+                    android:id="@+id/rect_handler_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/draw_rect"
+                    android:scaleType="fitStart"
+                    android:text="Firkant"/>
 
-            <ImageButton
-                android:id="@+id/line_handler_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/draw_line"
-                android:scaleType="fitStart" />
+                <dk.aau.cs.giraf.gui.GToggleButton
+                    android:id="@+id/line_handler_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/draw_line"
+                    android:scaleType="fitStart"
+                    android:text="Linje"/>
 
-            <ImageButton
-                android:id="@+id/oval_handler_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/draw_oval"
-                android:scaleType="fitStart" />
+                <dk.aau.cs.giraf.gui.GToggleButton
+                    android:id="@+id/oval_handler_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/draw_oval"
+                    android:scaleType="fitStart"
+                    android:text="Cirkel"/>
+            </dk.aau.cs.giraf.gui.GRadioGroup>
         </LinearLayout>
     </ScrollView>
 
@@ -81,14 +92,15 @@
             android:orientation="vertical">
 
             <dk.aau.cs.giraf.gui.GButton
-                android:drawableLeft="@drawable/import_button"
+                android:drawableTop="@drawable/import_button"
                 android:layout_width="120dp"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="80dp"
                 android:clickable="true"
-                android:id="@+id/start_import_dialog_button" />
+                android:id="@+id/start_import_dialog_button"
+                android:text="Kamera"/>
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"
@@ -96,7 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/blank_100x100" />
+                android:src="@drawable/blank_100x100"
+                />
 
             <TextView
                 android:id="@+id/strokeWidthText"
@@ -112,14 +125,15 @@
                 android:max="20" />
 
             <dk.aau.cs.giraf.gui.GButton
-                android:drawableLeft="@drawable/clear_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:drawableTop="@drawable/clear_icon"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="20dp"
                 android:clickable="true"
-                android:id="@+id/clearButton" />
+                android:id="@+id/clearButton"
+                android:text="Ryd Canvas"/>
 
         </LinearLayout>
     </ScrollView>
@@ -129,7 +143,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/drawToolbox" >
+        android:layout_toRightOf="@+id/selectionView" >
 
         <LinearLayout
             android:layout_width="match_parent"
