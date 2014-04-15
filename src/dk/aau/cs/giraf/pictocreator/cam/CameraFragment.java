@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.cam;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import dk.aau.cs.giraf.pictocreator.R;
 /**
  * Created by Praetorian on 15-04-14.
  */
-public class CameraFragment extends Fragment{
+public class CameraFragment extends DialogFragment {
     private final static String TAG = "CamFragment";
     private final static int clickDelay = 1000;
     View view;
