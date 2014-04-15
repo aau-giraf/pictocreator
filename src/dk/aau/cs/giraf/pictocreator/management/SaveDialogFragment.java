@@ -36,6 +36,8 @@ import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialogMessage;
+import dk.aau.cs.giraf.gui.GRadioButton;
+import dk.aau.cs.giraf.gui.GRadioGroup;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
@@ -70,6 +72,9 @@ public class SaveDialogFragment extends DialogFragment{
     private GButton cancelButton;
     private LinearLayout saveDialogLayout;
 
+    private GRadioGroup publicGroup;
+    private GRadioButton publicityPublic;
+    private GRadioButton publicityPrivate;
     private CheckBox publicStatus;
     private StoragePictogram storagePictogram;
 
@@ -168,8 +173,10 @@ public class SaveDialogFragment extends DialogFragment{
         tagsListView = (ListView) view.findViewById(R.id.save_tags_list);
         tagsListView.setAdapter(tagArrayAdapter);
 
-        publicStatus = (CheckBox) view.findViewById(R.id.public_status);
-
+        //publicStatus = (CheckBox) view.findViewById(R.id.public_status);
+        publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
+        publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
+        publicityPrivate = (GRadioButton) view.findViewById(R.id.radio_private);
 
         Bitmap bitmap = null;
         File imgFile = new File(parentActivity.getCacheDir(), "cvs");
@@ -230,7 +237,13 @@ public class SaveDialogFragment extends DialogFragment{
 
                 fileHandler.saveFinalFiles(textLabel, inlineText, preview);
 
-                storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
+                //Value 1 in database means publicly available
+                //Value 0 in database means not publicly available
+                if (publicGroup.getCheckedRadioButtonId() == publicityPublic.getId())
+                    storagePictogram.setpublicPictogram(1);
+                else if (publicGroup.getCheckedRadioButtonId() == publicityPrivate.getId())
+                    storagePictogram.setpublicPictogram(0);
+                //storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
 
                 if(!(tags != null) && !(tags.isEmpty())){
                     for(String t : tags){
@@ -239,7 +252,7 @@ public class SaveDialogFragment extends DialogFragment{
                 }
 
                 if (storagePictogram.addPictogram()) {
-                    Toast.makeText(parentActivity, "Pictogram gemt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
                 }
 
                 if (service) {

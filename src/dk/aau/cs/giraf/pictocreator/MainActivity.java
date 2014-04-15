@@ -23,7 +23,7 @@ import android.widget.Toast;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
-import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
+import dk.aau.cs.giraf.pictocreator.cam.CameraFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
     private FragmentTransaction fragTrans;
     private GToggleButton camSwitch, canvasSwitch;
     private ImageButton dialogButton;
-    private CamFragment camFragment;
+    private CameraFragment cameraFragment;
     private DrawFragment drawFragment;
     private RecordDialogFragment recordDialog;
     private GButton recordDialogButton, saveDialogButton, loadDialogButton, helpDialogButton;
@@ -153,7 +153,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * On click function for switching between {@link CamFragment} and {@link DrawFragment}.
+     * On click function for switching between {@link CameraFragment} and {@link DrawFragment}.
      * @param view The view which is clicked.
      */
     private final OnClickListener toggleClickCamCanvas = new OnClickListener() {
@@ -165,22 +165,14 @@ public class MainActivity extends Activity {
                 camSwitch.setEnabled(false);
                 canvasSwitch.setPressed(false);
                 canvasSwitch.setEnabled(true);
-                camFragment = new CamFragment();
-                fragTrans = getFragmentManager().beginTransaction();
-                fragTrans.setCustomAnimations(R.animator.fade_in, R.animator.fade_out);
-                fragTrans.replace(R.id.fragmentContainer, camFragment);
-                fragTrans.commit();
+                cameraFragment = new CameraFragment();
+                cameraFragment.show(getFragmentManager(), TAG);
             }
             else if(canvasSwitch.isEnabled()) {
                 Log.e(TAG,"Switch to Canvas");
                 canvasSwitch.setEnabled(false);
                 camSwitch.setPressed(false);
                 camSwitch.setEnabled(true);
-                drawFragment = new DrawFragment();
-                fragTrans = getFragmentManager().beginTransaction();
-                fragTrans.setCustomAnimations(R.animator.fade_in, R.animator.fade_out);
-                fragTrans.replace(R.id.fragmentContainer, drawFragment);
-                fragTrans.commit();
             }
         }
     };

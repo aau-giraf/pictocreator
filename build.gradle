@@ -15,7 +15,6 @@ dependencies {
     compile project(':pictogram-lib')
     compile project(':OasisLib')
     compile project(':GIRAF_Components')
-    compile project(':pictosearch')
 }
 
 android {
