@@ -61,7 +61,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/public_text"
+        android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_marginRight="40dp"
@@ -72,34 +72,34 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@+id/save_button_positive"
-        android:layout_below="@+id/public_text"
+        android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:drawableLeft="@drawable/cancel_button"/>
 
 
-      <TextView
-          android:id="@+id/public_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Offentlig:"
-          android:textSize="15sp"
+      <dk.aau.cs.giraf.gui.GRadioGroup
+          android:id="@+id/public_group"
           android:layout_below="@+id/save_input_title"
-          android:layout_alignParentLeft="true"
-          android:layout_alignParentStart="true"
-          android:layout_marginBottom="10dp"
-          android:textColor="@color/croc_head" />
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
 
-      <CheckBox
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text=""
-          android:id="@+id/public_status"
-          android:layout_below="@+id/save_input_title"
-          android:layout_toRightOf="@+id/public_text"
-          android:layout_above="@+id/save_button_positive"
-          android:layout_marginLeft="10dp"
-          android:checked="true" />
+          <dk.aau.cs.giraf.gui.GRadioButton
+              android:id="@+id/radio_public"
+              android:text="Offentlig:"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              />
+
+          <dk.aau.cs.giraf.gui.GRadioButton
+              android:id="@+id/radio_private"
+              android:text="Privat:"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              android:checked="true" />
+
+
+      </dk.aau.cs.giraf.gui.GRadioGroup>
 
 
   </RelativeLayout>
