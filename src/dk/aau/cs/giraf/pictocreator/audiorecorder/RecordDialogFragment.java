@@ -207,10 +207,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         OnClickListener clickListener = new OnClickListener() {
                 @Override
 				public void onClick(View view) {
-                    if (((GToggleButton) view).isPressed()) {
+                    if (((GToggleButton) view).isToggled()) {
                         recThread.start();
                         //recordButton.setChecked(true);
-                        recordButton.setPressed(true);
+                        recordButton.setToggled(true);
                         recordButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.stop_icon),null,null,null);
                       //  recordButton.SetImage(getResources().getDrawable(R.drawable.stop_icon));
                         playButton.setEnabled(false);
@@ -220,7 +220,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                         recThread.stop();
                         decibelMeter.setLevel(0);
                         //recordButton.setChecked(false);
-                        recordButton.setPressed(false);
+                        recordButton.setToggled(false);
                         recordButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.record_icon),null,null,null);
                         hasRecorded = true;
                         playButton.setEnabled(true);

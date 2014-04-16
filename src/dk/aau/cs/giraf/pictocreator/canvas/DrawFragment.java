@@ -1,28 +1,20 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import java.io.FileNotFoundException;
-
 import android.app.Fragment;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import dk.aau.cs.giraf.gui.GButton;
-import dk.aau.cs.giraf.gui.GDialog;
 import dk.aau.cs.giraf.gui.GDialogMessage;
-import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -184,19 +176,20 @@ public class DrawFragment extends Fragment {
                         this.getActivity()));
     }
 
-    private void setAllUnPressed(){
-        rectHandlerButton.setPressed(false);
-        ovalHandlerButton.setPressed(false);
-        lineHandlerButton.setPressed(false);
-        selectHandlerButton.setPressed(false);
-        freehandHandlerButton.setPressed(false);
+    private void setAllUnToggle(){
+        rectHandlerButton.setToggled(false);
+        ovalHandlerButton.setToggled(false);
+        lineHandlerButton.setToggled(false);
+        selectHandlerButton.setToggled(false);
+        freehandHandlerButton.setToggled(false);
     }
 
     private final OnClickListener onSelectHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
             drawView.setHandler(new SelectionHandler(getResources()));
-
+            setAllUnToggle();
+            selectHandlerButton.setToggled(true);
         }
     };
 
@@ -204,8 +197,8 @@ public class DrawFragment extends Fragment {
         @Override
         public void onClick(View view) {
             drawView.setHandler(new FreehandHandler());
-            setAllUnPressed();
-            freehandHandlerButton.setPressed(true);
+            setAllUnToggle();
+            freehandHandlerButton.setToggled(true);
         }
     };
 
@@ -217,8 +210,8 @@ public class DrawFragment extends Fragment {
         @Override
         public void onClick(View view) {
             drawView.setHandler(new RectHandler());
-            setAllUnPressed();
-            rectHandlerButton.setPressed(true);
+            setAllUnToggle();
+            rectHandlerButton.setToggled(true);
         }
     };
 
@@ -228,8 +221,8 @@ public class DrawFragment extends Fragment {
         @Override
         public void onClick(View view) {
             drawView.setHandler(new OvalHandler());
-            setAllUnPressed();
-            ovalHandlerButton.setPressed(true);
+            setAllUnToggle();
+            ovalHandlerButton.setToggled(true);
         }
     };
 
@@ -238,8 +231,8 @@ public class DrawFragment extends Fragment {
         @Override
         public void onClick(View view) {
             drawView.setHandler(new LineHandler());
-            setAllUnPressed();
-            lineHandlerButton.setPressed(true);
+            setAllUnToggle();
+            lineHandlerButton.setToggled(true);
         }
     };
 
