@@ -60,23 +60,25 @@
       <dk.aau.cs.giraf.gui.GButton
         android:id="@+id/save_button_positive"
         android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_marginRight="40dp"
-        android:drawableLeft="@drawable/ok_icon"/>
+        android:drawableTop="@drawable/save"
+        android:text="Gem"/>
 
       <dk.aau.cs.giraf.gui.GButton
         android:id="@+id/save_button_negative"
         android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/save_button_positive"
         android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:drawableLeft="@drawable/cancel_button"/>
+        android:drawableTop="@drawable/cancel_button"
+        android:text="Fortryd"/>
 
 
       <dk.aau.cs.giraf.gui.GRadioGroup

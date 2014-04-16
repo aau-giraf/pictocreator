@@ -15,7 +15,7 @@
 			android:id="@+id/dialog_title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Help (Tools and Features)"
+			android:text="Hjælp (Værktøjer og Funktionalitet)"
 			android:textSize="15sp"
 			android:textStyle="bold"
 			android:textColor="@color/croc_fragment"
@@ -27,17 +27,18 @@
         
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/close_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:drawableLeft="@drawable/gcancel_icon" />
+            android:drawableTop="@drawable/gcancel_icon"
+            android:text="Luk"/>
         
     </RelativeLayout>
     <FrameLayout 
         android:id="@+id/help_body"
-        android:layout_width="500dp"
-        android:layout_height="600dp"
+        android:layout_width="400dp"
+        android:layout_height="480dp"
         android:padding="20dp"
         android:layout_weight="0.82" >
         
@@ -50,23 +51,25 @@
         
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/previous_button"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
-            android:drawableLeft="@drawable/prev_icon" />
+            android:drawableTop="@drawable/prev_icon"
+            android:text="Forrige"/>
         
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/next_button"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
-            android:drawableLeft="@drawable/next_icon" />
+            android:drawableTop="@drawable/next_icon"
+            android:text="Næste"/>
         
     </RelativeLayout>
 

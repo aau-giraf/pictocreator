@@ -240,7 +240,6 @@ public class DrawFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Log.i(TAG,"Clear Button clicked");
-
             clearDialog = new GDialogMessage(v.getContext(),"Ryd tegnebræt?",onAcceptClearCanvasClick);
             clearDialog.show();
         }

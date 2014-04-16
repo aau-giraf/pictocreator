@@ -142,11 +142,13 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private void switchLayoutPlayStopButton(){
         try{
             if(isPlaying){
-                playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.stop_icon), null, null, null);
+                playButton.setText("Stop");
+                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon), null, null);
                 Log.i(TAG, "changed to stop icon");
             }
             else{
-                playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.play_icon), null, null, null);
+                playButton.setText("Afspil");
+                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.play_icon), null, null);
                 Log.i(TAG, "changed to play icon");
             }
         }
@@ -209,9 +211,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 				public void onClick(View view) {
                     if (((GToggleButton) view).isToggled()) {
                         recThread.start();
-                        //recordButton.setChecked(true);
+                      //recordButton.setChecked(true);
                         recordButton.setToggled(true);
-                        recordButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.stop_icon),null,null,null);
+                        recordButton.setText("Stop");
+                        recordButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon),null,null);
                       //  recordButton.SetImage(getResources().getDrawable(R.drawable.stop_icon));
                         playButton.setEnabled(false);
                         acceptButton.setEnabled(false);
@@ -221,7 +224,8 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                         decibelMeter.setLevel(0);
                         //recordButton.setChecked(false);
                         recordButton.setToggled(false);
-                        recordButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.record_icon),null,null,null);
+                        recordButton.setText("Optag");
+                        recordButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.record_icon),null,null);
                         hasRecorded = true;
                         playButton.setEnabled(true);
                         acceptButton.setEnabled(true);
