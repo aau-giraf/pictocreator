@@ -21,10 +21,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CameraFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
@@ -44,12 +47,11 @@ public class MainActivity extends Activity {
 
     private FragmentManager fragManager;
     private FragmentTransaction fragTrans;
-    private GToggleButton camSwitch, canvasSwitch;
     private ImageButton dialogButton;
     private CameraFragment cameraFragment;
     private DrawFragment drawFragment;
-    private RecordDialogFragment recordDialog;
-    private GButton recordDialogButton, saveDialogButton, loadDialogButton, helpDialogButton;
+    private GDialogMessage clearDialog;
+    private GButton clearButton,saveDialogButton, loadDialogButton, helpDialogButton;
 
     private HelpDialogFragment helpDialog;
     private RelativeLayout topLayout;
@@ -104,24 +106,9 @@ public class MainActivity extends Activity {
 
 
         assignUIObjects();
-
-        //Check for camera last
-        //If no cam found, disable the fragment switch button
-        if(!checkForCamera(this)) {
-            camSwitch.setEnabled(false);
-        }
     }
 
     private void assignUIObjects() {
-        canvasSwitch = (GToggleButton)findViewById(R.id.toggleCanvas);
-        canvasSwitch.setPressed(true);
-        canvasSwitch.setEnabled(false);
-        canvasSwitch.setOnClickListener(toggleClickCamCanvas);
-
-        camSwitch = (GToggleButton)findViewById(R.id.toggleCam);
-        camSwitch.setOnClickListener(toggleClickCamCanvas);
-        camSwitch.setEnabled(true);
-
         fragManager = getFragmentManager();
         fragTrans = fragManager.beginTransaction();
 
@@ -129,8 +116,9 @@ public class MainActivity extends Activity {
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        recordDialogButton = (GButton)findViewById(R.id.start_record_dialog_button);
-        recordDialogButton.setOnClickListener(showRecorderClick);
+        clearButton = (GButton)findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(onClearButtonClick);
+        //clearButton
 
         saveDialogButton = (GButton)findViewById(R.id.start_save_dialog_button);
         saveDialogButton.setOnClickListener(showLabelMakerClick);
@@ -142,6 +130,31 @@ public class MainActivity extends Activity {
         helpDialogButton.setOnClickListener(showHelpClick);
     }
 
+    private final OnClickListener  onClearButtonClick = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.i(TAG,"Clear Button clicked");
+            clearDialog = new GDialogMessage(v.getContext(),"Ryd tegnebræt?",onAcceptClearCanvasClick);
+            clearDialog.show();
+        }
+    };
+
+    private final OnClickListener onAcceptClearCanvasClick = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AudioHandler.resetSound();
+
+            if(drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null){
+                DrawStackSingleton.getInstance().mySavedData.clear();
+                drawFragment.drawView.invalidate();
+
+                /*Neeeded as selectionhandler would have a deleted item selected otherwise*/
+                DeselectEntity();
+
+            }
+        }
+    };
+
     /**
      *
      */
@@ -151,31 +164,6 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-
-    /**
-     * On click function for switching between {@link CameraFragment} and {@link DrawFragment}.
-     * @param view The view which is clicked.
-     */
-    private final OnClickListener toggleClickCamCanvas = new OnClickListener() {
-        @Override
-        public void onClick(View view){
-            Log.e(TAG,String.format("Cam: %b, Canvas %b",camSwitch.isPressed(),canvasSwitch.isPressed()));
-            if(camSwitch.isEnabled()) {
-                Log.e(TAG,"Switch to Cam");
-                camSwitch.setEnabled(false);
-                canvasSwitch.setPressed(false);
-                canvasSwitch.setEnabled(true);
-                cameraFragment = new CameraFragment();
-                cameraFragment.show(getFragmentManager(), TAG);
-            }
-            else if(canvasSwitch.isEnabled()) {
-                Log.e(TAG,"Switch to Canvas");
-                canvasSwitch.setEnabled(false);
-                camSwitch.setPressed(false);
-                camSwitch.setEnabled(true);
-            }
-        }
-    };
 
     /**
      *
@@ -211,30 +199,12 @@ public class MainActivity extends Activity {
 
     }
 
-    /**
-     * Function for checking whether a camera is available at the device
-     * @param context The context in which the function is called
-     * @return True if a camera is found on the device, false otherwise
-     */
-    private boolean checkForCamera(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            return true;
-        } else {
-            Log.d(TAG, "No camera found on device");
-            return false;
-        }
-    }
+
 
     /**
      * On click listener to show the {@link RecordDialogFragment}
      */
-    private final OnClickListener showRecorderClick = new OnClickListener() {
-        @Override
-		public void onClick(View view) {
-            recordDialog = new RecordDialogFragment();
-            recordDialog.show(getFragmentManager(), TAG);
-        }
-    };
+
 
 
     private void DeselectEntity(){

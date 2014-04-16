@@ -38,40 +38,20 @@
             android:layout_width="64dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/start_record_dialog_button"
-            android:layout_marginRight="20dp"
+            android:layout_centerInParent="true"
             android:drawableTop="@drawable/load_pictogram"
             android:text="Indlæs"/>
 
         <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/start_record_dialog_button"
+            android:drawableTop="@drawable/clear_icon"
             android:layout_width="64dp"
             android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/toggleCanvas"
-            android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/mic"
-            android:adjustViewBounds="true"
-            android:text="Optag"/>
-
-        <dk.aau.cs.giraf.gui.GToggleButton
-            android:id="@+id/toggleCanvas"
-            android:layout_width="64dp"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/toggleCam"
-            android:layout_marginLeft="20dp"
-            android:drawableLeft="@drawable/brush" />
-
-        <dk.aau.cs.giraf.gui.GToggleButton
-            android:id="@+id/toggleCam"
-            android:layout_width="64dp"
-            android:layout_height="80dp"
+            android:clickable="true"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/quit_button"
             android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/cam"
-            />
+            android:id="@+id/clearButton"
+            android:text="Ny"/>
 
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/quit_button"
@@ -80,7 +60,6 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="60dp"
             android:drawableTop="@drawable/cancel_button"
             android:onClick="doExit"
             android:text="Luk"/>

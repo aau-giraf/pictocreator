@@ -110,4 +110,8 @@ public class EntityGroup extends Entity {
 		super.writeToParcel(dest, flags);
 		dest.writeList(this.entities);
 	}
+
+    public void clear(){
+        entities.clear();
+    }
 }

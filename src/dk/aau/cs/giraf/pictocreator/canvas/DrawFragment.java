@@ -1,6 +1,8 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
+import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
@@ -58,11 +61,12 @@ public class DrawFragment extends Fragment {
      * Button for the import action for importing Bitmaps.
      */
     protected GButton importFragmentButton;
-    protected GButton clearButton;
+    protected GButton recordDialogButton;
+
 
     CamImportDialogFragment importDialog;
 
-    GDialogMessage clearDialog;
+    RecordDialogFragment recordDialog;
 
     /**
      * Displays previews of current color choices.
@@ -111,11 +115,8 @@ public class DrawFragment extends Fragment {
         ovalHandlerButton = (GToggleButton)view.findViewById(R.id.oval_handler_button);
         ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 
-
-
-        clearButton = (GButton)view.findViewById(R.id.clearButton);
-        clearButton.setOnClickListener(onClearButtonClick);
-        //clearButton
+        recordDialogButton = (GButton)view.findViewById(R.id.start_record_dialog_button);
+        recordDialogButton.setOnClickListener(showRecorderClick);
 
         SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
         strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
@@ -129,11 +130,15 @@ public class DrawFragment extends Fragment {
         previewButton.setStrokeColor(0xFF000000);
         previewButton.setFillColor(0xFF000000);
         previewButton.setOnClickListener(onPreviewButtonClick);
+
         drawView.setStrokeColor(previewButton.getStrokeColor());
         drawView.setFillColor(previewButton.getFillColor());
 
         importFragmentButton = (GButton)view.findViewById(R.id.start_import_dialog_button);
         importFragmentButton.setOnClickListener(onImportClick);
+        if(!checkForCamera(this.getActivity())) {
+            importFragmentButton.setEnabled(false);
+        }
 
         colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
 
@@ -164,6 +169,20 @@ public class DrawFragment extends Fragment {
     }
 
     /**
+     * Function for checking whether a camera is available at the device
+     * @param context The context in which the function is called
+     * @return True if a camera is found on the device, false otherwise
+     */
+    private boolean checkForCamera(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            return true;
+        } else {
+            Log.d(TAG, "No camera found on device");
+            return false;
+        }
+    }
+
+    /**
      * Adds a new ColorButton with the specified hex color to the color toolbox.
      * @param color Color to add. Can have alpha, although we suggest keeping it opaque (0xFFxxxxxx).
      */
@@ -175,6 +194,14 @@ public class DrawFragment extends Fragment {
                         color,
                         this.getActivity()));
     }
+
+    private final OnClickListener showRecorderClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            recordDialog = new RecordDialogFragment();
+            recordDialog.show(getFragmentManager(), TAG);
+        }
+    };
 
     private void setAllUnToggle(){
         rectHandlerButton.setToggled(false);
@@ -235,31 +262,6 @@ public class DrawFragment extends Fragment {
             lineHandlerButton.setToggled(true);
         }
     };
-
-    private final OnClickListener  onClearButtonClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.i(TAG,"Clear Button clicked");
-            clearDialog = new GDialogMessage(v.getContext(),"Ryd tegnebræt?",onAcceptClearCanvasClick);
-            clearDialog.show();
-        }
-    };
-
-    private final OnClickListener onAcceptClearCanvasClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            AudioHandler.resetSound();
-            if(drawView != null && drawView.drawStack != null){
-                drawView.drawStack.entities.clear();
-                drawView.invalidate();
-
-                /*Neeeded as selectionhandler would have a deleted item selected otherwise*/
-                DeselectEntity();
-
-            }
-        }
-    };
-
 
     public void DeselectEntity(){
         if (drawView.currentHandler instanceof SelectionHandler)
