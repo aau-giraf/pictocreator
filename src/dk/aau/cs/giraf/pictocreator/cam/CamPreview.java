@@ -27,6 +27,8 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
    boolean hasMultiCams = false;
    private String camEffect = Camera.Parameters.EFFECT_NONE;
 
+
+
    /**
     * Constructor for the class
     * @param context The context in which the preview is created
@@ -72,11 +74,13 @@ public class CamPreview extends SurfaceView implements SurfaceHolder.Callback{
        releaseCamera();
        cam = getCamera(defaultCameraID);
 
+
        Camera.Parameters params = cam.getParameters();
-       previewSize = getBestPreviewSize(width, height, params);
+       /*previewSize = getBestPreviewSize(width, height, params);
        params.setPreviewSize(previewSize.width, previewSize.height);
        requestLayout();
        cam.setParameters(params);
+       */
        camEffect = params.getColorEffect();
 
        try{

@@ -25,7 +25,7 @@ import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
-import dk.aau.cs.giraf.pictocreator.cam.CameraFragment;
+
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
@@ -48,7 +48,6 @@ public class MainActivity extends Activity {
     private FragmentManager fragManager;
     private FragmentTransaction fragTrans;
     private ImageButton dialogButton;
-    private CameraFragment cameraFragment;
     private DrawFragment drawFragment;
     private GDialogMessage clearDialog;
     private GButton clearButton,saveDialogButton, loadDialogButton, helpDialogButton;
@@ -64,7 +63,7 @@ public class MainActivity extends Activity {
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
-    // public static final String APP_PACKAGENAME = "appPackageName";
+    // public static final String APP_PcACKAGENAME = "appPackageName";
     // public static final String APP_ACTIVITYNAME = "appActivityName";
     // public static final String APP_COLOR = "appBackgroundColor";
 
