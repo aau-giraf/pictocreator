@@ -26,6 +26,9 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     List<Size> mSupportedPreviewSizes;
     Camera mCamera;
     boolean mSurfaceCreated = false;
+    private int currentCameraID;
+    private int defaultCameraID;
+    private int frontCameraID;
 
     Preview(Context context) {
         super(context);
@@ -38,6 +41,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        assignCameraIds();
     }
 
     public void setCamera(Camera camera) {
@@ -49,12 +53,59 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         }
     }
 
-    public void switchCamera(Camera camera) {
-        setCamera(camera);
+    public void switchCamera() {
         try {
-            camera.setPreviewDisplay(mHolder);
-        } catch (IOException exception) {
-            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
+            mCamera.stopPreview();
+        }
+        catch (Exception e) {
+            Log.d(TAG, "You tried to stop a non-existent preview");
+        }
+        mCamera.release();
+
+        if(currentCameraID == defaultCameraID){
+            mCamera = Camera.open(frontCameraID);
+            currentCameraID = frontCameraID;
+            Log.d(TAG, "Cam changed to front");
+        }
+        else if(currentCameraID == frontCameraID){
+            mCamera = Camera.open(defaultCameraID);
+            currentCameraID = defaultCameraID;
+            Log.d(TAG, "Cam changed to default");
+        }
+        else {
+            Log.e(TAG, "Cam ID unknown");
+        }
+        try{
+            mCamera.setPreviewDisplay(this.mHolder);
+        }
+        catch(Exception e) {
+            Log.d(TAG, "Display holder was not set");
+        }
+        mCamera.startPreview();
+
+    }
+
+    private void assignCameraIds(){
+        Camera.CameraInfo camInfo = new Camera.CameraInfo();
+        int numberOfCams = Camera.getNumberOfCameras();
+
+        if(numberOfCams == 1) {
+            return;
+        }
+
+        for(int j = 0; j < numberOfCams; j++) {
+            Camera.getCameraInfo(j, camInfo);
+            if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                defaultCameraID = currentCameraID = j;
+                Log.d(TAG, "Camera facing back is set, with id: " + String.valueOf(j));
+            }
+            else if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                frontCameraID = j;
+                Log.d(TAG, "Camera facing front is set, with id: " + String.valueOf(j));
+            }
+            else {
+                Log.d(TAG, "Default configuration kept, since facing is not set in system");
+            }
         }
     }
 

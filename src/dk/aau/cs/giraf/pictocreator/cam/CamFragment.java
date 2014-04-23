@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +13,25 @@ import android.view.Window;
 import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class CamFragment extends DialogFragment {
 
+    private String TAG = "CamFragment";
     private Preview mPreview;
 
     private View view;
     private FrameLayout frameLayout;
+
+    /* Buttons */
+    private GToggleButton colorSwapButton;
+    private GButton captureButton;
+    private GButton switchCamButton;
 
     Camera mCamera;
     int mNumberOfCameras;
@@ -59,8 +70,60 @@ public class CamFragment extends DialogFragment {
         frameLayout = (FrameLayout)view.findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
 
+        /* Assign Buttons*/
+        captureButton = (GButton)view.findViewById(R.id.button_capture);
+        captureButton.setOnClickListener(captureClick);
+
+        colorSwapButton = (GToggleButton)view.findViewById(R.id.color_effects);
+        colorSwapButton.setOnClickListener(colorSwapClick);
+
+        switchCamButton = (GButton)view.findViewById(R.id.switch_cam);
+        switchCamButton.setOnClickListener(cameraSwapClick);
+
         return view;
     }
+
+
+    private final View.OnClickListener captureClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            
+        }
+    };
+
+    private final View.OnClickListener colorSwapClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            swapColour();
+        }
+    };
+    private void swapColour(){
+        Camera.Parameters tempParams = mPreview.mCamera.getParameters();
+
+        //Initialise if Color effect is null
+        if(tempParams.getColorEffect() == null)
+            tempParams.setColorEffect(Camera.Parameters.EFFECT_NONE);
+
+        //Swap the colour effect
+        if(tempParams.getColorEffect().matches(Camera.Parameters.EFFECT_MONO))
+            tempParams.setColorEffect(Camera.Parameters.EFFECT_NONE);
+        else if(tempParams.getColorEffect().matches(Camera.Parameters.EFFECT_NONE))
+            tempParams.setColorEffect(Camera.Parameters.EFFECT_MONO);
+
+        mPreview.mCamera.setParameters(tempParams);
+    }
+
+    private final View.OnClickListener cameraSwapClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            /*the colour effect part makes sure we preserve colour effect*/
+            String colourEffect = mPreview.mCamera.getParameters().getColorEffect();
+            mPreview.switchCamera();
+            Camera.Parameters tempParams = mPreview.mCamera.getParameters();
+            tempParams.setColorEffect(colourEffect);
+            mPreview.mCamera.setParameters(tempParams);
+        }
+    };
 
     public static CamFragment newInstance() {
         CamFragment f = new CamFragment();
@@ -73,9 +136,14 @@ public class CamFragment extends DialogFragment {
 
         // Use mCurrentCamera to select the camera desired to safely restore
         // the fragment after the camera has been changed
+        try{
         mCamera = Camera.open(mCurrentCamera);
         mCameraCurrentlyLocked = mCurrentCamera;
         mPreview.setCamera(mCamera);
+        }
+        catch (RuntimeException e){
+            Toast.makeText(this.getActivity(), "Kameraet kunne desværre ikke åbnes", Toast.LENGTH_LONG);
+        }
     }
 
     @Override

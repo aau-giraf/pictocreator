@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/fragment_background"
-    android:id="@+id/camera_relativeLayout"
-    >
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="50dp">
+    android:padding="50dp"
+    android:background="@drawable/fragment_background">
 
     <FrameLayout
         android:id="@+id/camera_preview"
@@ -19,6 +14,7 @@
     </FrameLayout>
 
     <LinearLayout
+          android:weightSum="100"
           android:orientation="horizontal"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -26,27 +22,32 @@
           android:layout_gravity="center_horizontal">
 
           <dk.aau.cs.giraf.gui.GToggleButton
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
               android:id="@+id/color_effects"
               android:drawableTop="@drawable/bw_icon"
-              android:layout_toLeftOf="@+id/button_capture"/>
+              android:layout_toLeftOf="@+id/button_capture"
+              android:text="Sort Hvid"
+              android:layout_weight="15"/>
 
           <dk.aau.cs.giraf.gui.GButton
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
               android:id="@+id/button_capture"
               android:drawableTop="@drawable/cam"
-              android:layout_gravity="center_vertical"/>
+              android:layout_centerHorizontal="true"
+              android:text="Tag Billede"
+              android:layout_weight="20"/>
 
           <dk.aau.cs.giraf.gui.GButton
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
               android:id="@+id/switch_cam"
               android:drawableTop="@drawable/cam_facing"
-              android:layout_toRightOf="@+id/button_capture"/>
+              android:layout_toRightOf="@+id/button_capture"
+              android:text="Skift Kamera"
+              android:layout_weight="15"/>
 
       </LinearLayout>
 
 </LinearLayout>
-</RelativeLayout>
