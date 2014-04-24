@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.cam;
 
 import android.app.DialogFragment;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
@@ -14,11 +15,21 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
+
+import java.io.File;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GCancelButton;
 import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.gui.GVerifyButton;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawView;
+import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 
 public class CamFragment extends DialogFragment {
 
@@ -28,10 +39,21 @@ public class CamFragment extends DialogFragment {
     private View view;
     private FrameLayout frameLayout;
 
+    private ViewSwitcher viewSwitcher;
+
     /* Buttons */
+    private GButton exitButton;
+
+    //For first layout
     private GToggleButton colorSwapButton;
     private GButton captureButton;
     private GButton switchCamButton;
+
+    //for swapped layout
+    private GVerifyButton verifyButton;
+    private GCancelButton retryButton;
+
+    private PhotoHandler photoHandler;
 
     Camera mCamera;
     int mNumberOfCameras;
@@ -70,7 +92,11 @@ public class CamFragment extends DialogFragment {
         frameLayout = (FrameLayout)view.findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
 
+        viewSwitcher = (ViewSwitcher)view.findViewById(R.id.layoutSwitcherCamera);
         /* Assign Buttons*/
+        exitButton = (GButton)view.findViewById(R.id.quit_buttonCamera);
+        exitButton.setOnClickListener(quitButtonClick);
+
         captureButton = (GButton)view.findViewById(R.id.button_capture);
         captureButton.setOnClickListener(captureClick);
 
@@ -80,16 +106,70 @@ public class CamFragment extends DialogFragment {
         switchCamButton = (GButton)view.findViewById(R.id.switch_cam);
         switchCamButton.setOnClickListener(cameraSwapClick);
 
+        verifyButton = (GVerifyButton)view.findViewById(R.id.acceptPictureButton);
+        verifyButton.setOnClickListener(verifyButtonClick);
+
+        retryButton = (GCancelButton)view.findViewById(R.id.retryPictureButton);
+        retryButton.setOnClickListener(retryButtonClick);
+
+        photoHandler = new PhotoHandler(this.getActivity());
+
         return view;
     }
 
 
+    //Left blank intentionally, is used for the click sound when taking a picture.
+    private final Camera.ShutterCallback shutterCall = new Camera.ShutterCallback() {
+        @Override
+        public void onShutter() {
+
+        }
+    };
+
     private final View.OnClickListener captureClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            
+            mPreview.mCamera.takePicture(shutterCall, null, photoHandler);
+            viewSwitcher.showNext();
         }
     };
+
+    private final View.OnClickListener retryButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            viewSwitcher.showPrevious();
+            mPreview.mCamera.startPreview();
+        }
+    };
+
+    private final View.OnClickListener verifyButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            closeDialog();
+        }
+    };
+
+    private final View.OnClickListener quitButtonClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(photoHandler.pictureFile != null && photoHandler.pictureFile.exists())
+                photoHandler.pictureFile.delete();
+
+            closeDialog();
+        }
+    };
+
+    public interface PictureTakenListener{
+        void onPictureTaken(File picture);
+    }
+
+    private void closeDialog(){
+        if(photoHandler.pictureFile != null && photoHandler.pictureFile.exists()){
+            CamFragment.PictureTakenListener activity = (CamFragment.PictureTakenListener) getActivity();
+            activity.onPictureTaken(photoHandler.pictureFile);
+        }
+        this.dismiss();
+    }
 
     private final View.OnClickListener colorSwapClick = new View.OnClickListener() {
         @Override

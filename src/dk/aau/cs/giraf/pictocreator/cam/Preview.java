@@ -235,11 +235,17 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
             // ignore: tried to stop a non-existent preview
         }
         // the preview.
-        Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-        requestLayout();
+        try {
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            requestLayout();
 
-        mCamera.setParameters(parameters);
+            mCamera.setParameters(parameters);
+        }
+        catch (NullPointerException e){
+
+        }
+
 
         try {
             mCamera.setPreviewDisplay(mHolder);

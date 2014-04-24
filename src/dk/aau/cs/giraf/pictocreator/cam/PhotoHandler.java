@@ -24,6 +24,7 @@ public class PhotoHandler implements PictureCallback {
 
     private String imagePath = null;
     private final Context context;
+    public File pictureFile;
 
     public PhotoHandler(Context context) {
         this.context = context;
@@ -44,30 +45,24 @@ public class PhotoHandler implements PictureCallback {
             return;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
-        String date = dateFormat.format(new Date());
-        String photoFile = "GImage_" + date + ".jpg";
+        String photoFile = "camerapicture.jpg";
 
         String fileName = pictureFileDir.getPath() + File.separator + photoFile;
 
-        File pictureFile = new File(fileName);
+        pictureFile = new File(fileName);
+        if(pictureFile.exists())
+        {
+            pictureFile.delete();
+        }
 
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
-            Toast.makeText(context, "Giraf image: " + photoFile + "\n" +
-                           "Saved in: " + pictureFileDir, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Billede Taget", Toast.LENGTH_SHORT).show();
         } catch(Exception e) {
             Log.d(TAG, "Picture: " + photoFile + " was not saved" + e.getMessage());
-            Toast.makeText(context, "Image could not be saved", Toast.LENGTH_LONG).show();
-        } finally {
-            try {
-                camera.startPreview();
-                //set the camera button to enabled... somehow
-            } catch (NullPointerException nil) {
-                Log.d(TAG, "Camera is null, preview not started" + nil.getMessage());
-            }
+            Toast.makeText(context, "Billede kunne ikke tages", Toast.LENGTH_LONG).show();
         }
 
     }
