@@ -111,6 +111,12 @@ public class SelectionHandler extends ActionHandler {
 	 * Used to create smooth rotations when using the rotate action.
 	 */
 	protected float previousAngle;
+
+    /**
+     * Used to create smooth resizing of an entity.
+     */
+    protected FloatPoint initialBottomRightPoint;
+    protected FloatPoint initialWidthHeight;
 	
 	/**
 	 * Support method that returns the full resource file name of an icon name.
@@ -246,7 +252,11 @@ public class SelectionHandler extends ActionHandler {
 		if (action == MotionEvent.ACTION_DOWN && !pointerDown) {
 			if (selectedEntity != null) {
 				// Attempt to collide with action icon.
-				if (resizeIcon.collidesWithPoint(px, py)) currentMode = ACTION_MODE.RESIZE;
+				if (resizeIcon.collidesWithPoint(px, py)){
+                    currentMode = ACTION_MODE.RESIZE;
+                    initialBottomRightPoint = new FloatPoint(selectedEntity.getHitboxRight(), selectedEntity.getHitboxBottom());
+                    initialWidthHeight = new FloatPoint(selectedEntity.getWidth(), selectedEntity.getHeight());
+                }
 				else if (rotateIcon.collidesWithPoint(px, py)) {
 					currentMode = ACTION_MODE.ROTATE;
 					previousAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
@@ -298,8 +308,21 @@ public class SelectionHandler extends ActionHandler {
 				}
 				case RESIZE: {
 					// WARNING! Breaks if the resize icon is NOT in the lower-right corner!
-					selectedEntity.setWidth(px-selectedEntity.getX());
-					selectedEntity.setHeight(py-selectedEntity.getY());
+                    FloatPoint changeVector = new FloatPoint(px - initialBottomRightPoint.x, py - initialBottomRightPoint.y);
+                    FloatPoint rotatedVector = new FloatPoint((float)((changeVector.x * Math.cos(selectedEntity.getRadiansAngle() % (Math.PI/2)) - changeVector.y*Math.sin(selectedEntity.getRadiansAngle() % (Math.PI/2)))),
+                            (float)(changeVector.x * Math.sin(selectedEntity.getRadiansAngle() % (Math.PI/2)) + changeVector.y*Math.cos(selectedEntity.getRadiansAngle() % (Math.PI/2))));
+
+
+
+
+                    Log.e("HITBOX!", "Hitbox: x: " + selectedEntity.getHitboxRight() + " y: " + selectedEntity.getHitboxBottom() + " Angle: " + selectedEntity.getAngle());
+                    Log.e("TEST", "HitboxVector: x:" + changeVector.x + " y: " + changeVector.y);
+                    Log.e("TEST", "RotatedVector: x:" + rotatedVector.x + " y: " + rotatedVector.y);
+
+                    selectedEntity.setWidth(initialWidthHeight.x + rotatedVector.x);
+                    selectedEntity.setHeight(initialWidthHeight.y + rotatedVector.y);
+
+
 					handled = true;
 					break;
 				}
