@@ -2,13 +2,15 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Simpler Point implementation that allows floats. Fuckin' odd that they use
  * floats for coordinates but integers for point coordinates.
  * @author Croc
  *
  */
-public class FloatPoint {
+public class FloatPoint implements Serializable{
 
 	/**
 	 * X-coordinate of the point.

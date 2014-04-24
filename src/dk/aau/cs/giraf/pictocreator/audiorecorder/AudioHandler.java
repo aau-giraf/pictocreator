@@ -51,6 +51,10 @@ public class AudioHandler {
         return savedFileName;
     }
 
+    public static void setFinalPath(String path){
+        savedFileName = path;
+    }
+
     /**
      * Set the savedFileName to null
      */

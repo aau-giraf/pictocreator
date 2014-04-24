@@ -24,18 +24,23 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
+import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
+import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
+import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 import dk.aau.cs.giraf.pictogram.PictoFactory;
@@ -306,25 +311,49 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
      * @param data The data returned from pictosearch.
      */
     private void loadPictogram(Intent data){
+        int pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
+        Log.i(TAG,"id: " + pictogramID);
+
+        PictogramController pictogramController = new PictogramController(this);
+        Pictogram pictogram = pictogramController.getPictogramById(pictogramID);
+
+        if(pictogram.getEditableImage() == null){
+            Bitmap bitmap = pictogram.getImage();
+            loadPicture(bitmap);
+        }
+        else{
+            try{
+                DrawStackSingleton.getInstance().mySavedData = (EntityGroup)ByteConverter.deserialize(pictogram.getEditableImage());
+            }
+            catch (IOException e){
+                Log.e(TAG, e.getMessage());
+            }
+            catch (ClassNotFoundException e){
+                Log.e(TAG, e.getMessage());
+            }
+        }
         try{
-            int pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
-
-            Bitmap pictogram = (PictoFactory.getPictogram(this, pictogramID).getImageData());
-
-            drawFragment.drawView.loadFromBitmap(pictogram);
-        }catch(Exception e){
-            Log.e(TAG, e + ": No pictogram returned.");
+            if(pictogram.getAudioFile(this) != null && pictogram.getAudioFile(this).length() > 0)
+                AudioHandler.setFinalPath(pictogram.getAudioFile(this).getPath());
+        }
+        catch(IOException e){
+            Log.e(TAG, e.getMessage());
         }
 
     }
     @Override
     public void onPictureTaken(File picture){
-        int sizeHeightPercentage = (int)((double)(this.getBitmap().getHeight())/(double)(BitmapFactory.decodeFile(picture.getPath()).getHeight())*100.0);
-        int sizeWidthPercentage = (int)((double)(this.getBitmap().getWidth())/(double)(BitmapFactory.decodeFile(picture.getPath()).getWidth())*100.0);
+        loadPicture(BitmapFactory.decodeFile(picture.getPath()));
+    }
 
-        BitmapEntity tempEntity = new BitmapEntity(BitmapFactory.decodeFile(picture.getPath()), Math.min(sizeHeightPercentage, sizeWidthPercentage));
+    private void loadPicture(Bitmap bitmap){
+        int sizeHeightPercentage = (int)(((double)(this.getBitmap().getHeight())/(double)(bitmap).getHeight())*100.0);
+        int sizeWidthPercentage = (int)(((double)(this.getBitmap().getWidth())/(double)(bitmap).getWidth())*100.0);
+
+        BitmapEntity tempEntity = new BitmapEntity(bitmap, Math.min(sizeHeightPercentage, sizeWidthPercentage));
         tempEntity.setCenter(this.drawFragment.drawView.getMeasuredWidth()/2, this.drawFragment.drawView.getMeasuredHeight()/2);
         DrawStackSingleton.getInstance().mySavedData.addEntity(tempEntity);
         this.drawFragment.drawView.invalidate();
     }
+
 }

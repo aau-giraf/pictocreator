@@ -75,7 +75,6 @@ public class SaveDialogFragment extends DialogFragment{
     private GRadioGroup publicGroup;
     private GRadioButton publicityPublic;
     private GRadioButton publicityPrivate;
-    private CheckBox publicStatus;
     private StoragePictogram storagePictogram;
 
     private FileHandler fileHandler;

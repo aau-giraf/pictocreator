@@ -6,6 +6,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Custom-rolled Entity class for Drawables. One major drawback I find with the
  * Android Framework implementation of Canvas and Drawables is the way you 
@@ -20,7 +22,7 @@ import android.util.Log;
  * @author Croc
  *
  */
-public abstract class Entity implements Parcelable {
+public abstract class Entity implements Parcelable, Serializable {
 	/**
 	 * X-coordinate of the Shape, measured by its left edge.
 	 */

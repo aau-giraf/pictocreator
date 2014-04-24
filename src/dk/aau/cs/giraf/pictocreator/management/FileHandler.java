@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 
 /**
  * Class used for handling of files
@@ -99,6 +100,15 @@ public class FileHandler{
 
 
         storagePictogram.setAudioFile(tmpSndFile);
+
+        try {
+            storagePictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
+        }
+        catch (IOException e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
     }
 
     /**

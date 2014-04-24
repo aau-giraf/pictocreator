@@ -1,5 +1,10 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
@@ -9,20 +14,41 @@ import android.util.Log;
 import android.widget.Toast;
 
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
+import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
  * objects and their movement, or to ensure a specific drawing order.
  * @author Croc
  */
-public class EntityGroup extends Entity {
+public class EntityGroup extends Entity implements Serializable{
 
 	/**
 	 * List of all the entities kept in the EntityGroup. Consider it a stack
 	 * for the purposes of rendering.
 	 */
-	protected ArrayList<Entity> entities = new ArrayList<Entity>();
+	transient  ArrayList<Entity> entities = new ArrayList<Entity>();
 
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        // This will serialize all fields that you did not mark with 'transient'
+        // (Java's default behaviour)
+        oos.defaultWriteObject();
+        // Now, manually serialize all transient fields that you want to be serialized
+        if(entities !=null){
+            oos.writeObject(ByteConverter.serialize(entities));
+        }
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException{
+        // Now, all again, deserializing - in the SAME ORDER!
+        // All non-transient fields
+        ois.defaultReadObject();
+        // All other fields that you serialized
+        byte[] readObject = (byte[]) ois.readObject();
+        if(readObject != null && readObject.length > 0){
+            entities = (ArrayList<Entity>)ByteConverter.deserialize(readObject);
+        }
+    }
 	/**
 	 * Creates an empty EntityGroup ready for service.
 	 */

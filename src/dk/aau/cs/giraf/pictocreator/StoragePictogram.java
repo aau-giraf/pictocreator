@@ -38,6 +38,7 @@ public class StoragePictogram {
     private int pictogramID;
     private Context context;
     private Helper databaseHelper;
+    private byte[] drawStack;
 
     /**
      * Constructor for the class
@@ -235,6 +236,10 @@ public class StoragePictogram {
         return pictogram;
     }
 
+    public void setEditableImage(byte[] drawstack){
+       this.drawStack = drawstack;
+    }
+
     /**
      * Method for generation of pictogram
      * @return The generated pictogram
@@ -256,7 +261,9 @@ public class StoragePictogram {
             pictogram.setSoundDataBytes(b);
         }
 
-
+        if(this.drawStack != null){
+            pictogram.setEditableImage(drawStack);
+        }
         pictogram = insertPictogram(pictogram);
 
         return pictogram;
