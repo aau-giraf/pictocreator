@@ -1,5 +1,6 @@
 package dk.aau.cs.giraf.pictocreator;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -16,18 +18,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import java.io.File;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
-import dk.aau.cs.giraf.pictocreator.cam.CameraFragment;
+
+import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
@@ -39,7 +46,7 @@ import dk.aau.cs.giraf.pictogram.PictoFactory;
  * @author Croc
  *
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements CamFragment.PictureTakenListener{
 
     private final static String TAG = "CrocMain";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";
@@ -48,7 +55,6 @@ public class MainActivity extends Activity {
     private FragmentManager fragManager;
     private FragmentTransaction fragTrans;
     private ImageButton dialogButton;
-    private CameraFragment cameraFragment;
     private DrawFragment drawFragment;
     private GDialogMessage clearDialog;
     private GButton clearButton,saveDialogButton, loadDialogButton, helpDialogButton;
@@ -64,7 +70,7 @@ public class MainActivity extends Activity {
 
     // public static final String GUARDIANID = "currentGuardianID";
     // public static final String CHILDID = "currentChildID";
-    // public static final String APP_PACKAGENAME = "appPackageName";
+    // public static final String APP_PcACKAGENAME = "appPackageName";
     // public static final String APP_ACTIVITYNAME = "appActivityName";
     // public static final String APP_COLOR = "appBackgroundColor";
 
@@ -310,5 +316,15 @@ public class MainActivity extends Activity {
             Log.e(TAG, e + ": No pictogram returned.");
         }
 
+    }
+    @Override
+    public void onPictureTaken(File picture){
+        int sizeHeightPercentage = (int)((double)(this.getBitmap().getHeight())/(double)(BitmapFactory.decodeFile(picture.getPath()).getHeight())*100.0);
+        int sizeWidthPercentage = (int)((double)(this.getBitmap().getWidth())/(double)(BitmapFactory.decodeFile(picture.getPath()).getWidth())*100.0);
+
+        BitmapEntity tempEntity = new BitmapEntity(BitmapFactory.decodeFile(picture.getPath()), Math.min(sizeHeightPercentage, sizeWidthPercentage));
+        tempEntity.setCenter(this.drawFragment.drawView.getMeasuredWidth()/2, this.drawFragment.drawView.getMeasuredHeight()/2);
+        DrawStackSingleton.getInstance().mySavedData.addEntity(tempEntity);
+        this.drawFragment.drawView.invalidate();
     }
 }

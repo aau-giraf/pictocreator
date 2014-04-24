@@ -1,6 +1,8 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -15,19 +17,21 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import java.io.File;
+
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
+import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
-import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment;
-import dk.aau.cs.giraf.pictocreator.management.CamImportDialogFragment.ImportResultPath;
 
 /**
  * The DrawFragment is the part of Croc that handles free-form drawing with
@@ -63,8 +67,7 @@ public class DrawFragment extends Fragment {
     protected GButton importFragmentButton;
     protected GButton recordDialogButton;
 
-
-    CamImportDialogFragment importDialog;
+    CamFragment cameraDialog;
 
     RecordDialogFragment recordDialog;
 
@@ -136,8 +139,9 @@ public class DrawFragment extends Fragment {
 
         importFragmentButton = (GButton)view.findViewById(R.id.start_import_dialog_button);
         importFragmentButton.setOnClickListener(onImportClick);
+
         if(!checkForCamera(this.getActivity())) {
-            importFragmentButton.setEnabled(false);
+           importFragmentButton.setEnabled(false);
         }
 
         colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
@@ -283,17 +287,9 @@ public class DrawFragment extends Fragment {
     private final OnClickListener onImportClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            importDialog = new CamImportDialogFragment();
-            importDialog.setImportPath(new ImportResultPath() {
-                    @Override
-                    public void onImport(String path) {
-                            // Do the import here...
-                            // Jojo do your stuff (btw path is the path to chosen image)
-                            //Toast.makeText(getActivity(), path, Toast.LENGTH_LONG).show();
-                            drawView.loadFromBitmap(BitmapFactory.decodeFile(path));
-                    }
-            });
-            importDialog.show(getActivity().getFragmentManager(), TAG);
+            cameraDialog = new CamFragment();
+            //cameraDialog
+            cameraDialog.show(getActivity().getFragmentManager(), TAG);
         }
     };
 
