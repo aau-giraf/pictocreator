@@ -8,9 +8,11 @@ import java.io.Serializable;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
-	private Paint fillPaint = new Paint();
-	private Paint strokePaint = new Paint();
+
 public abstract class PrimitiveEntity extends Entity implements Serializable {
+
+    private SerializePaint fillPaint = new SerializePaint();
+    private SerializePaint strokePaint = new SerializePaint();
 
 	public void setFillColor(int color) { fillPaint.setColor(color); }
 	public void setStrokeColor(int color) { strokePaint.setColor(color); }
