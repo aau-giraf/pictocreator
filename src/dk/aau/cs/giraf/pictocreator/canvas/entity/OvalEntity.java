@@ -1,8 +1,9 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.shapes.OvalShape;
+
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
 /**
  * Simple Entity subclass representing an oval shape.
@@ -15,7 +16,7 @@ public class OvalEntity extends PrimitiveEntity {
 	}
 
 	@Override		
-	public void drawWithPaint(Canvas canvas, Paint paint) {
+	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
 		OvalShape rs = new OvalShape();
 		rs.resize(getWidth(), getHeight());
 		 

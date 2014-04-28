@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 
 /**
@@ -27,9 +28,9 @@ public class EntityGroup extends Entity implements Serializable{
 	 * List of all the entities kept in the EntityGroup. Consider it a stack
 	 * for the purposes of rendering.
 	 */
-	transient  ArrayList<Entity> entities = new ArrayList<Entity>();
+	ArrayList<Entity> entities = new ArrayList<Entity>();
 
-    private void writeObject(ObjectOutputStream oos) throws IOException {
+    /*private void writeObject(ObjectOutputStream oos) throws IOException {
         // This will serialize all fields that you did not mark with 'transient'
         // (Java's default behaviour)
         oos.defaultWriteObject();
@@ -48,7 +49,8 @@ public class EntityGroup extends Entity implements Serializable{
         if(readObject != null && readObject.length > 0){
             entities = (ArrayList<Entity>)ByteConverter.deserialize(readObject);
         }
-    }
+    }*/
+
 	/**
 	 * Creates an empty EntityGroup ready for service.
 	 */
@@ -93,8 +95,8 @@ public class EntityGroup extends Entity implements Serializable{
 		}
 		else return null;
 	}
-	
-	@Override
+
+    @Override
 	public void draw(Canvas canvas) {
 		for (int i = entities.size()-1; i >= 0; i--) {
 			entities.get(i).draw(canvas);

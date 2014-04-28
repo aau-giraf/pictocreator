@@ -1,16 +1,15 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.RectF;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializeRectF;
 
 /**
  * An Entity class representing a freehand drawing sequence. Freehand drawings
@@ -39,7 +38,7 @@ public class FreehandEntity extends PrimitiveEntity {
 	/**
 	 * Hitbox of the path. Recalculated after each new point has been added.
 	 */
-	protected RectF hitbox = new RectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+	protected SerializeRectF hitbox = new SerializeRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
 	
 	/**
 	 * Create a new FreehandEntity with a specific stroke color. 
@@ -52,10 +51,10 @@ public class FreehandEntity extends PrimitiveEntity {
     }
 
     @Override
-    public void drawWithPaint(Canvas canvas, Paint paint) {
+    public void drawWithPaint(Canvas canvas, SerializePaint paint) {
         if (drawPoints.size() <= 1) return; // Don't draw trivial.
 
-        paint = new Paint(paint); // Copy.
+        paint = new SerializePaint(paint); // Copy.
         paint.setStyle(Style.STROKE);
 
         Log.i("FreehandEntity.drawWithPaint",
@@ -103,7 +102,7 @@ public class FreehandEntity extends PrimitiveEntity {
 	 * sparingly.
 	 */
 	protected void calculateHitbox() {
-		hitbox = new RectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+		hitbox = new SerializeRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
 		
 		for (FloatPoint p : drawPoints) {
 			updateHitbox(p.x, p.y);
@@ -218,9 +217,9 @@ public class FreehandEntity extends PrimitiveEntity {
 	}
 
     @Override
-    public RectF getHitbox() {
+    public SerializeRectF getHitbox() {
         calculateHitbox();
-        return new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
+        return new SerializeRectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
     }
 
     @Override
