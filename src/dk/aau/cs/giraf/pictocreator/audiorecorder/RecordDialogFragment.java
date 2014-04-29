@@ -24,6 +24,7 @@ import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictogram.AudioPlayer;
+import dk.aau.cs.giraf.pictogram.PictoMediaPlayer;
 
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
@@ -78,7 +79,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     private boolean hasRecorded;
 
-    private MediaPlayer mediaPlayer;
+    private PictoMediaPlayer mediaPlayer;
     /**
      * Constructor for the Dialog
      * Left empty on purpose
@@ -117,31 +118,13 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         setStyle(style, 0);
 
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-
-                mediaPlayer.setVolume(volume, volume);
-                isPlaying = true;
-                mediaPlayer.start();
-            }
-        });
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                isPlaying = false;
-                switchLayoutPlayStopButton();
-            }
-        });
+        mediaPlayer = new PictoMediaPlayer(this.getActivity());
+        mediaPlayer.setCustomListener(new myCustomListener());
     }
 
-    boolean isPlaying = false;
     private void switchLayoutPlayStopButton(){
         try{
-            if(isPlaying){
+            if(mediaPlayer.isPlaying()){
                 playButton.setText("Stop");
                 playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon), null, null);
                 Log.i(TAG, "changed to stop icon");
@@ -200,7 +183,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         OnClickListener stopClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopMusic();
+                mediaPlayer.stopSound();
             }
         };
         /**
@@ -238,7 +221,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         cancelButton.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    stopMusic();
+                    mediaPlayer.stopSound();
                     recThread.onCancel();
                     hasRecorded = false;
                     tmpDialog.cancel();
@@ -249,7 +232,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
                 @Override
                 public void onClick(View view){
-                    stopMusic();
+                    mediaPlayer.stopSound();
                     recThread.onAccept();
                     hasRecorded = false;
                     tmpDialog.dismiss();
@@ -261,33 +244,18 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         return view;
     }
 
-
-    public void stopMusic(){
-        mediaPlayer.stop();
-    }
-
-    private float volume;
     public void loadMusic(){
         try{
-
-            AudioManager audioManager = (AudioManager) this.getActivity().getSystemService(Context.AUDIO_SERVICE);
-            float actualVolume = (float) audioManager
-                    .getStreamVolume(AudioManager.STREAM_MUSIC);
-            float maxVolume = (float) audioManager
-                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            volume = actualVolume / maxVolume;
-            mediaPlayer.reset();
-            FileInputStream temp;
             if(!hasRecorded){
+
                 Log.i(TAG, "loading file: " + handler.getFinalPath());
-                temp = new FileInputStream(handler.getFinalPath());
+                mediaPlayer.setDataSource(handler.getFinalPath());
             }
             else{
                 Log.i(TAG, "loading file: " + handler.getFilePath());
-                temp = new FileInputStream(handler.getFilePath());
+                mediaPlayer.setDataSource(handler.getFilePath());
             }
-            mediaPlayer.setDataSource(temp.getFD());
-            mediaPlayer.prepareAsync();
+            mediaPlayer.playSound();
         }
         catch (IOException e){
             Log.e(TAG, "Could not load music");
@@ -310,16 +278,23 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         @Override
         public void onClick(View v) {
             if(recordingExists){
-                if(isPlaying)
-                    stopMusic();
+                if(mediaPlayer.isPlaying())
+                    mediaPlayer.stopSound();
                 else
                     loadMusic();
-                isPlaying = !isPlaying;
                 switchLayoutPlayStopButton();
+               // StopButton();
             }
             else{
                 Toast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
             }
         }
     };
+
+    private class myCustomListener implements PictoMediaPlayer.CompleteListener{
+        @Override
+        public void soundDonePlaying() {
+            switchLayoutPlayStopButton();
+        }
+    }
 }
