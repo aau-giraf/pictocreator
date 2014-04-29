@@ -283,7 +283,7 @@ public class DrawFragment extends Fragment {
             ColorPicker(v);
         }
     };
-    
+
     public void ColorPicker(View v)
     {
         GColorPicker diag = new GColorPicker(v.getContext(), customColor, new GColorPicker.OnOkListener() {
