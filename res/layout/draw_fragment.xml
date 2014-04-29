@@ -115,13 +115,23 @@
                 />
 
             <dk.aau.cs.giraf.gui.GButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/currentCustomColor"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/strokeWidthBar"
+                android:layout_toRightOf="@+id/colorToolbox"/>
+
+            <dk.aau.cs.giraf.gui.GButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vælg Farve"
-                android:id="@+id/CustomColor"
+                android:id="@+id/customColor"
                 android:layout_above="@+id/extraToolbox"
                 android:layout_toRightOf="@+id/colorToolbox"
-                android:layout_below="@id/strokeWidthBar"/>
+                android:layout_below="@id/currentCustomColor"
+                android:layout_marginLeft="10dp"/>
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"

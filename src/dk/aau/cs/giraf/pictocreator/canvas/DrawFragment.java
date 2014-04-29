@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -74,6 +75,7 @@ public class DrawFragment extends Fragment {
      * Button for custom color picking function, with the default starting color black.
      */
     protected GButton colorFrameButton;
+    protected GButton currentCustomColor;
     private int customColor = 0xFF000000;
 
     RecordDialogFragment recordDialog;
@@ -131,8 +133,12 @@ public class DrawFragment extends Fragment {
         SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
         strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
 
-        colorFrameButton = (GButton) view.findViewById(R.id.CustomColor);
+        colorFrameButton = (GButton) view.findViewById(R.id.customColor);
         colorFrameButton.setOnClickListener(customColorButton);
+
+        currentCustomColor = (GButton) view.findViewById(R.id.currentCustomColor);
+        currentCustomColor.setOnClickListener(onCurrentCustomColorButtonClick);
+        currentCustomColor.setBackgroundColor(customColor);
 
         // Set initial handler.
         drawView.setHandler(new FreehandHandler());
@@ -292,6 +298,7 @@ public class DrawFragment extends Fragment {
                 customColor = color;
                 drawView.setFillColor(color);
                 previewButton.setFillColor(color);
+                currentCustomColor.setBackgroundColor(color);
             }
         });
         diag.SetCurrColor(customColor);
@@ -345,6 +352,14 @@ public class DrawFragment extends Fragment {
             drawView.setFillColor(previewButton.getFillColor());
             drawView.setStrokeColor(previewButton.getStrokeColor());
             Log.i("DrawFragment", String.format("Swapping colors from %s to %s", previewButton.getStrokeColor(), previewButton.getFillColor()));
+        }
+    };
+
+    private final OnClickListener onCurrentCustomColorButtonClick = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            drawView.setFillColor(customColor);
+            previewButton.setFillColor(customColor);
         }
     };
 }
