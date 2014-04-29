@@ -305,8 +305,7 @@ public class SelectionHandler extends ActionHandler {
 				}
 				case ROTATE: {
 					float currentAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
-					
-					// selectedEntity.setAngle(getAngle(selectedEntity.getCenter(), new FloatPoint(px, py))-previousAngle);
+
 					selectedEntity.rotateBy(currentAngle-previousAngle);
 					
 					previousAngle = currentAngle;

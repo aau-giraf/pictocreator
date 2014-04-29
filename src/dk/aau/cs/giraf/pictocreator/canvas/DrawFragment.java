@@ -20,6 +20,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import java.io.File;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GColorPicker;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
@@ -68,6 +69,12 @@ public class DrawFragment extends Fragment {
     protected GButton recordDialogButton;
 
     CamFragment cameraDialog;
+
+    /**
+     * Button for custom color picking function, with the default starting color black.
+     */
+    protected GButton colorFrameButton;
+    private int customColor = 0xFF000000;
 
     RecordDialogFragment recordDialog;
 
@@ -123,6 +130,9 @@ public class DrawFragment extends Fragment {
 
         SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
         strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
+
+        colorFrameButton = (GButton) view.findViewById(R.id.CustomColor);
+        colorFrameButton.setOnClickListener(customColorButton);
 
         // Set initial handler.
         drawView.setHandler(new FreehandHandler());
@@ -266,6 +276,27 @@ public class DrawFragment extends Fragment {
             lineHandlerButton.setToggled(true);
         }
     };
+
+    private final OnClickListener customColorButton = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ColorPicker(v);
+        }
+    };
+
+    public void ColorPicker(View v)
+    {
+        GColorPicker diag = new GColorPicker(v.getContext(), customColor, new GColorPicker.OnOkListener() {
+            @Override
+            public void OnOkClick(GColorPicker diag, int color) {
+                customColor = color;
+                drawView.setFillColor(color);
+                previewButton.setFillColor(color);
+            }
+        });
+        diag.SetCurrColor(customColor);
+        diag.show();
+    }
 
     public void DeselectEntity(){
         if (drawView.currentHandler instanceof SelectionHandler)

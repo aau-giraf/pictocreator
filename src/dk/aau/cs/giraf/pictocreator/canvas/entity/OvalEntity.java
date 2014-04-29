@@ -39,4 +39,24 @@ public class OvalEntity extends PrimitiveEntity {
                 (Math.pow(Math.sin(radAngle)*(x-getCenter().x)-Math.cos(radAngle)*(y-getCenter().y),2)/Math.pow(tempheight/2,2))) <= 1;
     }
 
+    /**
+     * Set the angle of rotation for this Entity.
+     * If the angle is between 90 and 270 degrees, we reset the position of the entity to be in the upper left corner.
+     * This was done to prevent weird behaviour when the entity is resized after being rotated.
+     * @param angle The new angle.
+     */
+    @Override
+    public void setAngle(float angle) {
+        if(angle>=90 && angle <= 270){
+            setX(getCenter().x - getHeight()/2);
+            setY(getCenter().y - getWidth()/2);
+            float temp = getHeight();
+            setHeight(getWidth());
+            setWidth(temp);
+            this.angle = Math.abs(90-angle%180);
+        }
+        else
+            this.angle = (angle + 360) % 360;
+    }
+
 }

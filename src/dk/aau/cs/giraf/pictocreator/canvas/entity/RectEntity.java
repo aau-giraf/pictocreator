@@ -57,4 +57,24 @@ public class RectEntity extends PrimitiveEntity {
     private Boolean rightOrientation(FloatPoint a, FloatPoint b, FloatPoint p){
         return (b.y-a.y)*(p.x-b.x)<=(p.y-b.y)*(b.x-a.x);
     }
+
+    /**
+     * Set the angle of rotation for this Entity.
+     * If the angle is between 90 and 270 degrees, we reset the position of the entity to be in the upper left corner.
+     * This was done to prevent weird behaviour when the entity is resized after being rotated.
+     * @param angle The new angle.
+     */
+    @Override
+    public void setAngle(float angle) {
+        if(angle>=90 && angle <= 270){
+            setX(getCenter().x - getHeight()/2);
+            setY(getCenter().y - getWidth()/2);
+            float temp = getHeight();
+            setHeight(getWidth());
+            setWidth(temp);
+            this.angle = Math.abs(90-angle%180);
+        }
+        else
+            this.angle = (angle + 360) % 360;
+    }
 }
