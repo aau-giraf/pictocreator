@@ -183,7 +183,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         OnClickListener stopClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayer.stopMusic();
+                mediaPlayer.stopSound();
             }
         };
         /**
@@ -221,7 +221,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         cancelButton.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    mediaPlayer.stopMusic();
+                    mediaPlayer.stopSound();
                     recThread.onCancel();
                     hasRecorded = false;
                     tmpDialog.cancel();
@@ -232,7 +232,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
                 @Override
                 public void onClick(View view){
-                    mediaPlayer.stopMusic();
+                    mediaPlayer.stopSound();
                     recThread.onAccept();
                     hasRecorded = false;
                     tmpDialog.dismiss();
@@ -279,7 +279,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         public void onClick(View v) {
             if(recordingExists){
                 if(mediaPlayer.isPlaying())
-                    mediaPlayer.stopMusic();
+                    mediaPlayer.stopSound();
                 else
                     loadMusic();
                 switchLayoutPlayStopButton();
