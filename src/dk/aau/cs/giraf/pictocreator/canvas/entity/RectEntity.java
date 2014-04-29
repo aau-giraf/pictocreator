@@ -1,11 +1,10 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.shapes.RectShape;
-import android.util.Log;
 
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
 /**
  * Simple Entity. It is basically a visible rect.
@@ -19,7 +18,7 @@ public class RectEntity extends PrimitiveEntity {
 	}
 
 	@Override
-	public void drawWithPaint(Canvas canvas, Paint paint) {
+	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
 		RectShape rs = new RectShape();
 		rs.resize(getWidth(), getHeight());
 

@@ -8,6 +8,9 @@ import android.util.Log;
 
 import java.io.Serializable;
 
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializeRectF;
+
 /**
  * Custom-rolled Entity class for Drawables. One major drawback I find with the
  * Android Framework implementation of Canvas and Drawables is the way you 
@@ -354,9 +357,9 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * the various getHitbox???? methods.
 	 * @return A RectF of the Entity's hitbox bounds.
 	 */
-	public RectF getHitbox() {
+	public SerializeRectF getHitbox() {
         changeHitbox();
-		return new RectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
+		return new SerializeRectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
 	}
 
     /**

@@ -94,7 +94,7 @@ public class DrawFragment extends Fragment {
 
         if (savedInstanceState != null) {
                 // Restore drawStack et al.
-                drawView.drawStack = savedInstanceState.getParcelable("drawstack");
+                DrawStackSingleton.getInstance().mySavedData = savedInstanceState.getParcelable("drawstack");
                 drawView.invalidate();
         }
 
@@ -309,7 +309,7 @@ public class DrawFragment extends Fragment {
         // drawView.drawStack.writeToParcel(currentDrawStack, 0);
         super.onSaveInstanceState(outState);
         Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
-        outState.putParcelable("drawstack", drawView.drawStack);
+        outState.putParcelable("drawstack", DrawStackSingleton.getInstance().mySavedData);
     };
 
 

@@ -50,12 +50,6 @@ public class DrawView extends View {
 	protected int height;
 
 	/**
-	 * This stack contains all current layers in the *drawing*. See drawStack
-	 * for the entire rendering stack used.
-	 */
-	EntityGroup drawStack = new EntityGroup();
-
-	/**
 	 * The currently active handler for touch events.
 	 */
 	protected ActionHandler currentHandler;
@@ -175,7 +169,7 @@ public class DrawView extends View {
 	}
 
     public void setDrawStack(EntityGroup stack){
-        drawStack = stack;
+        DrawStackSingleton.getInstance().mySavedData = stack;
     }
 
 	/**
@@ -219,7 +213,6 @@ public class DrawView extends View {
 	}
 
     private void clearCanvas(){
-        this.drawStack.entities.clear();
         DrawStackSingleton.getInstance().mySavedData.entities.clear();
         invalidate();
     }
@@ -241,17 +234,13 @@ public class DrawView extends View {
 
 		// Drawing order: drawStack, drawBuffer, bounds.
         try{
-		    drawStack.draw(canvas);
+		    DrawStackSingleton.getInstance().mySavedData.draw(canvas);
         }
         catch(NullPointerException e){
             if(!diag.isShowing())
                 diag.show();
             clearCanvas();
         }
-
-
-        //Save drawStack in singleton
-        DrawStackSingleton.getInstance().mySavedData = drawStack;
 
 		if (currentHandler != null) currentHandler.drawBufferPreBounds(canvas);
 
@@ -266,7 +255,7 @@ public class DrawView extends View {
 		// We need some way of messaging a "dirty" state of parts of the draw stack.
 		invalidate();
 
-        if (currentHandler.onTouchEvent(event, drawStack)) {
+        if (currentHandler.onTouchEvent(event, DrawStackSingleton.getInstance().mySavedData)) {
             return true;
         } else return false;
 
@@ -314,7 +303,7 @@ public class DrawView extends View {
 	 * @param src The source data.
 	 */
 	public void loadFromBitmap(Bitmap src) {
-		drawStack.addEntity(new BitmapEntity(src,30));
+		DrawStackSingleton.getInstance().mySavedData.addEntity(new BitmapEntity(src,30));
 		invalidate();
 	}
 
@@ -323,7 +312,7 @@ public class DrawView extends View {
      * @param src The source data.
      */
     public void loadFromBitmap(Bitmap src, int scale) {
-        drawStack.addEntity(new BitmapEntity(src, scale));
+        DrawStackSingleton.getInstance().mySavedData.addEntity(new BitmapEntity(src, scale));
         invalidate();
     }
 }

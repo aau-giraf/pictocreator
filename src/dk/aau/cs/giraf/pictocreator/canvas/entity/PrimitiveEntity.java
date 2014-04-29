@@ -1,19 +1,23 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Paint.Style;
+
+import java.io.Serializable;
+
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
-public abstract class PrimitiveEntity extends Entity {
 
-	private Paint fillPaint = new Paint();
-	private Paint strokePaint = new Paint();
-	
+public abstract class PrimitiveEntity extends Entity implements Serializable {
+
+    private SerializePaint fillPaint = new SerializePaint();
+    private SerializePaint strokePaint = new SerializePaint();
+
 	public void setFillColor(int color) { fillPaint.setColor(color); }
 	public void setStrokeColor(int color) { strokePaint.setColor(color); }
 	public void setStrokeWidth(float width) { strokePaint.setStrokeWidth(width); }
-	
+
 	public int getFillColor() { return fillPaint.getColor(); }
 	public int getStrokeColor() { return strokePaint.getColor(); }
 	public float getStrokeWidth() { return strokePaint.getStrokeWidth(); }
@@ -34,7 +38,7 @@ public abstract class PrimitiveEntity extends Entity {
 		setX(x);
 		setY(y);
 		setWidth(w);
-		setHeight(h);
+        setHeight(h);
 	}
 	
 	public PrimitiveEntity(int fillColor, int strokeColor) {
@@ -53,7 +57,7 @@ public abstract class PrimitiveEntity extends Entity {
 	 * @param canvas The Canvas to draw to. 
 	 * @param paint The specific Paint that must be used for the draw call.
 	 */
-	public abstract void drawWithPaint(Canvas canvas, Paint paint);
+	public abstract void drawWithPaint(Canvas canvas, SerializePaint paint);
 	
 	@Override
 	public void doDraw(Canvas canvas) {

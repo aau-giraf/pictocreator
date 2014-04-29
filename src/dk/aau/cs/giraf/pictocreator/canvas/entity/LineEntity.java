@@ -1,9 +1,9 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
 /**
  * The LineEntity class represents a straight line, point A to point B. For
@@ -40,9 +40,9 @@ public class LineEntity extends PrimitiveEntity {
 		setX(x1);
 		setY(y1);
 	}
-	
+
 	@Override
-	public void drawWithPaint(Canvas canvas, Paint paint) {
+	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
         Log.i("LineEntity.drawWithPaint",
                 String.format("Drawing line with starting point (%s,%s) with color %s", getX(), getY(), paint.getColor()));
 
