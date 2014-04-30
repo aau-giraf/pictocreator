@@ -23,6 +23,7 @@ import java.io.File;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GColorPicker;
 import dk.aau.cs.giraf.gui.GDialogMessage;
+import dk.aau.cs.giraf.gui.GSeekBar;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -130,7 +131,7 @@ public class DrawFragment extends Fragment {
         recordDialogButton = (GButton)view.findViewById(R.id.start_record_dialog_button);
         recordDialogButton.setOnClickListener(showRecorderClick);
 
-        SeekBar strokeWidthBar = (SeekBar)view.findViewById(R.id.strokeWidthBar);
+        GSeekBar strokeWidthBar = (GSeekBar)view.findViewById(R.id.strokeWidthBar);
         strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
 
         colorFrameButton = (GButton) view.findViewById(R.id.customColor);
@@ -182,8 +183,6 @@ public class DrawFragment extends Fragment {
         addColorButton(0xFFFF00FF); // Fuchsia
 
         colorButtonToolbox.removeViewAt(0); // Remove the placeholder.
-
-        strokeWidthBar.setProgress(4); // Set default stroke width.
 
         return view;
     }
@@ -331,11 +330,15 @@ public class DrawFragment extends Fragment {
         }
     };
 
+    /**
+     * The seekbar changes the strokewidth of the entities.
+     * The stroke width is sat to be from 1 to 20 by dividing the value by 5, as standard seekbar range is from 1 to 100.
+     */
     private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                previewButton.setStrokeWidth(progress);
-                drawView.setStrokeWidth(progress);
+                previewButton.setStrokeWidth(progress/5);
+                drawView.setStrokeWidth(progress/5);
                 Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
         };
 
