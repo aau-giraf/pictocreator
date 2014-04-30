@@ -5,15 +5,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.widget.ImageButton;
+import android.view.ViewPropertyAnimator;
+
+import dk.aau.cs.giraf.gui.GButton;
 
 /**
  * The preview button is optimally displayed close to regular ColorButtons and
  * signals the current color state for fill and stroke.
  * @author Croc
  */
-public class PreviewButton extends ImageButton {
+public class PreviewButton extends GButton {
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
 	
@@ -27,8 +28,10 @@ public class PreviewButton extends ImageButton {
 		strokePaint.setStrokeWidth(width);
 		invalidate();
 	}
-	
-	public PreviewButton(Context context) {
+
+    public void setPadding(int padding) { this.padding = padding; }
+
+    public PreviewButton(Context context) {
 		super(context);
 		
 		init();
@@ -86,7 +89,7 @@ public class PreviewButton extends ImageButton {
 	public int getFillColor() { return fillPaint.getColor(); }
 	
 	@Override
-	protected void onDraw(Canvas canvas) {
+	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
 		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, fillPaint);

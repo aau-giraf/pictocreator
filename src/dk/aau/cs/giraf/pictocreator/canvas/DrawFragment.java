@@ -76,7 +76,7 @@ public class DrawFragment extends Fragment {
      * Button for custom color picking function, with the default starting color black.
      */
     protected GButton colorFrameButton;
-    protected GButton currentCustomColor;
+    protected PreviewButton currentCustomColor;
     private int customColor = 0xFF000000;
 
     RecordDialogFragment recordDialog;
@@ -137,16 +137,15 @@ public class DrawFragment extends Fragment {
         colorFrameButton = (GButton) view.findViewById(R.id.customColor);
         colorFrameButton.setOnClickListener(customColorButton);
 
-        currentCustomColor = (GButton) view.findViewById(R.id.currentCustomColor);
+        currentCustomColor = (PreviewButton) view.findViewById(R.id.currentCustomColor);
         currentCustomColor.setOnClickListener(onCurrentCustomColorButtonClick);
-        currentCustomColor.setBackgroundColor(customColor);
+        currentCustomColor.setStrokeColor(0x00000000);
+        currentCustomColor.setFillColor(0xFF000000);
 
         // Set initial handler.
         drawView.setHandler(new FreehandHandler());
 
-        View tmp = view.findViewById(R.id.canvasColorPreviewButton);
-        Log.w("DrawFragment.onCreateView", String.format("PreviewButton returned as a %s.", tmp.getClass().toString()));
-        previewButton = (PreviewButton)tmp;
+        previewButton = (PreviewButton) view.findViewById(R.id.canvasColorPreviewButton);
         previewButton.setStrokeColor(0xFF000000);
         previewButton.setFillColor(0xFF000000);
         previewButton.setOnClickListener(onPreviewButtonClick);
@@ -297,7 +296,7 @@ public class DrawFragment extends Fragment {
                 customColor = color;
                 drawView.setFillColor(color);
                 previewButton.setFillColor(color);
-                currentCustomColor.setBackgroundColor(color);
+                currentCustomColor.setFillColor(color);
             }
         });
         diag.SetCurrColor(customColor);
