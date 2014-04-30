@@ -58,8 +58,6 @@ public class FileHandler{
 
         File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + "-" + System.currentTimeMillis() + ".3gp");
 
-        int imgLength, sndLength;
-
         image.getParentFile().mkdirs();
         sound.getParentFile().mkdir();
 

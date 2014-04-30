@@ -39,6 +39,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
@@ -311,7 +312,18 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
      * @param data The data returned from pictosearch.
      */
     private void loadPictogram(Intent data){
-        int pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
+        int pictogramID = 0;
+        try{
+        pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            Log.e(TAG, e.getMessage());
+            return;
+        }
+        catch(NullPointerException e){
+            Log.e(TAG, e.getMessage());
+            return;
+        }
         Log.i(TAG,"id: " + pictogramID);
 
         PictogramController pictogramController = new PictogramController(this);
