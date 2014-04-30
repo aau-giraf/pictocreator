@@ -298,8 +298,11 @@ public class SelectionHandler extends ActionHandler {
 				}
 				case RESIZE: {
 					// WARNING! Breaks if the resize icon is NOT in the lower-right corner!
-					selectedEntity.setWidth(px-selectedEntity.getX());
-					selectedEntity.setHeight(py-selectedEntity.getY());
+                    float x = selectedEntity.getHitboxRight() - (selectedEntity.getX() +selectedEntity.getWidth());
+                    float y = selectedEntity.getHitboxBottom() - (selectedEntity.getY() +selectedEntity.getHeight());
+                    
+					selectedEntity.setWidth(px-x-selectedEntity.getX());
+					selectedEntity.setHeight(py-y-selectedEntity.getY());
 					handled = true;
 					break;
 				}
