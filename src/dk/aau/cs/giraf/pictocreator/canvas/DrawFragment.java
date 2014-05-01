@@ -114,7 +114,6 @@ public class DrawFragment extends Fragment {
 
         freehandHandlerButton = (GToggleButton)view.findViewById(R.id.freehand_handler_button);
         freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
-        freehandHandlerButton.setToggled(true);
 
         selectHandlerButton = (GToggleButton)view.findViewById(R.id.select_handler_button);
         selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);

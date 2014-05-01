@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:GComponent="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -53,7 +54,8 @@
                     android:drawableTop="@drawable/draw_freehand"
                     android:scaleType="fitStart"
                     android:text="Frihånd"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    GComponent:Toggled="true"/>
 
                 <dk.aau.cs.giraf.gui.GToggleButton
                     android:id="@+id/rect_handler_button"
@@ -111,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:max="20"/>
+                GComponent:StartPercent="20"/>
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/currentCustomColor"
