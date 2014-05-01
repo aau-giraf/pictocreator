@@ -24,6 +24,7 @@ import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictogram.AudioPlayer;
+import dk.aau.cs.giraf.pictogram.CompleteListener;
 import dk.aau.cs.giraf.pictogram.PictoMediaPlayer;
 
 import android.media.SoundPool;
@@ -245,21 +246,16 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     }
 
     public void loadMusic(){
-        try{
-            if(!hasRecorded){
+        if(!hasRecorded){
 
-                Log.i(TAG, "loading file: " + handler.getFinalPath());
-                mediaPlayer.setDataSource(handler.getFinalPath());
-            }
-            else{
-                Log.i(TAG, "loading file: " + handler.getFilePath());
-                mediaPlayer.setDataSource(handler.getFilePath());
-            }
-            mediaPlayer.playSound();
+            Log.i(TAG, "loading file: " + handler.getFinalPath());
+            mediaPlayer.setDataSource(handler.getFinalPath());
         }
-        catch (IOException e){
-            Log.e(TAG, "Could not load music");
+        else{
+            Log.i(TAG, "loading file: " + handler.getFilePath());
+            mediaPlayer.setDataSource(handler.getFilePath());
         }
+        mediaPlayer.playSound();
     }
 
     /**
@@ -291,7 +287,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         }
     };
 
-    private class myCustomListener implements PictoMediaPlayer.CompleteListener{
+    private class myCustomListener implements CompleteListener{
         @Override
         public void soundDonePlaying() {
             switchLayoutPlayStopButton();
