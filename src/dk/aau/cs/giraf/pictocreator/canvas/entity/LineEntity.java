@@ -1,6 +1,8 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
@@ -46,7 +48,15 @@ public class LineEntity extends PrimitiveEntity {
         Log.i("LineEntity.drawWithPaint",
                 String.format("Drawing line with starting point (%s,%s) with color %s", getX(), getY(), paint.getColor()));
 
-        canvas.drawLine(0, 0, lineVector.x, lineVector.y, paint);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+
+        Path p = new Path();
+        p.lineTo(0,0);
+        p.lineTo(lineVector.x, lineVector.y);
+
+        //drawLine ignores the style of the paint, which means the edges of the line are not rounded, so drawPath is used instead.
+        canvas.drawPath(p, paint);
 	}
 
     /**
