@@ -19,6 +19,7 @@ import dk.aau.cs.giraf.oasis.lib.controllers.TagController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.oasis.lib.models.PictogramTag;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
+import dk.aau.cs.giraf.pictogram.tts;
 
 /**
  * Class for storage of pictograms
@@ -259,6 +260,10 @@ public class StoragePictogram {
                 Log.e(TAG, "Could not convert audio file to byte array " + e.getMessage());
             }
             pictogram.setSoundDataBytes(b);
+        }
+        else{
+            tts t = new tts(this.context);
+            t.NoSound(pictogram);
         }
 
         if(this.drawStack != null){
