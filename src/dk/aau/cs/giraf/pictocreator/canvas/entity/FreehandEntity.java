@@ -3,9 +3,9 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 import java.util.ArrayList;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.RectF;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
@@ -56,6 +56,8 @@ public class FreehandEntity extends PrimitiveEntity {
 
         paint = new SerializePaint(paint); // Copy.
         paint.setStyle(Style.STROKE);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
 
         Log.i("FreehandEntity.drawWithPaint",
                 String.format("Drawing with basePoint %s and first point %s, color %s", basePoint.toString(), drawPoints.get(0).toString(), paint.getColor()));
