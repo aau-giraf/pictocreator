@@ -22,6 +22,8 @@ import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.oasis.lib.models.PictogramTag;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
+import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictogram.tts;
 
 /**
@@ -42,7 +44,6 @@ public class StoragePictogram {
     private int pictogramID;
     private Context context;
     private Helper databaseHelper;
-    private byte[] drawStack;
 
     /**
      * Constructor for the class
@@ -240,10 +241,6 @@ public class StoragePictogram {
         return pictogram;
     }
 
-    public void setEditableImage(byte[] drawstack){
-       this.drawStack = drawstack;
-    }
-
     /**
      * Method for generation of pictogram
      * @return The generated pictogram
@@ -283,8 +280,13 @@ public class StoragePictogram {
             }
         }
 
-        if(this.drawStack != null){
-            pictogram.setEditableImage(drawStack);
+        if(DrawStackSingleton.getInstance().getSavedData() != null){
+            try{
+            pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
+            }
+            catch (IOException e){
+                Log.e(TAG, e.getMessage());
+            }
         }
         pictogram = insertPictogram(pictogram);
 
