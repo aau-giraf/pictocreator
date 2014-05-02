@@ -47,13 +47,13 @@ public class OvalEntity extends PrimitiveEntity {
      */
     @Override
     public void setAngle(float angle) {
-        if(angle>=90 && angle <= 270){
+        if(angle> 44 && angle < 314){
             setX(getCenter().x - getHeight()/2);
             setY(getCenter().y - getWidth()/2);
             float temp = getHeight();
             setHeight(getWidth());
             setWidth(temp);
-            this.angle = Math.abs(90-angle%180);
+            this.angle = ((angle%180) + 270)%360;
         }
         else
             this.angle = (angle + 360) % 360;
