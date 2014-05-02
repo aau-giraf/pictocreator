@@ -2,7 +2,9 @@ package dk.aau.cs.giraf.pictocreator;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.io.*;
@@ -19,6 +21,7 @@ import dk.aau.cs.giraf.oasis.lib.controllers.TagController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.oasis.lib.models.PictogramTag;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
+import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictogram.tts;
 
 /**
@@ -264,6 +267,19 @@ public class StoragePictogram {
         else{
             tts t = new tts(this.context);
             t.NoSound(pictogram);
+            try{
+                if(AudioHandler.getFinalPath() == null){
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+                    String date = dateFormat.format(new Date());
+                    AudioHandler.setFinalPath(context.getCacheDir().getPath() + File.separator + date);
+                }
+                FileOutputStream fileOutputStream = new FileOutputStream(AudioHandler.getFinalPath());
+                fileOutputStream.write(pictogram.getSoundData());
+                fileOutputStream.close();
+            }
+            catch (IOException e){
+                Log.e(TAG, e.getMessage());
+            }
         }
 
         if(this.drawStack != null){
