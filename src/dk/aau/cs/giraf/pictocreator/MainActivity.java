@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
@@ -113,8 +114,8 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
         topLayout = (RelativeLayout) findViewById(R.id.topLayer);
 
-        decor.setBackgroundResource(R.drawable.fragment_background);
-        topLayout.setBackgroundResource(R.drawable.head_background);
+        decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        topLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
 
 
         assignUIObjects();

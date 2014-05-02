@@ -14,8 +14,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class HelpDialogFragment extends DialogFragment{
@@ -69,6 +71,8 @@ public class HelpDialogFragment extends DialogFragment{
         view = inflater.inflate(R.layout.help_dialog, container);
         
         helpBody = (FrameLayout) view.findViewById(R.id.help_body);
+        helpBody.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+
         changeBody(iterator);
         
         closeButton = (GButton) view.findViewById(R.id.close_button);
@@ -111,7 +115,10 @@ public class HelpDialogFragment extends DialogFragment{
         });
 
         helpDialogLayout = (LinearLayout)view.findViewById(R.id.helpDialogLayout);
-        helpDialogLayout.setBackgroundResource(R.drawable.fragment_background);
+        helpDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+
+        RelativeLayout topBar = (RelativeLayout)view.findViewById(R.id.topHelpBar);
+        topBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
 
         return view;
     }
