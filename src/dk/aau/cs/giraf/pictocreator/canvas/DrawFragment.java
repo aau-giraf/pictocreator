@@ -325,6 +325,7 @@ public class DrawFragment extends Fragment {
             cameraDialog = new CamFragment();
             //cameraDialog
             cameraDialog.show(getActivity().getFragmentManager(), TAG);
+            DeselectEntity();
         }
     };
 
