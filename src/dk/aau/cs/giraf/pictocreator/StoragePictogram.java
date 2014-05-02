@@ -266,19 +266,20 @@ public class StoragePictogram {
         }
         else{
             tts t = new tts(this.context);
-            t.NoSound(pictogram);
-            try{
-                if(AudioHandler.getFinalPath() == null){
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
-                    String date = dateFormat.format(new Date());
-                    AudioHandler.setFinalPath(context.getCacheDir().getPath() + File.separator + date);
+            if(t.NoSound(pictogram)){
+                try{
+                    if(AudioHandler.getFinalPath() == null){
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+                        String date = dateFormat.format(new Date());
+                        AudioHandler.setFinalPath(context.getCacheDir().getPath() + File.separator + date);
+                    }
+                    FileOutputStream fileOutputStream = new FileOutputStream(AudioHandler.getFinalPath());
+                    fileOutputStream.write(pictogram.getSoundData());
+                    fileOutputStream.close();
                 }
-                FileOutputStream fileOutputStream = new FileOutputStream(AudioHandler.getFinalPath());
-                fileOutputStream.write(pictogram.getSoundData());
-                fileOutputStream.close();
-            }
-            catch (IOException e){
-                Log.e(TAG, e.getMessage());
+                catch (IOException e){
+                    Log.e(TAG, e.getMessage());
+                }
             }
         }
 
