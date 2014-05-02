@@ -35,6 +35,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GRadioGroup;
@@ -202,7 +203,7 @@ public class SaveDialogFragment extends DialogFragment{
         previewView.addView(imgView);
 
         saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        saveDialogLayout.setBackgroundResource(R.drawable.fragment_background);
+        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
 
         acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
 
@@ -267,6 +268,13 @@ public class SaveDialogFragment extends DialogFragment{
         });
         tagInputFind.setOnKeyListener(tagKeyListener);
         tagsListView.setOnItemClickListener(tagViewListener);
+
+        GRadioButton privateRadioButton = (GRadioButton)view.findViewById(R.id.radio_private);
+        privateRadioButton.setTextColor(0xFF000000);
+
+        GRadioButton publicRadioButton = (GRadioButton)view.findViewById(R.id.radio_public);
+        publicRadioButton.setTextColor(0xFF000000);
+
         return view;
     }
 

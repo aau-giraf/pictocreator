@@ -20,6 +20,7 @@ import android.widget.ToggleButton;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GCancelButton;
+import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.R;
@@ -76,7 +77,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     int soundIDPlaying;
 
-    private Boolean recordingExists;
+    private boolean recordingExists;
 
     private boolean hasRecorded;
 
@@ -176,7 +177,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recordingExists = (new File(handler.getFinalPath()).exists());
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
-        recordLayout.setBackgroundResource(R.drawable.fragment_background);
+        recordLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
 
         /*
         * On click listener for stop playing re+cording

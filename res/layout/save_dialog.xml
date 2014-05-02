@@ -13,7 +13,7 @@
       android:paddingBottom="40dp"
       android:paddingRight="20dp" >
 
-    <TextView
+    <dk.aau.cs.giraf.gui.GTextView
         android:id="@+id/save_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
         android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:drawableTop="@drawable/cancel_button"
+        android:drawableTop="@drawable/gcancel_icon"
         android:text="Fortryd"/>
 
 

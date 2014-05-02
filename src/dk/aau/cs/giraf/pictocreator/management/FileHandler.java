@@ -99,14 +99,6 @@ public class FileHandler{
 
         storagePictogram.setAudioFile(tmpSndFile);
 
-        try {
-            storagePictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
-        }
-        catch (IOException e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-
     }
 
     /**
