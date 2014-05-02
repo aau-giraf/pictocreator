@@ -21,6 +21,7 @@ import java.io.File;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GCancelButton;
+import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.gui.GVerifyButton;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
@@ -89,6 +90,8 @@ public class CamFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.camera_fragment, container, false);
+        view.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+
         frameLayout = (FrameLayout)view.findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
 

@@ -5,13 +5,14 @@
     android:orientation="vertical"
     android:id="@+id/helpDialogLayout">
     
-    <RelativeLayout 
+    <RelativeLayout
+        android:id="@+id/topHelpBar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.09"
         android:padding="5dp" >
         
-        <TextView
+        <dk.aau.cs.giraf.gui.GTextView
 			android:id="@+id/dialog_title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
