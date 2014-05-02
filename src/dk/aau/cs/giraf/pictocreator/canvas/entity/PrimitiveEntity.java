@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
 import java.io.Serializable;
@@ -11,16 +12,17 @@ import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
 public abstract class PrimitiveEntity extends Entity implements Serializable {
 
-    private SerializePaint fillPaint = new SerializePaint();
-    private SerializePaint strokePaint = new SerializePaint();
+    private int fillPaint;
+    private int strokePaint;
+    private float strokeWidth;
 
-	public void setFillColor(int color) { fillPaint.setColor(color); }
-	public void setStrokeColor(int color) { strokePaint.setColor(color); }
-	public void setStrokeWidth(float width) { strokePaint.setStrokeWidth(width); }
+	public void setFillColor(int color) { fillPaint = color; }
+	public void setStrokeColor(int color) { strokePaint = color; }
+	public void setStrokeWidth(float width) { strokeWidth = width; }
 
-	public int getFillColor() { return fillPaint.getColor(); }
-	public int getStrokeColor() { return strokePaint.getColor(); }
-	public float getStrokeWidth() { return strokePaint.getStrokeWidth(); }
+	public int getFillColor() { return fillPaint; }
+	public int getStrokeColor() { return strokePaint; }
+	public float getStrokeWidth() { return strokeWidth; }
 	
 	/**
 	 * Creates a new PrimitiveEntity at a specific location and paint styles.
@@ -29,23 +31,17 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
 	 * @param fillColor Pain used for the filling part of the primitive. It will be set to FILL style automatically.
 	 * @param strokeColor
 	 */
-	public PrimitiveEntity(float x, float y, float w, float h, int fillColor, int strokeColor) {
-		strokePaint.setStyle(Style.STROKE);
-		strokePaint.setColor(strokeColor);
-		fillPaint.setStyle(Style.FILL);
-		fillPaint.setColor(fillColor);
-		
-		setX(x);
+	public PrimitiveEntity(float x, float y, float w, float h, int fillColor, int strokeColor){
+		this(fillColor, strokeColor);
+        setX(x);
 		setY(y);
 		setWidth(w);
         setHeight(h);
 	}
 	
 	public PrimitiveEntity(int fillColor, int strokeColor) {
-        strokePaint.setStyle(Style.STROKE);
-        strokePaint.setColor(strokeColor);
-        fillPaint.setStyle(Style.FILL);
-        fillPaint.setColor(fillColor);
+        this.fillPaint = fillColor;
+        this.strokePaint = strokeColor;
 	}
 	
 	/**
@@ -61,8 +57,17 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
 	
 	@Override
 	public void doDraw(Canvas canvas) {
-        drawWithPaint(canvas, fillPaint); // Fill
-        drawWithPaint(canvas, strokePaint); // Stroke
+        SerializePaint tempFill = new SerializePaint();
+        tempFill.setStyle(Style.FILL);
+        tempFill.setColor(fillPaint);
+
+        SerializePaint tempStroke = new SerializePaint();
+        tempStroke.setStyle(Style.STROKE);
+        tempStroke.setStrokeWidth(strokeWidth);
+        tempStroke.setColor(strokePaint);
+
+        drawWithPaint(canvas, tempFill); // Fill
+        drawWithPaint(canvas, tempStroke); // Stroke
 	}
 
 }
