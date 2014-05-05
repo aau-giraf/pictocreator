@@ -268,6 +268,13 @@ public class SaveDialogFragment extends DialogFragment{
         });
         tagInputFind.setOnKeyListener(tagKeyListener);
         tagsListView.setOnItemClickListener(tagViewListener);
+
+        GRadioButton privateRadioButton = (GRadioButton)view.findViewById(R.id.radio_private);
+        privateRadioButton.setTextColor(0xFF000000);
+
+        GRadioButton publicRadioButton = (GRadioButton)view.findViewById(R.id.radio_public);
+        publicRadioButton.setTextColor(0xFF000000);
+
         return view;
     }
 

@@ -77,7 +77,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     int soundIDPlaying;
 
-    private Boolean recordingExists;
+    private boolean recordingExists;
 
     private boolean hasRecorded;
 
