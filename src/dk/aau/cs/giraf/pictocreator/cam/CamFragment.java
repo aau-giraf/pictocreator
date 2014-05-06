@@ -39,6 +39,7 @@ public class CamFragment extends DialogFragment {
 
     private View view;
     private FrameLayout frameLayout;
+    private RelativeLayout kameraBar;
 
     private ViewSwitcher viewSwitcher;
 
@@ -91,6 +92,9 @@ public class CamFragment extends DialogFragment {
 
         view = inflater.inflate(R.layout.camera_fragment, container, false);
         view.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+
+        kameraBar = (RelativeLayout)view.findViewById(R.id.kameraBar);
+        kameraBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
 
         frameLayout = (FrameLayout)view.findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
