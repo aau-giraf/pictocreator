@@ -99,13 +99,13 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * Sets a new height for the Entity.
 	 * @param height New height.
 	 */
-	public void setHeight(float height) { this.height = height; }
+	public void setHeight(float height) { this.height = Math.abs(height); }
 	
 	/**
 	 * Sets a new width for the Entity.
 	 * @param width New width.
 	 */
-	public void setWidth(float width) { this.width = width; }
+	public void setWidth(float width) { this.width = Math.abs(width); }
 	
 	/**
 	 * Retrieve the angle of rotation for this Entity.
