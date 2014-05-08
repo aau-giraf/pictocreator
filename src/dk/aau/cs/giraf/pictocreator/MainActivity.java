@@ -363,7 +363,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         int sizeHeightPercentage = (int)(((double)(this.getBitmap().getHeight())/(double)(bitmap).getHeight())*100.0);
         int sizeWidthPercentage = (int)(((double)(this.getBitmap().getWidth())/(double)(bitmap).getWidth())*100.0);
 
-        BitmapEntity tempEntity = new BitmapEntity(bitmap, Math.min(sizeHeightPercentage, sizeWidthPercentage));
+        BitmapEntity tempEntity = new BitmapEntity(bitmap, Math.max(sizeHeightPercentage, sizeWidthPercentage));
         tempEntity.setCenter(this.drawFragment.drawView.getMeasuredWidth()/2, this.drawFragment.drawView.getMeasuredHeight()/2);
         DrawStackSingleton.getInstance().mySavedData.addEntity(tempEntity);
         this.drawFragment.drawView.invalidate();
