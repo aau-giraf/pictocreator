@@ -89,17 +89,17 @@
 
           <dk.aau.cs.giraf.gui.GRadioButton
               android:id="@+id/radio_public"
-              android:text="Offentlig:"
+              android:text="Institution:"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content"
+              android:checked="true"
               />
 
           <dk.aau.cs.giraf.gui.GRadioButton
               android:id="@+id/radio_private"
-              android:text="Privat:"
+              android:text="Borger(e):"
               android:layout_height="wrap_content"
-              android:layout_width="wrap_content"
-              android:checked="true" />
+              android:layout_width="wrap_content"/>
 
 
       </dk.aau.cs.giraf.gui.GRadioGroup>
@@ -127,7 +127,7 @@
     <FrameLayout
         android:id="@+id/save_list_frame"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/save_input_find" >
 
@@ -136,6 +136,31 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:scrollbars="vertical" />
+
     </FrameLayout>
+
+      <dk.aau.cs.giraf.gui.GButton
+        android:id="@+id/connect_autism"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tilføj Borger"
+        android:layout_below="@id/save_list_frame"
+        android:visibility="invisible" />
+
+      <FrameLayout
+          android:id="@+id/connect_list_frame"
+          android:layout_width="wrap_content"
+          android:layout_height="150dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/connect_autism"
+          >
+
+      <ListView
+          android:id="@+id/connected_list"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:scrollbars="vertical"
+          android:visibility="invisible"/>
+      </FrameLayout>
   </RelativeLayout>
 </LinearLayout>
