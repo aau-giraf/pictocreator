@@ -91,7 +91,7 @@ public class CamFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.camera_fragment, container, false);
-        view.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        view.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         kameraBar = (RelativeLayout)view.findViewById(R.id.kameraBar);
         kameraBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));

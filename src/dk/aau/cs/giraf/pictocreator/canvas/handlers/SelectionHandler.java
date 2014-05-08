@@ -298,18 +298,32 @@ public class SelectionHandler extends ActionHandler {
 				}
 				case RESIZE: {
 					// WARNING! Breaks if the resize icon is NOT in the lower-right corner!
+
                     float x = selectedEntity.getHitboxRight() - (selectedEntity.getX() +selectedEntity.getWidth());
                     float y = selectedEntity.getHitboxBottom() - (selectedEntity.getY() +selectedEntity.getHeight());
-                    
-					selectedEntity.setWidth(px-x-selectedEntity.getX());
-					selectedEntity.setHeight(py-y-selectedEntity.getY());
+
+                    float widthNewValue = px - x - selectedEntity.getX();
+                    float heightNewValue = py - y - selectedEntity.getY();
+
+                    if(selectedEntity instanceof BitmapEntity)
+                    {
+                        float ratio = selectedEntity.getHeight() / selectedEntity.getWidth();
+
+                        selectedEntity.setWidth(widthNewValue);
+                        selectedEntity.setHeight(widthNewValue * ratio);
+                    }
+                    else
+                    {
+					    selectedEntity.setWidth(widthNewValue);
+					    selectedEntity.setHeight(heightNewValue);
+                    }
 					handled = true;
 					break;
 				}
 				case ROTATE: {
 					float currentAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
 
-					selectedEntity.rotateBy(currentAngle-previousAngle);
+					selectedEntity.rotateBy(currentAngle - previousAngle);
 					
 					previousAngle = currentAngle;
 					handled = true;

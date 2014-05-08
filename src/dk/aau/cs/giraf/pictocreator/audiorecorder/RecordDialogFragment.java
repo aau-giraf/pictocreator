@@ -177,7 +177,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recordingExists = (new File(handler.getFinalPath()).exists());
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
-        recordLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        recordLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         /*
         * On click listener for stop playing re+cording
