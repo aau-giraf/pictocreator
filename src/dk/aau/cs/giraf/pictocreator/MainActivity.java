@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
         topLayout = (RelativeLayout) findViewById(R.id.topLayer);
 
-        decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
         topLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
 
 

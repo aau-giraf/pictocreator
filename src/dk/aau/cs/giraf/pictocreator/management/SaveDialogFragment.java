@@ -203,7 +203,7 @@ public class SaveDialogFragment extends DialogFragment{
         previewView.addView(imgView);
 
         saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
 
