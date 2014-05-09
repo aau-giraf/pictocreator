@@ -18,13 +18,11 @@ import android.util.Log;
  */
 public class AudioHandler {
 
+    //Fields
     private static final String TAG = "AudioHandler";
-
     private String tempOutputFilePath = null;
-
     private static String savedFileName;
-
-    Context context;
+    private Context context;
 
     /**
      * Constructor for the class.
@@ -44,13 +42,17 @@ public class AudioHandler {
     }
 
     /**
-     * Getter for savedFileName, which is the final sound path
+     * Getter for savedFileName, which is the final sound path, static as it should be accessed without an instance of AudioHandler
      * @return String savedFileName
      */
     public static String getFinalPath(){
         return savedFileName;
     }
 
+    /**
+     * Setter for Final Path, static as it should be accessed without an instance of AudioHandler
+     * @param path this it the path...
+     */
     public static void setFinalPath(String path){
         savedFileName = path;
     }
@@ -59,6 +61,9 @@ public class AudioHandler {
      * Set the savedFileName to null
      */
     public static void resetSound(){
+        File tempFile = new File(savedFileName);
+        if(tempFile.exists())
+            tempFile.delete();
         savedFileName = null;
     }
 
@@ -107,18 +112,17 @@ public class AudioHandler {
      * Function called by the {@link RecordThread} in onAccept().
      */
     public void saveFinalFile(){
-        String finalFilePath = savedFileName;
 
         FileInputStream tmpFileStream = null;
         FileOutputStream finalFileStream = null;
 
         try {
-            if(tempOutputFilePath != null && finalFilePath != null){
+            if(tempOutputFilePath != null && savedFileName != null){
                 File tmpFile = new File(tempOutputFilePath);
-                File finalFile = new File(finalFilePath);
+                File finalFile = new File(savedFileName);
                 if(finalFile.exists()){
                     finalFile.delete();
-                    finalFile = new File(finalFilePath);
+                    finalFile = new File(savedFileName);
                 }
 
                 tmpFileStream = new FileInputStream(tmpFile);
@@ -138,7 +142,7 @@ public class AudioHandler {
         }
         finally {
             try {
-                if(tmpFileStream != null && finalFilePath != null){
+                if(tmpFileStream != null && savedFileName != null){
                     tmpFileStream.close();
                     finalFileStream.close();
 
@@ -158,9 +162,7 @@ public class AudioHandler {
      * @return File representing the output directory
      */
     private File getDir() {
-        File storageDir = context.getCacheDir();
-
-        return new File(storageDir, "snd");
+        return new File(context.getCacheDir(), "snd");
     }
 
 }
