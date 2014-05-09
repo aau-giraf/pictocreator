@@ -7,7 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * Created by Praetorian on 24-04-14.
+ * This class is used to convert serializes objects to byte array and vice versa.
+ * @author SW608f14
  */
 public final class ByteConverter {
     public static byte[] serialize(Object obj) throws IOException {

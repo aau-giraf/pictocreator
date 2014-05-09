@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,8 +20,9 @@ import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class HelpDialogFragment extends DialogFragment{
-	private final static String TAG = "HelpDialog";
-	private final static int NUM_PAGES = 4;
+	private final String TAG = "HelpDialog";
+
+	private final int NUM_PAGES = 4;
 	
     private View view;
     private FrameLayout helpBody;
@@ -36,7 +36,7 @@ public class HelpDialogFragment extends DialogFragment{
     private Activity parentActivity;
 
     /**
-     * Constructor for the Dialog
+     * Constructor for the Dialog, empty on purpose
      */
     public HelpDialogFragment() {
     	//Empty
@@ -48,23 +48,21 @@ public class HelpDialogFragment extends DialogFragment{
     @Override
     public void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
+        this.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         
         parentActivity = getActivity();
-        setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         helpResourceList = new ArrayList<Integer>();
         helpResourceList.add(R.drawable.help_tools_1);
         helpResourceList.add(R.drawable.help_tools_2);
         helpResourceList.add(R.drawable.help_tools_3);
         helpResourceList.add(R.drawable.help_tools_4);
         imgView = new ImageView(parentActivity);
-        
     }
     /**
      * Method called when the view for the dialog is created
      */
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
         final Dialog helpDialog = getDialog();
         helpDialog.setCanceledOnTouchOutside(false);
 
@@ -82,6 +80,7 @@ public class HelpDialogFragment extends DialogFragment{
                     helpDialog.dismiss();
                 }
             });
+
         prevButton = (GButton) view.findViewById(R.id.previous_button);
         prevButton.setOnClickListener(new OnClickListener() {
         	@Override
@@ -97,6 +96,7 @@ public class HelpDialogFragment extends DialogFragment{
         		}
         	}
         });
+
         nextButton = (GButton) view.findViewById(R.id.next_button);
         nextButton.setOnClickListener(new OnClickListener() {
         	@Override
@@ -109,7 +109,6 @@ public class HelpDialogFragment extends DialogFragment{
         		else if(iterator == (NUM_PAGES -1)) {
         			iterator = 0;
         			changeBody(iterator);
-        			
         		}
         	}
         });
@@ -122,7 +121,11 @@ public class HelpDialogFragment extends DialogFragment{
 
         return view;
     }
-	
+
+    /**
+     * Changes the help pictures  depending on the iterated number.
+     * @param iterator
+     */
 	private void changeBody(int iterator) {
         helpBody.removeAllViews();
         currentDrawable = helpResourceList.get(iterator);

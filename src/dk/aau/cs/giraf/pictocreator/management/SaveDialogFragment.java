@@ -1,19 +1,13 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,7 +20,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -41,7 +34,6 @@ import dk.aau.cs.giraf.gui.GProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GRadioGroup;
 import dk.aau.cs.giraf.oasis.lib.Helper;
-import dk.aau.cs.giraf.oasis.lib.controllers.ProfileController;
 import dk.aau.cs.giraf.oasis.lib.models.Profile;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
@@ -49,20 +41,19 @@ import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
 /**
  * Dialog used for saving a Pictogram
- *
  * @author Croc
- *
  */
 public class SaveDialogFragment extends DialogFragment{
-    private final static String TAG = "SaveDialog";
+    private final String TAG = "SaveDialog";
 
     private View view;
+    private ListView tagsListView, connectedCitizenList;
     private FrameLayout previewView;
+    private LinearLayout saveDialogLayout;
     private Bitmap preview;
-    private ArrayList<String> tags, autistsnames;
-    private ArrayList<Profile> autists;
+    private ArrayList<String> tags, citizenNames;
+    private ArrayList<Profile> citizenProfiles;
     private Activity parentActivity;
-    private GButton acceptButton;
 
     private ImageView imgView;
 
@@ -70,32 +61,32 @@ public class SaveDialogFragment extends DialogFragment{
     private EditText inlineTextLabel;
     private EditText tagInputFind;
 
-
-    private final String defaultTextLabel = "defaultTextLabel";
     private String textLabel;
     private String inlineText;
 
-    private GButton cancelButton, addConnectAutist;
-    private LinearLayout saveDialogLayout;
+    private GButton acceptButton;
+    private GButton cancelButton, addConnectAutistButton;
+
+    private GProfileSelector autistSelector;
 
     private GRadioGroup publicGroup;
     private GRadioButton publicityPublic;
     private GRadioButton publicityPrivate;
+
     private StoragePictogram storagePictogram;
-    private GProfileSelector autistSelector;
 
     private FileHandler fileHandler;
-    private boolean service = false;
+    private boolean isService = false;
+    private Dialog tmpDialog;
 
-    private  ListView tagsListView, connectedAutistList;
     private ArrayAdapter<String> tagArrayAdapter, connectedArrayAdapter;
+
     /**
-     * Constructor for the Dialog
+     * Constructor for the Dialog, left empty on purpose
      */
     public SaveDialogFragment(){
         // empty constructor required for DialogFragment
     }
-
 
     /**
      * Method for setting the preview in the dialog
@@ -107,18 +98,18 @@ public class SaveDialogFragment extends DialogFragment{
 
     /**
      * Setter for the StoragePictogram variable
-     * @param storageP The StoragePictogram to set
+     * @param storagePictogram The StoragePictogram to set
      */
-    public void setPictogram(StoragePictogram storageP){
-        this.storagePictogram = storageP;
+    public void setPictogram(StoragePictogram storagePictogram){
+        this.storagePictogram = storagePictogram;
     }
 
     /**
-     * Setter for the service variable
-     * @param serv The boolean which describes if CROC is a service.
+     * Setter for the isService variable
+     * @param isService The boolean which describes if CROC is a service.
      */
-    public void setService(boolean serv){
-        this.service = serv;
+    public void setService(boolean isService){
+        this.isService = isService;
     }
 
     /**
@@ -127,22 +118,17 @@ public class SaveDialogFragment extends DialogFragment{
     @Override
     public void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
-
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-
-        // public Pictogram(Context context, final String image,
-        //                  final String text, final String audio,
-        //                  final long id) {
-
     }
 
     /**
      * Method called when the view for the dialog is created
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        final Dialog tmpDialog = getDialog();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        tmpDialog = getDialog();
+
+        view = inflater.inflate(R.layout.save_dialog, container);
 
         tmpDialog.setCanceledOnTouchOutside(false);
 
@@ -152,17 +138,39 @@ public class SaveDialogFragment extends DialogFragment{
 
         parentActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        this.tags = new ArrayList<String>();
+        tags = new ArrayList<String>();
         tagArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, tags);
 
+        tagInputFind = (EditText) view.findViewById(R.id.save_input_find);
+        tagInputFind.setNextFocusDownId(R.id.save_input_find);
 
-        this.autists = new ArrayList<Profile>();
-        autistsnames = new ArrayList<String>();
-        connectedArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, autistsnames);
+        tagsListView = (ListView) view.findViewById(R.id.save_tags_list);
+        tagsListView.setAdapter(tagArrayAdapter);
 
+        citizenProfiles = new ArrayList<Profile>();
+        citizenNames = new ArrayList<String>();
+        connectedArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, citizenNames);
 
-        view = inflater.inflate(R.layout.save_dialog, container);
+        connectedCitizenList = (ListView) view.findViewById(R.id.connected_list);
+        connectedCitizenList.setAdapter(connectedArrayAdapter);
+        connectedCitizenList.setOnItemClickListener(onRemoveAutist);
+
+        addConnectAutistButton = (GButton) view.findViewById(R.id.connect_autism);
+        addConnectAutistButton.setOnClickListener(addAutism);
+
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);
+        previewView.addView(imgView);
+
+        publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
+
+        publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
+        publicityPublic.setOnClickListener(disableConnect);
+
+        publicityPrivate = (GRadioButton) view.findViewById(R.id.radio_private);
+        publicityPrivate.setOnClickListener(enableConnect);
+
+        inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
+        inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
 
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.saveDialogLayout);
         layout.setOnTouchListener(new View.OnTouchListener()
@@ -176,41 +184,38 @@ public class SaveDialogFragment extends DialogFragment{
             }
         });
 
-        inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
-        inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
-
-        tagInputFind = (EditText) view.findViewById(R.id.save_input_find);
-        tagInputFind.setNextFocusDownId(R.id.save_input_find);
-
-        tagsListView = (ListView) view.findViewById(R.id.save_tags_list);
-        tagsListView.setAdapter(tagArrayAdapter);
-
-        connectedAutistList = (ListView) view.findViewById(R.id.connected_list);
-        connectedAutistList.setAdapter(connectedArrayAdapter);
-        connectedAutistList.setOnItemClickListener(onRemoveAutist);
+        AssignBitmapPreview();
 
 
-        addConnectAutist = (GButton) view.findViewById(R.id.connect_autism);
-        addConnectAutist.setOnClickListener(addAutism);
+        saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
+        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
+        acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
+        acceptButton.setOnClickListener(acceptListener);
 
-        //publicStatus = (CheckBox) view.findViewById(R.id.public_status);
-        publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
-        publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
-        publicityPublic.setOnClickListener(disableConnect);
-        publicityPrivate = (GRadioButton) view.findViewById(R.id.radio_private);
-        publicityPrivate.setOnClickListener(enableConnect);
+        cancelButton = (GButton) view.findViewById(R.id.save_button_negative);
+        cancelButton.setOnClickListener(new OnClickListener(){
 
+                @Override
+                public void onClick(View view){
+                    tmpDialog.cancel();
+                }
+            });
+
+        tagInputFind.setOnKeyListener(tagKeyListener);
+        tagsListView.setOnItemClickListener(tagViewListener);
+
+        GRadioButton privateRadioButton = (GRadioButton)view.findViewById(R.id.radio_private);
+        privateRadioButton.setTextColor(0xFF000000);
+
+        GRadioButton publicRadioButton = (GRadioButton)view.findViewById(R.id.radio_public);
+        publicRadioButton.setTextColor(0xFF000000);
+
+        return view;
+    }
+
+    private void AssignBitmapPreview() {
         Bitmap bitmap = null;
-        File imgFile = new File(parentActivity.getCacheDir(), "cvs");
-
-        imgFile.mkdirs();
-
-        Log.d(TAG, "File path: " + imgFile.getPath());
-
-        File[] images = imgFile.listFiles();
-
-        boolean imageDecoded = false;
 
         if(preview != null)
         {
@@ -222,83 +227,6 @@ public class SaveDialogFragment extends DialogFragment{
         if(bitmap != null){
             imgView.setImageBitmap(bitmap);
         }
-
-        previewView.addView(imgView);
-
-        saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
-
-        acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
-
-        cancelButton = (GButton) view.findViewById(R.id.save_button_negative);
-
-        cancelButton.setOnClickListener(new OnClickListener(){
-
-                @Override
-                public void onClick(View view){
-                    tmpDialog.cancel();
-                }
-            });
-
-        acceptButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                textLabel = inputTextLabel.getText().toString();
-                inlineText = inlineTextLabel.getText().toString();
-                Log.d(TAG, "TextLabel: " + textLabel);
-
-                if (textLabel.matches("") || textLabel == null) {
-                    Toast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
-                    return;
-                        /*SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd-HHmmss");
-                        String date = dateFormat.format(new Date());
-                        String label = "Pictogram_" + date;
-                        Log.d(TAG, "TextLavel was empty/null, replaced with " + label);
-                        textLabel = label;*/
-                }
-
-                fileHandler.saveFinalFiles(textLabel, inlineText, preview);
-
-                //Value 1 in database means publicly available
-                //Value 0 in database means not publicly available
-                if (publicGroup.getCheckedRadioButtonId() == publicityPublic.getId())
-                    storagePictogram.setpublicPictogram(1);
-                else if (publicGroup.getCheckedRadioButtonId() == publicityPrivate.getId())
-                    storagePictogram.setpublicPictogram(0);
-                //storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
-
-                if(!(tags != null) && !(tags.isEmpty())){
-                    for(String t : tags){
-                        storagePictogram.addTag(t);
-                    }
-                }
-
-                if (storagePictogram.addPictogram()) {
-                    Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
-                }
-
-                if (service) {
-                    Intent returnIntent = new Intent(MainActivity.getActionResult());
-                    returnIntent.putExtra("pictogramId", storagePictogram.getId());
-                    parentActivity.setResult(Activity.RESULT_OK, returnIntent);
-
-                    parentActivity.finish();
-                }
-
-                tmpDialog.dismiss();
-            }
-        });
-        tagInputFind.setOnKeyListener(tagKeyListener);
-        tagsListView.setOnItemClickListener(tagViewListener);
-
-        GRadioButton privateRadioButton = (GRadioButton)view.findViewById(R.id.radio_private);
-        privateRadioButton.setTextColor(0xFF000000);
-
-        GRadioButton publicRadioButton = (GRadioButton)view.findViewById(R.id.radio_public);
-        publicRadioButton.setTextColor(0xFF000000);
-
-        return view;
     }
 
     private static int tempPos;
@@ -333,15 +261,60 @@ public class SaveDialogFragment extends DialogFragment{
         }
     };
 
+    private final OnClickListener acceptListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            textLabel = inputTextLabel.getText().toString();
+            inlineText = inlineTextLabel.getText().toString();
+            Log.d(TAG, "TextLabel: " + textLabel);
+
+            if (textLabel.matches("") || textLabel == null) {
+                Toast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            fileHandler.saveFinalFiles(textLabel, inlineText, preview);
+
+            //Value 1 in database means publicly available
+            //Value 0 in database means not publicly available
+            if (publicGroup.getCheckedRadioButtonId() == publicityPublic.getId())
+                storagePictogram.setpublicPictogram(1);
+            else if (publicGroup.getCheckedRadioButtonId() == publicityPrivate.getId())
+                storagePictogram.setpublicPictogram(0);
+            //storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
+
+            if(!(tags != null) && !(tags.isEmpty())){
+                for(String t : tags){
+                    storagePictogram.addTag(t);
+                }
+            }
+
+            if (storagePictogram.addPictogram()) {
+                Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
+            }
+
+            if (isService) {
+                Intent returnIntent = new Intent(MainActivity.getActionResult());
+                returnIntent.putExtra("pictogramId", storagePictogram.getId());
+                parentActivity.setResult(Activity.RESULT_OK, returnIntent);
+
+                parentActivity.finish();
+            }
+
+            tmpDialog.dismiss();
+        }
+    };
+
     private final AdapterView.OnItemClickListener onRemoveAutist = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
-            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Fjerner " + autists.get(position).getName() + " fra listen",
+            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Fjerner " + citizenProfiles.get(position).getName() + " fra listen",
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            autists.remove(tempPos);
+                            citizenProfiles.remove(tempPos);
                             updateAutistList();
                         }
                     });
@@ -353,16 +326,16 @@ public class SaveDialogFragment extends DialogFragment{
     private final OnClickListener enableConnect = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            addConnectAutist.setVisibility(View.VISIBLE);
-            connectedAutistList.setVisibility(View.VISIBLE);
+            addConnectAutistButton.setVisibility(View.VISIBLE);
+            connectedCitizenList.setVisibility(View.VISIBLE);
         }
     };
 
     private final OnClickListener disableConnect = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            addConnectAutist.setVisibility(View.INVISIBLE);
-            connectedAutistList.setVisibility(View.INVISIBLE);
+            addConnectAutistButton.setVisibility(View.INVISIBLE);
+            connectedCitizenList.setVisibility(View.INVISIBLE);
         }
     };
 
@@ -381,8 +354,8 @@ public class SaveDialogFragment extends DialogFragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Profile person =(Profile)parent.getItemAtPosition(position);
-                if (!autists.contains(person)){
-                    autists.add(person);
+                if (!citizenProfiles.contains(person)){
+                    citizenProfiles.add(person);
                     updateAutistList();
                 }
 
@@ -396,9 +369,9 @@ public class SaveDialogFragment extends DialogFragment{
     }
 
     private void updateAutistList(){
-        autistsnames.clear();
-        for(int i = 0; i < autists.size(); i++){
-            autistsnames.add(i, autists.get(i).getName());
+        citizenNames.clear();
+        for(int i = 0; i < citizenProfiles.size(); i++){
+            citizenNames.add(i, citizenProfiles.get(i).getName());
         }
         connectedArrayAdapter.notifyDataSetChanged();
     }

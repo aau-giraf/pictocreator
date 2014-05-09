@@ -9,27 +9,17 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
-import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 
 /**
  * Class used for handling of files
- *
  * @author Croc
- *
  */
 public class FileHandler{
-    private static final String TAG = "FileHandler";
-
-    private String imgPath, sndPath;
-
-    private static String finalImgName;
-
-    private static String finalSndName;
+    private final String TAG = "FileHandler";
 
     private StoragePictogram storagePictogram;
 
@@ -46,16 +36,16 @@ public class FileHandler{
     }
 
     /**
-     * Function for saving the image- and audio-files (if they exists)
-     * on the devices external storage
+     * Function for saving the image- and audio-files (if they exist)
+     * on the external storage of the device
      * @param textLabel The textLabel/name for the Pictogram to store
      */
     public void saveFinalFiles(String textLabel, String inlineText, Bitmap bitmap){
         storagePictogram.setTextLabel(textLabel);
         storagePictogram.setinlineTextLabel(inlineText);
 
+        //instantiates the files with their specific paths
         File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
-
         File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + "-" + System.currentTimeMillis() + ".3gp");
 
         image.getParentFile().mkdirs();
@@ -63,7 +53,6 @@ public class FileHandler{
 
         File tmpImgFile = new File(activity.getCacheDir(), "cvs");
         tmpImgFile.delete();
-        tmpImgFile = new File(activity.getCacheDir(), "cvs");
 
         //Convert bitmap to byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -80,25 +69,22 @@ public class FileHandler{
         }
         catch (IOException e)
         {
-            Log.e(TAG,e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
 
         File tmpSndFile = null;
-        if(AudioHandler.getFinalPath() != null)
-          tmpSndFile = new File(AudioHandler.getFinalPath());
-
+        if(AudioHandler.getFinalPath() != null){
+            tmpSndFile = new File(AudioHandler.getFinalPath());
+        }
 
         if(tmpImgFile.exists()){
             copyFile(tmpImgFile, image);
             storagePictogram.setImagePath(image.getPath());
         } else {
             storagePictogram.setImagePath("");
-            Log.d(TAG, "Images path set to null");
         }
 
-
         storagePictogram.setAudioFile(tmpSndFile);
-
     }
 
     /**
@@ -110,8 +96,7 @@ public class FileHandler{
         FileInputStream fromFileStream = null;
         FileOutputStream toFileStream = null;
 
-        Log.d(TAG, "From: " + from.getAbsolutePath() + "\n"
-              + "To: " + to.getAbsolutePath());
+        Log.d(TAG, "Copying files from: " + from.getAbsolutePath() + " to: " + to.getAbsolutePath());
 
         try {
             fromFileStream = new FileInputStream(from);
@@ -119,15 +104,14 @@ public class FileHandler{
 
             byte[] buffer = new byte[1024];
 
-            int length = fromFileStream.read(buffer);
+            int length;
 
-            while(length > 0){
+            while((length = fromFileStream.read(buffer)) > 0){
                 toFileStream.write(buffer, 0, length);
-                length = fromFileStream.read(buffer);
             }
         }
         catch(IOException e){
-            Log.d(TAG, "File could not be copied" + e.getMessage());
+            Log.e(TAG, "File could not be copied " + e.getMessage());
         }
         finally {
             try {
@@ -137,7 +121,7 @@ public class FileHandler{
                 }
             }
             catch(IOException e){
-                Log.d(TAG, "File streams could not be closed");
+                Log.e(TAG, "File streams could not be closed " + e.getMessage());
             }
         }
     }
