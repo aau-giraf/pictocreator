@@ -336,8 +336,17 @@ public class SaveDialogFragment extends DialogFragment{
     private final AdapterView.OnItemClickListener onRemoveAutist = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            autists.remove(position);
-            updateAutistList();
+            tempPos = position;
+            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Fjerner " + autists.get(position).getName() + " fra listen",
+                    new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            autists.remove(tempPos);
+                            updateAutistList();
+                        }
+                    });
+            removeDialog.show();
+
         }
     };
 
