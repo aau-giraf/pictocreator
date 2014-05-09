@@ -16,8 +16,9 @@ import java.util.List;
  * preview of the Camera to the surface. We need to center the SurfaceView
  * because not all devices have cameras that support preview sizes at the same
  * aspect ratio as the device's display.
+ * @author Vogella
  */
-class Preview extends ViewGroup implements SurfaceHolder.Callback {
+public class Preview extends ViewGroup implements SurfaceHolder.Callback {
     private final String TAG = "Preview";
 
     SurfaceView mSurfaceView;
@@ -255,5 +256,4 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
     }
-
 }

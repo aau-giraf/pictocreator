@@ -1,17 +1,12 @@
 package dk.aau.cs.giraf.pictocreator.cam;
 
 import android.app.DialogFragment;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -24,51 +19,43 @@ import dk.aau.cs.giraf.gui.GCancelButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.gui.GVerifyButton;
-import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
-import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
-import dk.aau.cs.giraf.pictocreator.canvas.DrawView;
-import dk.aau.cs.giraf.pictocreator.canvas.Entity;
-import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 
 public class CamFragment extends DialogFragment {
 
-    private String TAG = "CamFragment";
+    private final String TAG = "CamFragment";
     private Preview mPreview;
 
     private View view;
     private FrameLayout frameLayout;
     private RelativeLayout kameraBar;
 
-    private ViewSwitcher viewSwitcher;
-
     /* Buttons */
     private GButton exitButton;
+
+    //User for swapping layouts
+    private ViewSwitcher viewSwitcher;
 
     //For first layout
     private GToggleButton colorSwapButton;
     private GButton captureButton;
     private GButton switchCamButton;
 
-    //for swapped layout
+    //For second layout
     private GVerifyButton verifyButton;
     private GCancelButton retryButton;
 
     private PhotoHandler photoHandler;
 
-    Camera mCamera;
-    int mNumberOfCameras;
-    int mCurrentCamera;  // Camera ID currently chosen
-    int mCameraCurrentlyLocked;  // Camera ID that's actually acquired
-
-    // The first rear facing camera
-    int mDefaultCameraId;
+    private Camera mCamera;
+    private int mNumberOfCameras;
+    private int mCurrentCamera;  // Camera ID currently chosen
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
+
         // Create a container that will hold a SurfaceView for camera previews
         mPreview = new Preview(this.getActivity());
 
@@ -77,18 +64,17 @@ public class CamFragment extends DialogFragment {
 
         // Find the ID of the rear-facing ("default") camera
         CameraInfo cameraInfo = new CameraInfo();
-        for (int i = 0; i < mNumberOfCameras; i++) {
+        for (int i = 0; i < mNumberOfCameras; i++){
             Camera.getCameraInfo(i, cameraInfo);
-            if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK) {
-                mCurrentCamera = mDefaultCameraId = i;
+            if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK){
+                mCurrentCamera= i;
             }
         }
         setHasOptionsMenu(mNumberOfCameras > 1);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.camera_fragment, container, false);
         view.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
@@ -100,6 +86,7 @@ public class CamFragment extends DialogFragment {
         frameLayout.addView(mPreview);
 
         viewSwitcher = (ViewSwitcher)view.findViewById(R.id.layoutSwitcherCamera);
+
         /* Assign Buttons*/
         exitButton = (GButton)view.findViewById(R.id.quit_buttonCamera);
         exitButton.setOnClickListener(quitButtonClick);
@@ -133,6 +120,7 @@ public class CamFragment extends DialogFragment {
         }
     };
 
+    //Click listener for taking a picture. Uses the shutterCall listener for the click sound.
     private final View.OnClickListener captureClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -141,6 +129,7 @@ public class CamFragment extends DialogFragment {
         }
     };
 
+    //Click listener for the retry button.
     private final View.OnClickListener retryButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -166,10 +155,16 @@ public class CamFragment extends DialogFragment {
         }
     };
 
+    /**
+     * Picture Taken Interface used to transfer the picture from CamFragment to MainActivity
+     */
     public interface PictureTakenListener{
         void onPictureTaken(File picture);
     }
 
+    /**
+     * Returns the picture to MainActivity and closes the dialog.
+     */
     private void closeDialog(){
         if(photoHandler.pictureFile != null && photoHandler.pictureFile.exists()){
             CamFragment.PictureTakenListener activity = (CamFragment.PictureTakenListener) getActivity();
@@ -181,10 +176,14 @@ public class CamFragment extends DialogFragment {
     private final View.OnClickListener colorSwapClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            swapColour();
+            swapColourEffect();
         }
     };
-    private void swapColour(){
+
+    /**
+     * Swaps the colour effect of the camera.
+     */
+    private void swapColourEffect(){
         Camera.Parameters tempParams = mPreview.mCamera.getParameters();
 
         //Initialise if Color effect is null
@@ -212,11 +211,6 @@ public class CamFragment extends DialogFragment {
         }
     };
 
-    public static CamFragment newInstance() {
-        CamFragment f = new CamFragment();
-        return f;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -225,7 +219,6 @@ public class CamFragment extends DialogFragment {
         // the fragment after the camera has been changed
         try{
         mCamera = Camera.open(mCurrentCamera);
-        mCameraCurrentlyLocked = mCurrentCamera;
         mPreview.setCamera(mCamera);
         }
         catch (RuntimeException e){
