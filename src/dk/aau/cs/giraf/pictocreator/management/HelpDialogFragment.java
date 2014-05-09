@@ -71,7 +71,7 @@ public class HelpDialogFragment extends DialogFragment{
         view = inflater.inflate(R.layout.help_dialog, container);
         
         helpBody = (FrameLayout) view.findViewById(R.id.help_body);
-        helpBody.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        helpBody.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         changeBody(iterator);
         
@@ -115,7 +115,7 @@ public class HelpDialogFragment extends DialogFragment{
         });
 
         helpDialogLayout = (LinearLayout)view.findViewById(R.id.helpDialogLayout);
-        helpDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        helpDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         RelativeLayout topBar = (RelativeLayout)view.findViewById(R.id.topHelpBar);
         topBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));

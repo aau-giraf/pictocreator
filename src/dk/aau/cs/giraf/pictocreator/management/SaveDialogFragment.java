@@ -37,8 +37,12 @@ import android.widget.Toast;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
+import dk.aau.cs.giraf.gui.GProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GRadioGroup;
+import dk.aau.cs.giraf.oasis.lib.Helper;
+import dk.aau.cs.giraf.oasis.lib.controllers.ProfileController;
+import dk.aau.cs.giraf.oasis.lib.models.Profile;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
@@ -55,7 +59,8 @@ public class SaveDialogFragment extends DialogFragment{
     private View view;
     private FrameLayout previewView;
     private Bitmap preview;
-    private ArrayList<String> tags;
+    private ArrayList<String> tags, autistsnames;
+    private ArrayList<Profile> autists;
     private Activity parentActivity;
     private GButton acceptButton;
 
@@ -70,19 +75,20 @@ public class SaveDialogFragment extends DialogFragment{
     private String textLabel;
     private String inlineText;
 
-    private GButton cancelButton;
+    private GButton cancelButton, addConnectAutist;
     private LinearLayout saveDialogLayout;
 
     private GRadioGroup publicGroup;
     private GRadioButton publicityPublic;
     private GRadioButton publicityPrivate;
     private StoragePictogram storagePictogram;
+    private GProfileSelector autistSelector;
 
     private FileHandler fileHandler;
     private boolean service = false;
 
-    private  ListView tagsListView;
-    private ArrayAdapter<String> tagArrayAdapter;
+    private  ListView tagsListView, connectedAutistList;
+    private ArrayAdapter<String> tagArrayAdapter, connectedArrayAdapter;
     /**
      * Constructor for the Dialog
      */
@@ -149,6 +155,12 @@ public class SaveDialogFragment extends DialogFragment{
         this.tags = new ArrayList<String>();
         tagArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, tags);
 
+
+        this.autists = new ArrayList<Profile>();
+        autistsnames = new ArrayList<String>();
+        connectedArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, autistsnames);
+
+
         view = inflater.inflate(R.layout.save_dialog, container);
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);
 
@@ -173,10 +185,21 @@ public class SaveDialogFragment extends DialogFragment{
         tagsListView = (ListView) view.findViewById(R.id.save_tags_list);
         tagsListView.setAdapter(tagArrayAdapter);
 
+        connectedAutistList = (ListView) view.findViewById(R.id.connected_list);
+        connectedAutistList.setAdapter(connectedArrayAdapter);
+        connectedAutistList.setOnItemClickListener(onRemoveAutist);
+
+
+        addConnectAutist = (GButton) view.findViewById(R.id.connect_autism);
+        addConnectAutist.setOnClickListener(addAutism);
+
+
         //publicStatus = (CheckBox) view.findViewById(R.id.public_status);
         publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
         publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
+        publicityPublic.setOnClickListener(disableConnect);
         publicityPrivate = (GRadioButton) view.findViewById(R.id.radio_private);
+        publicityPrivate.setOnClickListener(enableConnect);
 
         Bitmap bitmap = null;
         File imgFile = new File(parentActivity.getCacheDir(), "cvs");
@@ -203,7 +226,7 @@ public class SaveDialogFragment extends DialogFragment{
         previewView.addView(imgView);
 
         saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SUBTLEGRADIENT));
+        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
 
@@ -309,6 +332,68 @@ public class SaveDialogFragment extends DialogFragment{
             return false;
         }
     };
+
+    private final AdapterView.OnItemClickListener onRemoveAutist = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            autists.remove(position);
+            updateAutistList();
+        }
+    };
+
+    private final OnClickListener enableConnect = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            addConnectAutist.setVisibility(View.VISIBLE);
+            connectedAutistList.setVisibility(View.VISIBLE);
+        }
+    };
+
+    private final OnClickListener disableConnect = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            addConnectAutist.setVisibility(View.INVISIBLE);
+            connectedAutistList.setVisibility(View.INVISIBLE);
+        }
+    };
+
+    private final OnClickListener addAutism = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CallProfileSelector();
+        }
+    };
+
+    private void CallProfileSelector(){
+        Helper helper = new Helper(parentActivity);
+        try{
+        autistSelector = new GProfileSelector(parentActivity, helper.profilesHelper.getProfileById(storagePictogram.getAuthor() == 0 ? storagePictogram.getAuthor()+1:storagePictogram.getAuthor()),null);
+        autistSelector.setOnListItemClick(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Profile person =(Profile)parent.getItemAtPosition(position);
+                if (!autists.contains(person)){
+                    autists.add(person);
+                    updateAutistList();
+                }
+
+            }
+        });
+        autistSelector.show();
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage().toString());
+        }
+
+    }
+
+    private void updateAutistList(){
+        autistsnames.clear();
+        for(int i = 0; i < autists.size(); i++){
+            autistsnames.add(i, autists.get(i).getName());
+        }
+        connectedArrayAdapter.notifyDataSetChanged();
+    }
+
     /**
      * Method called when the dialog is resumed
      */
