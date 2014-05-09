@@ -2,44 +2,23 @@ package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.res.AssetFileDescriptor;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import dk.aau.cs.giraf.gui.GButton;
-import dk.aau.cs.giraf.gui.GCancelButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GToggleButton;
-import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictogram.AudioPlayer;
 import dk.aau.cs.giraf.pictogram.CompleteListener;
 import dk.aau.cs.giraf.pictogram.PictoMediaPlayer;
 
-import android.media.SoundPool;
-import android.media.SoundPool.OnLoadCompleteListener;
-import android.media.AudioManager;
-import android.content.Context;
-
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Class for the dialog used for recording in the croc application
@@ -52,36 +31,23 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
     private static final String TAG = "RecordDialogFragment";
 
-    //Variables for soundPreview
-    boolean loaded;
-
-    private int soundID;
-
     private View view;
-
-    private AudioHandler handler;
-
     private DecibelMeterView decibelMeter;
-
-    private RecordThread recThread;
-
-    private GToggleButton recordButton;
-
-    private GButton acceptButton;
-
-    private GButton cancelButton;
-
-    private GButton playButton;
-
     private LinearLayout recordLayout;
 
-    int soundIDPlaying;
+    private GToggleButton recordButton;
+    private GButton acceptButton;
+    private GButton cancelButton;
+    private GButton playButton;
+
+    private AudioHandler handler;
+    private RecordThread recThread;
 
     private boolean recordingExists;
-
     private boolean hasRecorded;
 
     private PictoMediaPlayer mediaPlayer;
+
     /**
      * Constructor for the Dialog
      * Left empty on purpose
@@ -121,9 +87,12 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         setStyle(style, 0);
 
         mediaPlayer = new PictoMediaPlayer(this.getActivity());
-        mediaPlayer.setCustomListener(new myCustomListener());
+        mediaPlayer.setCustomListener(new CustomMediaPlayerListener());
     }
 
+    /**
+     * Switches between play and stop icon on playButton, conditioned on the mediaPlayer playing or not.
+     */
     private void switchLayoutPlayStopButton(){
         try{
             if(mediaPlayer.isPlaying()){
@@ -141,7 +110,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
             Log.e(TAG, e.getMessage());
         }
 
-        //Did not work with invalidate so had to use dirty fix, reference:
+        //Did not work with invalidate so had to use dirty fix
         int temp = playButton.getVisibility();
         playButton.setVisibility(View.GONE);
         playButton.setVisibility(temp);
@@ -152,8 +121,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
      * Method called when the view for the dialog is created
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.record_dialog, container);
 
         final Dialog tmpDialog = getDialog();
@@ -165,61 +133,31 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recThread = new RecordThread(handler, this);
 
         recordButton = (GToggleButton) view.findViewById(R.id.record_button);
+        recordButton.setOnClickListener(recordClickListener);
 
         decibelMeter = (DecibelMeterView) view.findViewById(R.id.decibel_meter);
 
-        acceptButton = (GButton) view.findViewById(R.id.record_positive_button);
-        acceptButton.setEnabled(false);
-
-        cancelButton = (GButton) view.findViewById(R.id.record_negative_button);
-
         playButton = (GButton) view.findViewById(R.id.playButton);
+        playButton.setOnClickListener(playClickListener);
+
         recordingExists = (new File(handler.getFinalPath()).exists());
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
         recordLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
-        /*
-        * On click listener for stop playing re+cording
-        * */
-        OnClickListener stopClickListener = new OnClickListener() {
+        acceptButton = (GButton) view.findViewById(R.id.record_positive_button);
+        acceptButton.setEnabled(false);
+        acceptButton.setOnClickListener(new OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View view){
                 mediaPlayer.stopSound();
+                recThread.onAccept();
+                hasRecorded = false;
+                tmpDialog.dismiss();
             }
-        };
-        /**
-         * On click listener for recording audio
-         */
-        OnClickListener clickListener = new OnClickListener() {
-                @Override
-				public void onClick(View view) {
-                    if (((GToggleButton) view).isToggled()) {
-                        recThread.start();
-                      //recordButton.setChecked(true);
-                        recordButton.setToggled(true);
-                        recordButton.setText("Stop");
-                        recordButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon),null,null);
-                      //  recordButton.SetImage(getResources().getDrawable(R.drawable.stop_icon));
-                        playButton.setEnabled(false);
-                        acceptButton.setEnabled(false);
-                    }
-                    else {
-                        recThread.stop();
-                        decibelMeter.setLevel(0);
-                        //recordButton.setChecked(false);
-                        recordButton.setToggled(false);
-                        recordButton.setText("Optag");
-                        recordButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.record_icon),null,null);
-                        hasRecorded = true;
-                        playButton.setEnabled(true);
-                        acceptButton.setEnabled(true);
-                        recordingExists = true;
-                    }
-                }
-            };
-        playButton.setOnClickListener(playClickListener);
+        });
 
+        cancelButton = (GButton) view.findViewById(R.id.record_negative_button);
         cancelButton.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -228,27 +166,17 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                     hasRecorded = false;
                     tmpDialog.cancel();
                 }
-            });
-
-        acceptButton.setOnClickListener(new OnClickListener(){
-
-                @Override
-                public void onClick(View view){
-                    mediaPlayer.stopSound();
-                    recThread.onAccept();
-                    hasRecorded = false;
-                    tmpDialog.dismiss();
-                }
-            });
-
-        recordButton.setOnClickListener(clickListener);
+        });
 
         return view;
     }
 
-    public void loadMusic(){
+    /**
+     * Plays the sound that is currently assigned to the pictogram or a newly recorded sound.
+     * The newly recorded sound is taking priority.
+     */
+    private void playSound(){
         if(!hasRecorded){
-
             Log.i(TAG, "loading file: " + handler.getFinalPath());
             mediaPlayer.setDataSource(handler.getFinalPath());
         }
@@ -271,16 +199,17 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     /*
     * On click listener for play recording
     * */
-    OnClickListener playClickListener = new OnClickListener() {
+    private final OnClickListener playClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             if(recordingExists){
-                if(mediaPlayer.isPlaying())
+                if(mediaPlayer.isPlaying()){
                     mediaPlayer.stopSound();
-                else
-                    loadMusic();
+                }
+                else{
+                    playSound();
+                }
                 switchLayoutPlayStopButton();
-               // StopButton();
             }
             else{
                 Toast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
@@ -288,7 +217,38 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         }
     };
 
-    private class myCustomListener implements CompleteListener{
+    /**
+     * On click listener for recording audio
+     */
+    private final OnClickListener recordClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (((GToggleButton) view).isToggled()) {
+                recThread.start();
+                recordButton.setToggled(true);
+                recordButton.setText("Stop");
+                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.stop_icon), null, null);
+                playButton.setEnabled(false);
+                acceptButton.setEnabled(false);
+            }
+            else {
+                recThread.stop();
+                decibelMeter.setLevel(0);
+                recordButton.setToggled(false);
+                recordButton.setText("Optag");
+                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.record_icon), null, null);
+                hasRecorded = true;
+                playButton.setEnabled(true);
+                acceptButton.setEnabled(true);
+                recordingExists = true;
+            }
+        }
+    };
+
+    /**
+     * A custom listener that implements CompleteListener from pictogram-lib, necessary to register when the sound is done playing.
+     */
+    private class CustomMediaPlayerListener implements CompleteListener{
         @Override
         public void soundDonePlaying() {
             switchLayoutPlayStopButton();

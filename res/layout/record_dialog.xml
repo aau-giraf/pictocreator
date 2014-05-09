@@ -32,16 +32,16 @@
         android:orientation="vertical"
         android:layout_weight="1">
 
-      <dk.aau.cs.giraf.gui.GToggleButton
-          android:id="@+id/record_button"
-          android:layout_width="70dp"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal|center_vertical"
-          android:layout_margin="20dp"
-          android:drawableTop="@drawable/record_icon"
-          android:gravity="bottom|center_horizontal"
-          android:text="Optag"
-          android:checked="false" />
+          <dk.aau.cs.giraf.gui.GToggleButton
+              android:id="@+id/record_button"
+              android:layout_width="70dp"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal|center_vertical"
+              android:layout_margin="10dp"
+              android:drawableTop="@drawable/record_icon"
+              android:gravity="bottom|center_horizontal"
+              android:text="Optag"
+              android:checked="false" />
 
           <dk.aau.cs.giraf.gui.GButton
               android:layout_width="70dp"
@@ -50,6 +50,7 @@
               android:layout_gravity="center"
               android:focusableInTouchMode="false"
               android:drawableTop="@drawable/play_icon"
+              android:layout_margin="10dp"
               android:text="Afspil"
               android:adjustViewBounds="false"/>
 
@@ -61,24 +62,24 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal" >
 
-  <dk.aau.cs.giraf.gui.GButton
-      android:id="@+id/record_positive_button"
-      android:layout_width="70dp"
-      android:layout_height="wrap_content"
-      android:layout_margin="10dp"
-      android:drawableTop="@drawable/save"
-      android:text="Gem"
-      android:layout_toLeftOf="@+id/record_negative_button"/>
+      <dk.aau.cs.giraf.gui.GButton
+          android:id="@+id/record_positive_button"
+          android:layout_width="70dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:drawableTop="@drawable/save"
+          android:text="Gem"
+          android:layout_toLeftOf="@+id/record_negative_button"/>
 
-  <dk.aau.cs.giraf.gui.GButton
-      android:id="@+id/record_negative_button"
-      android:layout_width="70dp"
-      android:layout_height="wrap_content"
-      android:layout_margin="10dp"
-      android:drawableTop="@drawable/gcancel_icon"
-      android:text="Fortryd"
-      android:layout_toRightOf="@+id/record_positive_button"
-       />
+      <dk.aau.cs.giraf.gui.GButton
+          android:id="@+id/record_negative_button"
+          android:layout_width="70dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:drawableTop="@drawable/gcancel_icon"
+          android:text="Fortryd"
+          android:layout_toRightOf="@+id/record_positive_button"
+           />
 
   </LinearLayout>
 

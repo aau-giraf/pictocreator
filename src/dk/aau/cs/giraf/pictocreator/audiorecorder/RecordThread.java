@@ -16,15 +16,15 @@ public class RecordThread implements Runnable {
 
     private static final int startAmpl = 33000;
 
-    int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
-    int outputFormat = MediaRecorder.OutputFormat.THREE_GPP;
-    int audioEncoder = MediaRecorder.AudioEncoder.AMR_NB;
+    private int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
+    private int outputFormat = MediaRecorder.OutputFormat.THREE_GPP;
+    private int audioEncoder = MediaRecorder.AudioEncoder.AMR_NB;
 
-    String outputFilePath = null;
+    private String outputFilePath = null;
 
-    AudioHandler audioHandler;
+    private AudioHandler audioHandler;
 
-    MediaRecorder mediaRecorder = null;
+    private MediaRecorder mediaRecorder = null;
 
     private double decibel = 0;
 
@@ -32,7 +32,7 @@ public class RecordThread implements Runnable {
 
     private Thread recordThread;
 
-    private final RecordInterface _interface;
+    private final RecordInterface recordInterface;
 
     /**
      * Constructor for the thread
@@ -40,7 +40,7 @@ public class RecordThread implements Runnable {
      * @param recordInterface The interface to communicate with
      */
     public RecordThread(AudioHandler handler, RecordInterface recordInterface){
-        _interface = recordInterface;
+        this.recordInterface = recordInterface;
         audioHandler = handler;
         outputFilePath = audioHandler.getFilePath();
     }
@@ -54,7 +54,7 @@ public class RecordThread implements Runnable {
             recordThread = new Thread(this);
 
             if(mediaRecorder == null){
-                Log.d(TAG, "beginning init og MediaRecorder");
+                Log.d(TAG, "Beginning initialization of mediaRecorder");
                 mediaRecorder = new MediaRecorder();
                 Log.d(TAG, "mediaRecorder initialized");
             }
@@ -104,7 +104,7 @@ public class RecordThread implements Runnable {
             Log.v(TAG, "Illegalstate", e.fillInStackTrace());
         }
 
-        _interface.decibelUpdate(0);
+        recordInterface.decibelUpdate(0);
     }
 
     /**
@@ -115,12 +115,14 @@ public class RecordThread implements Runnable {
     public void run(){
         while(isRunning){
             try {
-                Thread.sleep(500);
+                //Sleeps to slow down the reading of the amplitude, such that the GUI can keep up with the readings.
+                Thread.sleep(100);
+
                 // The value is divided by 2000 to give a value within range
                 // of the decibel-meter
                 decibel = getAmplitude() / 2000;
                 Log.d(TAG, "Amplitude: " + decibel);
-                _interface.decibelUpdate(decibel);
+                recordInterface.decibelUpdate(decibel);
             }
             catch (InterruptedException e) {
                 Log.e(TAG, "Thread interrupted.", e.fillInStackTrace());
@@ -132,7 +134,7 @@ public class RecordThread implements Runnable {
      * Function for getting the amplitude from the microphone
      * @return The amplitude value of the microphone
      */
-    public double getAmplitude() {
+    private double getAmplitude() {
         if (mediaRecorder != null)
             return  (mediaRecorder.getMaxAmplitude());
         else
@@ -158,6 +160,4 @@ public class RecordThread implements Runnable {
         stop();
         audioHandler.saveFinalFile();
     }
-
-
 }

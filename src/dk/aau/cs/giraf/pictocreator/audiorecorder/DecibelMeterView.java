@@ -14,7 +14,7 @@ import android.view.View;
  */
 public class DecibelMeterView extends View {
 
-    private double _level = 0.0;
+    private double level = 0.0;
 
     private final int[] meterColors = {0xff5555ff,
                                        0xff5555ff,
@@ -53,7 +53,7 @@ public class DecibelMeterView extends View {
      * @return The current level for the decibelmeter
      */
     public double getLevel(){
-        return _level;
+        return level;
     }
 
     /**
@@ -61,7 +61,7 @@ public class DecibelMeterView extends View {
      * @param level The level to set in the decibelmeter
      */
     public void setLevel(double level){
-        _level = level;
+        this.level = level;
         invalidate();
     }
 
@@ -75,9 +75,7 @@ public class DecibelMeterView extends View {
         int padding = 3;
         int x = 10;
         int y = 0;
-
         int width = 50;
-
         int height = (int) (Math.floor(getHeight() / meterSize)) - (2 * padding);
 
         drawable = new ShapeDrawable(new RectShape());
