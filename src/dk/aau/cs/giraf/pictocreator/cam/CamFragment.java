@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -28,7 +29,8 @@ public class CamFragment extends DialogFragment {
 
     private View view;
     private FrameLayout frameLayout;
-    private RelativeLayout kameraBar;
+    private RelativeLayout cameraBar;
+    private LinearLayout cameraLayout;
 
     /* Buttons */
     private GButton exitButton;
@@ -77,13 +79,15 @@ public class CamFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.camera_fragment, container, false);
-        view.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
-        kameraBar = (RelativeLayout)view.findViewById(R.id.kameraBar);
-        kameraBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
+        cameraBar = (RelativeLayout)view.findViewById(R.id.cameraBar);
+        cameraBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
 
         frameLayout = (FrameLayout)view.findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
+
+        cameraLayout = (LinearLayout) view.findViewById(R.id.cameraLayout);
+        cameraLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
         viewSwitcher = (ViewSwitcher)view.findViewById(R.id.layoutSwitcherCamera);
 

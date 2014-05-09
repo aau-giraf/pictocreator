@@ -2,13 +2,13 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cameraLayout"
     android:orientation="vertical"
     android:layout_width="800dp"
-    android:layout_height="600dp"
-    android:background="@drawable/fragment_background">
+    android:layout_height="600dp">
 
     <RelativeLayout
-        android:id="@+id/kameraBar"
+        android:id="@+id/cameraBar"
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
