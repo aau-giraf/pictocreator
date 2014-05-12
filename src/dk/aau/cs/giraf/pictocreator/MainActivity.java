@@ -7,15 +7,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -28,7 +24,6 @@ import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
-import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
@@ -82,11 +77,11 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         topLayout = (RelativeLayout) findViewById(R.id.topLayer);
         topLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
 
-        fragManager = getFragmentManager();
-        fragTrans = fragManager.beginTransaction();
-
         drawFragment = new DrawFragment();
 
+        fragManager = getFragmentManager();
+
+        fragTrans = fragManager.beginTransaction();
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
@@ -108,13 +103,6 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
-    }
-
-    @Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-        if(hasFocus) {
-            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-        }
     }
 
     /**
@@ -261,6 +249,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         else{
             try{
                 DrawStackSingleton.getInstance().mySavedData = (EntityGroup)ByteConverter.deserialize(pictogram.getEditableImage());
+                drawFragment.drawView.invalidate();
             }
             catch (IOException e){
                 Log.e(TAG, e.getMessage());
@@ -292,21 +281,17 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         int sizeWidthPercentage = (int)(((double)(this.getBitmap().getWidth())/(double)(bitmap).getWidth())*100.0);
 
         BitmapEntity tempEntity = new BitmapEntity(bitmap, Math.max(sizeHeightPercentage, sizeWidthPercentage));
-        tempEntity.setCenter(this.drawFragment.drawView.getMeasuredWidth()/2, this.drawFragment.drawView.getMeasuredHeight()/2);
+        tempEntity.setCenter(drawFragment.drawView.getMeasuredWidth()/2, drawFragment.drawView.getMeasuredHeight()/2);
         DrawStackSingleton.getInstance().mySavedData.addEntity(tempEntity);
-        this.drawFragment.drawView.invalidate();
+        drawFragment.drawView.invalidate();
     }
 
     private Bitmap getBitmap(){
-        return this.drawFragment.drawView.getFlattenedBitmap(Bitmap.Config.ARGB_8888);
+        return drawFragment.drawView.getFlattenedBitmap(Bitmap.Config.ARGB_8888);
     }
 
     public static String getActionResult(){
         return actionResult;
-    }
-
-    public boolean getService(){
-        return this.service;
     }
 
     public void doExit(View v){
