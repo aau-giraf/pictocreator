@@ -1,8 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses;
 
-/**
- * Created by Praetorian on 02-05-14.
- */
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -12,13 +9,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * A serializable Bitmap which was used to be saved in the database drawStack (ByteArray).
+ * Not functional since it had some trouble saving to byteArray, but might be of use in the future.
+ * @author SW608F14
+ */
 public class SerializableBitmap implements Serializable {
 
     private static final long serialVersionUID = -6298516694275121291L;
 
-
     transient public Bitmap bitmap;
-
 
     private void writeObject(ObjectOutputStream oos) throws IOException {
         // This will serialize all fields that you did not mark with 'transient'
@@ -44,5 +44,4 @@ public class SerializableBitmap implements Serializable {
             bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
         }
     }
-
 }

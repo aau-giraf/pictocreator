@@ -5,7 +5,8 @@ import android.graphics.Paint;
 import java.io.Serializable;
 
 /**
- * Created by Praetorian on 28-04-14.
+ * A serializable paint which can be saved in the database drawStack (ByteArray).
+ * @author SW608F14
  */
 public class SerializePaint extends Paint implements Serializable{
 

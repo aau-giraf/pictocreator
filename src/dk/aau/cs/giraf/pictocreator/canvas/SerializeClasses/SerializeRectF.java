@@ -5,7 +5,8 @@ import android.graphics.RectF;
 import java.io.Serializable;
 
 /**
- * Created by Praetorian on 28-04-14.
+ * A serializable RectF which can be saved in the database drawStack (ByteArray).
+ * @author SW608F14
  */
 public class SerializeRectF extends RectF implements Serializable {
     public SerializeRectF(float arg1, float arg2, float arg3, float arg4){
