@@ -44,7 +44,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private RecordThread recThread;
 
     private boolean recordingExists;
-    private boolean hasRecorded;
+    private boolean hasRecorded = false;
 
     private PictoMediaPlayer mediaPlayer;
 
@@ -60,17 +60,14 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
      * @param decibelValue The value to set in the decibelmeter
      */
     @Override
-    public void decibelUpdate(double decibelValue){
-
-        final double dbValue = decibelValue;
-
+    public void decibelUpdate(final double decibelValue){
         decibelMeter.post(new Runnable() {
             /**
              * Function to run when the Thread is started
              */
             @Override
             public void run() {
-                decibelMeter.setLevel(dbValue);
+                decibelMeter.setLevel(decibelValue);
             }
         });
     }
@@ -88,33 +85,6 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         mediaPlayer = new PictoMediaPlayer(this.getActivity());
         mediaPlayer.setCustomListener(new CustomMediaPlayerListener());
-    }
-
-    /**
-     * Switches between play and stop icon on playButton, conditioned on the mediaPlayer playing or not.
-     */
-    private void switchLayoutPlayStopButton(){
-        try{
-            if(mediaPlayer.isPlaying()){
-                playButton.setText("Stop");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon), null, null);
-                Log.i(TAG, "changed to stop icon");
-            }
-            else{
-                playButton.setText("Afspil");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.play_icon), null, null);
-                Log.i(TAG, "changed to play icon");
-            }
-        }
-        catch(IllegalStateException e){
-            Log.e(TAG, e.getMessage());
-        }
-
-        //Did not work with invalidate so had to use dirty fix
-        int temp = playButton.getVisibility();
-        playButton.setVisibility(View.GONE);
-        playButton.setVisibility(temp);
-
     }
 
     /**
@@ -159,17 +129,44 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         cancelButton = (GButton) view.findViewById(R.id.record_negative_button);
         cancelButton.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    mediaPlayer.stopSound();
-                    recThread.onCancel();
-                    hasRecorded = false;
-                    tmpDialog.cancel();
-                }
+            @Override
+            public void onClick(View view){
+                mediaPlayer.stopSound();
+                recThread.onCancel();
+                hasRecorded = false;
+                tmpDialog.cancel();
+            }
         });
 
         return view;
     }
+
+    /**
+     * Switches between play and stop icon on playButton, conditioned on the mediaPlayer playing or not.
+     */
+    private void switchLayoutPlayStopButton(){
+        try{
+            if(mediaPlayer.isPlaying()){
+                playButton.setText("Stop");
+                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon), null, null);
+                Log.i(TAG, "changed to stop icon");
+            }
+            else{
+                playButton.setText("Afspil");
+                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.play_icon), null, null);
+                Log.i(TAG, "changed to play icon");
+            }
+        }
+        catch(IllegalStateException e){
+            Log.e(TAG, e.getMessage());
+        }
+
+        //Did not work with invalidate so had to use dirty fix
+        playButton.setVisibility(View.GONE);
+        playButton.setVisibility(View.VISIBLE);
+
+    }
+
 
     /**
      * Plays the sound that is currently assigned to the pictogram or a newly recorded sound.
@@ -177,11 +174,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
      */
     private void playSound(){
         if(!hasRecorded){
-            Log.i(TAG, "loading file: " + handler.getFinalPath());
             mediaPlayer.setDataSource(handler.getFinalPath());
         }
         else{
-            Log.i(TAG, "loading file: " + handler.getFilePath());
             mediaPlayer.setDataSource(handler.getFilePath());
         }
         mediaPlayer.playSound();
