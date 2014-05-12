@@ -5,7 +5,9 @@
               android:orientation="horizontal"
     android:id="@+id/saveDialogLayout">
 
-  <RelativeLayout
+  <LinearLayout
+      android:id="@+id/save_Layout"
+      android:orientation="vertical"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingLeft="40dp"
@@ -57,12 +59,17 @@
           android:layout_marginBottom="10dp"
           android:hint="Piktogram navn" />
 
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/save_input_title">
+
       <dk.aau.cs.giraf.gui.GButton
         android:id="@+id/save_button_positive"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_marginRight="40dp"
@@ -74,16 +81,28 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/save_button_positive"
-        android:layout_below="@+id/public_group"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:drawableTop="@drawable/gcancel_icon"
         android:text="Fortryd"/>
 
+      </LinearLayout>
+
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/public_Layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingRight="40dp"
+      android:paddingTop="40dp"
+      android:paddingBottom="40dp"
+      android:paddingLeft="20dp"
+      android:orientation="vertical">
 
       <dk.aau.cs.giraf.gui.GRadioGroup
           android:id="@+id/public_group"
-          android:layout_below="@+id/save_input_title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content">
 
@@ -105,52 +124,20 @@
       </dk.aau.cs.giraf.gui.GRadioGroup>
 
 
-  </RelativeLayout>
-  <RelativeLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingRight="40dp"
-      android:paddingTop="40dp"
-      android:paddingBottom="40dp"
-      android:paddingLeft="20dp" >
-
-    <EditText
-        android:id="@+id/save_input_find"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/save_list_frame"
-        android:hint="Tilføj nøgleord her"/>
-
-    <FrameLayout
-        android:id="@+id/save_list_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/save_input_find" >
-
-      <ListView
-          android:id="@+id/save_tags_list"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:scrollbars="vertical" />
-
-    </FrameLayout>
-
       <dk.aau.cs.giraf.gui.GButton
         android:id="@+id/connect_autism"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/public_group"
         android:text="Tilføj Borger"
-        android:layout_below="@id/save_list_frame"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:visibility="invisible" />
 
       <FrameLayout
           android:id="@+id/connect_list_frame"
-          android:layout_width="wrap_content"
-          android:layout_height="150dp"
+          android:layout_width="200dp"
+          android:layout_height="200dp"
           android:layout_alignParentLeft="true"
           android:layout_below="@+id/connect_autism"
           >
@@ -162,5 +149,43 @@
           android:scrollbars="vertical"
           android:visibility="invisible"/>
       </FrameLayout>
-  </RelativeLayout>
+  </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/tags_Layout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+        android:paddingRight="40dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="40dp"
+        android:paddingLeft="20dp"
+      android:orientation="vertical">
+
+      <EditText
+          android:id="@+id/save_input_find"
+          android:singleLine="true"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignRight="@+id/save_list_frame"
+          android:hint="Tilføj nøgleord her"/>
+
+      <FrameLayout
+          android:id="@+id/save_list_frame"
+          android:layout_width="150dp"
+          android:layout_height="300dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/save_input_find" >
+
+          <ListView
+              android:id="@+id/save_tags_list"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:scrollbars="vertical" />
+
+      </FrameLayout>
+
+    </LinearLayout>
+
 </LinearLayout>
