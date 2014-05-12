@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import java.io.IOException;
 import java.util.List;
+
 /**
  * A simple wrapper around a Camera and a SurfaceView that renders a centered
  * preview of the Camera to the surface. We need to center the SurfaceView
@@ -21,12 +22,13 @@ import java.util.List;
 public class Preview extends ViewGroup implements SurfaceHolder.Callback {
     private final String TAG = "Preview";
 
-    SurfaceView mSurfaceView;
-    SurfaceHolder mHolder;
-    Size mPreviewSize;
-    List<Size> mSupportedPreviewSizes;
-    Camera mCamera;
-    boolean mSurfaceCreated = false;
+    private SurfaceView mSurfaceView;
+    private SurfaceHolder mHolder;
+    private Size mPreviewSize;
+    private List<Size> mSupportedPreviewSizes;
+    private Camera mCamera;
+    private boolean mSurfaceCreated = false;
+
     private int currentCameraID;
     private int defaultCameraID;
     private int frontCameraID;
@@ -48,9 +50,10 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
     public void setCamera(Camera camera) {
         mCamera = camera;
         if (mCamera != null) {
-            mSupportedPreviewSizes = mCamera.getParameters()
-                    .getSupportedPreviewSizes();
-            if (mSurfaceCreated) requestLayout();
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+            if (mSurfaceCreated){
+                requestLayout();
+            }
         }
     }
 
@@ -98,11 +101,9 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
             Camera.getCameraInfo(j, camInfo);
             if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 defaultCameraID = currentCameraID = j;
-                Log.d(TAG, "Camera facing back is set, with id: " + String.valueOf(j));
             }
             else if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
                 frontCameraID = j;
-                Log.d(TAG, "Camera facing front is set, with id: " + String.valueOf(j));
             }
             else {
                 Log.d(TAG, "Default configuration kept, since facing is not set in system");
@@ -115,15 +116,12 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
         // We purposely disregard child measurements because act as a
         // wrapper to a SurfaceView that centers the camera preview instead
         // of stretching it.
-        final int width = resolveSize(getSuggestedMinimumWidth(),
-                widthMeasureSpec);
-        final int height = resolveSize(getSuggestedMinimumHeight(),
-                heightMeasureSpec);
+        final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);
 
         if (mSupportedPreviewSizes != null) {
-            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width,
-                    height);
+            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
         }
 
         if (mCamera != null) {
@@ -151,15 +149,11 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
             // Center the child SurfaceView within the parent.
             if (width * previewHeight > height * previewWidth) {
-                final int scaledChildWidth = previewWidth * height
-                        / previewHeight;
-                child.layout((width - scaledChildWidth) / 2, 0,
-                        (width + scaledChildWidth) / 2, height);
+                final int scaledChildWidth = previewWidth * height / previewHeight;
+                child.layout((width - scaledChildWidth) / 2, 0, (width + scaledChildWidth) / 2, height);
             } else {
-                final int scaledChildHeight = previewHeight * width
-                        / previewWidth;
-                child.layout(0, (height - scaledChildHeight) / 2, width,
-                        (height + scaledChildHeight) / 2);
+                final int scaledChildHeight = previewHeight * width / previewWidth;
+                child.layout(0, (height - scaledChildHeight) / 2, width, (height + scaledChildHeight) / 2);
             }
         }
     }
@@ -175,7 +169,10 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
         } catch (IOException exception) {
             Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
         }
-        if (mPreviewSize == null) requestLayout();
+
+        if (mPreviewSize == null) {
+            requestLayout();
+        }
         mSurfaceCreated = true;
 
     }
@@ -190,8 +187,9 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
     private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
         final double ASPECT_TOLERANCE = 0.1;
         double targetRatio = (double) w / h;
-        if (sizes == null)
+        if (sizes == null){
             return null;
+        }
 
         Size optimalSize = null;
         double minDiff = Double.MAX_VALUE;
@@ -201,8 +199,9 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
         // Try to find an size match aspect ratio and size
         for (Size size : sizes) {
             double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE){
                 continue;
+            }
             if (Math.abs(size.height - targetHeight) < minDiff) {
                 optimalSize = size;
                 minDiff = Math.abs(size.height - targetHeight);

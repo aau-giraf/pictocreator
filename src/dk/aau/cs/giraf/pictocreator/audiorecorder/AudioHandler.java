@@ -61,12 +61,15 @@ public class AudioHandler {
      * Set the savedFileName to null
      */
     public static void resetSound(){
-        if(savedFileName == null)
+        if(savedFileName == null){
             return;
+        }
 
         File tempFile = new File(savedFileName);
-        if(tempFile.exists())
+        if(tempFile.exists()){
             tempFile.delete();
+        }
+
         savedFileName = null;
     }
 
@@ -84,16 +87,15 @@ public class AudioHandler {
         else {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
             String date = dateFormat.format(new Date());
-            String audioFile = "GSound_" + date + ".3gp";
 
             String tmpAudioFile = "GSound_" + date + "tmp" + ".3gp";
-
             String fileName = soundFileDir.getPath() + File.separator + tmpAudioFile;
-
             tempOutputFilePath = fileName;
 
-            if(savedFileName == "" || savedFileName == null)
+            String audioFile = "GSound_" + date + ".3gp";
+            if(savedFileName == "" || savedFileName == null){
                 savedFileName = getDir().getPath() + File.separator + audioFile;
+            }
         }
     }
 

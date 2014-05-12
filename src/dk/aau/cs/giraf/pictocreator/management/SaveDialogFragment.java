@@ -71,7 +71,6 @@ public class SaveDialogFragment extends DialogFragment{
 
     private GProfileSelector autistSelector;
 
-    private GRadioGroup publicGroup;
     private GRadioButton publicityPublic;
     private GRadioButton publicityPrivate;
 
@@ -172,9 +171,6 @@ public class SaveDialogFragment extends DialogFragment{
                 tmpDialog.cancel();
             }
         });
-
-        //access level radio buttons
-        publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
 
         publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
         publicityPublic.setOnClickListener(disableConnect);
@@ -283,7 +279,7 @@ public class SaveDialogFragment extends DialogFragment{
 
     /**
      * Click listener for the accept button
-     * Calls various functino from storagePictogram to save the information of the pictogram
+     * Calls various function from storagePictogram to save the information of the pictogram
      */
     private final OnClickListener acceptListener = new OnClickListener() {
         @Override
@@ -309,7 +305,7 @@ public class SaveDialogFragment extends DialogFragment{
             }
 
             //adds each tag to the pictogram
-            if((tags != null) && !(tags.isEmpty())){
+            if((tags != null)){
                 for(String t : tags){
                     storagePictogram.addTag(t);
                 }
@@ -318,6 +314,9 @@ public class SaveDialogFragment extends DialogFragment{
             //saves the picogram into the database
             if (storagePictogram.addPictogram()) {
                 Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
             }
 
             if (isService) {

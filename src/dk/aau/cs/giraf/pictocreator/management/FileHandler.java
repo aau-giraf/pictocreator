@@ -46,10 +46,7 @@ public class FileHandler{
 
         //instantiates the files with their specific paths
         File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
-        File sound =  new File(Environment.getExternalStorageDirectory(), ".giraf/snd/" + textLabel + "-" + System.currentTimeMillis() + ".3gp");
-
         image.getParentFile().mkdirs();
-        sound.getParentFile().mkdir();
 
         File tmpImgFile = new File(activity.getCacheDir(), "cvs");
         tmpImgFile.delete();
@@ -72,11 +69,6 @@ public class FileHandler{
             Log.e(TAG, e.getMessage());
         }
 
-        File tmpSndFile = null;
-        if(AudioHandler.getFinalPath() != null){
-            tmpSndFile = new File(AudioHandler.getFinalPath());
-        }
-
         if(tmpImgFile.exists()){
             copyFile(tmpImgFile, image);
             storagePictogram.setImagePath(image.getPath());
@@ -84,6 +76,11 @@ public class FileHandler{
             storagePictogram.setImagePath("");
         }
 
+        //Creates the audioFile
+        File tmpSndFile = null;
+        if(AudioHandler.getFinalPath() != null){
+            tmpSndFile = new File(AudioHandler.getFinalPath());
+        }
         storagePictogram.setAudioFile(tmpSndFile);
     }
 
