@@ -9,6 +9,8 @@ import android.hardware.Camera.PictureCallback;
 import android.util.Log;
 import android.widget.Toast;
 
+import dk.aau.cs.giraf.gui.GToast;
+
 
 /**
  * Class used for saving the image data when a picture is taken.
@@ -33,7 +35,7 @@ public class PhotoHandler implements PictureCallback {
     @Override
     public void onPictureTaken(byte[] data, Camera camera) {
 
-        File pictureFileDir = getDir();
+        File pictureFileDir = getPictureDir();
 
         if(!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
             Log.d(TAG, "Cannot create directory for the image");
@@ -54,10 +56,9 @@ public class PhotoHandler implements PictureCallback {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
-            Toast.makeText(context, "Billede Taget", Toast.LENGTH_SHORT).show();
+            GToast.makeText(context, "Billede Taget", Toast.LENGTH_SHORT).show();
         } catch(Exception e) {
-            Log.d(TAG, "Picture: " + photoFile + " was not saved" + e.getMessage());
-            Toast.makeText(context, "Billede kunne ikke tages", Toast.LENGTH_LONG).show();
+            GToast.makeText(context, "Billede kunne ikke tages", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -65,7 +66,7 @@ public class PhotoHandler implements PictureCallback {
      * Method for creating the directory to save the picture
      * @return a File object representing the save directory
      */
-    private File getDir() {
+    private File getPictureDir() {
         File storageDir = context.getCacheDir();
         return new File(storageDir, "img");
     }
