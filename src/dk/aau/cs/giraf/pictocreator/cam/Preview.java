@@ -26,7 +26,7 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Size mPreviewSize;
     private List<Size> mSupportedPreviewSizes;
-    private Camera mCamera;
+    public Camera mCamera;
     private boolean mSurfaceCreated = false;
 
     private int currentCameraID;
