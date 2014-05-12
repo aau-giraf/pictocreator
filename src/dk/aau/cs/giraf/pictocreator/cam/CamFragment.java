@@ -152,9 +152,9 @@ public class CamFragment extends DialogFragment {
     private final View.OnClickListener quitButtonClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(photoHandler.pictureFile != null && photoHandler.pictureFile.exists())
+            if(photoHandler.pictureFile != null && photoHandler.pictureFile.exists()){
                 photoHandler.pictureFile.delete();
-
+            }
             closeDialog();
         }
     };
@@ -191,15 +191,17 @@ public class CamFragment extends DialogFragment {
         Camera.Parameters tempParams = mPreview.mCamera.getParameters();
 
         //Initialise if Color effect is null
-        if(tempParams.getColorEffect() == null)
+        if(tempParams.getColorEffect() == null){
             tempParams.setColorEffect(Camera.Parameters.EFFECT_NONE);
+        }
 
         //Swap the colour effect
-        if(tempParams.getColorEffect().matches(Camera.Parameters.EFFECT_MONO))
+        if(tempParams.getColorEffect().matches(Camera.Parameters.EFFECT_MONO)){
             tempParams.setColorEffect(Camera.Parameters.EFFECT_NONE);
-        else if(tempParams.getColorEffect().matches(Camera.Parameters.EFFECT_NONE))
+        }
+        else if(tempParams.getColorEffect().matches(Camera.Parameters.EFFECT_NONE)){
             tempParams.setColorEffect(Camera.Parameters.EFFECT_MONO);
-
+        }
         mPreview.mCamera.setParameters(tempParams);
     }
 
@@ -222,8 +224,8 @@ public class CamFragment extends DialogFragment {
         // Use mCurrentCamera to select the camera desired to safely restore
         // the fragment after the camera has been changed
         try{
-        mCamera = Camera.open(mCurrentCamera);
-        mPreview.setCamera(mCamera);
+            mCamera = Camera.open(mCurrentCamera);
+            mPreview.setCamera(mCamera);
         }
         catch (RuntimeException e){
             Toast.makeText(this.getActivity(), "Kameraet kunne desværre ikke åbnes", Toast.LENGTH_LONG);
