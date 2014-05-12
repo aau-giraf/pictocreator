@@ -61,6 +61,9 @@ public class AudioHandler {
      * Set the savedFileName to null
      */
     public static void resetSound(){
+        if(savedFileName == null)
+            return;
+
         File tempFile = new File(savedFileName);
         if(tempFile.exists())
             tempFile.delete();
