@@ -41,7 +41,7 @@ public class FileHandler{
      * @param textLabel The textLabel/name for the Pictogram to store
      */
     public void saveFinalFiles(String textLabel, String inlineText, Bitmap bitmap){
-        storagePictogram.setTextLabel(textLabel);
+        storagePictogram.setPictogramName(textLabel);
         storagePictogram.setinlineTextLabel(inlineText);
 
         //instantiates the files with their specific paths

@@ -302,10 +302,10 @@ public class SaveDialogFragment extends DialogFragment{
             //Value 1 in database means publicly available
             //Value 0 in database means not publicly available
             if (publicityPublic.isChecked()){
-                storagePictogram.setpublicPictogram(1);
+                storagePictogram.setPublicPictogram(1);
             }
             else if(publicityPrivate.isChecked()){
-                storagePictogram.setpublicPictogram(0);
+                storagePictogram.setPublicPictogram(0);
             }
 
             //adds each tag to the pictogram
