@@ -158,6 +158,7 @@ public class SaveDialogFragment extends DialogFragment{
         addConnectAutistButton = (GButton) view.findViewById(R.id.connect_autism);
         addConnectAutistButton.setOnClickListener(addAutism);
 
+        AssignBitmapPreview();
         previewView = (FrameLayout) view.findViewById(R.id.save_preview);
         previewView.addView(imgView);
 
@@ -184,7 +185,7 @@ public class SaveDialogFragment extends DialogFragment{
             }
         });
 
-        AssignBitmapPreview();
+
 
 
         saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
@@ -256,6 +257,7 @@ public class SaveDialogFragment extends DialogFragment{
                 }
                 tagInputFind.setText("");
                 tagInputFind.requestFocus();
+                tagArrayAdapter.notifyDataSetChanged();
             }
             return false;
         }
