@@ -85,15 +85,8 @@ public class HelpDialogFragment extends DialogFragment{
         prevButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View view) {
-        		//previous item
-        		if(iterator > 0) {
-        			iterator--;
-        			changeBody(iterator);
-        		}
-        		else if(iterator == 0) {
-        			iterator = (NUM_PAGES -1);
-        			changeBody(iterator);
-        		}
+                iterator = (iterator - 1 + NUM_PAGES) % NUM_PAGES;
+                changeBody(iterator);
         	}
         });
 
@@ -101,15 +94,8 @@ public class HelpDialogFragment extends DialogFragment{
         nextButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View view) {
-        		//next item
-        		if(iterator < (NUM_PAGES -1)) {
-        			iterator++;
-        			changeBody(iterator);
-        		}
-        		else if(iterator == (NUM_PAGES -1)) {
-        			iterator = 0;
-        			changeBody(iterator);
-        		}
+                iterator = (iterator + 1) % NUM_PAGES;
+        		changeBody(iterator);
         	}
         });
 
