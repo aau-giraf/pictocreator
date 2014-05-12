@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.io.*;
 
@@ -24,24 +23,24 @@ import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
-import dk.aau.cs.giraf.pictogram.tts;
+import dk.aau.cs.giraf.pictogram.TextToSpeech;
 
 /**
  * Class for storage of pictograms
- *
  * @author: croc
  */
 public class StoragePictogram {
     private static final String TAG = "StoragePictogram";
 
-    private String imagePath;
-    private String textLabel;
+    private String pictogramName;
     private String inlineTextLabel;
+    private String imagePath;
     private File audioFile;
     private int author;
-    private int publicPictogram = 1; //temporary since we do not have a checkbox implemented for this
-    private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
+    private int publicPictogram;
     private int pictogramID;
+    private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
+
     private Context context;
     private Helper databaseHelper;
 
@@ -62,10 +61,10 @@ public class StoragePictogram {
      * Constructor for the class
      * @param context The context in which the StoragePictogram is created
      * @param imagePath Path to the image-file used by the pictogram
-     * @param textLabel The text-label/name of the pictogram
+     * @param pictogramName The text-label/name of the pictogram
      * @param audioFile The audio-file used by the pictogram
      */
-    public StoragePictogram(Context context, String imagePath, String textLabel, String inlineTextLabel, File audioFile){
+    public StoragePictogram(Context context, String imagePath, String pictogramName, String inlineTextLabel, File audioFile){
         this.context = context;
         try{
             this.databaseHelper = new Helper(this.context);
@@ -73,7 +72,7 @@ public class StoragePictogram {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
         this.imagePath = imagePath;
-        this.textLabel = textLabel;
+        this.pictogramName = pictogramName;
         this.inlineTextLabel = inlineTextLabel;
         this.audioFile = audioFile;
     }
@@ -87,11 +86,11 @@ public class StoragePictogram {
     }
 
     /**
-     * Setter for the textLabel variable
-     * @param textLabel TextLabel to set
+     * Setter for the pictogramName variable
+     * @param pictogramName TextLabel to set
      */
-    public void setTextLabel(String textLabel){
-        this.textLabel = textLabel;
+    public void setPictogramName(String pictogramName){
+        this.pictogramName = pictogramName;
     }
 
 
@@ -123,7 +122,7 @@ public class StoragePictogram {
      * Setter for the publicPictogram variable
      * @param publicPictogram The publicPictogram to set
      */
-    public void setpublicPictogram(int publicPictogram){
+    public void setPublicPictogram(int publicPictogram){
         this.publicPictogram = publicPictogram;
     }
 
@@ -144,11 +143,11 @@ public class StoragePictogram {
     }
 
     /**
-     * Getter for the textLabel variable
-     * @return The textLabel
+     * Getter for the pictogramName variable
+     * @return The pictogramName
      */
-    public String getTextLabel(){
-        return textLabel;
+    public String getPictogramName(){
+        return pictogramName;
     }
 
     /**
@@ -181,12 +180,9 @@ public class StoragePictogram {
      * @return The newly created and inserted Tag
      */
     private Tag insertTag(String tag){
-        Tag newTag = null;
         TagController tagsHelper = databaseHelper.tagsHelper;
-
-        newTag = new Tag(tag);
-        int tagId;
-        tagId = tagsHelper.insertTag(newTag);
+        Tag newTag = new Tag(tag);
+        int tagId = tagsHelper.insertTag(newTag);
         newTag.setId(tagId);
 
         return newTag;
@@ -202,7 +198,6 @@ public class StoragePictogram {
         if(tags.size() > 0){
             for(String tag : tags){
                 Tag newTag = insertTag(tag);
-
                 addedTags.add(newTag);
             }
         }
@@ -219,7 +214,7 @@ public class StoragePictogram {
         Pictogram pictogram = new Pictogram();
 
         pictogram.setImage(BitmapFactory.decodeFile(path));
-        pictogram.setName(textLabel);
+        pictogram.setName(pictogramName);
         pictogram.setPub(publicPictogram);
         pictogram.setInlineText(inlineTextLabel);
         pictogram.setAuthor(author);
@@ -255,15 +250,15 @@ public class StoragePictogram {
                 fileInputStream.read(b);
                 fileInputStream.close();
             }catch (FileNotFoundException e) {
-                Log.e(TAG, "Audio file not found " + e.getMessage());
+                Log.e(TAG, "Audio file not found: " + e.getMessage());
             } catch (IOException e) {
-                Log.e(TAG, "Could not convert audio file to byte array " + e.getMessage());
+                Log.e(TAG, "Could not convert audio file to byte array: " + e.getMessage());
             }
             pictogram.setSoundDataBytes(b);
         }
         else{
-            tts t = new tts(this.context);
-            if(t.NoSound(pictogram)){
+            TextToSpeech textToSpeech = new TextToSpeech(this.context);
+            if(textToSpeech.NoSound(pictogram)){
                 try{
                     if(AudioHandler.getFinalPath() == null){
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
@@ -282,7 +277,7 @@ public class StoragePictogram {
 
         if(DrawStackSingleton.getInstance().getSavedData() != null){
             try{
-            pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
+                pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
             }
             catch (IOException e){
                 Log.e(TAG, e.getMessage());
