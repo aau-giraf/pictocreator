@@ -1,14 +1,11 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.graphics.Canvas;
-import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.io.Serializable;
 
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializeRectF;
 
 /**
@@ -63,85 +60,96 @@ public abstract class Entity implements Parcelable, Serializable {
 	public void setY(float y) { this.y = y; }
 	
 	/**
-	 * Width of the Entity's hitbox.
+	 * Width of the Entity.
 	 * Try Entity.getGraphic().getWidth() for the displayed width.
 	 */
 	protected float width = 0;
 	
 	/**
-	 * Height of the Entity's hitbox.
+	 * Height of the Entity.
 	 * Try Entity.getGraphic().getHeight() for the displayed height.
 	 */
 	protected float height = 0;
-	
-	/**
-	 * Angle of rotation, in degrees.
-	 */
-	protected float angle;
 
-    protected FloatPoint hitboxTopLeft = null;
-    protected float hitboxWidth = 0;
-    protected float hitboxHeigth = 0;
-	
-	/**
-	 * Retrieves the declared height of the Entity.
-	 * @return The height of the Entity.
-	 */
-	public float getHeight() { return this.height; }
-	
-	/**
-	 * Retrieves the declared width of the Entity.
-	 * @return The height of the Entity.
-	 */
-	public float getWidth() { return this.width; }
-		
-	/**
-	 * Sets a new height for the Entity.
-	 * @param height New height.
-	 */
-	public void setHeight(float height) {
+    /**
+     * Retrieves the declared height of the Entity.
+     * @return The height of the Entity.
+     */
+    public float getHeight() { return this.height; }
+
+    /**
+     * Retrieves the declared width of the Entity.
+     * @return The height of the Entity.
+     */
+    public float getWidth() { return this.width; }
+
+    /**
+     * Sets a new height for the Entity.
+     * @param height New height.
+     */
+    public void setHeight(float height) {
         if(height < 0)
             this.height = 0;
         else
             this.height = height; }
-	
-	/**
-	 * Sets a new width for the Entity.
-	 * @param width New width.
-	 */
-	public void setWidth(float width) {
+
+    /**
+     * Sets a new width for the Entity.
+     * @param width New width.
+     */
+    public void setWidth(float width) {
         if (width < 0)
             this.width = 0;
         else
             this.width = width; }
 	
 	/**
-	 * Retrieve the angle of rotation for this Entity.
-	 * @return The current angle of rotation.
+	 * Angle of rotation, in degrees.
 	 */
-	public float getAngle() { return angle; }
+	protected float angle;
+
+    /**
+     * Retrieve the angle of rotation for this Entity.
+     * @return The current angle of rotation.
+     */
+    public float getAngle() { return angle; }
 
     /**
      * Retrieve the angle of rotation for this Entity in radians.
      * @return The current angle of rotation in radians.
      */
     public float getRadiansAngle(){ return (float)Math.toRadians(getAngle()); }
-	
-	/**
-	 * Set the angle of rotation for this Entity.
-	 * @param angle The new angle.
-	 */
-	public void setAngle(float angle) {
+
+    /**
+     * Set the angle of rotation for this Entity.
+     * @param angle The new angle.
+     */
+    public void setAngle(float angle) {
         this.angle = (angle + 360) % 360;
     }
 
-	/**
-	 * Rotates the Entity by a relative amount.
-	 * @param value The amount to rotate by.
-	 */
-	public void rotateBy(float value) {
+    /**
+     * Rotates the Entity by a relative amount.
+     * @param value The amount to rotate by.
+     */
+    public void rotateBy(float value) {
         setAngle(this.angle + value);
     }
+
+    /**
+     * The top left corner of the hitbox.
+     */
+    protected FloatPoint hitboxTopLeft = null;
+
+    /**
+     * Width of the hitbox
+     */
+    protected float hitboxWidth = 0;
+
+    /**
+     * Height of the hitbox
+     */
+    protected float hitboxHeight = 0;
 	
 	/**
 	 * Retrieves the center point of th Entity. The default implementation
@@ -149,7 +157,7 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * will affect the result. Please see the relevant documentation.
 	 * @return The center point of the Entity.
 	 */
-	public FloatPoint getCenter() { return new FloatPoint(getX() + getWidth()/2, getY() + getHeight()/2); }
+    public FloatPoint getCenter() { return new FloatPoint(getX() + getWidth()/2, getY() + getHeight()/2); }
 	
 	/**
 	 * Sets a new center for the Entity. For consistency, this method should
@@ -157,7 +165,7 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * are drastically changed.
 	 * @param p New center point.
 	 */
-	public void setCenter(FloatPoint p) {
+    public void setCenter(FloatPoint p) {
 		setCenter(p.x, p.y);
 	}
 	
@@ -168,7 +176,7 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * @param x New X-coordinate for the center.
 	 * @param y New Y-coordinate for the center.
 	 */
-	public void setCenter(float x, float y) {
+    public void setCenter(float x, float y) {
 		setX(x-getWidth()/2);
 		setY(y-getHeight()/2);
 	}
@@ -262,7 +270,7 @@ public abstract class Entity implements Parcelable, Serializable {
         if (hitboxTopLeft == null)
             return getY()+getHeight();
         else
-            return hitboxTopLeft.y + hitboxHeigth;
+            return hitboxTopLeft.y + hitboxHeight;
     }
 	
 	/**
@@ -382,7 +390,7 @@ public abstract class Entity implements Parcelable, Serializable {
 
         hitboxTopLeft = new FloatPoint(findMin(one.x, two.x, three.x, four.x), findMin(one.y, two.y, three.y, four.y));
         hitboxWidth = (getCenter().x - hitboxTopLeft.x)*2;
-        hitboxHeigth = (getCenter().y - hitboxTopLeft.y)*2;
+        hitboxHeight = (getCenter().y - hitboxTopLeft.y)*2;
     }
 
     /**

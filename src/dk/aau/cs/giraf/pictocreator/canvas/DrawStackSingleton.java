@@ -1,11 +1,13 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 /**
- * Created by Lars on 11-03-14.
- * Singleton to store DrawStrack across fragment switches
+ * Singleton to store DrawStack across fragment switches.
+ * Created since there is only one DrawStack in the application
+ * and makes it easier to access the DrawStack from anywhere.
+ * @author SW608F14
  */
 public class DrawStackSingleton {
-    static DrawStackSingleton instance;
+    private static DrawStackSingleton instance;
 
     public static DrawStackSingleton getInstance() {
         if(instance == null){
@@ -15,14 +17,10 @@ public class DrawStackSingleton {
     }
 
     public EntityGroup mySavedData = null;
-    void setSavedData(EntityGroup data){
-        mySavedData = data;
-    }
 
     public EntityGroup getSavedData() {
         if(mySavedData == null)
             mySavedData = new EntityGroup();
         return mySavedData;
     }
-
 }

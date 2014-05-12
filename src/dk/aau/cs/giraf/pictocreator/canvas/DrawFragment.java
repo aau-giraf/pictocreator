@@ -1,15 +1,11 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,18 +14,14 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import java.io.File;
-
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GColorPicker;
-import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GSeekBar;
 import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.R;
-import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
-import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
@@ -47,9 +39,6 @@ public class DrawFragment extends Fragment {
 
     private static final String TAG = "DrawFragment";
 
-    /**
-     *
-     */
     public View view;
 
     /**
@@ -145,6 +134,7 @@ public class DrawFragment extends Fragment {
         drawView.setHandler(new FreehandHandler());
 
         previewButton = (PreviewButton) view.findViewById(R.id.canvasColorPreviewButton);
+        // Initial colours are set to black
         previewButton.setStrokeColor(0xFF000000);
         previewButton.setFillColor(0xFF000000);
         previewButton.setOnClickListener(onPreviewButtonClick);
@@ -220,6 +210,9 @@ public class DrawFragment extends Fragment {
         }
     };
 
+    /**
+     * Toggles all the tool buttons off.
+     */
     private void setAllUnToggle(){
         rectHandlerButton.setToggled(false);
         ovalHandlerButton.setToggled(false);
@@ -228,6 +221,10 @@ public class DrawFragment extends Fragment {
         freehandHandlerButton.setToggled(false);
     }
 
+    /**
+     * Click handlers for the all the tool buttons. It sets the active handler in
+     * DrawView, untoggles all the tools and toggles itself.
+     */
     private final OnClickListener onSelectHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -236,7 +233,6 @@ public class DrawFragment extends Fragment {
             selectHandlerButton.setToggled(true);
         }
     };
-
     private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -245,11 +241,6 @@ public class DrawFragment extends Fragment {
             freehandHandlerButton.setToggled(true);
         }
     };
-
-    /**
-     * Click handler for the RectHandler. It sets the active handler in
-     * DrawView and marks itself as "in use".
-     */
     private final OnClickListener onRectHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -258,9 +249,6 @@ public class DrawFragment extends Fragment {
             rectHandlerButton.setToggled(true);
         }
     };
-
-
-
     private final OnClickListener onOvalHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -269,7 +257,6 @@ public class DrawFragment extends Fragment {
             ovalHandlerButton.setToggled(true);
         }
     };
-
     private final OnClickListener onLineHandlerButtonClick = new OnClickListener() {
 
         @Override
@@ -287,9 +274,14 @@ public class DrawFragment extends Fragment {
         }
     };
 
-    public void ColorPicker(View v)
-    {
-        GColorPicker diag = new GColorPicker(v.getContext(), customColor, new GColorPicker.OnOkListener() {
+    /**
+     * Utilizes the GColorPicker to open up the color picker.
+     * Returns a color which is sat as fillcolor, previewButton's fillcolor, and the customColor buttons color.
+     * The parameter in GColorPicker constructor is the previously selected color.
+     * @param v View
+     */
+    private void ColorPicker(View v){
+        GColorPicker colorPicker = new GColorPicker(v.getContext(), customColor, new GColorPicker.OnOkListener() {
             @Override
             public void OnOkClick(GColorPicker diag, int color) {
                 customColor = color;
@@ -298,32 +290,27 @@ public class DrawFragment extends Fragment {
                 currentCustomColor.setFillColor(color);
             }
         });
-        diag.SetCurrColor(customColor);
-        diag.show();
+        colorPicker.SetCurrColor(customColor);
+        colorPicker.show();
     }
 
     public void DeselectEntity(){
-        if (drawView.currentHandler instanceof SelectionHandler)
+        if (drawView.currentHandler instanceof SelectionHandler){
             ((SelectionHandler)drawView.currentHandler).deselect();
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // Parcel currentDrawStack = Parcel.obtain();
-        // drawView.drawStack.writeToParcel(currentDrawStack, 0);
         super.onSaveInstanceState(outState);
         Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
         outState.putParcelable("drawstack", DrawStackSingleton.getInstance().mySavedData);
     };
 
-
-
-
     private final OnClickListener onImportClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
             cameraDialog = new CamFragment();
-            //cameraDialog
             cameraDialog.show(getActivity().getFragmentManager(), TAG);
             DeselectEntity();
         }
@@ -341,22 +328,29 @@ public class DrawFragment extends Fragment {
                 Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
         };
 
+        //Have to be overridden, but we do not need this functionality, therefore, it is empty.
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {};
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {};
     };
 
+    /**
+     * Swaps the colour in the previewButton and assigns the colour to the drawView colours.
+     */
     private final OnClickListener onPreviewButtonClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
             previewButton.swapColors();
             drawView.setFillColor(previewButton.getFillColor());
             drawView.setStrokeColor(previewButton.getStrokeColor());
-            Log.i("DrawFragment", String.format("Swapping colors from %s to %s", previewButton.getStrokeColor(), previewButton.getFillColor()));
+            Log.i(TAG, String.format("Swapping colors from %s to %s", previewButton.getStrokeColor(), previewButton.getFillColor()));
         }
     };
 
+    /**
+     * Chooses the custom color as fill color in both drawView and previewButton.
+     */
     private final OnClickListener onCurrentCustomColorButtonClick = new OnClickListener() {
         @Override
         public void onClick(View v) {

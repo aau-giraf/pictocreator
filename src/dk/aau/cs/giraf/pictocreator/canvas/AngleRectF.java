@@ -8,6 +8,7 @@ package dk.aau.cs.giraf.pictocreator.canvas;
  * every property can be derived from these two properties (and an offset).
  * @author Croc
  *
+ * This class is not used, but could be implemented instead of RectF. Was discovered late in our semester so we did not implement it. - SW608F14
  */
 public class AngleRectF {
 

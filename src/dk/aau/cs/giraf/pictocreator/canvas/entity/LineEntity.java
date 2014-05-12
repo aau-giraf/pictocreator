@@ -108,7 +108,7 @@ public class LineEntity extends PrimitiveEntity {
         if (hitboxTopLeft == null)
             return Math.min(getY(),getY() + lineVector.y) + Math.abs(getHeight());
         else
-            return hitboxTopLeft.y + hitboxHeigth;
+            return hitboxTopLeft.y + hitboxHeight;
     }
 
 
@@ -127,7 +127,7 @@ public class LineEntity extends PrimitiveEntity {
 
         hitboxTopLeft = new FloatPoint(Math.min(one.x, two.x), Math.min(one.y, two.y));
         hitboxWidth = (getCenter().x - hitboxTopLeft.x)*2.0f;
-        hitboxHeigth = (getCenter().y - hitboxTopLeft.y)*2.0f;
+        hitboxHeight = (getCenter().y - hitboxTopLeft.y)*2.0f;
     }
 
     /**

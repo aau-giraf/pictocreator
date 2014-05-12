@@ -8,7 +8,6 @@ import java.io.Serializable;
  * Simpler Point implementation that allows floats. Fuckin' odd that they use
  * floats for coordinates but integers for point coordinates.
  * @author Croc
- *
  */
 public class FloatPoint implements Serializable{
 
@@ -30,12 +29,11 @@ public class FloatPoint implements Serializable{
 	}
 	
 	/**
-	 * Creats a new FloatPoint with specific coordinates.
+	 * Creates a new FloatPoint with specific coordinates.
 	 * @param x X-coordinate.
 	 * @param y Y-coordinate.
 	 */
-	public FloatPoint(float x, float y)
-	{
+	public FloatPoint(float x, float y){
 		this.x = x;
 		this.y = y;
 	}
@@ -55,9 +53,7 @@ public class FloatPoint implements Serializable{
 	 * @return Distance between the points.
 	 */
 	public float distance(FloatPoint to){
-		float result = (float)Math.sqrt(Math.abs(x-to.x)+Math.abs(y-to.y));
-		Log.i("FloatPoint.distance", "Distance between "+toString()+" and "+to.toString()+" is "+String.valueOf(result));
-		return result;
+		return (float)Math.sqrt(Math.abs(x-to.x)+Math.abs(y-to.y));
 	}
 	
 	/**
@@ -65,23 +61,22 @@ public class FloatPoint implements Serializable{
 	 */
 	@Override
 	public String toString(){
-		// return "("+String.valueOf(x)+","+String.valueOf(y)+")";
 		return String.format("(%s,%s)", x, y);
 	}
 	
 	/**
 	 * Rotate the point around a pivot.
+     * @TODO We might used this in the entity classes instead of its own rotationMatrix
 	 * @param amount The amount of degrees to rotate.
 	 * @param pivot The pivot point.
 	 * @return Returns self - good for chaining.
 	 */
 	public FloatPoint rotate(float amount, FloatPoint pivot) {
-		if (amount % 360 == 0) return this; // Save precious calc time if we really don't need to rotate.
+		if (amount % 360 == 0) return this; // Save precious calculation time if we really don't need to rotate.
 		
 		double c = Math.cos(Math.toRadians(amount));
 		double s = Math.sin(Math.toRadians(amount));
-		
-		// Log.i("FloatPoint.rotate", String.format("Rotating %s by %s around %s.", toString(), amount, pivot.toString()));
+
 		FloatPoint p = new FloatPoint(pivot);
 		p.x -= x;
 		p.y -= y;

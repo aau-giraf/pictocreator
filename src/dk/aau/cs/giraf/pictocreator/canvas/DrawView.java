@@ -1,9 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,7 +10,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GDialogAlert;
 import dk.aau.cs.giraf.gui.R;
@@ -28,14 +23,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
  * @author lindhart
  */
 public class DrawView extends View {
-
-	/**
-	 * Application context. Used when flattening the Bitmap for storing to
-	 * disk.
-	 * @todo Remove. This should not be handled by DrawView. Too high
-	 * coupling.
-	 */
-    private Context context;
 
     /**
      * Width of this DrawView. Registered when the onSizeChanged event is fired
@@ -58,13 +45,13 @@ public class DrawView extends View {
 	 * Bounds for the image. These bounds will be used when saving to a bitmap,
 	 * while the entire drawStack is saved when stored as XML.
 	 */
-	Rect imageBounds;
+	private Rect imageBounds;
 
 	/**
 	 * The Paint used to draw the bounds of the Pictogram (the dark shaded area
 	 * around the main square).
 	 */
-	Paint boundsPaint = new Paint();
+	private Paint boundsPaint = new Paint();
 
 	/**
 	 * The current colour used for strokes. Defaults to opaque black.
@@ -87,7 +74,6 @@ public class DrawView extends View {
 	 */
 	public DrawView(Context context) {
 		super(context);
-                this.context = context;
 		initStuff();
 	}
 
@@ -98,7 +84,6 @@ public class DrawView extends View {
 	 */
 	public DrawView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-                this.context = context;
 
 		initStuff();
 	}
@@ -111,12 +96,11 @@ public class DrawView extends View {
 	 */
 	public DrawView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-                this.context = context;
 		initStuff();
 	}
 
 	/**
-	 * Shared initialiser for all constructors. Sets default values.
+	 * Shared initializer for all constructors. Sets default values.
 	 */
 	private void initStuff(){
 		resetImageBounds();
@@ -125,7 +109,7 @@ public class DrawView extends View {
 		boundsPaint.setStyle(Style.FILL);
 
         //Get draw stack from singleton
-        this.setDrawStack(DrawStackSingleton.getInstance().getSavedData());
+        DrawStackSingleton.getInstance().getSavedData();
 	}
 
 	@Override
@@ -168,10 +152,6 @@ public class DrawView extends View {
 		this.currentHandler.setStrokeWidth(strokeWidth);
 	}
 
-    public void setDrawStack(EntityGroup stack){
-        DrawStackSingleton.getInstance().mySavedData = stack;
-    }
-
 	/**
 	 * Retrieves the ActionHandler currently active.
 	 * @return The current ActionHandler - reference.
@@ -181,8 +161,8 @@ public class DrawView extends View {
 	}
 
 	/**
-	 * Sets the fill colour of the DrawView and, by recursion, the active
-	 * ActionHandler.
+	 * Sets the fill colour of the DrawView and, by recursion,
+     * the active ActionHandler.
 	 * @param color The new colour in ARGB format.
 	 */
 	public void setFillColor(int color) {
@@ -212,22 +192,35 @@ public class DrawView extends View {
 		invalidate();
 	}
 
+    /**
+     * Empties the drawStack and invalidates.
+     */
     private void clearCanvas(){
         DrawStackSingleton.getInstance().mySavedData.entities.clear();
         invalidate();
     }
 
-    GDialogAlert diag = new GDialogAlert(this.getContext(),
-    R.drawable.ic_launcher,
+    /**
+     * Dialog used to prevent a crash when the user has drawn too many object.
+     */
+    private GDialogAlert dialogAlert = new GDialogAlert(this.getContext(),
+             R.drawable.ic_launcher,
             "For mange elementer",
             "Du har desværre tegnet for meget, tegnebrættet ryddes derfor.",
             new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+                @Override
+                public void onClick(View view) {
 
-        }
-    });
+                }
+            }
+    );
 
+    /**
+     * Draws the entites in drawStack, the drawBuffer, and the bufferBounds onto the canvas.
+     * Also, catches a nullPointerException which occurs with excessive drawings.
+     * @TODO Instead of clearing all the entites, remove the last added entity and alert with a suitable message.
+     * @param canvas
+     */
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Log.w("DrawView",  "Invalidated. Redrawing.");
@@ -237,8 +230,8 @@ public class DrawView extends View {
 		    DrawStackSingleton.getInstance().mySavedData.draw(canvas);
         }
         catch(NullPointerException e){
-            if(!diag.isShowing())
-                diag.show();
+            if(!dialogAlert.isShowing())
+                dialogAlert.show();
             clearCanvas();
         }
 
@@ -293,26 +286,6 @@ public class DrawView extends View {
 		// I suspect the user doesn't mind the time spent when they are saving, anyway.
 		this.draw(buff);
 
-		Bitmap doRet = Bitmap.createBitmap(toRet, imageBounds.left, imageBounds.top, imageBounds.width(), imageBounds.height());
-
-		return doRet;
+		return Bitmap.createBitmap(toRet, imageBounds.left, imageBounds.top, imageBounds.width(), imageBounds.height());
 	}
-
-	/**
-	 * Add a new BitmapEntity from a Bitmap source instance.
-	 * @param src The source data.
-	 */
-	public void loadFromBitmap(Bitmap src) {
-		DrawStackSingleton.getInstance().mySavedData.addEntity(new BitmapEntity(src,30));
-		invalidate();
-	}
-
-    /**
-     * Add a new BitmapEntity from a Bitmap source instance with the option to scale the bitmap.
-     * @param src The source data.
-     */
-    public void loadFromBitmap(Bitmap src, int scale) {
-        DrawStackSingleton.getInstance().mySavedData.addEntity(new BitmapEntity(src, scale));
-        invalidate();
-    }
 }
