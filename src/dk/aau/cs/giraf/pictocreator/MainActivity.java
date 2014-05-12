@@ -250,6 +250,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
     private final OnClickListener showPictosearchClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
+            DeselectEntity();
             callPictosearch();
         }
     };
@@ -315,7 +316,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
     private void loadPictogram(Intent data){
         int pictogramID = 0;
         try{
-        pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
+            pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
         }
         catch (ArrayIndexOutOfBoundsException e){
             Log.e(TAG, e.getMessage());
