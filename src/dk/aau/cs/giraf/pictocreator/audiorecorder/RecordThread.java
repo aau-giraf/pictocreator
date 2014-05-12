@@ -16,9 +16,9 @@ public class RecordThread implements Runnable {
 
     private static final int startAmpl = 33000;
 
-    private int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
-    private int outputFormat = MediaRecorder.OutputFormat.THREE_GPP;
-    private int audioEncoder = MediaRecorder.AudioEncoder.AMR_NB;
+    private final int audioSource = MediaRecorder.AudioSource.VOICE_RECOGNITION;
+    private final int outputFormat = MediaRecorder.OutputFormat.THREE_GPP;
+    private final int audioEncoder = MediaRecorder.AudioEncoder.AMR_NB;
 
     private String outputFilePath = null;
 
@@ -36,13 +36,13 @@ public class RecordThread implements Runnable {
 
     /**
      * Constructor for the thread
-     * @param handler The handler to use for storing the audiofile
+     * @param audioHandler The handler to use for storing the audiofile
      * @param recordInterface The interface to communicate with
      */
-    public RecordThread(AudioHandler handler, RecordInterface recordInterface){
+    public RecordThread(AudioHandler audioHandler, RecordInterface recordInterface){
         this.recordInterface = recordInterface;
-        audioHandler = handler;
-        outputFilePath = audioHandler.getFilePath();
+        this.audioHandler = audioHandler;
+        this.outputFilePath = this.audioHandler.getFilePath();
     }
 
     /**
@@ -54,9 +54,7 @@ public class RecordThread implements Runnable {
             recordThread = new Thread(this);
 
             if(mediaRecorder == null){
-                Log.d(TAG, "Beginning initialization of mediaRecorder");
                 mediaRecorder = new MediaRecorder();
-                Log.d(TAG, "mediaRecorder initialized");
             }
 
             try {
@@ -79,7 +77,6 @@ public class RecordThread implements Runnable {
             catch (IOException ex){
                 Log.e(TAG, "Could not prepare or start the mediaRecorder", ex.fillInStackTrace());
             }
-            Log.d(TAG, "Start ampl: " + startAmpl);
         }
     }
 
@@ -94,7 +91,6 @@ public class RecordThread implements Runnable {
                 mediaRecorder.reset();
 
                 recordThread.join();
-                Log.d(TAG, "recordThread joined");
             }
         }
         catch (InterruptedException interrupt){
@@ -121,7 +117,6 @@ public class RecordThread implements Runnable {
                 // The value is divided by 2000 to give a value within range
                 // of the decibel-meter
                 decibel = getAmplitude() / 2000;
-                Log.d(TAG, "Amplitude: " + decibel);
                 recordInterface.decibelUpdate(decibel);
             }
             catch (InterruptedException e) {
