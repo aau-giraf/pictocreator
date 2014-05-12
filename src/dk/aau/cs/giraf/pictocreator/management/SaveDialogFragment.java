@@ -61,11 +61,11 @@ public class SaveDialogFragment extends DialogFragment{
     private EditText inlineTextLabel;
     private EditText tagInputFind;
 
-    private String textLabel;
+    private String pictogramNameText;
     private String inlineText;
 
     private GButton acceptButton;
-    private GButton cancelButton, addConnectAutistButton;
+    private GButton cancelButton, addConnectCitizenButton;
 
     private GProfileSelector autistSelector;
 
@@ -78,6 +78,7 @@ public class SaveDialogFragment extends DialogFragment{
     private FileHandler fileHandler;
     private boolean isService = false;
     private Dialog tmpDialog;
+    private static int tempPos;
 
     private ArrayAdapter<String> tagArrayAdapter, connectedArrayAdapter;
 
@@ -138,6 +139,55 @@ public class SaveDialogFragment extends DialogFragment{
 
         parentActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        //general layout for this dialog
+        saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
+        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
+        saveDialogLayout.setOnTouchListener(hideKeyboardTouchListener);
+
+        //preview layout configuration
+        AssignBitmapPreview();
+        previewView = (FrameLayout) view.findViewById(R.id.save_preview);
+        previewView.addView(imgView);
+
+        //text for pictogram
+        inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
+        inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
+
+        //buttons
+        acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
+        acceptButton.setOnClickListener(acceptListener);
+
+        cancelButton = (GButton) view.findViewById(R.id.save_button_negative);
+        cancelButton.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                tmpDialog.cancel();
+            }
+        });
+
+        //access level radio buttons
+        publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
+
+        publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
+        publicityPublic.setOnClickListener(disableConnect);
+
+        publicityPrivate = (GRadioButton) view.findViewById(R.id.radio_private);
+        publicityPrivate.setOnClickListener(enableCitizenList);
+
+        //citizen layout configuration
+        citizenProfiles = new ArrayList<Profile>();
+        citizenNames = new ArrayList<String>();
+        connectedArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, citizenNames);
+
+        connectedCitizenList = (ListView) view.findViewById(R.id.connected_list);
+        connectedCitizenList.setAdapter(connectedArrayAdapter);
+        connectedCitizenList.setOnItemClickListener(onRemoveCitizen);
+
+        addConnectCitizenButton = (GButton) view.findViewById(R.id.connect_autism);
+        addConnectCitizenButton.setOnClickListener(addCitizen);
+
+        //tags layout configuration
         tags = new ArrayList<String>();
         tagArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, tags);
 
@@ -147,73 +197,15 @@ public class SaveDialogFragment extends DialogFragment{
         tagsListView = (ListView) view.findViewById(R.id.save_tags_list);
         tagsListView.setAdapter(tagArrayAdapter);
 
-        citizenProfiles = new ArrayList<Profile>();
-        citizenNames = new ArrayList<String>();
-        connectedArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, citizenNames);
-
-        connectedCitizenList = (ListView) view.findViewById(R.id.connected_list);
-        connectedCitizenList.setAdapter(connectedArrayAdapter);
-        connectedCitizenList.setOnItemClickListener(onRemoveAutist);
-
-        addConnectAutistButton = (GButton) view.findViewById(R.id.connect_autism);
-        addConnectAutistButton.setOnClickListener(addAutism);
-
-        previewView = (FrameLayout) view.findViewById(R.id.save_preview);
-        previewView.addView(imgView);
-
-        publicGroup = (GRadioGroup) view.findViewById(R.id.public_group);
-
-        publicityPublic = (GRadioButton) view.findViewById(R.id.radio_public);
-        publicityPublic.setOnClickListener(disableConnect);
-
-        publicityPrivate = (GRadioButton) view.findViewById(R.id.radio_private);
-        publicityPrivate.setOnClickListener(enableConnect);
-
-        inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
-        inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
-
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.saveDialogLayout);
-        layout.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View view, MotionEvent ev)
-            {
-                InputMethodManager in = (InputMethodManager) parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                return false;
-            }
-        });
-
-        AssignBitmapPreview();
-
-
-        saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
-
-        acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
-        acceptButton.setOnClickListener(acceptListener);
-
-        cancelButton = (GButton) view.findViewById(R.id.save_button_negative);
-        cancelButton.setOnClickListener(new OnClickListener(){
-
-                @Override
-                public void onClick(View view){
-                    tmpDialog.cancel();
-                }
-            });
-
         tagInputFind.setOnKeyListener(tagKeyListener);
         tagsListView.setOnItemClickListener(tagViewListener);
-
-        GRadioButton privateRadioButton = (GRadioButton)view.findViewById(R.id.radio_private);
-        privateRadioButton.setTextColor(0xFF000000);
-
-        GRadioButton publicRadioButton = (GRadioButton)view.findViewById(R.id.radio_public);
-        publicRadioButton.setTextColor(0xFF000000);
 
         return view;
     }
 
+    /**
+     * Assign the canvas bitmap from the parentActivity to the preview
+     */
     private void AssignBitmapPreview() {
         Bitmap bitmap = null;
 
@@ -229,7 +221,9 @@ public class SaveDialogFragment extends DialogFragment{
         }
     }
 
-    private static int tempPos;
+    /**
+     * Click listener that enables deletion of tags
+     */
     private final AdapterView.OnItemClickListener tagViewListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -246,10 +240,27 @@ public class SaveDialogFragment extends DialogFragment{
         }
     };
 
+    /**
+     * Listener for saveDialogLayout which hides the keyboard when the layout is touched
+     */
+    private final View.OnTouchListener hideKeyboardTouchListener = new View.OnTouchListener()
+    {
+        @Override
+        public boolean onTouch(View view, MotionEvent ev)
+        {
+            InputMethodManager in = (InputMethodManager) parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            return false;
+        }
+    };
+
+    /**
+     * Handles the adding of tags to the list.
+     * keyCode 66 is a code for the enter and tab key.
+     */
     private final View.OnKeyListener tagKeyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            Log.i(TAG, "code: " + keyCode);
             if(keyCode == 66 && !(tagInputFind.getText().toString()).matches("")){
                 if(!tags.contains(tagInputFind.getText().toString())){
                     tags.add(0,tagInputFind.getText().toString());
@@ -261,35 +272,42 @@ public class SaveDialogFragment extends DialogFragment{
         }
     };
 
-    private final OnClickListener acceptListener = new OnClickListener() {
 
+    /**
+     * Click listener for the accept button
+     * Calls various functino from storagePictogram to save the information of the pictogram
+     */
+    private final OnClickListener acceptListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            textLabel = inputTextLabel.getText().toString();
+            pictogramNameText = inputTextLabel.getText().toString();
             inlineText = inlineTextLabel.getText().toString();
-            Log.d(TAG, "TextLabel: " + textLabel);
 
-            if (textLabel.matches("") || textLabel == null) {
+            //A pictogram must have a name, if not the user is asked to provide one
+            if (pictogramNameText.matches("") || pictogramNameText == null) {
                 Toast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            fileHandler.saveFinalFiles(textLabel, inlineText, preview);
+            fileHandler.saveFinalFiles(pictogramNameText, inlineText, preview);
 
             //Value 1 in database means publicly available
             //Value 0 in database means not publicly available
-            if (publicGroup.getCheckedRadioButtonId() == publicityPublic.getId())
+            if (publicityPublic.isChecked()){
                 storagePictogram.setpublicPictogram(1);
-            else if (publicGroup.getCheckedRadioButtonId() == publicityPrivate.getId())
+            }
+            else if(publicityPrivate.isChecked()){
                 storagePictogram.setpublicPictogram(0);
-            //storagePictogram.setpublicPictogram(publicStatus.isChecked() ? 1 : 0);
+            }
 
-            if(!(tags != null) && !(tags.isEmpty())){
+            //adds each tag to the pictogram
+            if((tags != null) && !(tags.isEmpty())){
                 for(String t : tags){
                     storagePictogram.addTag(t);
                 }
             }
 
+            //saves the picogram into the database
             if (storagePictogram.addPictogram()) {
                 Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
             }
@@ -306,7 +324,7 @@ public class SaveDialogFragment extends DialogFragment{
         }
     };
 
-    private final AdapterView.OnItemClickListener onRemoveAutist = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener onRemoveCitizen = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
@@ -315,18 +333,17 @@ public class SaveDialogFragment extends DialogFragment{
                         @Override
                         public void onClick(View v) {
                             citizenProfiles.remove(tempPos);
-                            updateAutistList();
+                            updateCitizenList();
                         }
                     });
             removeDialog.show();
-
         }
     };
 
-    private final OnClickListener enableConnect = new OnClickListener() {
+    private final OnClickListener enableCitizenList = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            addConnectAutistButton.setVisibility(View.VISIBLE);
+            addConnectCitizenButton.setVisibility(View.VISIBLE);
             connectedCitizenList.setVisibility(View.VISIBLE);
         }
     };
@@ -334,41 +351,40 @@ public class SaveDialogFragment extends DialogFragment{
     private final OnClickListener disableConnect = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            addConnectAutistButton.setVisibility(View.INVISIBLE);
+            addConnectCitizenButton.setVisibility(View.INVISIBLE);
             connectedCitizenList.setVisibility(View.INVISIBLE);
         }
     };
 
-    private final OnClickListener addAutism = new OnClickListener() {
+    /**
+     * Click listener which adds citizen to the list
+     * Utilizes the GProfileSelector which has names of citizens associated with a specific guardian
+     */
+    private final OnClickListener addCitizen = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            CallProfileSelector();
+            Helper helper = new Helper(parentActivity);
+            try{
+                autistSelector = new GProfileSelector(parentActivity, helper.profilesHelper.getProfileById(storagePictogram.getAuthor() == 0 ? storagePictogram.getAuthor()+1:storagePictogram.getAuthor()),null);
+                autistSelector.setOnListItemClick(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Profile person =(Profile)parent.getItemAtPosition(position);
+                        if (!citizenProfiles.contains(person)){
+                            citizenProfiles.add(person);
+                            updateCitizenList();
+                        }
+                    }
+                });
+                autistSelector.show();
+            }catch (Exception e){
+                Log.e(TAG, e.getMessage());
+            }
         }
     };
 
-    private void CallProfileSelector(){
-        Helper helper = new Helper(parentActivity);
-        try{
-        autistSelector = new GProfileSelector(parentActivity, helper.profilesHelper.getProfileById(storagePictogram.getAuthor() == 0 ? storagePictogram.getAuthor()+1:storagePictogram.getAuthor()),null);
-        autistSelector.setOnListItemClick(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Profile person =(Profile)parent.getItemAtPosition(position);
-                if (!citizenProfiles.contains(person)){
-                    citizenProfiles.add(person);
-                    updateAutistList();
-                }
 
-            }
-        });
-        autistSelector.show();
-        }catch (Exception e){
-            Log.e(TAG, e.getMessage().toString());
-        }
-
-    }
-
-    private void updateAutistList(){
+    private void updateCitizenList(){
         citizenNames.clear();
         for(int i = 0; i < citizenProfiles.size(); i++){
             citizenNames.add(i, citizenProfiles.get(i).getName());
@@ -380,9 +396,8 @@ public class SaveDialogFragment extends DialogFragment{
      * Method called when the dialog is resumed
      */
     @Override
-	public void onResume() {
+	public void onResume(){
         super.onResume();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
-
 }
