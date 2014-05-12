@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
@@ -54,6 +55,7 @@ public class SaveDialogFragment extends DialogFragment{
     private ArrayList<String> tags, citizenNames;
     private ArrayList<Profile> citizenProfiles;
     private Activity parentActivity;
+    private RelativeLayout saveBar;
 
     private ImageView imgView;
 
@@ -130,6 +132,11 @@ public class SaveDialogFragment extends DialogFragment{
         tmpDialog = getDialog();
 
         view = inflater.inflate(R.layout.save_dialog, container);
+
+
+        saveBar = (RelativeLayout)view.findViewById(R.id.saveBar);
+        saveBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
+
 
         tmpDialog.setCanceledOnTouchOutside(false);
 
@@ -228,7 +235,7 @@ public class SaveDialogFragment extends DialogFragment{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
-            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Slet Tag: " + tags.get(position),
+            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Slet Søgeord: " + tags.get(position),
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -329,7 +336,7 @@ public class SaveDialogFragment extends DialogFragment{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
-            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Fjerner " + citizenProfiles.get(position).getName() + " fra listen",
+            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Fjern " + citizenProfiles.get(position).getName() + " fra listen?",
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
