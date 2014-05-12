@@ -267,6 +267,7 @@ public class SaveDialogFragment extends DialogFragment{
                 }
                 tagInputFind.setText("");
                 tagInputFind.requestFocus();
+                tagArrayAdapter.notifyDataSetChanged();
             }
             return false;
         }
