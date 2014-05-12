@@ -15,11 +15,10 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
  * The FreehandHandler is a kinda-sorta ShapeHandler. The shape is not
  * well-defined, but follows the same basic rules.
  * @author Croc
- *
  */
 public class FreehandHandler extends ShapeHandler {
 
-	private String tag = "FreehandHandler.onTouchEvent";
+	private String TAG = "FreehandHandler.onTouchEvent";
 
 	@Override
 	public void pushEntity(EntityGroup drawStack) {
@@ -33,6 +32,11 @@ public class FreehandHandler extends ShapeHandler {
 		return bufferedEntity;
 	}
 
+    /**
+     * The icon shown in the toolbox button.
+     * @param size
+     * @return
+     */
 	@Override
 	public Bitmap getToolboxIcon(int size) {
 		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -55,7 +59,7 @@ public class FreehandHandler extends ShapeHandler {
 		int eventIndex = event.getActionIndex(); // Get the index to the responsible pointer for this event.
 		int eventPointerId = event.getPointerId(eventIndex);
 		
-		Log.i(tag, "MoveEvent handler invoked!");
+		Log.i(TAG, "MoveEvent handler invoked!");
 		
 		if (action == MotionEvent.ACTION_DOWN){
 						// Register the ID of the pointer responsible for the down event. This is what we actually track.
@@ -63,36 +67,36 @@ public class FreehandHandler extends ShapeHandler {
 			
 			bufferedEntity = new FreehandEntity(getFillColor());
 			
-			Log.i(tag, "Pointer down. Registering.");
+			Log.i(TAG, "Pointer down. Registering.");
 			
 			doDraw = true;
 		}
 		else if (action == MotionEvent.ACTION_MOVE){
 			// Assert that the pointer responsible for the event is also the one we're tracking.
 			if (bufferedEntity == null) {
-				Log.i(tag, "No active entity. Assuming corrupted MOVE event chain.");
+				Log.i(TAG, "No active entity. Assuming corrupted MOVE event chain.");
 			}
 			else if (eventPointerId == this.currentPointerId) {
 				((FreehandEntity)bufferedEntity).addPoint(event.getX(eventIndex), event.getY(eventIndex));
 				doDraw = true;
 			}
-			else Log.i(tag, "Move event. Wrong pointer. Ignoring.");
+			else Log.i(TAG, "Move event. Wrong pointer. Ignoring.");
 		}
 		else if (action == MotionEvent.ACTION_UP){
 			// Finger raised. If we have valid data, store to drawStack and clear.
 			// Validate the pointer ID.
 			if (bufferedEntity == null) {
-				Log.i(tag, "Cannot add null entity. Assumnig bad MOVE event chain.");
+				Log.i(TAG, "Cannot add null entity. Assumnig bad MOVE event chain.");
 			}
 			else if (eventPointerId == this.currentPointerId){
 				pushEntity(drawStack);
 				doDraw = false;
                 bufferedEntity = null;
 			}
-			else Log.w(tag, "Index did not match. Ignoring event.");
+			else Log.w(TAG, "Index did not match. Ignoring event.");
 		}
 		else {
-			Log.e(tag, "Unknown and thus unhandled touch event!");
+			Log.e(TAG, "Unknown and thus unhandled touch event!");
 			return false; // Touch event not handled.
 		}
 		

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.RectEntity;
@@ -18,29 +19,32 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.RectEntity;
  *
  */
 public class RectHandler extends ShapeHandler {
-	
+
+    @Override
+    public Bitmap getToolboxIcon(int size) {
+        Bitmap returnValue = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(returnValue);
+        canvas.rotate(30.0f, size / 2, size / 2);
+        canvas.scale(0.5f, 0.5f, size / 2, size / 2);
+
+        Paint paint = new Paint();
+        paint.setColor(0xFF0000CC);
+        paint.setStyle(Style.FILL);
+        canvas.drawRect(4, 4, size - 4, size - 4, paint);
+        paint.setColor(0xFF000000);
+        paint.setStyle(Style.STROKE);
+        canvas.drawRect(4, 4, size - 4, size - 4, paint);
+
+        return returnValue;
+    }
+
 	@Override
 	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();
 		this.bufferedEntity = new RectEntity(left, top, right, bottom, getFillColor(), getStrokeColor());
 		bufferedEntity.setStrokeWidth(getStrokeWidth());
 		return bufferedEntity;
-	}
-	
-	@Override
-	public Bitmap getToolboxIcon(int size) {
-		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(ret);
-		c.rotate(30.0f, size/2, size/2);
-		c.scale(0.5f, 0.5f, size/2, size/2);
-		Paint p = new Paint();
-		p.setColor(0xFF0000CC);
-		p.setStyle(Style.FILL);
-		c.drawRect(4, 4, size-4, size-4, p);
-		p.setColor(0xFF000000);
-		p.setStyle(Style.STROKE);
-		c.drawRect(4, 4, size-4, size-4, p);
-		return ret;
 	}
 	
 	@Override

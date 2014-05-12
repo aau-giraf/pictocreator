@@ -3,6 +3,7 @@ package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.MotionEvent;
+
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
@@ -14,6 +15,8 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
  * @author Croc
  */
 public abstract class ShapeHandler extends ActionHandler {
+
+    private String TAG = "ShapeHandler.onTouchEvent";
 
 	/**
 	 * Support value. calcRectBounds will set these to proper bounds for
@@ -58,8 +61,6 @@ public abstract class ShapeHandler extends ActionHandler {
 	 */
 	protected int currentPointerId;
 	
-	private String tag = "ShapeHandler.onTouchEvent";
-	
 	/**
 	 * The PrimitiveEntity currently being created. The seperate handlers can
 	 * use this both for final addition to the drawStack as well as temp buffer
@@ -77,18 +78,21 @@ public abstract class ShapeHandler extends ActionHandler {
 	@Override
 	public void setStrokeColor(int color) {
 		super.setStrokeColor(color);
-		if (bufferedEntity != null) bufferedEntity.setStrokeColor(color);
+		if (bufferedEntity != null){
+            bufferedEntity.setStrokeColor(color);
+        }
 	}
 	
 	@Override
 	public void setFillColor(int color) {
 		super.setFillColor(color);
-		if (bufferedEntity != null) bufferedEntity.setFillColor(color);
+		if (bufferedEntity != null){
+            bufferedEntity.setFillColor(color);
+        }
 	}
 	
 	/**
-	 * Creats a new ShapeHandler with default values for colors and stroke
-	 * width.
+	 * Creates a new ShapeHandler with default values for colors and stroke width.
 	 */
 	public ShapeHandler() {
 		setStrokeColor(0xFF000000);
@@ -102,7 +106,7 @@ public abstract class ShapeHandler extends ActionHandler {
 		int eventIndex = event.getActionIndex(); // Get the index to the responsible pointer for this event.
 		int eventPointerId = event.getPointerId(eventIndex);
 		
-		Log.i(tag, "MoveEvent handler invoked!");
+		Log.i(TAG, "MoveEvent handler invoked!");
 		
 		if (action == MotionEvent.ACTION_DOWN){
 			// Just pressed to tab. Store start location and index.
@@ -113,15 +117,15 @@ public abstract class ShapeHandler extends ActionHandler {
 			
 			doDraw = false;
 			
-			Log.i(tag, "Pointer down. Registering.");
+			Log.i(TAG, "Pointer down. Registering.");
 		}
 		else if (action == MotionEvent.ACTION_MOVE){
 			// Assert that the pointer responsible for the event is also the one we're tracking.
 			if (eventPointerId == this.currentPointerId) {
 				endPoint = new FloatPoint(event.getX(eventIndex), event.getY(eventIndex));
-				Log.i(tag, "Move event. Drawing new shape.");
+				Log.i(TAG, "Move event. Drawing new shape.");
 			}
-			else Log.i(tag, "Move event. Wrong pointer. Ignoring.");
+			else Log.i(TAG, "Move event. Wrong pointer. Ignoring.");
 			
 			// Under all circumstances, draw the buffer canvas to display to the user.
 			doDraw = true;
@@ -136,14 +140,14 @@ public abstract class ShapeHandler extends ActionHandler {
 					pushEntity(drawStack);
 					bufferedEntity = null;
 				}
-				else Log.i(tag, "Shape points are not distinct. Ignoring.");
+				else Log.i(TAG, "Shape points are not distinct. Ignoring.");
 
 				doDraw = false;
 			}
-			else Log.w(tag, "Index did not match. Ignoring event.");
+			else Log.w(TAG, "Index did not match. Ignoring event.");
 		}
 		else {
-			Log.e(tag, "Unknown and thus unhandled touch event!");
+			Log.e(TAG, "Unknown and thus unhandled touch event!");
 			return false; // Touch event not handled.
 		}
 		

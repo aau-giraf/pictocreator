@@ -11,6 +11,7 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
+
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
@@ -44,7 +45,7 @@ public class SelectionHandler extends ActionHandler {
 	
 	/**
 	 * Offset difference between where the pointer was registered, and the
-	 * top-left corner of the selected Entity's hitbox. Used for more natural
+	 * top-left corner of the selected Entity's hitbox. Could be used for more natural
 	 * dragging of Entity objects.
 	 */
 	protected FloatPoint offset;
@@ -196,6 +197,9 @@ public class SelectionHandler extends ActionHandler {
 	 * background Bitmap (and risk moving a top-layer Entity to the back),
 	 * flatten from that Entity downwards (with potential side-effecting) or
 	 * simply convert the Entity to a Bitmap (confusing the metaphor)?
+     * Note from SW608F14: We decided to move the entity into the back
+     * of the canvas (front of the drawStack).
+     * We leave the previous note in case another implementation is requested.
 	 */
 	protected void flattenEntity(EntityGroup drawStack) {
         drawStack.moveToBack(this.selectedEntity);
@@ -210,27 +214,32 @@ public class SelectionHandler extends ActionHandler {
 		selectedEntity = null;
 		currentMode = ACTION_MODE.NONE;
 	}
-	
+
+    /**
+     * Touch event which handles the different functionality of the selection tools.
+     * @param event The source event, passed uncorrupted from the DrawView parent.
+     * @param drawStack The stack of completed drawing operations in the view.
+     * Probably only used by SelectionHandler.
+     * @return
+     */
 	@Override
 	public boolean onTouchEvent(MotionEvent event, EntityGroup drawStack) {
 		// Determine type of action.
 		// Down: find first collision, highlight.
 		// Move: reposition by delta.
 		// Up: stop. Un-select is a different gesture.
-		String dtag = "SelectionHandler.onTouchEvent";
+		String TouchEventTag = "SelectionHandler.onTouchEvent";
 		
 		int index = event.getActionIndex();
 		int pointerId = event.getPointerId(index);
 		int action = event.getAction();
 
-
-		
 		if (pointerId != currentPointerId) {
-			Log.i(dtag, "Unregistered pointer. Ignoring.");
+			Log.i(TouchEventTag, "Unregistered pointer. Ignoring.");
 		}
 		
 		if (action == MotionEvent.ACTION_UP) {
-			Log.i(dtag, "Pointer raised. Ignoring remainder of logic.");
+			Log.i(TouchEventTag, "Pointer raised. Ignoring remainder of logic.");
 			pointerDown = false;
 			currentPointerId = -1;
 			showIcons = true;
@@ -240,7 +249,7 @@ public class SelectionHandler extends ActionHandler {
 		float px = event.getX(index);
 		float py = event.getY(index);
 		
-		Log.i(dtag, "Entering phased logic. pointerDown: " + String.valueOf(pointerDown) + ", actioN:" + String.valueOf(action));
+		Log.i(TouchEventTag, "Entering phased logic. pointerDown: " + String.valueOf(pointerDown) + ", action:" + String.valueOf(action));
 		
 		// Determine action or new Entity selection.
 		if (action == MotionEvent.ACTION_DOWN && !pointerDown) {
@@ -263,11 +272,11 @@ public class SelectionHandler extends ActionHandler {
 					currentMode = ACTION_MODE.MOVE;
 				}
 				else {
-					Log.i(dtag, "Attempting to select new Entity.");
+					Log.i(TouchEventTag, "Attempting to select new Entity.");
 					selectedEntity = drawStack.getCollidedWithPoint(px, py);
 				}
 			} else {
-				Log.i(dtag, "No selected Entity. Trying to find one.");
+				Log.i(TouchEventTag, "No selected Entity. Trying to find one.");
 				selectedEntity = drawStack.getCollidedWithPoint(px, py);
 			}
 			
@@ -287,63 +296,65 @@ public class SelectionHandler extends ActionHandler {
 				boolean handled = false;
 				
 				switch (currentMode) {
-				case MOVE: {
-					FloatPoint diff = new FloatPoint(
-							px-previousPointerLocation.x,
-							py-previousPointerLocation.y);
-					selectedEntity.setX(selectedEntity.getX()+diff.x);
-					selectedEntity.setY(selectedEntity.getY()+diff.y);
-					handled = true;
-					break;
-				}
-				case RESIZE: {
-					// WARNING! Breaks if the resize icon is NOT in the lower-right corner!
-
-                    float x = selectedEntity.getHitboxRight() - (selectedEntity.getX() +selectedEntity.getWidth());
-                    float y = selectedEntity.getHitboxBottom() - (selectedEntity.getY() +selectedEntity.getHeight());
-
-                    float widthNewValue = px - x - selectedEntity.getX();
-                    float heightNewValue = py - y - selectedEntity.getY();
-
-                    if(selectedEntity instanceof BitmapEntity)
-                    {
-                        float ratio = selectedEntity.getHeight() / selectedEntity.getWidth();
-
-                        selectedEntity.setWidth(widthNewValue);
-                        selectedEntity.setHeight(widthNewValue * ratio);
+                    case MOVE: {
+                        FloatPoint diff = new FloatPoint(
+                                px-previousPointerLocation.x,
+                                py-previousPointerLocation.y);
+                        selectedEntity.setX(selectedEntity.getX()+diff.x);
+                        selectedEntity.setY(selectedEntity.getY()+diff.y);
+                        handled = true;
+                        break;
                     }
-                    else
-                    {
-					    selectedEntity.setWidth(widthNewValue);
-					    selectedEntity.setHeight(heightNewValue);
-                    }
-					handled = true;
-					break;
-				}
-				case ROTATE: {
-					float currentAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
+                    case RESIZE: {
+                        // WARNING! Breaks if the resize icon is NOT in the lower-right corner!
+                        float x = selectedEntity.getHitboxRight() - (selectedEntity.getX() +selectedEntity.getWidth());
+                        float y = selectedEntity.getHitboxBottom() - (selectedEntity.getY() +selectedEntity.getHeight());
 
-					selectedEntity.rotateBy(currentAngle - previousAngle);
-					
-					previousAngle = currentAngle;
-					handled = true;
-					break;
-				}
-				default: {
-					handled = false;
-				}
+                        float widthNewValue = px - x - selectedEntity.getX();
+                        float heightNewValue = py - y - selectedEntity.getY();
+
+                        if(selectedEntity instanceof BitmapEntity)
+                        {
+                            float ratio = selectedEntity.getHeight() / selectedEntity.getWidth();
+
+                            selectedEntity.setWidth(widthNewValue);
+                            selectedEntity.setHeight(widthNewValue * ratio);
+                        }
+                        else
+                        {
+                            selectedEntity.setWidth(widthNewValue);
+                            selectedEntity.setHeight(heightNewValue);
+                        }
+                        handled = true;
+                        break;
+                    }
+                    case ROTATE: {
+                        float currentAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
+
+                        selectedEntity.rotateBy(currentAngle - previousAngle);
+
+                        previousAngle = currentAngle;
+                        handled = true;
+                        break;
+                    }
+                    default: {
+                        handled = false;
+                    }
 				}
 				
 				previousPointerLocation = new FloatPoint(px, py);
 				updateIconLocations(); // Icons.
 				
-				if (currentMode == ACTION_MODE.NONE) showIcons = true;
-				else showIcons = false;
+				if (currentMode == ACTION_MODE.NONE){
+                    showIcons = true;
+                }
+				else{
+                    showIcons = false;
+                }
 				
 				return handled;
 			}
 		}
-		
 		return false;
 	}
 	

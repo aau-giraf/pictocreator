@@ -16,14 +16,14 @@ public class LineHandler extends ShapeHandler {
 
 	@Override
 	public Bitmap getToolboxIcon(int size) {
-		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(ret);
+		Bitmap returnValue = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(returnValue);
 		
-		Paint p = new Paint();
-		p.setColor(0xFF000000);
-		p.setStyle(Style.STROKE);
-		c.drawLine(4, 8, size-8, size-4, p);
-		return ret;
+		Paint paint = new Paint();
+		paint.setColor(0xFF000000);
+		paint.setStyle(Style.STROKE);
+		canvas.drawLine(4, 8, size - 8, size - 4, paint);
+		return returnValue;
 	}
 	
 	@Override
