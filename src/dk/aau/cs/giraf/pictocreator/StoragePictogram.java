@@ -51,7 +51,7 @@ public class StoragePictogram {
     public StoragePictogram(Context context){
         this.context = context;
         try{
-            this.databaseHelper = new Helper(this.context);
+            databaseHelper = new Helper(this.context);
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -67,7 +67,7 @@ public class StoragePictogram {
     public StoragePictogram(Context context, String imagePath, String pictogramName, String inlineTextLabel, File audioFile){
         this.context = context;
         try{
-            this.databaseHelper = new Helper(this.context);
+            databaseHelper = new Helper(this.context);
         } catch (Exception e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -195,11 +195,9 @@ public class StoragePictogram {
     private List<Tag> generateTagList(){
         List<Tag> addedTags = new ArrayList<Tag>();
 
-        if(tags.size() > 0){
-            for(String tag : tags){
-                Tag newTag = insertTag(tag);
-                addedTags.add(newTag);
-            }
+        for(String tag : tags){
+            Tag newTag = insertTag(tag);
+            addedTags.add(newTag);
         }
 
         return addedTags;
@@ -243,6 +241,17 @@ public class StoragePictogram {
     private Pictogram generatePictogram(){
         Pictogram pictogram =  makeImage(imagePath);
 
+        generateAudio(pictogram);
+        generateEditableImage(pictogram);
+
+        return pictogram;
+    }
+
+    /**
+     * Method for generation of audio for the pictogram
+     * @param pictogram The generated pictogram
+     */
+    private void generateAudio(Pictogram pictogram){
         if(audioFile != null){
             byte[] b = new byte[(int) audioFile.length()];
             try{
@@ -274,7 +283,13 @@ public class StoragePictogram {
                 }
             }
         }
+    }
 
+    /**
+     * Method for generation of editable image for the pictogram
+     * @param pictogram
+     */
+    private void generateEditableImage(Pictogram pictogram){
         if(DrawStackSingleton.getInstance().getSavedData() != null){
             try{
                 pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
@@ -284,8 +299,6 @@ public class StoragePictogram {
             }
         }
         pictogram = insertPictogram(pictogram);
-
-        return pictogram;
     }
 
     /**
@@ -295,21 +308,18 @@ public class StoragePictogram {
     public boolean addPictogram(){
         Pictogram pictogram;
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
-        boolean retVal = false;
 
         pictogram = generatePictogram();
 
         if(pictogram != null){
             List<Tag> addTags = generateTagList();
-            if(addTags.size() > 0){
-                for(Tag t : addTags)
-                {
-                    tagHelper.insertPictogramTag(new PictogramTag(pictogram.getId(), t.getId()));
-                }
+            for(Tag t : addTags)
+            {
+                tagHelper.insertPictogramTag(new PictogramTag(pictogram.getId(), t.getId()));
             }
-            retVal = true;
+            return true;
         }
 
-        return retVal;
+        return false;
     }
 }
