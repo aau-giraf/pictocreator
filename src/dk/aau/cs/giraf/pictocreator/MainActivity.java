@@ -21,6 +21,7 @@ import java.io.IOException;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -198,7 +199,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e){
-            Toast.makeText( this, "Pictosearch er ikke installeret.", Toast.LENGTH_LONG).show();
+            GToast.makeText(this, "Pictosearch er ikke installeret.", Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
     }
@@ -277,11 +278,11 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
      * @param bitmap The bitmap to be loaded
      */
     private void loadPicture(Bitmap bitmap){
-        int sizeHeightPercentage = (int)(((double)(this.getBitmap().getHeight())/(double)(bitmap).getHeight())*100.0);
+        int sizeHeightPercentage = (int)(((double)(this.getBitmap().getHeight())/(double)(bitmap).getHeight())*100.0) + 1;
         int sizeWidthPercentage = (int)(((double)(this.getBitmap().getWidth())/(double)(bitmap).getWidth())*100.0);
 
         BitmapEntity tempEntity = new BitmapEntity(bitmap, Math.max(sizeHeightPercentage, sizeWidthPercentage));
-        tempEntity.setCenter(drawFragment.drawView.getMeasuredWidth()/2, drawFragment.drawView.getMeasuredHeight()/2);
+        tempEntity.setCenter(drawFragment.drawView.getMeasuredWidth()/2, drawFragment.drawView.getMeasuredHeight()/2 - 4.0f);
         DrawStackSingleton.getInstance().mySavedData.addEntity(tempEntity);
         drawFragment.drawView.invalidate();
     }

@@ -323,10 +323,10 @@ public class SaveDialogFragment extends DialogFragment{
 
             //saves the picogram into the database
             if (storagePictogram.addPictogram()) {
-                Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
+                GToast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
+                GToast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
             }
 
             if (isService) {
