@@ -138,6 +138,8 @@ public class DrawFragment extends Fragment {
         previewButton.setStrokeColor(0xFF000000);
         previewButton.setFillColor(0xFF000000);
         previewButton.setOnClickListener(onPreviewButtonClick);
+        previewButton.changePreviewDisplay(drawType.LINE);
+        previewButton.setEnabled(false);
 
         drawView.setStrokeColor(previewButton.getStrokeColor());
         drawView.setFillColor(previewButton.getFillColor());
@@ -231,6 +233,9 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new SelectionHandler(getResources()));
             setAllUnToggle();
             selectHandlerButton.setToggled(true);
+            previewButton.changePreviewDisplay(drawType.NONE);
+            previewButton.setEnabled(false);
+
         }
     };
     private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
@@ -239,6 +244,8 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new FreehandHandler());
             setAllUnToggle();
             freehandHandlerButton.setToggled(true);
+            previewButton.changePreviewDisplay(drawType.LINE);
+            previewButton.setEnabled(false);
         }
     };
     private final OnClickListener onRectHandlerButtonClick = new OnClickListener() {
@@ -247,6 +254,8 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new RectHandler());
             setAllUnToggle();
             rectHandlerButton.setToggled(true);
+            previewButton.changePreviewDisplay(drawType.RECTANGLE);
+            previewButton.setEnabled(true);
         }
     };
     private final OnClickListener onOvalHandlerButtonClick = new OnClickListener() {
@@ -255,6 +264,9 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new OvalHandler());
             setAllUnToggle();
             ovalHandlerButton.setToggled(true);
+            previewButton.changePreviewDisplay(drawType.CIRCLE);
+            previewButton.setEnabled(true);
+
         }
     };
     private final OnClickListener onLineHandlerButtonClick = new OnClickListener() {
@@ -264,6 +276,8 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new LineHandler());
             setAllUnToggle();
             lineHandlerButton.setToggled(true);
+            previewButton.changePreviewDisplay(drawType.LINE);
+            previewButton.setEnabled(false);
         }
     };
 
