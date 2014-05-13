@@ -79,6 +79,7 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
         else {
             Log.e(TAG, "Cam ID unknown");
         }
+
         try{
             mCamera.setPreviewDisplay(this.mHolder);
         }

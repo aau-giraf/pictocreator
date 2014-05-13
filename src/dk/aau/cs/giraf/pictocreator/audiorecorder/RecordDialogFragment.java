@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictogram.CompleteListener;
@@ -207,7 +208,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                 switchLayoutPlayStopButton();
             }
             else{
-                Toast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
+                GToast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
             }
         }
     };
