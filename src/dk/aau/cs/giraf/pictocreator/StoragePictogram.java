@@ -16,9 +16,13 @@ import android.widget.Toast;
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramTagController;
+import dk.aau.cs.giraf.oasis.lib.controllers.ProfileController;
+import dk.aau.cs.giraf.oasis.lib.controllers.ProfilePictogramController;
 import dk.aau.cs.giraf.oasis.lib.controllers.TagController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.oasis.lib.models.PictogramTag;
+import dk.aau.cs.giraf.oasis.lib.models.Profile;
+import dk.aau.cs.giraf.oasis.lib.models.ProfilePictogram;
 import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
@@ -40,6 +44,7 @@ public class StoragePictogram {
     private int publicPictogram;
     private int pictogramID;
     private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
+    private List<Profile> citizens = new ArrayList<Profile>();
 
     private Context context;
     private Helper databaseHelper;
@@ -175,6 +180,14 @@ public class StoragePictogram {
     }
 
     /**
+     * Function for adding citizen profiles to a private pictogram
+     * @param profile
+     */
+    public void addCitizen(Profile profile){
+        citizens.add(profile);
+    }
+
+    /**
      * Creates a tag given a string, and inserts it to the database
      * @param tag The tag to create and insert
      * @return The newly created and inserted Tag
@@ -195,6 +208,8 @@ public class StoragePictogram {
     private List<Tag> generateTagList(){
         List<Tag> addedTags = new ArrayList<Tag>();
 
+        //adds tags to the database and gets their ID
+        //IDs are used to create relation between tag and pictogram
         for(String tag : tags){
             Tag newTag = insertTag(tag);
             addedTags.add(newTag);
@@ -202,6 +217,8 @@ public class StoragePictogram {
 
         return addedTags;
     }
+
+
 
     /**
      * Method for generation of image given a path
@@ -308,6 +325,7 @@ public class StoragePictogram {
     public boolean addPictogram(){
         Pictogram pictogram;
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
+        ProfilePictogramController profileHelper = databaseHelper.profilePictogramHelper;
 
         pictogram = generatePictogram();
 
@@ -316,6 +334,9 @@ public class StoragePictogram {
             for(Tag t : addTags)
             {
                 tagHelper.insertPictogramTag(new PictogramTag(pictogram.getId(), t.getId()));
+            }
+            for(Profile p : citizens){
+                profileHelper.insertProfilePictogram(new ProfilePictogram(p.getId(), pictogram.getId()));
             }
             return true;
         }

@@ -34,6 +34,7 @@ import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GRadioGroup;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.models.Profile;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
@@ -289,7 +290,7 @@ public class SaveDialogFragment extends DialogFragment{
 
             //A pictogram must have a name, if not the user is asked to provide one
             if (pictogramNameText.matches("") || pictogramNameText == null) {
-                Toast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
+                GToast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -302,6 +303,14 @@ public class SaveDialogFragment extends DialogFragment{
             }
             else if(publicityPrivate.isChecked()){
                 storagePictogram.setPublicPictogram(0);
+                if(!citizenProfiles.isEmpty()){
+                    for (Profile p : citizenProfiles){
+                        storagePictogram.addCitizen(p);
+                    }
+                }else {
+                    GToast.makeText(parentActivity, "Angiv venligst borgere dette er privat for", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
 
             //adds each tag to the pictogram
@@ -310,6 +319,7 @@ public class SaveDialogFragment extends DialogFragment{
                     storagePictogram.addTag(t);
                 }
             }
+
 
             //saves the picogram into the database
             if (storagePictogram.addPictogram()) {
