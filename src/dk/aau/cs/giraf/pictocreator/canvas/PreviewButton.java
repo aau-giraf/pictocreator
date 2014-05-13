@@ -126,6 +126,10 @@ public class PreviewButton extends GButton {
         }
         else if (drawtype == drawType.LINE){
             canvas.drawLine(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, linePaint);
+
+            //Add rounded corners.
+            canvas.drawCircle(padding, padding, linePaint.getStrokeWidth() / 2.0f, linePaint);
+            canvas.drawCircle(canvas.getWidth()-padding,  canvas.getHeight()-padding, linePaint.getStrokeWidth()/2.0f, linePaint);
         }
 
 	}
