@@ -4,10 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.ViewPropertyAnimator;
 
 import dk.aau.cs.giraf.gui.GButton;
+
+
 
 /**
  * The preview button is optimally displayed close to regular ColorButtons and
@@ -17,6 +20,10 @@ import dk.aau.cs.giraf.gui.GButton;
 public class PreviewButton extends GButton {
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
+
+    private Paint linePaint = new Paint();
+
+    private drawType drawtype = drawType.RECTANGLE;
 
     /**
      * Sets the stroke color to use. Causes a re-render of the preview Bitmap.
@@ -33,6 +40,7 @@ public class PreviewButton extends GButton {
      */
     public void setFillColor(int c) {
         fillPaint.setColor(c);
+        linePaint.setColor(c);
         this.invalidate();
     }
 
@@ -69,6 +77,7 @@ public class PreviewButton extends GButton {
      */
 	public void setStrokeWidth(float width) {
 		strokePaint.setStrokeWidth(width);
+        linePaint.setStrokeWidth(width);
 		invalidate();
 	}
 
@@ -95,23 +104,42 @@ public class PreviewButton extends GButton {
 		setFillColor(0xFFFF00FF);
 		setStrokeColor(0xFFFF0000);
 		setStrokeWidth(4);
-		
+
+
 		fillPaint.setStyle(Style.FILL);
 		strokePaint.setStyle(Style.STROKE);
+        
+
 	}
 
+    //draws an icon on the canvas based on the selected entity
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		
-		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, fillPaint);
-		canvas.drawRect(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, strokePaint);
+        if (drawtype == drawType.RECTANGLE){
+            canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, fillPaint);
+            canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, strokePaint);
+        }
+        else if (drawtype == drawType.CIRCLE){
+            canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, (canvas.getWidth()-(2*padding))/2, fillPaint);
+            canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, (canvas.getWidth()-(2*padding))/2, strokePaint);
+        }
+        else if (drawtype == drawType.LINE){
+            canvas.drawLine(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, linePaint);
+        }
+
 	}
 
 	public void swapColors() {
-		int tempColor = fillPaint.getColor();
-		fillPaint.setColor(strokePaint.getColor());
-		strokePaint.setColor(tempColor);
+        int tempColor = fillPaint.getColor();
+		setFillColor(strokePaint.getColor());
+		setStrokeColor(tempColor);
         invalidate();
 	}
+
+    public void changePreviewDisplay(drawType type){
+        this.drawtype = type;
+        invalidate();
+    }
+
 }
