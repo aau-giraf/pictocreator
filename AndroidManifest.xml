@@ -28,7 +28,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/pictocreator_logo"
+        android:icon="@drawable/croc_icon"
         android:label="Pikto Tegner"
         android:theme="@style/AppTheme" >
         android:largeHeap="true"
