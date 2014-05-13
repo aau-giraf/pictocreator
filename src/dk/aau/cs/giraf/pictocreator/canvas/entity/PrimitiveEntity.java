@@ -1,7 +1,6 @@
 package dk.aau.cs.giraf.pictocreator.canvas.entity;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
 import java.io.Serializable;
@@ -12,24 +11,31 @@ import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
 public abstract class PrimitiveEntity extends Entity implements Serializable {
 
+    //fields
+    /**
+     * Colour are ints on purpose since Android Paint class is not serializable,
+     * if you change these to Paint the colour cannot be saved in the drawStack.
+     */
     private int fillPaint;
     private int strokePaint;
     private float strokeWidth;
 
+    //setters
 	public void setFillColor(int color) { fillPaint = color; }
 	public void setStrokeColor(int color) { strokePaint = color; }
 	public void setStrokeWidth(float width) { strokeWidth = width; }
 
+    //getters
 	public int getFillColor() { return fillPaint; }
 	public int getStrokeColor() { return strokePaint; }
 	public float getStrokeWidth() { return strokeWidth; }
 	
 	/**
-	 * Creates a new PrimitiveEntity at a specific location and paint styles.
+	 * Creates a new PrimitiveEntity at a specific location, dimensions, and colours.
 	 * @param x X-coordinate of the Entity.
 	 * @param y Y-coordinate of the Entity.
-	 * @param fillColor Pain used for the filling part of the primitive. It will be set to FILL style automatically.
-	 * @param strokeColor
+	 * @param fillColor Paint used for the filling part of the primitive.
+	 * @param strokeColor Paint used for the edges of an entity.
 	 */
 	public PrimitiveEntity(float x, float y, float w, float h, int fillColor, int strokeColor){
 		this(fillColor, strokeColor);
@@ -54,7 +60,14 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
 	 * @param paint The specific Paint that must be used for the draw call.
 	 */
 	public abstract void drawWithPaint(Canvas canvas, SerializePaint paint);
-	
+
+
+    /**
+     * This method calls drawWithPaint to draw the actual entities with their colour.
+     * Since we cannot save the colour as Paint, we create the SerializePaint with
+     * its colour and style. This is a dirty fix so we can load the drawStack from the database.
+     * @param canvas The Canvas to draw upon.
+     */
 	@Override
 	public void doDraw(Canvas canvas) {
         SerializePaint tempFill = new SerializePaint();
@@ -69,5 +82,4 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
         drawWithPaint(canvas, tempFill); // Fill
         drawWithPaint(canvas, tempStroke); // Stroke
 	}
-
 }

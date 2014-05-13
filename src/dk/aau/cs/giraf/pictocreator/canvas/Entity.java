@@ -427,4 +427,17 @@ public abstract class Entity implements Parcelable, Serializable {
                 (float)(x*Math.sin(getRadiansAngle()) + y*Math.cos(getRadiansAngle())) + getCenter().y);
 
     }
+
+    /**
+     * This function is used to check whether a point is a right rotation of a side.
+     * If the clicked point is a right rotation of all the sides in the rectangle it means it is inside of it.
+     * This was used to improve the collision detection for rotated rectangles.
+     * @param a the start point of a vector
+     * @param b the endpoint of a vector
+     * @param p the clicked point
+     * @return
+     */
+    protected Boolean isRightRotation(FloatPoint a, FloatPoint b, FloatPoint p){
+        return (b.y-a.y)*(p.x-b.x)<=(p.y-b.y)*(b.x-a.x);
+    }
 }

@@ -17,10 +17,10 @@ public class OvalEntity extends PrimitiveEntity {
 
 	@Override		
 	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
-		OvalShape rs = new OvalShape();
-		rs.resize(getWidth(), getHeight());
-		 
-		rs.draw(canvas, paint);
+		OvalShape ovalShape = new OvalShape();
+        ovalShape.resize(getWidth(), getHeight());
+
+        ovalShape.draw(canvas, paint);
 	}
 
     /**
@@ -55,8 +55,8 @@ public class OvalEntity extends PrimitiveEntity {
             setWidth(temp);
             this.angle = ((angle%180) + 270)%360;
         }
-        else
+        else{
             this.angle = (angle + 360) % 360;
+        }
     }
-
 }

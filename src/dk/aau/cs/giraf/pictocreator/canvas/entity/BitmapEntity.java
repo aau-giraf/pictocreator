@@ -98,19 +98,6 @@ public class BitmapEntity extends Entity {
         FloatPoint C = rotationMatrix((getWidth()/2), (getHeight()/2));
         FloatPoint D = rotationMatrix( -(getWidth()/2), (getHeight()/2));
 
-        return (rightOrientation(A, B, P) && rightOrientation(B, C, P) && rightOrientation(C, D, P) && rightOrientation(D, A, P));
-    }
-
-    /**
-     * This function is used to check whether a point is a right rotation of a side.
-     * If the clicked point is a right rotation of all the sides in the rectangle it means it is inside of it.
-     * This was used to improve the collision detection for rotated rectangles.
-     * @param a the start point of a vector
-     * @param b the endpoint of a vector
-     * @param p the clicked point
-     * @return
-     */
-    private Boolean rightOrientation(FloatPoint a, FloatPoint b, FloatPoint p){
-        return (b.y-a.y)*(p.x-b.x)<=(p.y-b.y)*(b.x-a.x);
+        return (isRightRotation(A, B, P) && isRightRotation(B, C, P) && isRightRotation(C, D, P) && isRightRotation(D, A, P));
     }
 }
