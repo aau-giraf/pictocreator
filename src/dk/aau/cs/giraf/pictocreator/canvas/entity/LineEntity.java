@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.Log;
+
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 
@@ -64,7 +65,7 @@ public class LineEntity extends PrimitiveEntity {
      * together with the start point.
      * If we forced this to be positive, the center will be off when the startpoint has a larger y than
      * the endpoint.
-     * @return the y lenght of the linevector
+     * @return the y length of the linevector
      */
 	@Override
 	public float getHeight() { return lineVector.y;	}
@@ -74,11 +75,15 @@ public class LineEntity extends PrimitiveEntity {
      * together with the start point.
      * If we forced this to be positive, the center will be off when the startpoint has a larger x than
      * the endpoint.
-     * @return the x lenght of the linevector
+     * @return the x length of the linevector
      */
 	@Override
 	public float getWidth() { return lineVector.x; }
 
+    /**
+     * Finds the leftmost point of the two endpoints in the line.
+     * @return
+     */
 	@Override
     public float getHitboxLeft(){
         if (hitboxTopLeft == null)
@@ -87,6 +92,10 @@ public class LineEntity extends PrimitiveEntity {
             return hitboxTopLeft.x;
     }
 
+    /**
+     * Finds the rightmost point of the two endpoints in the line.
+     * @return
+     */
     @Override
     public float getHitboxRight(){
         if (hitboxTopLeft == null)
@@ -95,6 +104,10 @@ public class LineEntity extends PrimitiveEntity {
             return hitboxTopLeft.x + hitboxWidth;
     }
 
+    /**
+     * Finds the top point of the two endpoints in the line.
+     * @return
+     */
     @Override
     public float getHitboxTop(){
         if (hitboxTopLeft == null)
@@ -103,6 +116,10 @@ public class LineEntity extends PrimitiveEntity {
             return hitboxTopLeft.y;
     }
 
+    /**
+     * Finds the bottom point of the two endpoints in the line.
+     * @return
+     */
     @Override
     public float getHitboxBottom(){
         if (hitboxTopLeft == null)

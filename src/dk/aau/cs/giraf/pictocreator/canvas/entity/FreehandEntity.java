@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.util.Log;
+
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializeRectF;
@@ -35,11 +36,39 @@ public class FreehandEntity extends PrimitiveEntity {
 	 */
 	protected ArrayList<FloatPoint> drawPoints = new ArrayList<FloatPoint>();
 
+    /**
+     * This defines how close the user has to click on the line to select it.
+     * The lenght can be said to decide the "thickness" of the line that is clickable.
+     */
+    private final float JITTER_MAX = 20;
+
 	/**
 	 * Hitbox of the path. Recalculated after each new point has been added.
 	 */
 	protected SerializeRectF hitbox = new SerializeRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
-	
+
+    @Override
+    public void setX(float x) {
+        if (basePoint == null) basePoint = new FloatPoint(x, 0);
+        else basePoint.x = x;
+    }
+
+    @Override
+    public void setY(float y) {
+        if (basePoint == null) basePoint = new FloatPoint(0, y);
+        else basePoint.y = y;
+    }
+
+    @Override
+    public float getX() {
+        return basePoint.x;
+    }
+
+    @Override
+    public float getY() {
+        return basePoint.y;
+    }
+
 	/**
 	 * Create a new FreehandEntity with a specific stroke color. 
 	 * @param color Hexadecimal color. Alpha channel: higher > more opaque.
@@ -64,7 +93,7 @@ public class FreehandEntity extends PrimitiveEntity {
 
         Path p = new Path();
         FloatPoint tp;
-        for (int i = 1; i < drawPoints.size(); i++) {
+        for (int i = 1; i < drawPoints.size(); i++){
             tp = drawPoints.get(i);
             p.lineTo(tp.x, tp.y);
         }
@@ -195,28 +224,6 @@ public class FreehandEntity extends PrimitiveEntity {
 
         return returnVal;
 	}
-	
-	@Override
-	public void setX(float x) {
-		if (basePoint == null) basePoint = new FloatPoint(x, 0);
-		else basePoint.x = x;
-	}
-	
-	@Override
-	public void setY(float y) {
-		if (basePoint == null) basePoint = new FloatPoint(0, y);
-		else basePoint.y = y;
-	}
-	
-	@Override
-	public float getX() {
-		return basePoint.x;
-	}
-	
-	@Override
-	public float getY() {
-		return basePoint.y;
-	}
 
     @Override
     public SerializeRectF getHitbox() {
@@ -229,10 +236,13 @@ public class FreehandEntity extends PrimitiveEntity {
         return new FloatPoint(hitboxTopLeft.x + (hitbox.width()/2), hitboxTopLeft.y + (hitbox.height()/2));
     }
 
-
-
-    private final float JITTER_MAX = 20;
-
+    /**
+     * Checks whether a clicked point collides with this entity.
+     * Same idea is used as in the line entity collision detection.
+     * @param x The X-coordinate of the point to check.
+     * @param y The Y-coordinate of the point to check.
+     * @return true if the clicked point is within the freehand entity, false if not.
+     */
     @Override
     public boolean collidesWithPoint(float x, float y) {
         for (int i = 0; i < drawPoints.size() - 1; i++){
@@ -256,6 +266,14 @@ public class FreehandEntity extends PrimitiveEntity {
         return false;
     }
 
+    /**
+     * Finds the distance from a point to a vector.
+     * @param px x-coordinate of a point
+     * @param py y-coordinate of a point
+     * @param start start point of a vector
+     * @param end end point of a vector
+     * @return distance from point to vector
+     */
     private float distanceFromPointToVector(float px, float py, FloatPoint start, FloatPoint end){
         FloatPoint lineVector = new FloatPoint(end.x - start.x, end.y - start.y);
 

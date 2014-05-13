@@ -9,7 +9,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
 /**
  * Simple Entity. It is basically a visible rect.
  * @author Croc
- *
  */
 public class RectEntity extends PrimitiveEntity {
 	
@@ -19,10 +18,10 @@ public class RectEntity extends PrimitiveEntity {
 
 	@Override
 	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
-		RectShape rs = new RectShape();
-		rs.resize(getWidth(), getHeight());
+		RectShape rectShape = new RectShape();
+        rectShape.resize(getWidth(), getHeight());
 
-		rs.draw(canvas, paint);
+        rectShape.draw(canvas, paint);
 	}
 
     /**
@@ -30,7 +29,7 @@ public class RectEntity extends PrimitiveEntity {
      * The clicked point is then compared to the four sides, to check whether it is a right rotation of them.
      * @param x The X-coordinate of the point to check.
      * @param y The Y-coordinate of the point to check.
-     * @return
+     * @return if the clicked point is inside of the entity.
      */
     @Override
     public boolean collidesWithPoint(float x, float y){
@@ -42,20 +41,7 @@ public class RectEntity extends PrimitiveEntity {
         FloatPoint C = rotationMatrix((tempwidth/2), (tempheight/2));
         FloatPoint D = rotationMatrix( -(tempwidth/2), (tempheight/2));
 
-        return (rightOrientation(A, B, P) && rightOrientation(B, C, P) && rightOrientation(C, D, P) && rightOrientation(D, A, P));
-    }
-
-    /**
-     * This function is used to check whether a point is a right rotation of a side.
-     * If the clicked point is a right rotation of all the sides in the rectangle it means it is inside of it.
-     * This was used to improve the collision detection for rotated rectangles.
-     * @param a the start point of a vector
-     * @param b the endpoint of a vector
-     * @param p the clicked point
-     * @return
-     */
-    private Boolean rightOrientation(FloatPoint a, FloatPoint b, FloatPoint p){
-        return (b.y-a.y)*(p.x-b.x)<=(p.y-b.y)*(b.x-a.x);
+        return (isRightRotation(A, B, P) && isRightRotation(B, C, P) && isRightRotation(C, D, P) && isRightRotation(D, A, P));
     }
 
     /**
@@ -74,7 +60,8 @@ public class RectEntity extends PrimitiveEntity {
             setWidth(temp);
             this.angle = ((angle%180) + 270)%360;
         }
-        else
+        else{
             this.angle = (angle + 360) % 360;
+        }
     }
 }
