@@ -306,7 +306,8 @@ public class SelectionHandler extends ActionHandler {
                         break;
                     }
                     case RESIZE: {
-                        // WARNING! Breaks if the resize icon is NOT in the lower-right corner!
+                        //this calculation is done such that the resizing follows the finger
+                        //as it did not follow the finger when the entity was rotated
                         float x = selectedEntity.getHitboxRight() - (selectedEntity.getX() +selectedEntity.getWidth());
                         float y = selectedEntity.getHitboxBottom() - (selectedEntity.getY() +selectedEntity.getHeight());
 
