@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
 
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramTagController;
@@ -58,7 +59,7 @@ public class StoragePictogram {
         try{
             databaseHelper = new Helper(this.context);
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            GToast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -74,7 +75,7 @@ public class StoragePictogram {
         try{
             databaseHelper = new Helper(this.context);
         } catch (Exception e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            GToast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
         this.imagePath = imagePath;
         this.pictogramName = pictogramName;

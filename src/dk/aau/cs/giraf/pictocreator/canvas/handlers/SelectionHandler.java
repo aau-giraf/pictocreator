@@ -87,7 +87,7 @@ public class SelectionHandler extends ActionHandler {
 	/**
 	 * Square size of the icons. The icons will be resized to iconSizeXiconSize.
 	 */
-	protected int iconSize = 64;
+	protected int iconSize = 124;
 	
 	/**
 	 * The ACTION_MODE enum makes explicit the various modes that
@@ -114,15 +114,6 @@ public class SelectionHandler extends ActionHandler {
 	protected float previousAngle;
 	
 	/**
-	 * Support method that returns the full resource file name of an icon name.
-	 * @param base Base name of the icon (for example "resize", "rotate", etc).
-	 * @return The full name of the icon to be retrieved from the application context.
-	 */
-	protected static String getFullIconName(String base) {
-		return String.format("%s_icon", base);
-	}
-	
-	/**
 	 * Retrieves the actual Bitmap resource for an icon.
 	 * @param name Base name of the icon (for example "resize" or "scrap").
 	 * pixels variants are built into the package.
@@ -132,7 +123,7 @@ public class SelectionHandler extends ActionHandler {
 	 */
 	protected static Bitmap getIconBitmap(String name, Resources res) {
 		return BitmapFactory.decodeResource(res,
-				res.getIdentifier(getFullIconName(name), "drawable", "dk.aau.cs.giraf.pictocreator"));
+				res.getIdentifier(name, "drawable", "dk.aau.cs.giraf.pictocreator"));
 	}
 	
 	/**
@@ -159,7 +150,7 @@ public class SelectionHandler extends ActionHandler {
 	private void initIcons(Resources resources) {
 		resizeIcon = new BitmapEntity(getIconBitmap("resize", resources),iconSize);
 		rotateIcon = new BitmapEntity(getIconBitmap("rotate", resources),iconSize);
-		scrapIcon = new BitmapEntity(getIconBitmap("scrap", resources),iconSize);
+		scrapIcon = new BitmapEntity(getIconBitmap("delete", resources),iconSize);
 		flattenIcon = new BitmapEntity(getIconBitmap("flatten", resources),iconSize);
 	}
 	

@@ -14,7 +14,7 @@
         android:id="@+id/topLayer">
 
         <dk.aau.cs.giraf.gui.GButton
-            android:drawableTop="@drawable/help_button"
+            android:drawableTop="@drawable/help"
             android:id="@+id/help_button"
             android:layout_width="64dp"
             android:layout_height="80dp"
@@ -43,7 +43,7 @@
             android:text="Indlæs"/>
 
         <dk.aau.cs.giraf.gui.GButton
-            android:drawableTop="@drawable/clear_icon"
+            android:drawableTop="@drawable/trashcan"
             android:layout_width="64dp"
             android:layout_height="80dp"
             android:clickable="true"
@@ -60,7 +60,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/cancel_button"
+            android:drawableTop="@drawable/exit"
             android:onClick="doExit"
             android:text="Luk"/>
 

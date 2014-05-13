@@ -21,6 +21,7 @@ import java.io.IOException;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -198,7 +199,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e){
-            Toast.makeText( this, "Pictosearch er ikke installeret.", Toast.LENGTH_LONG).show();
+            GToast.makeText(this, "Pictosearch er ikke installeret.", Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
     }

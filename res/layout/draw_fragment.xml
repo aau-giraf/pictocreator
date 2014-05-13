@@ -42,7 +42,7 @@
                     android:id="@+id/select_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/draw_select"
+                    android:drawableTop="@drawable/select"
                     android:scaleType="fitStart"
                     android:text="Vælger"
                     android:layout_weight="1"/>
@@ -51,7 +51,7 @@
                     android:id="@+id/freehand_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/draw_freehand"
+                    android:drawableTop="@drawable/drawing"
                     android:scaleType="fitStart"
                     android:text="Frihånd"
                     android:layout_weight="1"

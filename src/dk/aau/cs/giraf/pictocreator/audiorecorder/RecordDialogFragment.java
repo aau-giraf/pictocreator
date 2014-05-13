@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictogram.CompleteListener;
@@ -148,12 +149,12 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         try{
             if(mediaPlayer.isPlaying()){
                 playButton.setText("Stop");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop_icon), null, null);
+                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop), null, null);
                 Log.i(TAG, "changed to stop icon");
             }
             else{
                 playButton.setText("Afspil");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.play_icon), null, null);
+                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.play), null, null);
                 Log.i(TAG, "changed to play icon");
             }
         }
@@ -207,7 +208,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                 switchLayoutPlayStopButton();
             }
             else{
-                Toast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
+                GToast.makeText(getActivity(), "Ingen optagelse", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -222,7 +223,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                 recThread.start();
                 recordButton.setToggled(true);
                 recordButton.setText("Stop");
-                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.stop_icon), null, null);
+                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.stop), null, null);
                 playButton.setEnabled(false);
                 acceptButton.setEnabled(false);
             }
@@ -231,7 +232,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
                 decibelMeter.setLevel(0);
                 recordButton.setToggled(false);
                 recordButton.setText("Optag");
-                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.record_icon), null, null);
+                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.record), null, null);
                 hasRecorded = true;
                 playButton.setEnabled(true);
                 acceptButton.setEnabled(true);
