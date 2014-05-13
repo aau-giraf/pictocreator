@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -31,9 +32,8 @@ import android.widget.Toast;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
-import dk.aau.cs.giraf.gui.GProfileSelector;
+import dk.aau.cs.giraf.gui.GMultiProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
-import dk.aau.cs.giraf.gui.GRadioGroup;
 import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.models.Profile;
@@ -70,7 +70,7 @@ public class SaveDialogFragment extends DialogFragment{
     private GButton acceptButton;
     private GButton cancelButton, addConnectCitizenButton;
 
-    private GProfileSelector autistSelector;
+    private GMultiProfileSelector autistSelector;
 
     private GRadioButton publicityPublic;
     private GRadioButton publicityPrivate;
@@ -382,18 +382,26 @@ public class SaveDialogFragment extends DialogFragment{
         public void onClick(View v) {
             Helper helper = new Helper(parentActivity);
             try{
-                autistSelector = new GProfileSelector(parentActivity, helper.profilesHelper.getProfileById(storagePictogram.getAuthor() == 0 ? storagePictogram.getAuthor()+1:storagePictogram.getAuthor()),null);
-                autistSelector.setOnListItemClick(new AdapterView.OnItemClickListener() {
+                int authorID = storagePictogram.getAuthor();
+
+                //fix for no logged in author, should only be used during testing
+                if (authorID == 0){
+                    authorID++;
+                }
+
+                ArrayList<Profile> authorChildred = new ArrayList<Profile>();
+                authorChildred.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
+                autistSelector = new GMultiProfileSelector(parentActivity, authorChildred ,citizenProfiles);
+                autistSelector.setMyOnCloseListener(new GMultiProfileSelector.onCloseListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Profile person =(Profile)parent.getItemAtPosition(position);
-                        if (!citizenProfiles.contains(person)){
-                            citizenProfiles.add(person);
-                            updateCitizenList();
-                        }
+                    public void onClose(List<Profile> selectedProfiles) {
+                        citizenProfiles.clear();
+                        citizenProfiles.addAll(selectedProfiles);
+                        updateCitizenList();
                     }
                 });
                 autistSelector.show();
+
             }catch (Exception e){
                 Log.e(TAG, e.getMessage());
             }
