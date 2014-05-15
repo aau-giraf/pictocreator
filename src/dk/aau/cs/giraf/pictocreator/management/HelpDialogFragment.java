@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
+import dk.aau.cs.giraf.gui.GTextView;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class HelpDialogFragment extends DialogFragment{
@@ -27,6 +28,7 @@ public class HelpDialogFragment extends DialogFragment{
     private ImageView imgView;
     private ArrayList<Integer> helpResourceList;
     private GButton closeButton, prevButton, nextButton;
+    private GTextView statusText;
     private LinearLayout helpDialogLayout;
     private int currentDrawable;
     private int iterator = 0;
@@ -58,6 +60,17 @@ public class HelpDialogFragment extends DialogFragment{
         helpResourceList.add(R.drawable.help_record_1);
         helpResourceList.add(R.drawable.help_record_2);
         helpResourceList.add(R.drawable.help_record_3);
+
+        helpResourceList.add(R.drawable.help_save_1);
+        helpResourceList.add(R.drawable.help_save_2);
+        helpResourceList.add(R.drawable.help_save_3);
+        helpResourceList.add(R.drawable.help_save_4);
+        helpResourceList.add(R.drawable.help_save_5);
+        helpResourceList.add(R.drawable.help_save_6);
+        helpResourceList.add(R.drawable.help_save_7);
+        helpResourceList.add(R.drawable.help_save_8);
+        helpResourceList.add(R.drawable.help_save_9);
+
         helpResourceList.add(R.drawable.help_preview);
         helpResourceList.add(R.drawable.help_color_1);
         helpResourceList.add(R.drawable.help_color_2);
@@ -77,6 +90,8 @@ public class HelpDialogFragment extends DialogFragment{
         
         helpBody = (FrameLayout) view.findViewById(R.id.help_body);
         helpBody.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
+
+        statusText = (GTextView)view.findViewById(R.id.help_status_text);
 
         changeBody(iterator);
         
@@ -124,5 +139,7 @@ public class HelpDialogFragment extends DialogFragment{
         currentDrawable = helpResourceList.get(iterator);
         imgView.setImageResource(currentDrawable);
         helpBody.addView(imgView);
+        statusText.setText(iterator + 1 +" / " + helpResourceList.size());
     }
+
 }

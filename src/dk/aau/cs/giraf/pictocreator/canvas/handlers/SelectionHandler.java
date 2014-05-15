@@ -167,6 +167,10 @@ public class SelectionHandler extends ActionHandler {
 		    resizeIcon.setWidth(1);
 		    resizeIcon.setHeight(1);
         }
+        else{
+            resizeIcon.setWidth(rotateIcon.getWidth());
+            resizeIcon.setHeight(rotateIcon.getHeight());
+        }
 
         resizeIcon.setX(selectedEntity.getHitboxRight());
         resizeIcon.setY(selectedEntity.getHitboxBottom());

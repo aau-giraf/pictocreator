@@ -60,7 +60,14 @@
             android:layout_marginRight="60dp"
             android:drawableTop="@drawable/prev_icon"
             android:text="Forrige"/>
-        
+
+        <dk.aau.cs.giraf.gui.GTextView
+            android:id="@+id/help_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+          />
+
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/next_button"
             android:layout_width="65dp"
