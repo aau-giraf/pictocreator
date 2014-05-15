@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.util.AttributeSet;
 
 import dk.aau.cs.giraf.gui.GButton;
@@ -127,11 +128,16 @@ public class PreviewButton extends GButton {
             canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, (canvas.getWidth()-(2*padding))/2, strokePaint);
         }
         else if (drawtype == drawType.LINE){
-            canvas.drawLine(padding, padding, canvas.getWidth()-padding, canvas.getHeight()-padding, linePaint);
+            linePaint.setStyle(Paint.Style.STROKE);
+            linePaint.setStrokeJoin(Paint.Join.ROUND);
+            linePaint.setStrokeCap(Paint.Cap.ROUND);
 
-            //Add rounded corners.
-            canvas.drawCircle(padding, padding, linePaint.getStrokeWidth() / 2.0f, linePaint);
-            canvas.drawCircle(canvas.getWidth()-padding,  canvas.getHeight()-padding, linePaint.getStrokeWidth()/2.0f, linePaint);
+            Path p = new Path();
+            p.moveTo(padding,padding);
+            p.lineTo(canvas.getWidth()-padding, canvas.getHeight()-padding);
+
+            //drawLine ignores the style of the paint, which means the edges of the line are not rounded, so drawPath is used instead.
+            canvas.drawPath(p, linePaint);
         }
         else if (drawtype == drawType.SELECT){
             Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.select);
