@@ -77,12 +77,22 @@ public class FreehandEntity extends PrimitiveEntity {
      */
     @Override
     public float getWidth() {
-        return (getCenter().x - basePoint.x)*2;
+        if(hitboxTopLeft != null){
+            return (getCenter().x - basePoint.x)*2;
+        }
+        else{
+            return super.getWidth();
+        }
     }
 
     @Override
     public float getHeight() {
-        return (getCenter().y - basePoint.y)*2;
+        if(hitboxTopLeft != null){
+            return (getCenter().y - basePoint.y)*2;
+        }
+        else{
+            return super.getHeight();
+        }
     }
 
     /**
