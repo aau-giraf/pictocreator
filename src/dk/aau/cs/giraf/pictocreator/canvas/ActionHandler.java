@@ -85,14 +85,6 @@ public abstract class ActionHandler extends Entity {
 	public abstract boolean onTouchEvent(MotionEvent event, EntityGroup drawStack);
 	
 	/**
-	 * Each ActionHandler must be able to provide its own icon for the toolbox.
-	 * Whether this is generated on the fly or predetermined bitmap resource is
-	 * up to each handler's implementation.
-	 * @return Returns a Bitmap with the dimensions size-by-size.
-	 */
-	abstract public Bitmap getToolboxIcon(int size);
-	
-	/**
 	 * Shorthand for scaling a Bitmap to a specific size.
 	 * @param toScale The Bitmap to scale.
 	 * @param newSize The new size-by-size size.

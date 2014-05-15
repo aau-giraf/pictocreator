@@ -21,29 +21,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
  */
 public class OvalHandler extends ShapeHandler {
 
-    @Override
-    public Bitmap getToolboxIcon(int size) {
-        Bitmap returnValue = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(returnValue);
-
-        canvas.scale(0.5f, 0.5f, size / 2, size / 2);
-
-        Paint paint = new Paint();
-        RectF area = new RectF(0.0f, 0.0f, size, size);
-
-        paint.setColor(0xFFCC0000);
-        paint.setStyle(Style.FILL);
-
-        canvas.drawArc(area, 0, 360, true, paint);
-
-        paint.setColor(0xFF000000);
-        paint.setStyle(Style.STROKE);
-
-        canvas.drawArc(area, 0, 360, true, paint);
-
-        return returnValue;
-    }
-
 	@Override
 	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();

@@ -32,27 +32,6 @@ public class FreehandHandler extends ShapeHandler {
 		return bufferedEntity;
 	}
 
-    /**
-     * The icon shown in the toolbox button.
-     * @param size
-     * @return
-     */
-	@Override
-	public Bitmap getToolboxIcon(int size) {
-		Bitmap ret = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-		Canvas c = new Canvas(ret);
-		
-		Paint p = new Paint();
-		p.setColor(0xFF000000);
-		p.setStyle(Style.STROKE);
-		
-		RectF rect1 = new RectF(4, 4, size-4, size/2-4);
-		
-		c.drawArc(rect1, 180, 270, true, p);
-		
-		return ret;
-	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event, EntityGroup drawStack) {
 		int action = event.getAction(); // getActionMasked seems b0rk3d.

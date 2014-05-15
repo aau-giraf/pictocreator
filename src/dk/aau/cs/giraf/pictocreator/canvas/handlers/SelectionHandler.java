@@ -374,16 +374,6 @@ public class SelectionHandler extends ActionHandler {
 
 	    return (float)Math.toDegrees(inRads);
 	}
-	
-	@Override
-	public Bitmap getToolboxIcon(int size) {
-		Bitmap toRet = Bitmap.createBitmap(size, size, Config.ARGB_8888);
-		Canvas tmp = new Canvas(toRet);
-		
-		tmp.drawRect(8, 8, size-8, size-8, hlPaint);
-		
-		return toRet;
-	}
 
 	@Override
 	public void drawBufferPreBounds(Canvas canvas) {

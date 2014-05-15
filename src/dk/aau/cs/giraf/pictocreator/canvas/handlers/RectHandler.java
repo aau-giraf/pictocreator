@@ -20,25 +20,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.RectEntity;
  */
 public class RectHandler extends ShapeHandler {
 
-    @Override
-    public Bitmap getToolboxIcon(int size) {
-        Bitmap returnValue = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(returnValue);
-        canvas.rotate(30.0f, size / 2, size / 2);
-        canvas.scale(0.5f, 0.5f, size / 2, size / 2);
-
-        Paint paint = new Paint();
-        paint.setColor(0xFF0000CC);
-        paint.setStyle(Style.FILL);
-        canvas.drawRect(4, 4, size - 4, size - 4, paint);
-        paint.setColor(0xFF000000);
-        paint.setStyle(Style.STROKE);
-        canvas.drawRect(4, 4, size - 4, size - 4, paint);
-
-        return returnValue;
-    }
-
 	@Override
 	public PrimitiveEntity updateBuffer() {
 		calcRectBounds();
