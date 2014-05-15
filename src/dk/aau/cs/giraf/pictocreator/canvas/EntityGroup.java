@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.os.Parcel;
-import android.util.Log;
 
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
@@ -72,8 +71,8 @@ public class EntityGroup extends Entity implements Serializable{
 
     @Override
 	public void draw(Canvas canvas) {
-		for (int i = entities.size()-1; i >= 0; i--) {
-			entities.get(i).draw(canvas);
+		for (Entity entity : entities) {
+            entity.draw(canvas);
 		}
 	}
 	
@@ -94,7 +93,9 @@ public class EntityGroup extends Entity implements Serializable{
 	public Entity getCollidedWithPoint(float x, float y) {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
-			if (e.collidesWithPoint(x, y)) return e;
+			if (e.collidesWithPoint(x, y)){
+                return e;
+            }
 		}
 		return null;
 	}

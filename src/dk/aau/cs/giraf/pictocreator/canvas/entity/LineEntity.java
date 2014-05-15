@@ -3,10 +3,9 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
 
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializablePaint;
 
 /**
  * The LineEntity class represents a straight line, point A to point B. For
@@ -45,10 +44,7 @@ public class LineEntity extends PrimitiveEntity {
 	}
 
 	@Override
-	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
-        Log.i("LineEntity.drawWithPaint",
-                String.format("Drawing line with starting point (%s,%s) with color %s", getX(), getY(), paint.getColor()));
-
+	public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
 
@@ -61,22 +57,14 @@ public class LineEntity extends PrimitiveEntity {
 	}
 
     /**
-     * We allow the height to be negative here since the height is used to rotate around the center of an entity
+     * We allow the height and width to be negative here since they are used to rotate around the center of an entity
      * together with the start point.
-     * If we forced this to be positive, the center will be off when the startpoint has a larger y than
+     * If we forced these to be positive, the center will be off when the startpoint has a larger y or x than
      * the endpoint.
-     * @return the y length of the linevector
      */
 	@Override
 	public float getHeight() { return lineVector.y;	}
 
-    /**
-     * We allow the width to be negative here since the width is used to rotate around the center of an entity
-     * together with the start point.
-     * If we forced this to be positive, the center will be off when the startpoint has a larger x than
-     * the endpoint.
-     * @return the x length of the linevector
-     */
 	@Override
 	public float getWidth() { return lineVector.x; }
 
@@ -135,14 +123,13 @@ public class LineEntity extends PrimitiveEntity {
      * defines the topleft corner of the hitbox.
      */
     @Override
-    protected void changeHitbox(){
-        FloatPoint one;
-        FloatPoint two;
+    protected void updateHitbox(){
+        FloatPoint pointA, pointB;
 
-        one = rotationMatrix(lineVector.x/2.0f, lineVector.y/2.0f);
-        two = rotationMatrix(-lineVector.x/2.0f, -lineVector.y/2.0f);
+        pointA = rotationMatrix(lineVector.x/2.0f, lineVector.y/2.0f);
+        pointB = rotationMatrix(-lineVector.x/2.0f, -lineVector.y/2.0f);
 
-        hitboxTopLeft = new FloatPoint(Math.min(one.x, two.x), Math.min(one.y, two.y));
+        hitboxTopLeft = new FloatPoint(Math.min(pointA.x, pointB.x), Math.min(pointA.y, pointB.y));
         hitboxWidth = (getCenter().x - hitboxTopLeft.x)*2.0f;
         hitboxHeight = (getCenter().y - hitboxTopLeft.y)*2.0f;
     }
@@ -157,7 +144,6 @@ public class LineEntity extends PrimitiveEntity {
      */
     @Override
     public boolean collidesWithPoint(float x, float y) {
-        Log.i("LineEntity.drawWithPaint", String.format("Distance from line: %s", distanceFromPointToVector(x, y)));
         return distanceFromPointToVector(x, y) < JITTER_MAX &&
                 getHitboxTop() - JITTER_MAX < y &&
                 getHitboxBottom() + JITTER_MAX > y &&

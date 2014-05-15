@@ -18,7 +18,6 @@ import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GColorPicker;
 import dk.aau.cs.giraf.gui.GSeekBar;
 import dk.aau.cs.giraf.gui.GToggleButton;
-import dk.aau.cs.giraf.oasis.lib.models.Tag;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
@@ -90,7 +89,7 @@ public class DrawFragment extends Fragment {
                 drawView.invalidate();
         }
 
-        Log.w("MainActivity", "Invalidating DrawView to force onDraw.");
+        Log.w(TAG, "Invalidating DrawView to force onDraw.");
     }
 
     @Override
@@ -138,7 +137,7 @@ public class DrawFragment extends Fragment {
         previewButton.setStrokeColor(0xFF000000);
         previewButton.setFillColor(0xFF000000);
         previewButton.setOnClickListener(onPreviewButtonClick);
-        previewButton.changePreviewDisplay(drawType.LINE);
+        previewButton.changePreviewDisplay(DrawType.LINE);
         previewButton.setEnabled(false);
 
         drawView.setStrokeColor(previewButton.getStrokeColor());
@@ -233,7 +232,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new SelectionHandler(getResources()));
             setAllUnToggle();
             selectHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(drawType.SELECT);
+            previewButton.changePreviewDisplay(DrawType.SELECT);
             previewButton.setEnabled(false);
 
         }
@@ -244,7 +243,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new FreehandHandler());
             setAllUnToggle();
             freehandHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(drawType.LINE);
+            previewButton.changePreviewDisplay(DrawType.LINE);
             previewButton.setEnabled(false);
         }
     };
@@ -254,7 +253,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new RectHandler());
             setAllUnToggle();
             rectHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(drawType.RECTANGLE);
+            previewButton.changePreviewDisplay(DrawType.RECTANGLE);
             previewButton.setEnabled(true);
         }
     };
@@ -264,7 +263,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new OvalHandler());
             setAllUnToggle();
             ovalHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(drawType.CIRCLE);
+            previewButton.changePreviewDisplay(DrawType.CIRCLE);
             previewButton.setEnabled(true);
 
         }
@@ -276,7 +275,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new LineHandler());
             setAllUnToggle();
             lineHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(drawType.LINE);
+            previewButton.changePreviewDisplay(DrawType.LINE);
             previewButton.setEnabled(false);
         }
     };
