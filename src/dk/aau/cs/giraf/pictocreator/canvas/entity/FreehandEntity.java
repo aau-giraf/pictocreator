@@ -68,8 +68,34 @@ public class FreehandEntity extends PrimitiveEntity {
     public float getY() {
         return basePoint.y;
     }
+    
+     /**
+     * These getters find the distance from the basepoint to the center of the entity.
+     * A not very intuitive fix that handles the rotation of freehand lines.
+     * We multiply by two since entity rotation find the center of rotation by dividing
+     * width and height by two.
+     */
+    @Override
+    public float getWidth() {
+        if(hitboxTopLeft != null){
+            return (getCenter().x - basePoint.x)*2;
+        }
+        else{
+            return super.getWidth();
+        }
+    }
 
-	/**
+    @Override
+    public float getHeight() {
+        if(hitboxTopLeft != null){
+            return (getCenter().y - basePoint.y)*2;
+        }
+        else{
+            return super.getHeight();
+        }
+    }
+
+    /**
 	 * Create a new FreehandEntity with a specific stroke color. 
 	 * @param color Hexadecimal color. Alpha channel: higher > more opaque.
 	 */
