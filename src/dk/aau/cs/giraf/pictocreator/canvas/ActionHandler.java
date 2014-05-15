@@ -71,7 +71,14 @@ public abstract class ActionHandler extends Entity {
 	 * Sets a new stroke width.
 	 * @param width The new width.
 	 */
-	public void setStrokeWidth(float width) { strokeWidth = width; }
+	public void setStrokeWidth(float width) {
+        if(width <= 20){
+            strokeWidth = width;
+        }
+        else{
+            strokeWidth = 20;
+        }
+    }
 	
 	/**
 	 * Primary handling mechanism. On every touch event, this method is invoked

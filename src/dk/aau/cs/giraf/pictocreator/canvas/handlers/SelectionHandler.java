@@ -35,7 +35,7 @@ public class SelectionHandler extends ActionHandler {
 	private Entity selectedEntity;
 	
 	/**
-	 * The ID of the pointer currently being tracked. Check pointerDown to see
+	 * The ID of the pointer currently being tracked. Check isPointerDown to see
 	 * if one is *actually* being tracked.
 	 */
 	private int currentPointerId;
@@ -43,7 +43,7 @@ public class SelectionHandler extends ActionHandler {
 	/**
 	 * Tracks whether a pointer is currently being tracked.
 	 */
-	private boolean pointerDown = false;
+	private boolean isPointerDown = false;
 	
 	/**
 	 * Offset difference between where the pointer was registered, and the
@@ -119,13 +119,13 @@ public class SelectionHandler extends ActionHandler {
 	 * Retrieves the actual Bitmap resource for an icon.
 	 * @param name Base name of the icon (for example "resize" or "scrap").
 	 * pixels variants are built into the package.
-	 * @param res The source Resource collection to look in.
+	 * @param resources The source Resource collection to look in.
 	 * @return The matching Bitmap is returned, ready to use. If not found, 
 	 * behaviour is undefined.
 	 */
-	protected static Bitmap getIconBitmap(String name, Resources res) {
-		return BitmapFactory.decodeResource(res,
-				res.getIdentifier(name, "drawable", "dk.aau.cs.giraf.pictocreator"));
+	protected static Bitmap getIconBitmap(String name, Resources resources) {
+		return BitmapFactory.decodeResource(resources,
+                resources.getIdentifier(name, "drawable", "dk.aau.cs.giraf.pictocreator"));
 	}
 	
 	/**
@@ -180,11 +180,11 @@ public class SelectionHandler extends ActionHandler {
 	}
 	
 	/**
-	 * Deletes (scraps) the currently selected Entity. It is removed from the
+	 * Deletes the currently selected Entity. It is removed from the
 	 * draw stack.
 	 * @param drawStack The draw stack EntityGroup to remove the Entity from.
 	 */
-	protected void scrapEntity(EntityGroup drawStack) {
+	protected void deleteEntity(EntityGroup drawStack) {
 		drawStack.removeEntity(selectedEntity);
 	}
 	
@@ -227,19 +227,19 @@ public class SelectionHandler extends ActionHandler {
 		// Down: find first collision, highlight.
 		// Move: reposition by delta.
 		// Up: stop. Un-select is a different gesture.
-		String TouchEventTag = "SelectionHandler.onTouchEvent";
+		String touchEventTag = "SelectionHandler.onTouchEvent";
 		
 		int index = event.getActionIndex();
 		int pointerId = event.getPointerId(index);
 		int action = event.getAction();
 
 		if (pointerId != currentPointerId) {
-			Log.i(TouchEventTag, "Unregistered pointer. Ignoring.");
+			Log.i(touchEventTag, "Unregistered pointer. Ignoring.");
 		}
 		
 		if (action == MotionEvent.ACTION_UP) {
-			Log.i(TouchEventTag, "Pointer raised. Ignoring remainder of logic.");
-			pointerDown = false;
+			Log.i(touchEventTag, "Pointer raised. Ignoring remainder of logic.");
+			isPointerDown = false;
 			currentPointerId = -1;
 			showIcons = true;
 			return true;
@@ -248,19 +248,21 @@ public class SelectionHandler extends ActionHandler {
 		float px = event.getX(index);
 		float py = event.getY(index);
 		
-		Log.i(TouchEventTag, "Entering phased logic. pointerDown: " + String.valueOf(pointerDown) + ", action:" + String.valueOf(action));
+		Log.i(touchEventTag, "Entering phased logic. isPointerDown: " + String.valueOf(isPointerDown) + ", action:" + String.valueOf(action));
 		
 		// Determine action or new Entity selection.
-		if (action == MotionEvent.ACTION_DOWN && !pointerDown) {
+		if (action == MotionEvent.ACTION_DOWN && !isPointerDown) {
 			if (selectedEntity != null) {
 				// Attempt to collide with action icon.
-				if (resizeIcon.collidesWithPoint(px, py)) currentMode = ACTION_MODE.RESIZE;
+				if (resizeIcon.collidesWithPoint(px, py)) {
+                    currentMode = ACTION_MODE.RESIZE;
+                }
 				else if (rotateIcon.collidesWithPoint(px, py)) {
 					currentMode = ACTION_MODE.ROTATE;
 					previousAngle = getAngle(selectedEntity.getCenter(), new FloatPoint(px, py));
 				}
 				else if (scrapIcon.collidesWithPoint(px, py)) {
-					scrapEntity(drawStack);
+					deleteEntity(drawStack);
 					deselect();
 				}
 				else if (flattenIcon.collidesWithPoint(px, py)) {
@@ -271,26 +273,30 @@ public class SelectionHandler extends ActionHandler {
 					currentMode = ACTION_MODE.MOVE;
 				}
 				else {
-					Log.i(TouchEventTag, "Attempting to select new Entity.");
+					Log.i(touchEventTag, "Attempting to select new Entity.");
 					selectedEntity = drawStack.getCollidedWithPoint(px, py);
 				}
 			} else {
-				Log.i(TouchEventTag, "No selected Entity. Trying to find one.");
+				Log.i(touchEventTag, "No selected Entity. Trying to find one.");
 				selectedEntity = drawStack.getCollidedWithPoint(px, py);
 			}
 			
-			if (selectedEntity == null) deselect();
-			else updateIconLocations(); // Icons.
+			if (selectedEntity == null) {
+                deselect();
+            }
+			else{
+                updateIconLocations(); // Icons.
+            }
 			
 			// In all cases, register pointer id etc.
-			pointerDown = true;
+			isPointerDown = true;
 			currentPointerId = pointerId;
 			
 			previousPointerLocation = new FloatPoint(px, py);
 			
 			return true; // Handled.
 		}
-		else if (pointerDown && selectedEntity != null) {
+		else if (isPointerDown && selectedEntity != null) {
 			if (action == MotionEvent.ACTION_MOVE) {
 				boolean handled = false;
 				

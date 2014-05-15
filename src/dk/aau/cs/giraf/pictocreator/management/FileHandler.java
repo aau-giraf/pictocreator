@@ -42,24 +42,24 @@ public class FileHandler{
      */
     public void saveFinalFiles(String textLabel, String inlineText, Bitmap bitmap){
         storagePictogram.setPictogramName(textLabel);
-        storagePictogram.setinlineTextLabel(inlineText);
+        storagePictogram.setInlineTextLabel(inlineText);
 
         //instantiates the files with their specific paths
         File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
         image.getParentFile().mkdirs();
 
-        File tmpImgFile = new File(activity.getCacheDir(), "cvs");
-        tmpImgFile.delete();
+        File tempImageFile = new File(activity.getCacheDir(), "cvs");
+        tempImageFile.delete();
 
         //Convert bitmap to byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-        byte[] bitmapdata = bos.toByteArray();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] bitmapdata = byteArrayOutputStream.toByteArray();
 
         //write the bytes in file
         try{
-            FileOutputStream fos = new FileOutputStream(tmpImgFile);
-            fos.write(bitmapdata);
+            FileOutputStream fileOutputStream = new FileOutputStream(tempImageFile);
+            fileOutputStream.write(bitmapdata);
         }
         catch (FileNotFoundException e){
             Log.e(TAG, e.getMessage());
@@ -69,19 +69,19 @@ public class FileHandler{
             Log.e(TAG, e.getMessage());
         }
 
-        if(tmpImgFile.exists()){
-            copyFile(tmpImgFile, image);
+        if(tempImageFile.exists()){
+            copyFile(tempImageFile, image);
             storagePictogram.setImagePath(image.getPath());
         } else {
             storagePictogram.setImagePath("");
         }
 
         //Creates the audioFile
-        File tmpSndFile = null;
+        File tempSoundFile = null;
         if(AudioHandler.getFinalPath() != null){
-            tmpSndFile = new File(AudioHandler.getFinalPath());
+            tempSoundFile = new File(AudioHandler.getFinalPath());
         }
-        storagePictogram.setAudioFile(tmpSndFile);
+        storagePictogram.setAudioFile(tempSoundFile);
     }
 
     /**
