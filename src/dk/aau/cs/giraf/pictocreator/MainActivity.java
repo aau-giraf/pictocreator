@@ -133,15 +133,25 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
         @Override
 		public void onClick(View view) {
-            drawFragment.DeselectEntity();
+            if(author == 0)
+            {
+                GToast.makeText(getActivity(), "Du skal være logget ind for at gemme. Log ind gennem GIRAF og prøv igen.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                drawFragment.DeselectEntity();
 
-            saveDialog = new SaveDialogFragment();
-            saveDialog.setService(service);
-            saveDialog.setPictogram(storagePictogram);
-            saveDialog.setPreview(getBitmap());
-            saveDialog.show(getFragmentManager(), TAG);
+                saveDialog = new SaveDialogFragment();
+                saveDialog.setService(service);
+                saveDialog.setPictogram(storagePictogram);
+                saveDialog.setPreview(getBitmap());
+                saveDialog.show(getFragmentManager(), TAG);
+            }
         }
     };
+
+    private Activity getActivity(){
+        return this;
+    }
 
     private final OnClickListener  onClearButtonClick = new OnClickListener() {
         @Override
