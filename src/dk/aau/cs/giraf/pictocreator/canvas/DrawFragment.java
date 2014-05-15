@@ -233,7 +233,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new SelectionHandler(getResources()));
             setAllUnToggle();
             selectHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(drawType.NONE);
+            previewButton.changePreviewDisplay(drawType.SELECT);
             previewButton.setEnabled(false);
 
         }

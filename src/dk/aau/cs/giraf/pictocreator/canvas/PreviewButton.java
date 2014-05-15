@@ -1,15 +1,15 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Path;
 import android.util.AttributeSet;
-import android.view.ViewPropertyAnimator;
 
 import dk.aau.cs.giraf.gui.GButton;
-
+import dk.aau.cs.giraf.gui.R;
 
 
 /**
@@ -112,7 +112,9 @@ public class PreviewButton extends GButton {
 
 	}
 
-    //draws an icon on the canvas based on the selected entity
+    /**
+     * Draws an icon on the canvas based on the selected entity
+     */
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -131,7 +133,10 @@ public class PreviewButton extends GButton {
             canvas.drawCircle(padding, padding, linePaint.getStrokeWidth() / 2.0f, linePaint);
             canvas.drawCircle(canvas.getWidth()-padding,  canvas.getHeight()-padding, linePaint.getStrokeWidth()/2.0f, linePaint);
         }
-
+        else if (drawtype == drawType.SELECT){
+            Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.select);
+            canvas.drawBitmap(mBitmap, padding, padding, null);
+        }
 	}
 
 	public void swapColors() {

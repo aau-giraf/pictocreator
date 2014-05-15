@@ -5,6 +5,6 @@ package dk.aau.cs.giraf.pictocreator.canvas;
  * Created by Lars on 13-05-14.
  */
 enum drawType{
-        RECTANGLE, CIRCLE, LINE, NONE
+        RECTANGLE, CIRCLE, LINE, SELECT, NONE
 }
 
