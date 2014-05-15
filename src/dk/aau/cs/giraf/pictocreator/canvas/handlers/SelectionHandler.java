@@ -18,6 +18,8 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.FreehandEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.LineEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.PrimitiveEntity;
 
 /**
@@ -161,8 +163,14 @@ public class SelectionHandler extends ActionHandler {
 		flattenIcon.setX(selectedEntity.getHitboxLeft()-flattenIcon.getWidth());
 		flattenIcon.setY(selectedEntity.getHitboxTop()-flattenIcon.getHeight());
 
-		resizeIcon.setX(selectedEntity.getHitboxRight());
-		resizeIcon.setY(selectedEntity.getHitboxBottom());
+        //resize icon is not available for LineEntities and FreehandEntities
+        if(selectedEntity instanceof LineEntity || selectedEntity instanceof FreehandEntity){
+		    resizeIcon.setWidth(1);
+		    resizeIcon.setHeight(1);
+        }
+
+        resizeIcon.setX(selectedEntity.getHitboxRight());
+        resizeIcon.setY(selectedEntity.getHitboxBottom());
 
 		rotateIcon.setX(selectedEntity.getHitboxLeft()-rotateIcon.getWidth());
 		rotateIcon.setY(selectedEntity.getHitboxBottom());
@@ -305,6 +313,7 @@ public class SelectionHandler extends ActionHandler {
                         float widthNewValue = px - x - selectedEntity.getX();
                         float heightNewValue = py - y - selectedEntity.getY();
 
+                        //Bitmaps are supposed to scale, whereas other entities can be resized.
                         if(selectedEntity instanceof BitmapEntity)
                         {
                             float ratio = selectedEntity.getHeight() / selectedEntity.getWidth();
