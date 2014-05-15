@@ -21,8 +21,6 @@ import dk.aau.cs.giraf.pictocreator.R;
 
 public class HelpDialogFragment extends DialogFragment{
 	private final String TAG = "HelpDialog";
-
-	private final int NUM_PAGES = 4;
 	
     private View view;
     private FrameLayout helpBody;
@@ -52,10 +50,19 @@ public class HelpDialogFragment extends DialogFragment{
         
         parentActivity = getActivity();
         helpResourceList = new ArrayList<Integer>();
-        helpResourceList.add(R.drawable.help_tools_1);
-        helpResourceList.add(R.drawable.help_tools_2);
-        helpResourceList.add(R.drawable.help_tools_3);
-        helpResourceList.add(R.drawable.help_tools_4);
+        helpResourceList.add(R.drawable.help_selection);
+        helpResourceList.add(R.drawable.help_camera_1);
+        helpResourceList.add(R.drawable.help_camera_2);
+        helpResourceList.add(R.drawable.help_camera_3);
+        helpResourceList.add(R.drawable.help_camera_4);
+        helpResourceList.add(R.drawable.help_record_1);
+        helpResourceList.add(R.drawable.help_record_2);
+        helpResourceList.add(R.drawable.help_record_3);
+        helpResourceList.add(R.drawable.help_preview);
+        helpResourceList.add(R.drawable.help_color_1);
+        helpResourceList.add(R.drawable.help_color_2);
+        helpResourceList.add(R.drawable.help_clear);
+
         imgView = new ImageView(parentActivity);
     }
     /**
@@ -85,7 +92,7 @@ public class HelpDialogFragment extends DialogFragment{
         prevButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View view) {
-                iterator = (iterator - 1 + NUM_PAGES) % NUM_PAGES;
+                iterator = (iterator - 1 + helpResourceList.size()) % helpResourceList.size();
                 changeBody(iterator);
         	}
         });
@@ -94,7 +101,7 @@ public class HelpDialogFragment extends DialogFragment{
         nextButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View view) {
-                iterator = (iterator + 1) % NUM_PAGES;
+                iterator = (iterator + 1) % helpResourceList.size();
         		changeBody(iterator);
         	}
         });
