@@ -75,7 +75,7 @@ public class StoragePictogram {
         try{
             databaseHelper = new Helper(this.context);
         } catch (Exception e) {
-            GToast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage());
         }
         this.imagePath = imagePath;
         this.pictogramName = pictogramName;
@@ -104,7 +104,7 @@ public class StoragePictogram {
      * Setter for the inlineTextLabel variable
      * @param inlineTextLabel inlineTextLabel to set
      */
-    public void setinlineTextLabel(String inlineTextLabel){
+    public void setInlineTextLabel(String inlineTextLabel){
         this.inlineTextLabel = inlineTextLabel;
     }
 
@@ -271,17 +271,17 @@ public class StoragePictogram {
      */
     private void generateAudio(Pictogram pictogram){
         if(audioFile != null){
-            byte[] b = new byte[(int) audioFile.length()];
+            byte[] byteArray = new byte[(int) audioFile.length()];
             try{
                 FileInputStream fileInputStream = new FileInputStream(audioFile);
-                fileInputStream.read(b);
+                fileInputStream.read(byteArray);
                 fileInputStream.close();
             }catch (FileNotFoundException e) {
                 Log.e(TAG, "Audio file not found: " + e.getMessage());
             } catch (IOException e) {
                 Log.e(TAG, "Could not convert audio file to byte array: " + e.getMessage());
             }
-            pictogram.setSoundDataBytes(b);
+            pictogram.setSoundDataBytes(byteArray);
         }
         else{
             TextToSpeech textToSpeech = new TextToSpeech(this.context);

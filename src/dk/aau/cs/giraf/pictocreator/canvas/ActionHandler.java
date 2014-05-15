@@ -71,7 +71,14 @@ public abstract class ActionHandler extends Entity {
 	 * Sets a new stroke width.
 	 * @param width The new width.
 	 */
-	public void setStrokeWidth(float width) { strokeWidth = width; }
+	public void setStrokeWidth(float width) {
+        if(width <= 20){
+            strokeWidth = width;
+        }
+        else{
+            strokeWidth = 20;
+        }
+    }
 	
 	/**
 	 * Primary handling mechanism. On every touch event, this method is invoked
@@ -83,14 +90,6 @@ public abstract class ActionHandler extends Entity {
 	 * handlers: if you handled the event, return true, otherwise false.
 	 */
 	public abstract boolean onTouchEvent(MotionEvent event, EntityGroup drawStack);
-	
-	/**
-	 * Each ActionHandler must be able to provide its own icon for the toolbox.
-	 * Whether this is generated on the fly or predetermined bitmap resource is
-	 * up to each handler's implementation.
-	 * @return Returns a Bitmap with the dimensions size-by-size.
-	 */
-	abstract public Bitmap getToolboxIcon(int size);
 	
 	/**
 	 * Shorthand for scaling a Bitmap to a specific size.

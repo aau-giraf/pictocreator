@@ -11,15 +11,15 @@ import java.io.ObjectOutputStream;
  * @author SW608f14
  */
 public final class ByteConverter {
-    public static byte[] serialize(Object obj) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream os = new ObjectOutputStream(out);
-        os.writeObject(obj);
-        return out.toByteArray();
+    public static byte[] serialize(Object object) throws IOException {
+        ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutput = new ObjectOutputStream(byteArrayOutput);
+        objectOutput.writeObject(object);
+        return byteArrayOutput.toByteArray();
     }
     public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        ObjectInputStream is = new ObjectInputStream(in);
-        return is.readObject();
+        ByteArrayInputStream byteArrayInput = new ByteArrayInputStream(data);
+        ObjectInputStream objectInput = new ObjectInputStream(byteArrayInput);
+        return objectInput.readObject();
     }
 }
