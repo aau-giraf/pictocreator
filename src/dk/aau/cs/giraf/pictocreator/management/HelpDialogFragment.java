@@ -71,6 +71,10 @@ public class HelpDialogFragment extends DialogFragment{
         helpResourceList.add(R.drawable.help_save_8);
         helpResourceList.add(R.drawable.help_save_9);
 
+        helpResourceList.add(R.drawable.help_load_1);
+        helpResourceList.add(R.drawable.help_load_2);
+        helpResourceList.add(R.drawable.help_load_3);
+
         helpResourceList.add(R.drawable.help_preview);
         helpResourceList.add(R.drawable.help_color_1);
         helpResourceList.add(R.drawable.help_color_2);
