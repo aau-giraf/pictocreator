@@ -53,10 +53,12 @@ public class HelpDialogFragment extends DialogFragment{
         parentActivity = getActivity();
         helpResourceList = new ArrayList<Integer>();
         helpResourceList.add(R.drawable.help_selection);
+
         helpResourceList.add(R.drawable.help_camera_1);
         helpResourceList.add(R.drawable.help_camera_2);
         helpResourceList.add(R.drawable.help_camera_3);
         helpResourceList.add(R.drawable.help_camera_4);
+
         helpResourceList.add(R.drawable.help_record_1);
         helpResourceList.add(R.drawable.help_record_2);
         helpResourceList.add(R.drawable.help_record_3);
@@ -76,8 +78,10 @@ public class HelpDialogFragment extends DialogFragment{
         helpResourceList.add(R.drawable.help_load_3);
 
         helpResourceList.add(R.drawable.help_preview);
+
         helpResourceList.add(R.drawable.help_color_1);
         helpResourceList.add(R.drawable.help_color_2);
+
         helpResourceList.add(R.drawable.help_clear);
 
         imgView = new ImageView(parentActivity);
