@@ -191,8 +191,13 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
     private final OnClickListener showHelpClick = new OnClickListener() {
     	@Override
 		public void onClick(View view) {
-    		helpDialog = new HelpDialogFragment();
-    		helpDialog.show(getFragmentManager(), TAG);
+            try{
+    		    helpDialog = new HelpDialogFragment();
+    		    helpDialog.show(getFragmentManager(), TAG);
+            }
+            catch(Exception e){
+                Log.e(TAG, e.getMessage());
+            }
     	}
     };
 
@@ -280,7 +285,13 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
     @Override
     public void onPictureTaken(File picture){
-        loadPicture(BitmapFactory.decodeFile(picture.getPath()));
+        try{
+            loadPicture(BitmapFactory.decodeFile(picture.getPath()));
+        }
+        catch (OutOfMemoryError e)
+        {
+            GToast.makeText(this, "Billedet blev desværre ikke taget, slet et af dine nuværende billeder.", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

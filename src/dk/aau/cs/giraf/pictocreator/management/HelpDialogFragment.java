@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
 import java.util.ArrayList;
+import java.util.TooManyListenersException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,10 +15,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GTextView;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class HelpDialogFragment extends DialogFragment{
@@ -143,11 +146,16 @@ public class HelpDialogFragment extends DialogFragment{
      * @param iterator
      */
 	private void changeBody(int iterator) {
+        try{
         helpBody.removeAllViews();
         currentDrawable = helpResourceList.get(iterator);
         imgView.setImageResource(currentDrawable);
         helpBody.addView(imgView);
         statusText.setText(iterator + 1 +" / " + helpResourceList.size());
+        }
+        catch (OutOfMemoryError e){
+            GToast.makeText(parentActivity, "Der er desværre ikke plads til at vise billedet", Toast.LENGTH_LONG).show();
+        }
     }
 
 }
