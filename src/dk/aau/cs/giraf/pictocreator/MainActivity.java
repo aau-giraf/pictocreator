@@ -135,7 +135,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 		public void onClick(View view) {
             if(author == 0)
             {
-                GToast.makeText(getActivity(), "Du skal være logget ind for at gemme. Log ind gennem GIRAF og prøv igen.", Toast.LENGTH_LONG).show();
+                GToast.makeText(getActivity(), "Du skal være logget ind for at gemme, log ind gennem GIRAF og prøv igen", Toast.LENGTH_LONG).show();
             }
             else{
                 drawFragment.DeselectEntity();
@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e){
-            GToast.makeText(this, "Pictosearch er ikke installeret.", Toast.LENGTH_LONG).show();
+            GToast.makeText(this, "Pictosearch er ikke installeret", Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
     }

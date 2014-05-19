@@ -56,7 +56,7 @@ public class PhotoHandler implements PictureCallback {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             fos.write(data);
             fos.close();
-            GToast.makeText(context, "Billede Taget", Toast.LENGTH_SHORT).show();
+            GToast.makeText(context, "Billede taget", Toast.LENGTH_SHORT).show();
         } catch(Exception e) {
             GToast.makeText(context, "Billede kunne ikke tages", Toast.LENGTH_LONG).show();
         }

@@ -58,7 +58,7 @@ public class StoragePictogram {
         try{
             databaseHelper = new Helper(this.context);
         } catch (Exception e) {
-            GToast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage());
         }
     }
 
