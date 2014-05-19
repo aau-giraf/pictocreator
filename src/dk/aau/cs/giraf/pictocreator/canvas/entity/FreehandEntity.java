@@ -6,11 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.util.Log;
 
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializeRectF;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializablePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializableRectF;
 
 /**
  * An Entity class representing a freehand drawing sequence. Freehand drawings
@@ -45,7 +44,7 @@ public class FreehandEntity extends PrimitiveEntity {
 	/**
 	 * Hitbox of the path. Recalculated after each new point has been added.
 	 */
-	protected SerializeRectF hitbox = new SerializeRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+	protected SerializableRectF hitbox = new SerializableRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
 
     @Override
     public void setX(float x) {
@@ -106,22 +105,17 @@ public class FreehandEntity extends PrimitiveEntity {
     }
 
     @Override
-    public void drawWithPaint(Canvas canvas, SerializePaint paint) {
+    public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
         if (drawPoints.size() <= 1) return; // Don't draw trivial.
 
-        paint = new SerializePaint(paint); // Copy.
+        paint = new SerializablePaint(paint); // Copy.
         paint.setStyle(Style.STROKE);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
 
-        Log.i("FreehandEntity.drawWithPaint",
-                String.format("Drawing with basePoint %s and first point %s, color %s", basePoint.toString(), drawPoints.get(0).toString(), paint.getColor()));
-
         Path p = new Path();
-        FloatPoint tp;
-        for (int i = 1; i < drawPoints.size(); i++){
-            tp = drawPoints.get(i);
-            p.lineTo(tp.x, tp.y);
+        for (FloatPoint floatPoint : drawPoints){
+            p.lineTo(floatPoint.x, floatPoint.y);
         }
 
         canvas.drawPath(p, paint);
@@ -159,20 +153,15 @@ public class FreehandEntity extends PrimitiveEntity {
 	 * sparingly.
 	 */
 	protected void calculateHitbox() {
-		hitbox = new SerializeRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+		hitbox = new SerializableRectF(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
 		
 		for (FloatPoint p : drawPoints) {
 			updateHitbox(p.x, p.y);
 		}
-		
-		Log.i("FreehandEntity.calculateHitbox", String.format("New hitbox is %s,%s,%s,%s. Centered around %s this results in %s,%s,%s,%s.",
-				hitbox.left, hitbox.top, hitbox.right, hitbox.bottom,
-				basePoint.toString(),
-				hitbox.left+basePoint.x, hitbox.top+basePoint.y, hitbox.right+basePoint.x, hitbox.bottom+basePoint.y));
 	}
 	
 	/**
-	 * Updates the current hitbox by challenging it with a specific point. This
+	 * Updates the current hitbox by comparing it with a specific point. This
 	 * is used when a new point is added in lieu of recalculating the entire
 	 * point collection. If the point is an outlier compared to the current
 	 * hitbox, the hitbox is expanded accordingly.
@@ -193,11 +182,11 @@ public class FreehandEntity extends PrimitiveEntity {
 	}
 	
 	/**
-	 * Updates the current hitbox by challenging it with a specific point. This
+	 * Updates the current hitbox by comparing it with a specific point. This
 	 * is used when a new point is added in lieu of recalculating the entire
 	 * point collection. If the point is an outlier compared to the current
 	 * hitbox, the hitbox is expanded accordingly.
-	 * @param p The point to challenge with.
+	 * @param p The point to compare with.
 	 */
 	protected void updateHitbox(FloatPoint p) {
 		updateHitbox(p.x, p.y);
@@ -252,9 +241,9 @@ public class FreehandEntity extends PrimitiveEntity {
 	}
 
     @Override
-    public SerializeRectF getHitbox() {
+    public SerializableRectF getHitbox() {
         calculateHitbox();
-        return new SerializeRectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
+        return new SerializableRectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
     }
 
     @Override

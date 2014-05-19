@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses;
+package dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

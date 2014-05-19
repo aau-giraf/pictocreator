@@ -92,7 +92,9 @@ public class BitmapEntity extends Entity {
      */
     @Override
     public boolean collidesWithPoint(float x, float y){
+        //p is the clicked point
         FloatPoint P = new FloatPoint(x,y);
+        //these variables are the sides p will be compared to
         FloatPoint A = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
         FloatPoint B = rotationMatrix((getWidth()/2), -(getHeight()/2));
         FloatPoint C = rotationMatrix((getWidth()/2), (getHeight()/2));

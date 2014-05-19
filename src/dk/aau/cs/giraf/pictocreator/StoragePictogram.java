@@ -17,7 +17,6 @@ import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramTagController;
-import dk.aau.cs.giraf.oasis.lib.controllers.ProfileController;
 import dk.aau.cs.giraf.oasis.lib.controllers.ProfilePictogramController;
 import dk.aau.cs.giraf.oasis.lib.controllers.TagController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;

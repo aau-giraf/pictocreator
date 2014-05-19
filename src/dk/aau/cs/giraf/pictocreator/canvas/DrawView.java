@@ -13,7 +13,6 @@ import android.view.View;
 
 import dk.aau.cs.giraf.gui.GDialogAlert;
 import dk.aau.cs.giraf.gui.R;
-import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 
 /**
  * The DrawView is a basic draw stack with a rendering loop that attempts
@@ -64,7 +63,7 @@ public class DrawView extends View {
 	private int fillColor = 0xCCFF0000;
 	
 	/**
-	 * The width of strokes.
+	 * The stroke width defining the thickness of the drawn entities strokecolor
 	 */
 	private float strokeWidth = 4;
 
@@ -74,7 +73,7 @@ public class DrawView extends View {
 	 */
 	public DrawView(Context context) {
 		super(context);
-		initStuff();
+		init();
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class DrawView extends View {
 	public DrawView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		initStuff();
+		init();
 	}
 
 	/**
@@ -96,15 +95,15 @@ public class DrawView extends View {
 	 */
 	public DrawView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		initStuff();
+		init();
 	}
 
 	/**
 	 * Shared initializer for all constructors. Sets default values.
 	 */
-	private void initStuff(){
+	private void init(){
 		resetImageBounds();
-		boundsPaint.setColor(0xAA777777);
+		boundsPaint.setColor(0xAA777777); //transparent grey
 		boundsPaint.setStrokeWidth(5);
 		boundsPaint.setStyle(Style.FILL);
 
@@ -113,13 +112,13 @@ public class DrawView extends View {
 	}
 
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		this.width = w;
-		this.height = h;
+	protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+		this.width = width;
+		this.height = height;
 
 		resetImageBounds();
 
-		super.onSizeChanged(w, h, oldw, oldh);
+		super.onSizeChanged(width, height, oldWidth, oldHeight);
 	}
 
 	/**
@@ -128,16 +127,16 @@ public class DrawView extends View {
 	 * time the size of the view changes.
 	 */
 	protected void resetImageBounds() {
-		int padding = 20; // Random padding.
-		// Calc middle.
+		int padding = 20;
+		// Calculate middle.
 		int middle = this.width/2;
-		// Calc height of rect.
-		int rHeight = this.height - padding;
+		// Calculate height of rect.
+		int rectangleHeight = this.height - padding;
 		imageBounds = new Rect(
-				middle-(rHeight/2),
+				middle-(rectangleHeight/2),
 				padding,
-				middle+(rHeight/2),
-				rHeight-(padding/2));
+				middle+(rectangleHeight/2),
+				rectangleHeight-(padding/2));
 	}
 
 	/**
@@ -146,10 +145,10 @@ public class DrawView extends View {
 	 * @param handler The handler to use.
 	 */
 	public void setHandler(ActionHandler handler) {
-		this.currentHandler = handler;
-		this.currentHandler.setFillColor(fillColor);
-		this.currentHandler.setStrokeColor(strokeColor);
-		this.currentHandler.setStrokeWidth(strokeWidth);
+		currentHandler = handler;
+		currentHandler.setFillColor(fillColor);
+		currentHandler.setStrokeColor(strokeColor);
+		currentHandler.setStrokeWidth(strokeWidth);
 	}
 
 	/**
@@ -168,7 +167,8 @@ public class DrawView extends View {
 	public void setFillColor(int color) {
 		this.currentHandler.setFillColor(color);
 		this.fillColor = color;
-		invalidate(); // Handler may need redraw.
+        //invalidate seems to be unnecessary, but might be needed later
+		//invalidate(); // Handler may need redraw.
 	}
 
 	/**
@@ -179,7 +179,8 @@ public class DrawView extends View {
 	public void setStrokeColor(int color) {
 		this.currentHandler.setStrokeColor(color);
 		this.strokeColor = color;
-		invalidate(); // Handler may need redraw.
+        //invalidate seems to be unnecessary, but might be needed later
+		//invalidate(); // Handler may need redraw.
 	}
 
 	/**
@@ -189,7 +190,8 @@ public class DrawView extends View {
 	public void setStrokeWidth(float width) {
 		this.currentHandler.setStrokeWidth(width);
 		this.strokeWidth = width;
-		invalidate();
+        //invalidate seems to be unnecessary, but might be needed later
+		//invalidate();
 	}
 
     /**
@@ -250,7 +252,9 @@ public class DrawView extends View {
 
         if (currentHandler.onTouchEvent(event, DrawStackSingleton.getInstance().mySavedData)) {
             return true;
-        } else return false;
+        } else{
+            return false;
+        }
 
 	}
 

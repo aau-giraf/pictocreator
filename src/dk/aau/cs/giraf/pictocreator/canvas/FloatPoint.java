@@ -1,7 +1,5 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import android.util.Log;
-
 import java.io.Serializable;
 
 /**

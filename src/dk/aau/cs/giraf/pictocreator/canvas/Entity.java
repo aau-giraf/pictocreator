@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializeRectF;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializableRectF;
 
 /**
  * Custom-rolled Entity class for Drawables. One major drawback I find with the
@@ -27,7 +27,7 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * X-coordinate of the Shape, measured by its left edge.
 	 */
 	private float x = 0;
-	
+
 	/**
 	 * Y-coordinate of the Shape, measured by its top edge.
 	 */
@@ -138,6 +138,7 @@ public abstract class Entity implements Parcelable, Serializable {
 
     /**
      * The top left corner of the hitbox.
+     * Is null by default, so we can check when it is not assigned to something.
      */
     protected FloatPoint hitboxTopLeft = null;
 
@@ -170,7 +171,8 @@ public abstract class Entity implements Parcelable, Serializable {
 	}
 	
 	/**
-	 * Sets a new center for the Entity. For consistency, this method should
+	 * Sets the top-left corner of an entit, which is used to calculate the center.
+     * For consistency, this method should
 	 * be overriden in Entity subclasses where the center and rotation concepts
 	 * are drastically changed.
 	 * @param x New X-coordinate for the center.
@@ -362,7 +364,10 @@ public abstract class Entity implements Parcelable, Serializable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeFloatArray(new float[]{getX(), getY(), getWidth(), getHeight(), getAngle()});
 	}
-	
+
+    /**
+     * Is required to be overridden due to interface implementation.
+     */
 	@Override
 	public int describeContents() {
 		return 0;
@@ -373,16 +378,17 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * the various getHitbox???? methods.
 	 * @return A RectF of the Entity's hitbox bounds.
 	 */
-	public SerializeRectF getHitbox() {
-        changeHitbox();
-		return new SerializeRectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
+	public SerializableRectF getHitbox() {
+        updateHitbox();
+		return new SerializableRectF(getHitboxLeft(), getHitboxTop(), getHitboxRight(), getHitboxBottom());
 	}
 
     /**
-     * Changes the hitbox of the entity by using calculations of a rotation matrix.
-     * It finds the top left corner of the hitbox and the width and height so it can calculate the rest of the corners
+     * Updates the hitbox of the entity by using calculations of a rotation matrix.
+     * First each corner is rotated and then it finds the top left corner of the
+     * hitbox and its width and height.
      */
-    protected void changeHitbox(){
+    protected void updateHitbox(){
         FloatPoint one = rotationMatrix( -(getWidth()/2), -(getHeight()/2));
         FloatPoint two = rotationMatrix((getWidth()/2), -(getHeight()/2));
         FloatPoint three = rotationMatrix((getWidth()/2), (getHeight()/2));
@@ -395,7 +401,7 @@ public abstract class Entity implements Parcelable, Serializable {
 
     /**
      * Finds the minimum value of the 4 parameters.
-     * This could be done differently with 3 Math.min calls, but a function is written for readability.
+     * This could be done differently with 3 Math.min calls, but a function is written for readability1.
      * @param f1
      * @param f2
      * @param f3
@@ -416,7 +422,7 @@ public abstract class Entity implements Parcelable, Serializable {
     }
 
     /**
-     * Rotation matric formula used to rotate the corners of the entity and draw the hitbox around it.
+     * Rotation matrix formula used to rotate the corners of the entity and draw the hitbox around it.
      * @param x the x value of the corner.
      * @param y the y value of the corner.
      * @return a rotated point.
@@ -435,7 +441,7 @@ public abstract class Entity implements Parcelable, Serializable {
      * @param a the start point of a vector
      * @param b the endpoint of a vector
      * @param p the clicked point
-     * @return
+     * @return true if p is a right rotation of a and b, false if not
      */
     protected Boolean isRightRotation(FloatPoint a, FloatPoint b, FloatPoint p){
         return (b.y-a.y)*(p.x-b.x)<=(p.y-b.y)*(b.x-a.x);

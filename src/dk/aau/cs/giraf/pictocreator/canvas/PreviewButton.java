@@ -24,7 +24,7 @@ public class PreviewButton extends GButton {
 
     private Paint linePaint = new Paint();
 
-    private drawType drawtype = drawType.RECTANGLE;
+    private DrawType drawtype = DrawType.RECTANGLE;
 
     /**
      * Sets the stroke color to use. Causes a re-render of the preview Bitmap.
@@ -106,12 +106,9 @@ public class PreviewButton extends GButton {
 		setStrokeColor(0xFFFF0000);
 		setStrokeWidth(4);
 
-
 		fillPaint.setStyle(Style.FILL);
 		strokePaint.setStyle(Style.STROKE);
-        
-
-	}
+    }
 
     /**
      * Draws an icon on the canvas based on the selected entity
@@ -119,15 +116,15 @@ public class PreviewButton extends GButton {
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-        if (drawtype == drawType.RECTANGLE){
+        if (drawtype == DrawType.RECTANGLE){
             canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, fillPaint);
             canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, strokePaint);
         }
-        else if (drawtype == drawType.CIRCLE){
+        else if (drawtype == DrawType.CIRCLE){
             canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, (canvas.getWidth()-(2*padding))/2, fillPaint);
             canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, (canvas.getWidth()-(2*padding))/2, strokePaint);
         }
-        else if (drawtype == drawType.LINE){
+        else if (drawtype == DrawType.LINE){
             linePaint.setStyle(Paint.Style.STROKE);
             linePaint.setStrokeJoin(Paint.Join.ROUND);
             linePaint.setStrokeCap(Paint.Cap.ROUND);
@@ -139,7 +136,7 @@ public class PreviewButton extends GButton {
             //drawLine ignores the style of the paint, which means the edges of the line are not rounded, so drawPath is used instead.
             canvas.drawPath(p, linePaint);
         }
-        else if (drawtype == drawType.SELECT){
+        else if (drawtype == DrawType.SELECT){
             Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.select);
             canvas.drawBitmap(mBitmap, padding, padding, null);
         }
@@ -152,7 +149,7 @@ public class PreviewButton extends GButton {
         invalidate();
 	}
 
-    public void changePreviewDisplay(drawType type){
+    public void changePreviewDisplay(DrawType type){
         this.drawtype = type;
         invalidate();
     }

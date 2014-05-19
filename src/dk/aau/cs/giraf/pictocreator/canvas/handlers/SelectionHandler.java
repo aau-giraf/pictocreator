@@ -2,7 +2,6 @@ package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
@@ -167,6 +166,10 @@ public class SelectionHandler extends ActionHandler {
         if(selectedEntity instanceof LineEntity || selectedEntity instanceof FreehandEntity){
 		    resizeIcon.setWidth(1);
 		    resizeIcon.setHeight(1);
+        }
+        else{
+            resizeIcon.setWidth(rotateIcon.getWidth());
+            resizeIcon.setHeight(rotateIcon.getHeight());
         }
 
         resizeIcon.setX(selectedEntity.getHitboxRight());

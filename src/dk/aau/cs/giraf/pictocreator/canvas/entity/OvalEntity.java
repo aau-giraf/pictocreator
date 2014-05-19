@@ -3,7 +3,7 @@ package dk.aau.cs.giraf.pictocreator.canvas.entity;
 import android.graphics.Canvas;
 import android.graphics.drawable.shapes.OvalShape;
 
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializablePaint;
 
 /**
  * Simple Entity subclass representing an oval shape.
@@ -16,7 +16,7 @@ public class OvalEntity extends PrimitiveEntity {
 	}
 
 	@Override		
-	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
+	public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
 		OvalShape ovalShape = new OvalShape();
         ovalShape.resize(getWidth(), getHeight());
 
@@ -32,7 +32,7 @@ public class OvalEntity extends PrimitiveEntity {
      */
     @Override
     public boolean collidesWithPoint(float x, float y) {
-        float radAngle = (float)Math.toRadians(getAngle());
+        float radAngle = getRadiansAngle();
         float tempwidth = getWidth() + getStrokeWidth() * 2;
         float tempheight = getHeight() + getStrokeWidth() * 2;
         return ((Math.pow(Math.cos(radAngle)*(x-getCenter().x)+Math.sin(radAngle)*(y-getCenter().y),2)/Math.pow(tempwidth/2,2))+
@@ -41,7 +41,8 @@ public class OvalEntity extends PrimitiveEntity {
 
     /**
      * Set the angle of rotation for this Entity.
-     * If the angle is between 90 and 270 degrees, we reset the position of the entity to be in the upper left corner.
+     * If the angle is between 315 and 45 degrees (a range of 90), we reset the position of the entity to be in the upper left corner,
+     * switches its dimensions, and rotates accordingly.
      * This was done to prevent weird behaviour when the entity is resized after being rotated.
      * @param angle The new angle.
      */

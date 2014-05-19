@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.shapes.RectShape;
 
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializablePaint;
 
 /**
  * Simple Entity. It is basically a visible rect.
@@ -17,7 +17,7 @@ public class RectEntity extends PrimitiveEntity {
 	}
 
 	@Override
-	public void drawWithPaint(Canvas canvas, SerializePaint paint) {
+	public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
 		RectShape rectShape = new RectShape();
         rectShape.resize(getWidth(), getHeight());
 
@@ -35,7 +35,9 @@ public class RectEntity extends PrimitiveEntity {
     public boolean collidesWithPoint(float x, float y){
         float tempheight = getHeight() + getStrokeWidth() * 2;
         float tempwidth = getWidth() + getStrokeWidth() * 2;
+        //p is the clicked point
         FloatPoint P = new FloatPoint(x,y);
+        //these variables are the sides p will be compared to
         FloatPoint A = rotationMatrix( -(tempwidth/2), -(tempheight/2));
         FloatPoint B = rotationMatrix((tempwidth/2), -(tempheight/2));
         FloatPoint C = rotationMatrix((tempwidth/2), (tempheight/2));
@@ -46,7 +48,8 @@ public class RectEntity extends PrimitiveEntity {
 
     /**
      * Set the angle of rotation for this Entity.
-     * If the angle is between 90 and 270 degrees, we reset the position of the entity to be in the upper left corner.
+     * If the angle is between 315 and 45 degrees (a range of 90), we reset the position of the entity to be in the upper left corner,
+     * switches its dimensions, and rotates accordingly.
      * This was done to prevent weird behaviour when the entity is resized after being rotated.
      * @param angle The new angle.
      */

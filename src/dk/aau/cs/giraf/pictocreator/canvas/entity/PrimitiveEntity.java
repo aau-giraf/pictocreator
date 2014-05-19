@@ -6,7 +6,7 @@ import android.graphics.Paint.Style;
 import java.io.Serializable;
 
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
-import dk.aau.cs.giraf.pictocreator.canvas.SerializeClasses.SerializePaint;
+import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializablePaint;
 
 
 public abstract class PrimitiveEntity extends Entity implements Serializable {
@@ -38,6 +38,7 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
 	 * @param strokeColor Paint used for the edges of an entity.
 	 */
 	public PrimitiveEntity(float x, float y, float w, float h, int fillColor, int strokeColor){
+        //calls the other constructor
 		this(fillColor, strokeColor);
         setX(x);
 		setY(y);
@@ -51,7 +52,7 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
 	}
 	
 	/**
-	 * All ShapeEntity subclasses must implement drawWithPaint. ShapeEntity's
+	 * All PrimitiveEntity subclasses must implement drawWithPaint. PrimitiveEntity's
 	 * own base draw method will call drawWithPaint twice; once for the fill
 	 * Paint and once for the stroke Paint. The ShapeEntity subclass should
 	 * merely draw itself with the passed paint as if it had otherwise been a
@@ -59,22 +60,22 @@ public abstract class PrimitiveEntity extends Entity implements Serializable {
 	 * @param canvas The Canvas to draw to. 
 	 * @param paint The specific Paint that must be used for the draw call.
 	 */
-	public abstract void drawWithPaint(Canvas canvas, SerializePaint paint);
+	public abstract void drawWithPaint(Canvas canvas, SerializablePaint paint);
 
 
     /**
      * This method calls drawWithPaint to draw the actual entities with their colour.
-     * Since we cannot save the colour as Paint, we create the SerializePaint with
+     * Since we cannot save the colour as Paint, we create the SerializablePaint with
      * its colour and style. This is a dirty fix so we can load the drawStack from the database.
      * @param canvas The Canvas to draw upon.
      */
 	@Override
 	public void doDraw(Canvas canvas) {
-        SerializePaint tempFill = new SerializePaint();
+        SerializablePaint tempFill = new SerializablePaint();
         tempFill.setStyle(Style.FILL);
         tempFill.setColor(fillPaint);
 
-        SerializePaint tempStroke = new SerializePaint();
+        SerializablePaint tempStroke = new SerializablePaint();
         tempStroke.setStyle(Style.STROKE);
         tempStroke.setStrokeWidth(strokeWidth);
         tempStroke.setColor(strokePaint);
