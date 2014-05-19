@@ -182,7 +182,7 @@ public class DrawFragment extends Fragment {
      * @return True if a camera is found on the device, false otherwise
      */
     private boolean checkForCamera(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) || context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)){
             return true;
         } else {
             Log.d(TAG, "No camera found on device");

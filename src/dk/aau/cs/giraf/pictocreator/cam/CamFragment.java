@@ -66,11 +66,15 @@ public class CamFragment extends DialogFragment {
 
         // Find the ID of the rear-facing ("default") camera
         CameraInfo cameraInfo = new CameraInfo();
-        for (int i = 0; i < mNumberOfCameras; i++){
-            Camera.getCameraInfo(i, cameraInfo);
-            if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK){
-                mCurrentCamera= i;
+        if (mNumberOfCameras > 1){
+            for (int i = 0; i < mNumberOfCameras; i++){
+                Camera.getCameraInfo(i, cameraInfo);
+                if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK){
+                    mCurrentCamera= i;
+                }
             }
+        }else{
+            mCurrentCamera = 0;
         }
         setHasOptionsMenu(mNumberOfCameras > 1);
     }

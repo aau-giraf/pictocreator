@@ -94,10 +94,6 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
         Camera.CameraInfo camInfo = new Camera.CameraInfo();
         int numberOfCams = Camera.getNumberOfCameras();
 
-        if(numberOfCams == 1) {
-            return;
-        }
-
         for(int j = 0; j < numberOfCams; j++) {
             Camera.getCameraInfo(j, camInfo);
             if(camInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
