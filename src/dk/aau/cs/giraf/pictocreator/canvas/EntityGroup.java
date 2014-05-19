@@ -71,8 +71,8 @@ public class EntityGroup extends Entity implements Serializable{
 
     @Override
 	public void draw(Canvas canvas) {
-		for (Entity entity : entities) {
-            entity.draw(canvas);
+		for (int i = entities.size()-1; i >= 0; i--) {
+			entities.get(i).draw(canvas);
 		}
 	}
 	
