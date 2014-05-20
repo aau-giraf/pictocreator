@@ -9,6 +9,7 @@ import java.util.List;
 import java.io.*;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
@@ -228,7 +229,10 @@ public class StoragePictogram {
     private Pictogram makeImage(String path){
         Pictogram pictogram = new Pictogram();
 
-        pictogram.setImage(BitmapFactory.decodeFile(path));
+        Bitmap pictogramImage = BitmapFactory.decodeFile(path);
+        pictogramImage = Bitmap.createScaledBitmap(pictogramImage, 283, 283, true);
+
+        pictogram.setImage(pictogramImage);
         pictogram.setName(pictogramName);
         pictogram.setPub(publicPictogram);
         pictogram.setInlineText(inlineTextLabel);
