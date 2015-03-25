@@ -190,8 +190,23 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
             if (savedEntities != null) {
                 Entity poppedEntity = savedEntities.popEntity();
-                Helper.poppedEntities.add(poppedEntity);
-                drawFragment.drawView.invalidate();
+
+                if (Helper.deletedEntities.size() > 0) {
+                    Entity poppedDeletedEntity = Helper.deletedEntities.get(Helper.deletedEntities.size() - 1);
+                    if (poppedEntity == null)
+                    {
+                        savedEntities.addEntity(poppedDeletedEntity);
+                    }
+                    else if (poppedEntity.getTimeOfDeletion().after(poppedDeletedEntity.getTimeOfDeletion()))
+                    {
+                        savedEntities.addEntity(poppedDeletedEntity);
+                    }
+                    else
+                    {
+                        Helper.poppedEntities.add(poppedEntity);
+                    }
+                    drawFragment.drawView.invalidate();
+                }
 
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
                 drawFragment.DeselectEntity();

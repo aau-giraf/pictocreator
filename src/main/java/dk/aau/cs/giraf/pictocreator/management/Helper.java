@@ -33,4 +33,6 @@ public final class Helper {
     }
 
     public static ArrayList<Entity> poppedEntities = new ArrayList<Entity>();
+
+    public static ArrayList<Entity> deletedEntities = new ArrayList<Entity>();
 }

@@ -232,7 +232,7 @@ public class SelectionHandler extends ActionHandler {
      * @param drawStack The draw stack EntityGroup to remove the Entity from.
      */
     protected void deleteEntity(EntityGroup drawStack) {
-        Helper.poppedEntities.add(drawStack.removeEntity(selectedEntity));
+        Helper.deletedEntities.add(drawStack.removeEntity(selectedEntity));
     }
 
     /**

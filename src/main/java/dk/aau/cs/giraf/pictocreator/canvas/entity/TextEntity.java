@@ -48,7 +48,7 @@ public class TextEntity extends Entity {
 
     @Override
     public void doDraw(Canvas canvas) {
-        if (editText.getText().length() == 0)
+        if (editText.getText().length() == 1) // Weird
             return;
 
         linLayout = new LinearLayout(mActivity.getApplicationContext());

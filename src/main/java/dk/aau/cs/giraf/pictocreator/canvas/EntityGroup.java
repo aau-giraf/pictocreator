@@ -2,9 +2,12 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.graphics.Canvas;
 import android.os.Parcel;
+import android.text.format.Time;
 
 import dk.aau.cs.giraf.pictocreator.canvas.entity.TextEntity;
 
@@ -67,6 +70,7 @@ public class EntityGroup extends Entity implements Serializable{
         if (!entities.isEmpty())
         {
             Entity toRemove = entities.get(0);
+            toRemove.setTimeOfDeletion(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
         }
@@ -81,6 +85,7 @@ public class EntityGroup extends Entity implements Serializable{
      */
     public Entity removeEntity(Entity toRemove) {
         if (entities.contains(toRemove)) {
+            toRemove.setTimeOfDeletion(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
         }
