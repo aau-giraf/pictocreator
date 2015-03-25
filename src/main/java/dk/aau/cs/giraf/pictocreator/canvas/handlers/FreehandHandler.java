@@ -42,7 +42,10 @@ public class FreehandHandler extends ShapeHandler {
 			bufferedEntity = new FreehandEntity(getFillColor());
 			
 			Log.i(TAG, "Pointer down. Registering.");
-			
+
+            ((FreehandEntity)bufferedEntity).addPoint(event.getX(eventIndex), event.getY(eventIndex));
+            ((FreehandEntity)bufferedEntity).addPoint(event.getX(eventIndex) + 1, event.getY(eventIndex) + 1);
+
 			doDraw = true;
 		}
 		else if (action == MotionEvent.ACTION_MOVE){

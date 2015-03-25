@@ -1,5 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
+import java.util.ArrayList;
+
 /**
  * Singleton to store DrawStack across fragment switches.
  * Created since there is only one DrawStack in the application

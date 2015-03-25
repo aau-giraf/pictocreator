@@ -3,6 +3,7 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +11,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GColorPicker;
 import dk.aau.cs.giraf.gui.GSeekBar;
+import dk.aau.cs.giraf.gui.GTextView;
 import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
@@ -26,6 +30,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
+import dk.aau.cs.giraf.pictocreator.canvas.handlers.TextHandler;
 
 /**
  * The DrawFragment is the part of Croc that handles free-form drawing with
@@ -50,8 +55,9 @@ public class DrawFragment extends Fragment {
      * Button for the RectHandler ActionHandler.
      */
     protected GToggleButton rectHandlerButton,ovalHandlerButton,
-            lineHandlerButton, selectHandlerButton, freehandHandlerButton;
+            lineHandlerButton, selectHandlerButton, freehandHandlerButton, textHandlerButton;
 
+    private GTextView strokeWidthText;
     /**
      * Button for the import action for importing Bitmaps.
      */
@@ -79,14 +85,16 @@ public class DrawFragment extends Fragment {
      */
     LinearLayout colorButtonToolbox;
 
+    private boolean firstTextHandlerClick = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-                // Restore drawStack et al.
-                DrawStackSingleton.getInstance().mySavedData = savedInstanceState.getParcelable("drawstack");
-                drawView.invalidate();
+            // Restore drawStack et al.
+            DrawStackSingleton.getInstance().mySavedData = savedInstanceState.getParcelable("drawstack");
+            drawView.invalidate();
         }
 
         Log.w(TAG, "Invalidating DrawView to force onDraw.");
@@ -99,6 +107,8 @@ public class DrawFragment extends Fragment {
         view = inflater.inflate(R.layout.draw_fragment, container, false);
 
         drawView = (DrawView)view.findViewById(R.id.drawingview);
+
+        strokeWidthText = (GTextView)view.findViewById(R.id.strokeWidthText);
 
         freehandHandlerButton = (GToggleButton)view.findViewById(R.id.freehand_handler_button);
         freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
@@ -114,6 +124,9 @@ public class DrawFragment extends Fragment {
 
         ovalHandlerButton = (GToggleButton)view.findViewById(R.id.oval_handler_button);
         ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
+
+        textHandlerButton = (GToggleButton)view.findViewById(R.id.text_handler_button);
+        textHandlerButton.setOnClickListener(onTextHandlerButtonClick);
 
         recordDialogButton = (GButton)view.findViewById(R.id.start_record_dialog_button);
         recordDialogButton.setOnClickListener(showRecorderClick);
@@ -146,8 +159,11 @@ public class DrawFragment extends Fragment {
         importFragmentButton = (GButton)view.findViewById(R.id.start_import_dialog_button);
         importFragmentButton.setOnClickListener(onImportClick);
 
+        importFragmentButton = (GButton)view.findViewById(R.id.start_import_dialog_button);
+        importFragmentButton.setOnClickListener(onImportClick);
+
         if(!checkForCamera(this.getActivity())) {
-           importFragmentButton.setEnabled(false);
+            importFragmentButton.setEnabled(false);
         }
 
         colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
@@ -224,6 +240,8 @@ public class DrawFragment extends Fragment {
         lineHandlerButton.setToggled(false);
         selectHandlerButton.setToggled(false);
         freehandHandlerButton.setToggled(false);
+        textHandlerButton.setToggled(false);
+        strokeWidthText.setText("Streg Tykkelse");
     }
 
     /**
@@ -233,12 +251,11 @@ public class DrawFragment extends Fragment {
     private final OnClickListener onSelectHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            drawView.setHandler(new SelectionHandler(getResources()));
+            drawView.setHandler(new SelectionHandler(getResources(), getActivity()));
             setAllUnToggle();
             selectHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.SELECT);
             previewButton.setEnabled(false);
-
         }
     };
     private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
@@ -269,9 +286,31 @@ public class DrawFragment extends Fragment {
             ovalHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.CIRCLE);
             previewButton.setEnabled(true);
-
         }
     };
+
+    private final OnClickListener onTextHandlerButtonClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (firstTextHandlerClick)
+            {
+                // Initially set text to white and background to black
+                firstTextHandlerClick = false;
+                drawView.setFillColor(Color.WHITE);
+                drawView.setStrokeColor(Color.BLACK);
+                previewButton.setFillColor(Color.WHITE);
+                previewButton.setStrokeColor(Color.BLACK);
+            }
+
+            drawView.setHandler(new TextHandler(getActivity(), drawView));
+            setAllUnToggle();
+            strokeWidthText.setText("Font Størrelse");
+            textHandlerButton.setToggled(true);
+            previewButton.changePreviewDisplay(DrawType.TEXT);
+            previewButton.setEnabled(true);
+        }
+    };
+
     private final OnClickListener onLineHandlerButtonClick = new OnClickListener() {
 
         @Override
@@ -340,9 +379,9 @@ public class DrawFragment extends Fragment {
     private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                previewButton.setStrokeWidth(progress/5);
-                drawView.setStrokeWidth(progress/5);
-                Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
+            previewButton.setStrokeWidth(progress/5);
+            drawView.setStrokeWidth(progress/5);
+            Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
         };
 
         //Have to be overridden, but we do not need this functionality, therefore, it is empty.
