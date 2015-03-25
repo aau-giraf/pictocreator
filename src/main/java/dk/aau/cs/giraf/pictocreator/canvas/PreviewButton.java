@@ -21,6 +21,8 @@ import dk.aau.cs.giraf.gui.R;
 public class PreviewButton extends GButton {
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
+    private int textWeightPadding;
+    private int textHeightPadding;
 
     private Paint linePaint = new Paint();
 
@@ -108,6 +110,10 @@ public class PreviewButton extends GButton {
 
 		fillPaint.setStyle(Style.FILL);
 		strokePaint.setStyle(Style.STROKE);
+        fillPaint.setTextSize(20);
+        textWeightPadding = padding + 32;
+        textHeightPadding = padding + 20;
+
     }
 
     /**
@@ -139,6 +145,11 @@ public class PreviewButton extends GButton {
         else if (drawtype == DrawType.SELECT){
             Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.select);
             canvas.drawBitmap(mBitmap, padding, padding, null);
+        }
+        else if (drawtype == DrawType.TEXT)
+        {
+            canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, strokePaint);
+            canvas.drawText("A", canvas.getWidth() - textWeightPadding, canvas.getHeight() - textHeightPadding, fillPaint);
         }
 	}
 

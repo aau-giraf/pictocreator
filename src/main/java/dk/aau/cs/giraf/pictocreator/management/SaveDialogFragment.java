@@ -320,7 +320,6 @@ public class SaveDialogFragment extends DialogFragment{
                 }
             }
 
-
             //saves the picogram into the database
             if (storagePictogram.addPictogram()) {
                 GToast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
@@ -389,9 +388,9 @@ public class SaveDialogFragment extends DialogFragment{
                     authorID++;
                 }
 
-                ArrayList<Profile> authorChildred = new ArrayList<Profile>();
-                authorChildred.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
-                autistSelector = new GMultiProfileSelector(parentActivity, authorChildred ,citizenProfiles);
+                ArrayList<Profile> authorChildren = new ArrayList<Profile>();
+                authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
+                autistSelector = new GMultiProfileSelector(parentActivity, authorChildren ,citizenProfiles);
                 autistSelector.setMyOnCloseListener(new GMultiProfileSelector.onCloseListener() {
                     @Override
                     public void onClose(List<Profile> selectedProfiles) {

@@ -1,12 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:GComponent="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="60dp"
+    android:paddingBottom="20dp"
     android:paddingLeft="60dp"
     android:paddingRight="60dp"
-    android:paddingTop="60dp"
+    android:paddingTop="20dp"
     tools:context=".DrawFragment" >
 
     <dk.aau.cs.giraf.pictocreator.canvas.DrawView
@@ -36,7 +37,7 @@
                 android:id="@+id/myRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:weightSum="5">
+                android:weightSum="6">
 
                 <dk.aau.cs.giraf.gui.GToggleButton
                     android:id="@+id/select_handler_button"
@@ -83,6 +84,15 @@
                     android:scaleType="fitStart"
                     android:text="Cirkel"
                     android:layout_weight="1"/>
+
+               <dk.aau.cs.giraf.gui.GToggleButton
+                   android:id="@+id/text_handler_button"
+                   android:layout_height="fill_parent"
+                   android:layout_width="match_parent"
+                   android:drawableTop="@drawable/speech_bobble"
+                   android:scaleType="fitStart"
+                   android:text="Tekst"
+                   android:layout_weight="1"/>
 
             </dk.aau.cs.giraf.gui.GRadioGroup>
         </LinearLayout>

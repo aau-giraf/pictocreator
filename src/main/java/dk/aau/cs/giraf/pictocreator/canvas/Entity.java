@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import dk.aau.cs.giraf.pictocreator.canvas.SerializableClasses.SerializableRectF;
 
@@ -58,6 +59,13 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * @param y
 	 */
 	public void setY(float y) { this.y = y; }
+
+    private Date timeOfDeletion;
+
+    public void setTimeOfDeletion(Date d) { this.timeOfDeletion = d; }
+
+    public Date getTimeOfDeletion() { return this.timeOfDeletion; }
+
 	
 	/**
 	 * Width of the Entity.

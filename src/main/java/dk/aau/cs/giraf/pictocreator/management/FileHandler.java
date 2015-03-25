@@ -45,7 +45,7 @@ public class FileHandler{
         storagePictogram.setInlineTextLabel(inlineText);
 
         //instantiates the files with their specific paths
-        File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
+        File image =  new File(Environment.getExternalStorageDirectory(), "giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
         image.getParentFile().mkdirs();
 
         File tempImageFile = new File(activity.getCacheDir(), "cvs");
