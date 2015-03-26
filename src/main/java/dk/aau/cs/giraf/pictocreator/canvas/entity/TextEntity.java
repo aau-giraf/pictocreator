@@ -66,14 +66,8 @@ public class TextEntity extends Entity {
 
         drawnEditText = new EditText(mActivity.getApplicationContext());
 
-        if (hidden)
-        {
-            drawnEditText.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            drawnEditText.setVisibility(View.VISIBLE);
-        }
+        if (hidden) { drawnEditText.setVisibility(View.INVISIBLE); }
+        else { drawnEditText.setVisibility(View.VISIBLE); }
 
         drawnEditText.setTextSize(editText.getTextSize());
         drawnEditText.setTextColor(editText.getCurrentTextColor());
@@ -99,7 +93,6 @@ public class TextEntity extends Entity {
     public void setText(String text) {
         drawnEditText.setText(text);
         editText.setText(text);
-
         linLayout.invalidate();
     }
 
