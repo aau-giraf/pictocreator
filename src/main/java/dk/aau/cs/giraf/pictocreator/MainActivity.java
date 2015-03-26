@@ -189,30 +189,43 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
             EntityGroup savedEntities = DrawStackSingleton.getInstance().mySavedData;
 
             if (savedEntities != null) {
-                Entity poppedEntity = savedEntities.popEntity();
-
                 if (Helper.deletedEntities.size() > 0) {
+
+                    Entity toPop = savedEntities.getEntityToPop();
                     Entity poppedDeletedEntity = Helper.deletedEntities.get(Helper.deletedEntities.size() - 1);
-                    if (poppedEntity == null)
+
+                    if (toPop == null)
                     {
                         savedEntities.addEntity(poppedDeletedEntity);
                     }
-                    else if (poppedEntity.getTimeOfDeletion().after(poppedDeletedEntity.getTimeOfDeletion()))
+                    else if (toPop.getTime().before(poppedDeletedEntity.getTime()))
                     {
                         savedEntities.addEntity(poppedDeletedEntity);
                     }
                     else
                     {
-                        Helper.poppedEntities.add(poppedEntity);
+                        undoDrawnEntity(savedEntities);
                     }
-                    drawFragment.drawView.invalidate();
+                }
+                else
+                {
+                    undoDrawnEntity(savedEntities);
                 }
 
+                drawFragment.drawView.invalidate();
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
                 drawFragment.DeselectEntity();
             }
         }
     };
+
+    private void undoDrawnEntity(EntityGroup savedEntities) {
+        if (Helper.poppedEntities.size() > 5)
+        {
+            Helper.poppedEntities.remove(Helper.poppedEntities.get(0));
+        }
+        Helper.poppedEntities.add(savedEntities.popEntity());
+    }
 
     private final OnClickListener redoClick = new OnClickListener() {
         @Override

@@ -60,11 +60,11 @@ public abstract class Entity implements Parcelable, Serializable {
 	 */
 	public void setY(float y) { this.y = y; }
 
-    private Date timeOfDeletion;
+    private Date time;
 
-    public void setTimeOfDeletion(Date d) { this.timeOfDeletion = d; }
+    public void setTime(Date d) { this.time = d; }
 
-    public Date getTimeOfDeletion() { return this.timeOfDeletion; }
+    public Date getTime() { return this.time; }
 
 	
 	/**

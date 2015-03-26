@@ -28,8 +28,8 @@
             android:layout_width="70dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/start_load_dialog_button"
             android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/start_load_dialog_button"
             android:drawableTop="@drawable/save"
             android:text="Gem"/>
 
@@ -46,10 +46,10 @@
             android:id="@+id/undo_button"
             android:layout_width="70dp"
             android:layout_height="80dp"
-            android:layout_toRightOf="@+id/start_load_dialog_button"
             android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
-            android:drawableTop="@drawable/load_pictogram"
+            android:layout_toRightOf="@+id/start_load_dialog_button"
+            android:drawableTop="@drawable/back"
             android:text="Fortryd"/>
 
         <dk.aau.cs.giraf.gui.GButton
@@ -59,7 +59,7 @@
             android:layout_toRightOf="@+id/undo_button"
             android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
-            android:drawableTop="@drawable/load_pictogram"
+            android:drawableTop="@drawable/back"
             android:text="Gendan"/>
 
         <dk.aau.cs.giraf.gui.GButton

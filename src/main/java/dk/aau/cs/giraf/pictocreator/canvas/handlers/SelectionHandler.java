@@ -6,10 +6,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -232,6 +236,10 @@ public class SelectionHandler extends ActionHandler {
      * @param drawStack The draw stack EntityGroup to remove the Entity from.
      */
     protected void deleteEntity(EntityGroup drawStack) {
+        if (Helper.deletedEntities.size() > 5)
+        {
+            Helper.deletedEntities.remove(Helper.deletedEntities.get(0));
+        }
         Helper.deletedEntities.add(drawStack.removeEntity(selectedEntity));
     }
 
@@ -257,9 +265,13 @@ public class SelectionHandler extends ActionHandler {
         if (selectedEntity instanceof TextEntity) {
 
             final TextEntity textEntity = (TextEntity)selectedEntity;
+            textEntity.setHidden(true);
             final EditText editText = new EditText(mActivity.getApplicationContext());
-            String text = textEntity.drawnEditText.getText().toString();
-            editText.setText(text.substring(0, text.length() - 1)); // Remove \newline which is added to the drawnEditText's text on Enter key down
+            final String text = textEntity.drawnEditText.getText().toString().trim();
+            editText.setText(text);
+            editText.setBackgroundColor(textEntity.backgroundColor);
+            editText.setTextColor(textEntity.drawnEditText.getCurrentTextColor());
+
             final RelativeLayout mainLayout = (RelativeLayout)mActivity.findViewById(R.id.relativeLayout);
 
             editText.setX(textEntity.getX() + Helper.convertDpToPixel(95, mActivity.getApplicationContext()));
@@ -275,6 +287,7 @@ public class SelectionHandler extends ActionHandler {
 
                         if (imm != null) {
                             textEntity.setText(editText.getText().toString());
+                            textEntity.setHidden(false);
                             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                             mainLayout.removeView(editText);
                         }

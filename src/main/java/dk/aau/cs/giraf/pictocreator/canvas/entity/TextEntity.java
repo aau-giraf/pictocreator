@@ -24,8 +24,9 @@ public class TextEntity extends Entity {
     private RelativeLayout mainLayout;
     private Activity mActivity;
     public EditText drawnEditText;
-    private int backgroundColor;
+    public int backgroundColor;
     private LinearLayout linLayout;
+    private boolean hidden = false;
 
     public TextEntity(EditText src, RelativeLayout layout, Activity activity, int backgroundColor) {
         editText = src;
@@ -46,16 +47,34 @@ public class TextEntity extends Entity {
         return width;
     }
 
+    public boolean isHidden()
+    {
+        return hidden;
+    }
+
+    public void setHidden(boolean b)
+    {
+        hidden = b;
+    }
+
     @Override
     public void doDraw(Canvas canvas) {
-        if (editText.getText().length() == 1) // Weird
+        if (editText.getText().length() == 0)
             return;
 
         linLayout = new LinearLayout(mActivity.getApplicationContext());
 
         drawnEditText = new EditText(mActivity.getApplicationContext());
 
-        drawnEditText.setVisibility(View.VISIBLE);
+        if (hidden)
+        {
+            drawnEditText.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            drawnEditText.setVisibility(View.VISIBLE);
+        }
+
         drawnEditText.setTextSize(editText.getTextSize());
         drawnEditText.setTextColor(editText.getCurrentTextColor());
         drawnEditText.setBackgroundColor(this.backgroundColor);
@@ -80,6 +99,7 @@ public class TextEntity extends Entity {
     public void setText(String text) {
         drawnEditText.setText(text);
         editText.setText(text);
+
         linLayout.invalidate();
     }
 

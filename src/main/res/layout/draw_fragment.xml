@@ -18,7 +18,7 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/colorToolbox"
         android:layout_toRightOf="@+id/selectionView"
-        android:background="@color/giraf_white1" />
+        android:background="@android:color/white" />
 
     <ScrollView
         android:id="@+id/selectionView"

@@ -10,6 +10,7 @@ import android.os.Parcel;
 import android.text.format.Time;
 
 import dk.aau.cs.giraf.pictocreator.canvas.entity.TextEntity;
+import dk.aau.cs.giraf.pictocreator.management.Helper;
 
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
@@ -56,6 +57,7 @@ public class EntityGroup extends Entity implements Serializable{
      */
     public void addEntity(Entity toAdd) {
         if (!entities.contains(toAdd)){
+            toAdd.setTime(Calendar.getInstance().getTime());
             entities.add(0, toAdd);
         }
     }
@@ -65,12 +67,21 @@ public class EntityGroup extends Entity implements Serializable{
      * @return The Entity itself.
      * Returns null if the EntityGroup is empty.
      */
+    public Entity getEntityToPop()
+    {
+        if (!entities.isEmpty())
+        {
+            return entities.get(0);
+        }
+        return null;
+    }
+
     public Entity popEntity()
     {
         if (!entities.isEmpty())
         {
             Entity toRemove = entities.get(0);
-            toRemove.setTimeOfDeletion(Calendar.getInstance().getTime());
+            toRemove.setTime(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
         }
@@ -85,7 +96,7 @@ public class EntityGroup extends Entity implements Serializable{
      */
     public Entity removeEntity(Entity toRemove) {
         if (entities.contains(toRemove)) {
-            toRemove.setTimeOfDeletion(Calendar.getInstance().getTime());
+            toRemove.setTime(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
         }
@@ -138,5 +149,7 @@ public class EntityGroup extends Entity implements Serializable{
 
     public void clear(){
         entities.clear();
+        Helper.poppedEntities.clear();
+        Helper.deletedEntities.clear();
     }
 }
