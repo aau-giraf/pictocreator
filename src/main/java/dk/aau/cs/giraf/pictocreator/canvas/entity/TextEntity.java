@@ -21,21 +21,19 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 public class TextEntity extends Entity {
 
     private EditText editText;
-    private RelativeLayout mainLayout;
     private Activity mActivity;
     public EditText drawnEditText;
     public int backgroundColor;
     private LinearLayout linLayout;
     private boolean hidden = false;
 
-    public TextEntity(EditText src, RelativeLayout layout, Activity activity, int backgroundColor) {
+    public TextEntity(EditText src, Activity activity, int backgroundColor) {
         editText = src;
-        mainLayout = layout;
         mActivity = activity;
         this.backgroundColor = backgroundColor;
         setHeight(editText.getHeight());
         setWidth(editText.getWidth());
-        setX(editText.getX() - 155);
+        setX(editText.getX() - 155); // Adjustments to x and y are needed when going from relativelayout to linearlayout
         setY(editText.getY() - 18);
     }
 
@@ -75,6 +73,7 @@ public class TextEntity extends Entity {
         drawnEditText.setHeight(editText.getHeight());
         drawnEditText.setText(editText.getText());
         drawnEditText.setSingleLine(true);
+
         drawnEditText.setWidth(calculateWidth(editText));
 
         linLayout.addView(drawnEditText);
@@ -86,7 +85,6 @@ public class TextEntity extends Entity {
         this.setWidth(drawnEditText.getWidth());
         this.setHeight(drawnEditText.getHeight());
 
-        // canvas.drawBitmap(drawnEditText.getDrawingCache(), drawnEditText.getHeight(), drawnEditText.getWidth(), null);
         linLayout.draw(canvas);
     }
 

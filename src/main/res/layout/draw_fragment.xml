@@ -137,7 +137,7 @@
 
             <dk.aau.cs.giraf.gui.GButton
                 android:id="@+id/customColor"
-                android:text="Vælg Farve"
+                android:text="@string/pick_stroke_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

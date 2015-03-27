@@ -110,7 +110,7 @@ public class TextHandler extends ActionHandler {
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         if (editText.getText().length() != 0) {
                             mainLayout.removeView(editText);
-                            drawStack.addEntity(new TextEntity(editText, mainLayout, mActivity, getFillColor()));
+                            drawStack.addEntity(new TextEntity(editText, mActivity, getFillColor()));
                         }
                     }
                 }

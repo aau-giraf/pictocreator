@@ -160,6 +160,8 @@ public class SaveDialogFragment extends DialogFragment{
         inputTextLabel = (EditText) view.findViewById(R.id.save_input_title);
         inlineTextLabel = (EditText) view.findViewById(R.id.edit_inline_text);
 
+        inputTextLabel.setOnKeyListener(pictogramNameKeyListener);
+
         //buttons
         acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
         acceptButton.setOnClickListener(acceptListener);
@@ -277,6 +279,23 @@ public class SaveDialogFragment extends DialogFragment{
         }
     };
 
+    /**
+     * KeyDown event on pictogramName EditText used to add name as tag
+     */
+    private final View.OnKeyListener pictogramNameKeyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if (keyEvent.getKeyCode() == keyEvent.KEYCODE_ENTER)
+            {
+                String text = inputTextLabel.getText().toString();
+                if (!tags.contains(text) && text.length() > 0) {
+                    tags.add(0, text);
+                    tagArrayAdapter.notifyDataSetChanged();
+                }
+            }
+            return true;
+        }
+    };
 
     /**
      * Click listener for the accept button
@@ -290,7 +309,7 @@ public class SaveDialogFragment extends DialogFragment{
 
             //A pictogram must have a name, if not the user is asked to provide one
             if (pictogramNameText.matches("") || pictogramNameText == null) {
-                GToast.makeText(parentActivity, "Venligst angiv et navn", Toast.LENGTH_SHORT).show();
+                GToast.makeText(parentActivity, getString(R.string.select_name), Toast.LENGTH_SHORT).show();
                 return;
             }
 

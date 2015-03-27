@@ -38,18 +38,24 @@
             android:layout_width="70dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
-            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/invisible_button"
             android:drawableTop="@drawable/load_pictogram"
             android:text="Indlæs"/>
+
+        <dk.aau.cs.giraf.gui.GButton
+            android:id="@+id/invisible_button"
+            android:layout_width="20dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
 
         <dk.aau.cs.giraf.gui.GButton
             android:id="@+id/undo_button"
             android:layout_width="70dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/start_load_dialog_button"
-            android:drawableTop="@drawable/back"
+            android:layout_toRightOf="@+id/invisible_button"
+            android:drawableTop="@drawable/icon_regret"
             android:text="Fortryd"/>
 
         <dk.aau.cs.giraf.gui.GButton
@@ -59,7 +65,7 @@
             android:layout_toRightOf="@+id/undo_button"
             android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
-            android:drawableTop="@drawable/back"
+            android:drawableTop="@drawable/icon_redo"
             android:text="Gendan"/>
 
         <dk.aau.cs.giraf.gui.GButton

@@ -253,6 +253,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new SelectionHandler(getResources(), getActivity()));
             setAllUnToggle();
+            colorFrameButton.setText(getText(R.string.pick_color));
             selectHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.SELECT);
             previewButton.setEnabled(false);
@@ -263,6 +264,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new FreehandHandler());
             setAllUnToggle();
+            colorFrameButton.setText(getText(R.string.pick_stroke_color));
             freehandHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.LINE);
             previewButton.setEnabled(false);
@@ -273,6 +275,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new RectHandler());
             setAllUnToggle();
+            colorFrameButton.setText(getText(R.string.pick_background_color));
             rectHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.RECTANGLE);
             previewButton.setEnabled(true);
@@ -283,6 +286,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new OvalHandler());
             setAllUnToggle();
+            colorFrameButton.setText(getText(R.string.pick_background_color));
             ovalHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.CIRCLE);
             previewButton.setEnabled(true);
@@ -305,6 +309,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new TextHandler(getActivity(), drawView));
             setAllUnToggle();
             strokeWidthText.setText("Font Størrelse");
+            colorFrameButton.setText(getText(R.string.pick_background_color));
             textHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.TEXT);
             previewButton.setEnabled(true);
@@ -317,6 +322,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new LineHandler());
             setAllUnToggle();
+            colorFrameButton.setText(getText(R.string.pick_stroke_color));
             lineHandlerButton.setToggled(true);
             previewButton.changePreviewDisplay(DrawType.LINE);
             previewButton.setEnabled(false);
@@ -397,7 +403,6 @@ public class DrawFragment extends Fragment {
     private final OnClickListener onPreviewButtonClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            previewButton.swapColors();
             drawView.setFillColor(previewButton.getFillColor());
             drawView.setStrokeColor(previewButton.getStrokeColor());
             Log.i(TAG, String.format("Swapping colors from %s to %s", previewButton.getStrokeColor(), previewButton.getFillColor()));

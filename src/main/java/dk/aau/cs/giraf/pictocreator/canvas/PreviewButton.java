@@ -13,6 +13,7 @@ import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.R;
 
 
+
 /**
  * The preview button is optimally displayed close to regular ColorButtons and
  * signals the current color state for fill and stroke.
@@ -156,9 +157,10 @@ public class PreviewButton extends GButton {
             canvas.drawText("A", canvas.getWidth() - textWidthPadding, canvas.getHeight() - textHeightPadding, textPaint);
         }
 	}
-
+    // Returns true if stroke and false if fill
 	public void swapColors() {
         int tempColor = fillPaint.getColor();
+
 		setFillColor(strokePaint.getColor());
         textPaint.setColor(tempColor); // TextPaint is used as getStrokeColor throughout the application
 		setStrokeColor(tempColor);
@@ -169,5 +171,4 @@ public class PreviewButton extends GButton {
         this.drawtype = type;
         invalidate();
     }
-
 }

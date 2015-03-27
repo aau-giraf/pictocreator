@@ -30,6 +30,7 @@ import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
+import dk.aau.cs.giraf.pictocreator.canvas.DrawView;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;

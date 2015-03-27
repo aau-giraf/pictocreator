@@ -18,10 +18,12 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
+import dk.aau.cs.giraf.activity;
 import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -41,7 +43,7 @@ import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
  *
  * @author Croc
  */
-public class MainActivity extends Activity implements CamFragment.PictureTakenListener {
+public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener {
     private final static String TAG = "MainActivity";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";
     private Intent mainIntent;
@@ -280,7 +282,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e) {
-            GToast.makeText(this, "Pictosearch er ikke installeret", Toast.LENGTH_LONG).show();
+            GToast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
     }
