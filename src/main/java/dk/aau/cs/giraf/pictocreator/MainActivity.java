@@ -18,8 +18,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-import dk.aau.cs.giraf.activity;
-import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.activity.GirafActivity;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
@@ -56,7 +56,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private SaveDialogFragment saveDialog;
 
     private GDialogMessage clearDialog;
-    private GButton clearButton, saveDialogButton, loadDialogButton, helpDialogButton, undoButton, redoButton;
+    private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton, helpDialoGirafButton, undoButton, redoButton;
 
     private StoragePictogram storagePictogram;
     private View decor;
@@ -68,6 +68,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.setTheme(R.style.GirafTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -79,9 +80,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         decor = getWindow().getDecorView();
         decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
-        topLayout = (RelativeLayout) findViewById(R.id.topLayer);
-        topLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
-
         drawFragment = new DrawFragment();
 
         fragManager = getFragmentManager();
@@ -90,23 +88,29 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        clearButton = (GButton) findViewById(R.id.clearButton);
-        clearButton.setOnClickListener(onClearButtonClick);
-
-        saveDialogButton = (GButton) findViewById(R.id.start_save_dialog_button);
-        saveDialogButton.setOnClickListener(showLabelMakerClick);
-
-        loadDialogButton = (GButton) findViewById(R.id.start_load_dialog_button);
-        loadDialogButton.setOnClickListener(showPictosearchClick);
-
-        undoButton = (GButton) findViewById(R.id.undo_button);
+        undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_regret), getString(R.string.undo_button_text));
         undoButton.setOnClickListener(undoClick);
+        addGirafButtonToActionBar(undoButton, GirafActivity.RIGHT);
 
-        redoButton = (GButton) findViewById(R.id.redo_button);
+        redoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_redo), getString(R.string.redo_button_text));
         redoButton.setOnClickListener(redoClick);
+        addGirafButtonToActionBar(redoButton, GirafActivity.RIGHT);
 
-        helpDialogButton = (GButton) findViewById(R.id.help_button);
-        helpDialogButton.setOnClickListener(showHelpClick);
+        helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.help), getString(R.string.help_button_text));
+        helpDialoGirafButton.setOnClickListener(showHelpClick);
+        addGirafButtonToActionBar(helpDialoGirafButton, GirafActivity.RIGHT);
+
+        clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.trashcan), getString(R.string.clear_button_text));
+        clearButton.setOnClickListener(onClearButtonClick);
+        addGirafButtonToActionBar(clearButton, GirafActivity.RIGHT);
+
+        saveDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.save), getString(R.string.save_button_text));
+        saveDialoGirafButton.setOnClickListener(showLabelMakerClick);
+        addGirafButtonToActionBar(saveDialoGirafButton, GirafActivity.LEFT);
+
+        loadDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.load_pictogram), getString(R.string.load_button_text));
+        loadDialoGirafButton.setOnClickListener(showPictosearchClick);
+        addGirafButtonToActionBar(loadDialoGirafButton, GirafActivity.LEFT);
     }
 
     @Override

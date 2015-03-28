@@ -89,7 +89,7 @@
                    android:id="@+id/text_handler_button"
                    android:layout_height="fill_parent"
                    android:layout_width="match_parent"
-                   android:drawableTop="@drawable/speech_bobble"
+                   android:drawableTop="@drawable/icon_text"
                    android:scaleType="fitStart"
                    android:text="Tekst"
                    android:layout_weight="1"/>

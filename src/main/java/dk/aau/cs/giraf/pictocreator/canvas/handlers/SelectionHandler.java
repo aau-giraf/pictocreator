@@ -186,7 +186,7 @@ public class SelectionHandler extends ActionHandler {
      * @param resources Source Resource collection, passed from the constructor.
      */
     private void initIcons(Resources resources) {
-        editTextIcon = new BitmapEntity(getIconBitmap("edit_text", resources), iconSize);
+        editTextIcon = new BitmapEntity(getIconBitmap("icon_text", resources), iconSize);
         resizeIcon = new BitmapEntity(getIconBitmap("resize", resources), iconSize);
         rotateIcon = new BitmapEntity(getIconBitmap("rotate", resources), iconSize);
         scrapIcon = new BitmapEntity(getIconBitmap("delete", resources), iconSize);

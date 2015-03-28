@@ -157,6 +157,12 @@ public class PreviewButton extends GButton {
             canvas.drawText("A", canvas.getWidth() - textWidthPadding, canvas.getHeight() - textHeightPadding, textPaint);
         }
 	}
+
+    public void setTextPaint(int color)
+    {
+        textPaint.setColor(color);
+    }
+
     // Returns true if stroke and false if fill
 	public void swapColors() {
         int tempColor = fillPaint.getColor();
