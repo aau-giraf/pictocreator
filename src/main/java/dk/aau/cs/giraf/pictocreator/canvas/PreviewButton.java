@@ -10,6 +10,7 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.R;
 
 
@@ -19,7 +20,7 @@ import dk.aau.cs.giraf.gui.R;
  * signals the current color state for fill and stroke.
  * @author Croc
  */
-public class PreviewButton extends GButton {
+public class PreviewButton extends GirafButton {
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
 
@@ -90,21 +91,10 @@ public class PreviewButton extends GButton {
 	}
 
 
-    public PreviewButton(Context context) {
-		super(context);
-		
-		init();
-	}
-
-	public PreviewButton(Context context, AttributeSet attrs) {
+    public PreviewButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		init();
-	}
-
-	public PreviewButton(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init();
+		//init();
 	}
 
 	private void init() {
@@ -121,9 +111,9 @@ public class PreviewButton extends GButton {
         textHeightPadding = padding + 10;
     }
 
-    /**
+/*    *//**
      * Draws an icon on the canvas based on the selected entity
-     */
+     *//*
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -156,7 +146,7 @@ public class PreviewButton extends GButton {
             canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, fillPaint);
             canvas.drawText("A", canvas.getWidth() - textWidthPadding, canvas.getHeight() - textHeightPadding, textPaint);
         }
-	}
+	}*/
 
     public void setTextPaint(int color)
     {

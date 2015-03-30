@@ -16,4 +16,20 @@
     <string name="load_button_text">"Indlæs"</string>
     <string name="stroke_width">"Streg Tykkelse"</string>
     <string name="text_size">"Font Størrelse"</string>
+    <string name="overwrite_existing_question">"Vil du overskrive det indlæste piktogram, eller oprette et nyt?"</string>
+    <string name="create_new">"Opret nyt"</string>
+    <string name="overwrite">"Overskriv"</string>
+    <string name="clear_canvas">"Ryd tegnebræt?"</string>
+    <string name="save_pictogram">"Gem Piktogram"</string>
+    <string name="must_be_logged_in">"Du skal være logget ind for at gemme, log ind gennem GIRAF og prøv igen"</string>
+    <string name="selector">"Vælger"</string>
+    <string name="free_hand">"Frihånd"</string>
+    <string name="rectangle">"Firkant</string>
+    <string name="line">"Linje"</string>
+    <string name="circle">"Cirkel"</string>
+    <string name="text">"Tekst"</string>
+    <string name="background_color">"Streg farve"</string>
+    <string name="stroke_color">"Baggrunds farve"</string>
+    <string name="record">"Optag"</string>
+    <string name="camera">"Kamera"</string>
 </resources>

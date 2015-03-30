@@ -1,9 +1,11 @@
 package dk.aau.cs.giraf.pictocreator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -57,6 +59,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
     private GDialogMessage clearDialog;
     private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton, helpDialoGirafButton, undoButton, redoButton;
+
+    private int loadedPictogramId = -1; //Nothing loaded by default
+    private boolean overwrite = false;
 
     private StoragePictogram storagePictogram;
     private View decor;
@@ -141,16 +146,47 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         }
     }
 
+    private void overwriteDialog()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setTitle(getString(R.string.save_pictogram));
+
+        alertDialogBuilder
+                .setMessage(getString(R.string.overwrite_existing_question))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.overwrite),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) { //Create new
+                        overwrite = false;
+                    }
+                })
+                .setNegativeButton(getString(R.string.create_new),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) { // Overwrite
+                        overwrite = true;
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+
     /**
      * On click listener to show the {@link SaveDialogFragment}
      */
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
+            if (loadedPictogramId == -1) {
+                overwriteDialog();
+            }
+            else
             if (author == 0) {
-                GToast.makeText(getActivity(), "Du skal være logget ind for at gemme, log ind gennem GIRAF og prøv igen", Toast.LENGTH_LONG).show();
+                GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
             } else {
                 drawFragment.DeselectEntity();
+
+
 
                 saveDialog = new SaveDialogFragment();
                 saveDialog.setService(service);
@@ -169,7 +205,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         @Override
         public void onClick(View v) {
             Log.i(TAG, "Clear Button clicked");
-            clearDialog = new GDialogMessage(v.getContext(), "Ryd tegnebræt?", onAcceptClearCanvasClick);
+            clearDialog = new GDialogMessage(v.getContext(), getString(R.string.clear_canvas), onAcceptClearCanvasClick);
             clearDialog.show();
         }
     };
@@ -239,6 +275,10 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             if (!Helper.poppedEntities.isEmpty()) {
                 EntityGroup savedEntities = DrawStackSingleton.getInstance().mySavedData;
                 Entity entityToBeRedone = Helper.poppedEntities.get(Helper.poppedEntities.size() - 1);
+
+                if (entityToBeRedone == null)
+                    return;
+
                 Helper.poppedEntities.remove(entityToBeRedone);
                 savedEntities.addEntity(entityToBeRedone);
 
@@ -333,6 +373,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         if (pictogram.getEditableImage() == null) {
             Bitmap bitmap = pictogram.getImage();
             loadPicture(bitmap);
+            loadedPictogramId = pictogramID;
         } else {
             try {
                 DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogram.getEditableImage());
