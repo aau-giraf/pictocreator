@@ -1,90 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CrocActivity" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.12"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:id="@+id/topLayer">
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:drawableTop="@drawable/help"
-            android:id="@+id/help_button"
-            android:layout_width="64dp"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:clickable="true"
-            android:text="Hjælp" />
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/start_save_dialog_button"
-            android:layout_width="70dp"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/start_load_dialog_button"
-            android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/save"
-            android:text="Gem"/>
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/start_load_dialog_button"
-            android:layout_width="70dp"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:layout_centerInParent="true"
-            android:drawableTop="@drawable/load_pictogram"
-            android:text="Indlæs"/>
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/undo_button"
-            android:layout_width="70dp"
-            android:layout_height="80dp"
-            android:layout_toRightOf="@+id/start_load_dialog_button"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:drawableTop="@drawable/load_pictogram"
-            android:text="Fortryd"/>
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/redo_button"
-            android:layout_width="70dp"
-            android:layout_height="80dp"
-            android:layout_toRightOf="@+id/undo_button"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:drawableTop="@drawable/load_pictogram"
-            android:text="Gendan"/>
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:drawableTop="@drawable/trashcan"
-            android:layout_width="64dp"
-            android:layout_height="80dp"
-            android:clickable="true"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/quit_button"
-            android:layout_marginRight="20dp"
-            android:id="@+id/clearButton"
-            android:text="Ny"/>
-
-        <dk.aau.cs.giraf.gui.GButton
-            android:id="@+id/quit_button"
-            android:layout_width="64dp"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/exit"
-            android:onClick="doExit"
-            android:text="Luk"/>
-
-    </RelativeLayout>
+    tools:context=".CrocActivity">
 
     <FrameLayout
         android:id="@+id/fragmentContainer"

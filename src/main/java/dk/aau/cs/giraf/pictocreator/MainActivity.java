@@ -1,9 +1,11 @@
 package dk.aau.cs.giraf.pictocreator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,10 +20,12 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.activity.GirafActivity;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -41,7 +45,7 @@ import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
  *
  * @author Croc
  */
-public class MainActivity extends Activity implements CamFragment.PictureTakenListener {
+public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener {
     private final static String TAG = "MainActivity";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";
     private Intent mainIntent;
@@ -54,7 +58,10 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
     private SaveDialogFragment saveDialog;
 
     private GDialogMessage clearDialog;
-    private GButton clearButton, saveDialogButton, loadDialogButton, helpDialogButton, undoButton, redoButton;
+    private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton, helpDialoGirafButton, undoButton, redoButton;
+
+    private int loadedPictogramId = -1; //Nothing loaded by default
+    private boolean overwrite = false;
 
     private StoragePictogram storagePictogram;
     private View decor;
@@ -66,6 +73,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.setTheme(R.style.GirafTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -77,9 +85,6 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         decor = getWindow().getDecorView();
         decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
-        topLayout = (RelativeLayout) findViewById(R.id.topLayer);
-        topLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
-
         drawFragment = new DrawFragment();
 
         fragManager = getFragmentManager();
@@ -88,23 +93,29 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        clearButton = (GButton) findViewById(R.id.clearButton);
-        clearButton.setOnClickListener(onClearButtonClick);
-
-        saveDialogButton = (GButton) findViewById(R.id.start_save_dialog_button);
-        saveDialogButton.setOnClickListener(showLabelMakerClick);
-
-        loadDialogButton = (GButton) findViewById(R.id.start_load_dialog_button);
-        loadDialogButton.setOnClickListener(showPictosearchClick);
-
-        undoButton = (GButton) findViewById(R.id.undo_button);
+        undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_regret), getString(R.string.undo_button_text));
         undoButton.setOnClickListener(undoClick);
+        addGirafButtonToActionBar(undoButton, GirafActivity.RIGHT);
 
-        redoButton = (GButton) findViewById(R.id.redo_button);
+        redoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_redo), getString(R.string.redo_button_text));
         redoButton.setOnClickListener(redoClick);
+        addGirafButtonToActionBar(redoButton, GirafActivity.RIGHT);
 
-        helpDialogButton = (GButton) findViewById(R.id.help_button);
-        helpDialogButton.setOnClickListener(showHelpClick);
+        helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.help), getString(R.string.help_button_text));
+        helpDialoGirafButton.setOnClickListener(showHelpClick);
+        addGirafButtonToActionBar(helpDialoGirafButton, GirafActivity.RIGHT);
+
+        clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.trashcan), getString(R.string.clear_button_text));
+        clearButton.setOnClickListener(onClearButtonClick);
+        addGirafButtonToActionBar(clearButton, GirafActivity.RIGHT);
+
+        saveDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.save), getString(R.string.save_button_text));
+        saveDialoGirafButton.setOnClickListener(showLabelMakerClick);
+        addGirafButtonToActionBar(saveDialoGirafButton, GirafActivity.LEFT);
+
+        loadDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.load_pictogram), getString(R.string.load_button_text));
+        loadDialoGirafButton.setOnClickListener(showPictosearchClick);
+        addGirafButtonToActionBar(loadDialoGirafButton, GirafActivity.LEFT);
     }
 
     @Override
@@ -135,16 +146,47 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         }
     }
 
+    private void overwriteDialog()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setTitle(getString(R.string.save_pictogram));
+
+        alertDialogBuilder
+                .setMessage(getString(R.string.overwrite_existing_question))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.overwrite),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) { //Create new
+                        overwrite = false;
+                    }
+                })
+                .setNegativeButton(getString(R.string.create_new),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) { // Overwrite
+                        overwrite = true;
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+
     /**
      * On click listener to show the {@link SaveDialogFragment}
      */
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
+            if (loadedPictogramId == -1) {
+                overwriteDialog();
+            }
+            else
             if (author == 0) {
-                GToast.makeText(getActivity(), "Du skal være logget ind for at gemme, log ind gennem GIRAF og prøv igen", Toast.LENGTH_LONG).show();
+                GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
             } else {
                 drawFragment.DeselectEntity();
+
+
 
                 saveDialog = new SaveDialogFragment();
                 saveDialog.setService(service);
@@ -163,7 +205,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         @Override
         public void onClick(View v) {
             Log.i(TAG, "Clear Button clicked");
-            clearDialog = new GDialogMessage(v.getContext(), "Ryd tegnebræt?", onAcceptClearCanvasClick);
+            clearDialog = new GDialogMessage(v.getContext(), getString(R.string.clear_canvas), onAcceptClearCanvasClick);
             clearDialog.show();
         }
     };
@@ -189,30 +231,43 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
             EntityGroup savedEntities = DrawStackSingleton.getInstance().mySavedData;
 
             if (savedEntities != null) {
-                Entity poppedEntity = savedEntities.popEntity();
-
                 if (Helper.deletedEntities.size() > 0) {
+
+                    Entity toPop = savedEntities.getEntityToPop();
                     Entity poppedDeletedEntity = Helper.deletedEntities.get(Helper.deletedEntities.size() - 1);
-                    if (poppedEntity == null)
+
+                    if (toPop == null)
                     {
                         savedEntities.addEntity(poppedDeletedEntity);
                     }
-                    else if (poppedEntity.getTimeOfDeletion().after(poppedDeletedEntity.getTimeOfDeletion()))
+                    else if (toPop.getTime().before(poppedDeletedEntity.getTime()))
                     {
                         savedEntities.addEntity(poppedDeletedEntity);
                     }
                     else
                     {
-                        Helper.poppedEntities.add(poppedEntity);
+                        undoDrawnEntity(savedEntities);
                     }
-                    drawFragment.drawView.invalidate();
+                }
+                else
+                {
+                    undoDrawnEntity(savedEntities);
                 }
 
+                drawFragment.drawView.invalidate();
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
                 drawFragment.DeselectEntity();
             }
         }
     };
+
+    private void undoDrawnEntity(EntityGroup savedEntities) {
+        if (Helper.poppedEntities.size() > 5)
+        {
+            Helper.poppedEntities.remove(Helper.poppedEntities.get(0));
+        }
+        Helper.poppedEntities.add(savedEntities.popEntity());
+    }
 
     private final OnClickListener redoClick = new OnClickListener() {
         @Override
@@ -220,6 +275,10 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
             if (!Helper.poppedEntities.isEmpty()) {
                 EntityGroup savedEntities = DrawStackSingleton.getInstance().mySavedData;
                 Entity entityToBeRedone = Helper.poppedEntities.get(Helper.poppedEntities.size() - 1);
+
+                if (entityToBeRedone == null)
+                    return;
+
                 Helper.poppedEntities.remove(entityToBeRedone);
                 savedEntities.addEntity(entityToBeRedone);
 
@@ -267,7 +326,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e) {
-            GToast.makeText(this, "Pictosearch er ikke installeret", Toast.LENGTH_LONG).show();
+            GToast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
     }
@@ -314,6 +373,7 @@ public class MainActivity extends Activity implements CamFragment.PictureTakenLi
         if (pictogram.getEditableImage() == null) {
             Bitmap bitmap = pictogram.getImage();
             loadPicture(bitmap);
+            loadedPictogramId = pictogramID;
         } else {
             try {
                 DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogram.getEditableImage());

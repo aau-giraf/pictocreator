@@ -362,7 +362,7 @@ public class StoragePictogram {
                 tagHelper.insertPictogramTag(new PictogramTag(pictogram.getId(), t.getId()));
             }
 
-            if (citizens.isEmpty()) { // Should be visible for everyone
+            if (citizens.isEmpty()) { // Should be visible for department
                 return saveDepartmentPictogram(pictogram);
             } else {
                 for (Profile p : citizens) {
@@ -383,6 +383,7 @@ public class StoragePictogram {
             DepartmentPictogram dp = new DepartmentPictogram(pictogram.getId(), departmentId);
             databaseHelper.departmentPictogramHelper.insertDepartmentPictogram(dp);
             return true;
+
         } catch (Exception e) {
             return false;
         }

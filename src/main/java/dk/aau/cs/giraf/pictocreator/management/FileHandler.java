@@ -10,6 +10,7 @@ import java.io.IOException;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
@@ -45,12 +46,12 @@ public class FileHandler{
         storagePictogram.setInlineTextLabel(inlineText);
 
         //instantiates the files with their specific paths
-        File image =  new File(Environment.getExternalStorageDirectory(), "giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
+
+        File image =  new File(Environment.getExternalStorageDirectory(), ".giraf/img/" + textLabel + "-" + System.currentTimeMillis() + ".jpg");
         image.getParentFile().mkdirs();
 
         File tempImageFile = new File(activity.getCacheDir(), "cvs");
         tempImageFile.delete();
-
         //Convert bitmap to byte array
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);

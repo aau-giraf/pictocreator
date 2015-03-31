@@ -21,20 +21,19 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 public class TextEntity extends Entity {
 
     private EditText editText;
-    private RelativeLayout mainLayout;
     private Activity mActivity;
     public EditText drawnEditText;
-    private int backgroundColor;
+    public int backgroundColor;
     private LinearLayout linLayout;
+    private boolean hidden = false;
 
-    public TextEntity(EditText src, RelativeLayout layout, Activity activity, int backgroundColor) {
+    public TextEntity(EditText src, Activity activity, int backgroundColor) {
         editText = src;
-        mainLayout = layout;
         mActivity = activity;
         this.backgroundColor = backgroundColor;
         setHeight(editText.getHeight());
         setWidth(editText.getWidth());
-        setX(editText.getX() - 155);
+        setX(editText.getX() - 155); // Adjustments to x and y are needed when going from relativelayout to linearlayout
         setY(editText.getY() - 18);
     }
 
@@ -46,22 +45,35 @@ public class TextEntity extends Entity {
         return width;
     }
 
+    public boolean isHidden()
+    {
+        return hidden;
+    }
+
+    public void setHidden(boolean b)
+    {
+        hidden = b;
+    }
+
     @Override
     public void doDraw(Canvas canvas) {
-        if (editText.getText().length() == 1) // Weird
+        if (editText.getText().length() == 0)
             return;
 
         linLayout = new LinearLayout(mActivity.getApplicationContext());
 
         drawnEditText = new EditText(mActivity.getApplicationContext());
 
-        drawnEditText.setVisibility(View.VISIBLE);
+        if (hidden) { drawnEditText.setVisibility(View.INVISIBLE); }
+        else { drawnEditText.setVisibility(View.VISIBLE); }
+
         drawnEditText.setTextSize(editText.getTextSize());
         drawnEditText.setTextColor(editText.getCurrentTextColor());
         drawnEditText.setBackgroundColor(this.backgroundColor);
         drawnEditText.setHeight(editText.getHeight());
         drawnEditText.setText(editText.getText());
         drawnEditText.setSingleLine(true);
+
         drawnEditText.setWidth(calculateWidth(editText));
 
         linLayout.addView(drawnEditText);
@@ -73,7 +85,6 @@ public class TextEntity extends Entity {
         this.setWidth(drawnEditText.getWidth());
         this.setHeight(drawnEditText.getHeight());
 
-        // canvas.drawBitmap(drawnEditText.getDrawingCache(), drawnEditText.getHeight(), drawnEditText.getWidth(), null);
         linLayout.draw(canvas);
     }
 

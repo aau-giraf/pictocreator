@@ -21,11 +21,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.TextEntity;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 
-/**
- * The SelectionHandler is the select/move/rotate/scale tool on the canvas.
- *
- * @author lindhart
- */
+
 public class TextHandler extends ActionHandler {
 
     /**
@@ -43,7 +39,6 @@ public class TextHandler extends ActionHandler {
     public final void drawBufferPreBounds(Canvas canvas) {
 
     }
-
 
     /**
      * The ID of the pointer currently being tracked. Check isPointerDown to see
@@ -96,8 +91,8 @@ public class TextHandler extends ActionHandler {
         int y = (int) event.getY() - Helper.convertDpToPixel(20, mActivity.getApplicationContext());
 
         final EditText editText = new EditText(mActivity.getApplicationContext());
-        editText.setTextColor(getFillColor());
-        editText.setBackgroundColor(getStrokeColor());
+        editText.setTextColor(getStrokeColor());
+        editText.setBackgroundColor(getFillColor());
 
         float normalTextSize = 28;
         editText.setTextSize(normalTextSize + getStrokeWidth());
@@ -113,8 +108,10 @@ public class TextHandler extends ActionHandler {
 
                     if (imm != null) {
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                        mainLayout.removeView(editText);
-                        drawStack.addEntity(new TextEntity(editText, mainLayout, mActivity, getStrokeColor()));
+                        if (editText.getText().length() != 0) {
+                            mainLayout.removeView(editText);
+                            drawStack.addEntity(new TextEntity(editText, mActivity, getFillColor()));
+                        }
                     }
                 }
                 return false;

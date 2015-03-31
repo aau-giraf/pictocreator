@@ -10,7 +10,9 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 
 import dk.aau.cs.giraf.gui.GButton;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.R;
+
 
 
 /**
@@ -18,11 +20,14 @@ import dk.aau.cs.giraf.gui.R;
  * signals the current color state for fill and stroke.
  * @author Croc
  */
-public class PreviewButton extends GButton {
+public class PreviewButton extends GirafButton {
 	private Paint fillPaint = new Paint();
 	private Paint strokePaint = new Paint();
-    private int textWeightPadding;
+
+    private int textWidthPadding;
     private int textHeightPadding;
+
+    private Paint textPaint = new Paint();
 
     private Paint linePaint = new Paint();
 
@@ -80,26 +85,16 @@ public class PreviewButton extends GButton {
      */
 	public void setStrokeWidth(float width) {
 		strokePaint.setStrokeWidth(width);
+        textPaint.setTextSize(28 + width);
         linePaint.setStrokeWidth(width);
 		invalidate();
 	}
 
 
-    public PreviewButton(Context context) {
-		super(context);
-		
-		init();
-	}
-
-	public PreviewButton(Context context, AttributeSet attrs) {
+    public PreviewButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		init();
-	}
-
-	public PreviewButton(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init();
+		//init();
 	}
 
 	private void init() {
@@ -110,15 +105,15 @@ public class PreviewButton extends GButton {
 
 		fillPaint.setStyle(Style.FILL);
 		strokePaint.setStyle(Style.STROKE);
-        fillPaint.setTextSize(20);
-        textWeightPadding = padding + 32;
-        textHeightPadding = padding + 20;
-
+        textPaint.setTextSize(28);
+        textPaint.setStyle(Style.STROKE);
+        textWidthPadding = padding + 40;
+        textHeightPadding = padding + 10;
     }
 
-    /**
+/*    *//**
      * Draws an icon on the canvas based on the selected entity
-     */
+     *//*
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -148,14 +143,22 @@ public class PreviewButton extends GButton {
         }
         else if (drawtype == DrawType.TEXT)
         {
-            canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, strokePaint);
-            canvas.drawText("A", canvas.getWidth() - textWeightPadding, canvas.getHeight() - textHeightPadding, fillPaint);
+            canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, fillPaint);
+            canvas.drawText("A", canvas.getWidth() - textWidthPadding, canvas.getHeight() - textHeightPadding, textPaint);
         }
-	}
+	}*/
 
+    public void setTextPaint(int color)
+    {
+        textPaint.setColor(color);
+    }
+
+    // Returns true if stroke and false if fill
 	public void swapColors() {
         int tempColor = fillPaint.getColor();
+
 		setFillColor(strokePaint.getColor());
+        textPaint.setColor(tempColor); // TextPaint is used as getStrokeColor throughout the application
 		setStrokeColor(tempColor);
         invalidate();
 	}
@@ -164,5 +167,4 @@ public class PreviewButton extends GButton {
         this.drawtype = type;
         invalidate();
     }
-
 }

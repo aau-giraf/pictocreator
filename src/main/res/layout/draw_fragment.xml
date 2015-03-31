@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:GComponent="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,15 +19,14 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/colorToolbox"
         android:layout_toRightOf="@+id/selectionView"
-        android:background="@color/giraf_white1" />
+        android:background="@android:color/white" />
 
     <ScrollView
         android:id="@+id/selectionView"
         android:layout_width="96dp"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        >
+        android:layout_alignParentLeft="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,59 +39,53 @@
                 android:layout_height="fill_parent"
                 android:weightSum="6">
 
-                <dk.aau.cs.giraf.gui.GToggleButton
+                <dk.aau.cs.giraf.gui.GirafButton
                     android:id="@+id/select_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/select"
-                    android:scaleType="fitStart"
-                    android:text="Vælger"
+                    app:icon="@drawable/select"
+                    app:text="@string/selector"
                     android:layout_weight="1"/>
 
-                <dk.aau.cs.giraf.gui.GToggleButton
+                <dk.aau.cs.giraf.gui.GirafButton
                     android:id="@+id/freehand_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/drawing"
-                    android:scaleType="fitStart"
-                    android:text="Frihånd"
+                    app:icon="@drawable/drawing"
+                    app:text="@string/free_hand"
                     android:layout_weight="1"
                     GComponent:Toggled="true"/>
 
-                <dk.aau.cs.giraf.gui.GToggleButton
+                <dk.aau.cs.giraf.gui.GirafButton
                     android:id="@+id/rect_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/draw_rect"
-                    android:scaleType="fitStart"
-                    android:text="Firkant"
+                    app:icon="@drawable/draw_rect"
+                    app:text="@string/rectangle"
                     android:layout_weight="1"/>
 
-                <dk.aau.cs.giraf.gui.GToggleButton
+                <dk.aau.cs.giraf.gui.GirafButton
                     android:id="@+id/line_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/draw_line"
-                    android:scaleType="fitStart"
-                    android:text="Linje"
+                    app:icon="@drawable/draw_line"
+                    app:text="@string/line"
                     android:layout_weight="1"/>
 
-                <dk.aau.cs.giraf.gui.GToggleButton
+                <dk.aau.cs.giraf.gui.GirafButton
                     android:id="@+id/oval_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:drawableTop="@drawable/draw_oval"
-                    android:scaleType="fitStart"
-                    android:text="Cirkel"
+                    app:icon="@drawable/draw_oval"
+                    app:text="@string/circle"
                     android:layout_weight="1"/>
 
-               <dk.aau.cs.giraf.gui.GToggleButton
+               <dk.aau.cs.giraf.gui.GirafButton
                    android:id="@+id/text_handler_button"
                    android:layout_height="fill_parent"
                    android:layout_width="match_parent"
-                   android:drawableTop="@drawable/speech_bobble"
-                   android:scaleType="fitStart"
-                   android:text="Tekst"
+                   app:icon="@drawable/icon_text"
+                   app:text="@string/text"
                    android:layout_weight="1"/>
 
             </dk.aau.cs.giraf.gui.GRadioGroup>
@@ -115,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Streg Tykkelse"
+                android:text="@string/stroke_width"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <dk.aau.cs.giraf.gui.GSeekBar
@@ -125,26 +119,25 @@
                 android:layout_marginLeft="10dp"
                 GComponent:StartPercent="20"/>
 
-            <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
-                android:id="@+id/currentCustomColor"
+            <dk.aau.cs.giraf.gui.GirafButton
+                android:id="@+id/strokeColorButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/blank_100x100"
+                app:icon="@drawable/blank_100x100"
                 android:layout_below="@id/strokeWidthBar"
-                android:layout_toRightOf="@+id/colorToolbox"/>
-
-            <dk.aau.cs.giraf.gui.GButton
-                android:id="@+id/customColor"
-                android:text="Vælg Farve"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="-5dp"
-                android:layout_above="@+id/extraToolbox"
                 android:layout_toRightOf="@+id/colorToolbox"
-                android:layout_below="@id/currentCustomColor"/>
+                app:text="@string/stroke_color"/>
+
+            <dk.aau.cs.giraf.gui.GirafButton
+                android:id="@+id/backgroundColorButton"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                app:icon="@drawable/blank_100x100"
+                app:text="@string/background_color"/>
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasColorPreviewButton"
@@ -152,26 +145,26 @@
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/blank_100x100"
-                />
+                app:icon="@drawable/blank_100x100"/>
 
-            <dk.aau.cs.giraf.gui.GButton
-                android:drawableTop="@drawable/import_button"
+
+            <dk.aau.cs.giraf.gui.GirafButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/start_import_dialog_button"
-                android:text="Kamera"/>
+                app:icon="@drawable/import_button"
+                app:text="@string/camera"/>
 
-            <dk.aau.cs.giraf.gui.GButton
+            <dk.aau.cs.giraf.gui.GirafButton
                 android:id="@+id/start_record_dialog_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:drawableTop="@drawable/mic"
-                android:text="Optag"/>
+                app:icon="@drawable/mic"
+                app:text="@string/record"/>
 
         </LinearLayout>
     </ScrollView>
