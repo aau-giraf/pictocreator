@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 
 import org.w3c.dom.Text;
 
-import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;

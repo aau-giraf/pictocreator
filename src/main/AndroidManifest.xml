@@ -35,6 +35,7 @@
 	    tools:replace="icon,label">
         android:largeHeap="true"
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"
             android:label="Piktotegner"
             android:screenOrientation="landscape"

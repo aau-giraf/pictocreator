@@ -26,6 +26,10 @@ public class TextEntity extends Entity {
     public int backgroundColor;
     private LinearLayout linLayout;
     private boolean hidden = false;
+    private int layoutXAdjustment = 155;
+    private int layoutYAdjustment = 18;
+    private int textDefaultBounds = 30;
+
 
     public TextEntity(EditText src, Activity activity, int backgroundColor) {
         editText = src;
@@ -33,15 +37,15 @@ public class TextEntity extends Entity {
         this.backgroundColor = backgroundColor;
         setHeight(editText.getHeight());
         setWidth(editText.getWidth());
-        setX(editText.getX() - 155); // Adjustments to x and y are needed when going from relativelayout to linearlayout
-        setY(editText.getY() - 18);
+        setX(editText.getX() - layoutXAdjustment); // Adjustments to x and y are needed when going from relativelayout to linearlayout
+        setY(editText.getY() - layoutYAdjustment);
     }
 
     private int calculateWidth(EditText et) {
         Rect bounds = new Rect();
         Paint textPaint = et.getPaint();
         textPaint.getTextBounds(et.getText().toString(), 0, et.getText().length(), bounds);
-        int width = bounds.width() + 30;
+        int width = bounds.width() + textDefaultBounds;
         return width;
     }
 
@@ -91,7 +95,6 @@ public class TextEntity extends Entity {
     public void setText(String text) {
         drawnEditText.setText(text);
         editText.setText(text);
-        linLayout.invalidate();
     }
 
     /**

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawView;
@@ -84,11 +85,11 @@ public class TextHandler extends ActionHandler {
             return false;
         }
 
-        GToggleButton selectButton = (GToggleButton) mActivity.findViewById(R.id.select_handler_button);
+        GirafButton selectButton = (GirafButton) mActivity.findViewById(R.id.select_handler_button);
         selectButton.performClick();
 
-        int x = (int) event.getX() + Helper.convertDpToPixel(60, mActivity.getApplicationContext());
-        int y = (int) event.getY() - Helper.convertDpToPixel(20, mActivity.getApplicationContext());
+        int x = (int) event.getX() + Helper.convertDpToPixel(mActivity.getResources().getDimension(R.dimen.padding_x), mActivity.getApplicationContext());
+        int y = (int) event.getY() - Helper.convertDpToPixel(mActivity.getResources().getDimension(R.dimen.padding_y), mActivity.getApplicationContext());
 
         final EditText editText = new EditText(mActivity.getApplicationContext());
         editText.setTextColor(getStrokeColor());

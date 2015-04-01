@@ -5,10 +5,10 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
-    android:paddingLeft="60dp"
-    android:paddingRight="60dp"
-    android:paddingTop="20dp"
+    android:paddingBottom="@dimen/padding_y"
+    android:paddingLeft="@dimen/padding_x"
+    android:paddingRight="@dimen/padding_x"
+    android:paddingTop="@dimen/padding_y"
     tools:context=".DrawFragment" >
 
     <dk.aau.cs.giraf.pictocreator.canvas.DrawView
@@ -120,7 +120,7 @@
                 GComponent:StartPercent="20"/>
 
             <dk.aau.cs.giraf.gui.GirafButton
-                android:id="@+id/strokeColorButton"
+                android:id="@+id/backgroundColorButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
@@ -131,7 +131,7 @@
                 app:text="@string/stroke_color"/>
 
             <dk.aau.cs.giraf.gui.GirafButton
-                android:id="@+id/backgroundColorButton"
+                android:id="@+id/strokeColorButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
@@ -140,7 +140,7 @@
                 app:text="@string/background_color"/>
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
-                android:id="@+id/canvasColorPreviewButton"
+                android:id="@+id/canvasHandlerPreviewButton"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"

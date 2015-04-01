@@ -58,6 +58,9 @@ public class DrawFragment extends Fragment {
     protected GirafButton rectHandlerButton,ovalHandlerButton,
             lineHandlerButton, selectHandlerButton, freehandHandlerButton, textHandlerButton;
 
+    private GColorPicker backgroundColorPicker;
+    private GColorPicker strokeColorPicker;
+
     private GTextView strokeWidthText;
     private int currentBackgroundColor;
     private int currentStrokeColor;
@@ -74,14 +77,14 @@ public class DrawFragment extends Fragment {
      */
     protected GirafButton currentBackgroundColorButton;
     protected GirafButton currentStrokeColorButton;
-    private int customColor = 0xFF000000;
+    private int customColor = 0xFFFFFFFF;
 
     RecordDialogFragment recordDialog;
 
     /**
      * Displays previews of current color choices.
      */
-    PreviewButton previewButton;
+    PreviewButton canvasHandlerPreviewButton;
 
     /**
      * The LinearLayout view that contains all choosable colours.
@@ -135,26 +138,25 @@ public class DrawFragment extends Fragment {
         GSeekBar strokeWidthBar = (GSeekBar)view.findViewById(R.id.strokeWidthBar);
         strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
 
-        currentStrokeColorButton = (GirafButton) view.findViewById(R.id.strokeColorButton);
-        currentStrokeColorButton.setOnClickListener(onCurrentStrokeColorButtonClick);
-
         currentBackgroundColorButton = (GirafButton) view.findViewById(R.id.backgroundColorButton);
         currentBackgroundColorButton.setOnClickListener(onCurrentBackgroundColorButtonClick);
-    //    currentBackgroundColorButton.setStrokeColor(0x00000000);
-    //    currentBackgroundColorButton.setFillColor(0xFF000000);
+
+        currentStrokeColorButton = (GirafButton) view.findViewById(R.id.strokeColorButton);
+        currentStrokeColorButton.setOnClickListener(getOnCurrentStrokeColorButtonClick);
+
+        currentBackgroundColor = 0xFF000000; // Black
+        currentStrokeColor = 0xFFFFFFFF; // White
 
         // Set initial handler.
         drawView.setHandler(new FreehandHandler());
 
-        previewButton = (PreviewButton) view.findViewById(R.id.canvasColorPreviewButton);
-        // Initial colours are set to black
-        previewButton.setStrokeColor(0xFF000000);
-        previewButton.setFillColor(0xFF000000);
-        previewButton.changePreviewDisplay(DrawType.LINE);
-        previewButton.setEnabled(false);
+        drawView.setFillColor(currentBackgroundColor);
+        drawView.setStrokeColor(currentStrokeColor);
 
-        drawView.setStrokeColor(previewButton.getStrokeColor());
-        drawView.setFillColor(previewButton.getFillColor());
+        canvasHandlerPreviewButton = (PreviewButton) view.findViewById(R.id.canvasHandlerPreviewButton);
+
+        canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
+        canvasHandlerPreviewButton.setEnabled(false);
 
         importFragmentButton = (GirafButton)view.findViewById(R.id.start_import_dialog_button);
         importFragmentButton.setOnClickListener(onImportClick);
@@ -218,7 +220,7 @@ public class DrawFragment extends Fragment {
         colorButtonToolbox.addView(
                 new ColorButton(
                         drawView,
-                        previewButton,
+                        canvasHandlerPreviewButton,
                         color,
                         this.getActivity()));
     }
@@ -242,6 +244,7 @@ public class DrawFragment extends Fragment {
 //        freehandHandlerButton.setToggled(false);
 //        textHandlerButton.setToggled(false);
         strokeWidthText.setText(getString(R.string.stroke_width));
+        // TODO currentStrokeColorButton.text("Text farve");
     }
 
     /**
@@ -255,7 +258,7 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
             //colorFrameButton.setText(getText(R.string.pick_color));
             //selectHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(DrawType.SELECT);
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.SELECT);
         }
     };
     private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
@@ -265,7 +268,7 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
            // colorFrameButton.setText(getText(R.string.pick_stroke_color));
            // freehandHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(DrawType.LINE);
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
     };
     private final OnClickListener onRectHandlerButtonClick = new OnClickListener() {
@@ -275,7 +278,7 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
         //    colorFrameButton.setText(getText(R.string.pick_color));
         //    rectHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(DrawType.RECTANGLE);
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.RECTANGLE);
         }
     };
     private final OnClickListener onOvalHandlerButtonClick = new OnClickListener() {
@@ -285,7 +288,7 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
          //   colorFrameButton.setText(getText(R.string.pick_color));
         //    ovalHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(DrawType.CIRCLE);
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.CIRCLE);
         }
     };
 
@@ -296,19 +299,12 @@ public class DrawFragment extends Fragment {
             drawView.setFillColor(Color.WHITE);
             drawView.setStrokeColor(Color.BLACK);
 
-            previewButton.setFillColor(Color.WHITE);
-            previewButton.setStrokeColor(Color.BLACK);
-            previewButton.setTextPaint(Color.BLACK);
-
-        //    currentBackgroundColorButton.setStrokeColor(0x00000000);
-         //   currentStrokeColorButton.setFillColor(0xFF000000);
-
             drawView.setHandler(new TextHandler(getActivity(), drawView));
             setAllUnToggle();
             strokeWidthText.setText(getString(R.string.text_size));
-         //   colorFrameButton.setText(getText(R.string.pick_color));
+         //   TODO currentStrokColorButton.setText(getText(R.string.pick_color));
         //    textHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(DrawType.TEXT);
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.TEXT);
         }
     };
 
@@ -320,30 +316,34 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
         //    colorFrameButton.setText(getText(R.string.pick_stroke_color));
         //    lineHandlerButton.setToggled(true);
-            previewButton.changePreviewDisplay(DrawType.LINE);
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
     };
 
     /**
      * Utilizes the GColorPicker to open up the color picker.
-     * Returns a color which is sat as fillcolor, previewButton's fillcolor, and the customColor buttons color.
+     * Returns a color which is sat as fillcolor, canvasHandlerPreviewButton's fillcolor, and the customColor buttons color.
      * The parameter in GColorPicker constructor is the previously selected color.
      * @param v View
      */
-    private void ColorPicker(View v, final boolean background, int currentColor){
+
+    private void ColorPicker(View v, final int currentColor, final boolean background){
         GColorPicker colorPicker = new GColorPicker(v.getContext(), customColor, new GColorPicker.OnOkListener() {
             @Override
             public void OnOkClick(GColorPicker diag, int color) {
                 if (background)
                 {
                     currentBackgroundColor = color;
+                    drawView.setFillColor(color);
                 }
                 else
                 {
                     currentStrokeColor = color;
+                    drawView.setStrokeColor(color);
                 }
             }
         });
+
         colorPicker.SetCurrColor(currentColor);
         colorPicker.show();
     }
@@ -377,7 +377,7 @@ public class DrawFragment extends Fragment {
     private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            previewButton.setStrokeWidth(progress/5);
+            canvasHandlerPreviewButton.setStrokeWidth(progress/5);
             drawView.setStrokeWidth(progress/5);
             Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
         };
@@ -389,40 +389,23 @@ public class DrawFragment extends Fragment {
         public void onStartTrackingTouch(SeekBar seekBar) {};
     };
 
-/*
-    */
-/**
-     * Swaps the colour in the previewButton and assigns the colour to the drawView colours.
-     *//*
-
-    private final OnClickListener onPreviewButtonClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            previewButton.swapColors();
-            drawView.setFillColor(previewButton.getFillColor());
-            drawView.setStrokeColor(previewButton.getStrokeColor());
-            Log.i(TAG, String.format("Swapping colors from %s to %s", previewButton.getStrokeColor(), previewButton.getFillColor()));
-        }
-    };
-*/
-
     /**
-     * Chooses the custom color as fill color in both drawView and previewButton.
-     */
-    private final OnClickListener onCurrentStrokeColorButtonClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ColorPicker(v, false, currentStrokeColor);
-        }
-    };
-
-    /**
-     * Chooses the custom color as fill color in both drawView and previewButton.
+     * Chooses the custom color as fill color in both drawView and canvasHandlerPreviewButton.
      */
     private final OnClickListener onCurrentBackgroundColorButtonClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            ColorPicker(v, true, currentBackgroundColor);
+            ColorPicker(v, currentBackgroundColor, true); // 3rd parameter (true) means set background color
+        }
+    };
+
+    /**
+     * Chooses the custom color as fill color in both drawView and canvasHandlerPreviewButton.
+     */
+    private final OnClickListener getOnCurrentStrokeColorButtonClick = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ColorPicker(v, currentStrokeColor, false); // 3rd parameter (false) means set stroke color
         }
     };
 }

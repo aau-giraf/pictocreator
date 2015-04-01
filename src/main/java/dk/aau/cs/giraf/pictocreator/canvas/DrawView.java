@@ -255,7 +255,6 @@ public class DrawView extends View {
         } else{
             return false;
         }
-
 	}
 
 	/**
