@@ -177,7 +177,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (loadedPictogramId == -1) {
+            if (loadedPictogramId != -1) {
                 overwriteDialog();
             }
             else
@@ -217,6 +217,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             if (drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null) {
                 DrawStackSingleton.getInstance().mySavedData.clear();
+                loadedPictogramId = -1;
                 drawFragment.drawView.invalidate();
 
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
