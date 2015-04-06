@@ -35,8 +35,10 @@
     <!-- Giraf Grayscale Colours -->
     <color name="giraf_gray1">#596A79</color>
     <color name="giraf_gray2">#9CAEBE</color>
-    <color name="giraf_white1">#F3F5F8</color>
-    <color name="giraf_white2">#E9EDF2</color>
+    <color name="giraf_white1">#E9EDF2</color>
+
+    <!-- Giraf white colors -->
+    <color name="giraf_white">#FFF</color>
     
     <!-- Gradient Colours -->
     <color name="drk_gradient">#0FFF</color>

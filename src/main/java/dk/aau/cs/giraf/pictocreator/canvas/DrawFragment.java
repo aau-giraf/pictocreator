@@ -77,7 +77,7 @@ public class DrawFragment extends Fragment {
      */
     protected GirafButton currentBackgroundColorButton;
     protected GirafButton currentStrokeColorButton;
-    private int customColor = 0xFFFFFFFF;
+    private int customColor;
 
     RecordDialogFragment recordDialog;
 
@@ -144,11 +144,13 @@ public class DrawFragment extends Fragment {
         currentStrokeColorButton = (GirafButton) view.findViewById(R.id.strokeColorButton);
         currentStrokeColorButton.setOnClickListener(getOnCurrentStrokeColorButtonClick);
 
-        currentBackgroundColor = 0xFF000000; // Black
-        currentStrokeColor = 0xFFFFFFFF; // White
-
         // Set initial handler.
         drawView.setHandler(new FreehandHandler());
+
+        // Set initial colors
+        currentStrokeColor = getResources().getColor(R.color.black);
+        currentBackgroundColor = getResources().getColor(R.color.giraf_white);
+        customColor = getResources().getColor(R.color.giraf_white);
 
         drawView.setFillColor(currentBackgroundColor);
         drawView.setStrokeColor(currentStrokeColor);
