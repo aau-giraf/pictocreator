@@ -349,12 +349,19 @@ public class StoragePictogram {
      *
      * @return True if the pictogram was successfully added, false otherwise
      */
-    public boolean addPictogram() {
+    public boolean addPictogram(int loadedPictogramId) {
         Pictogram pictogram;
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         ProfilePictogramController profileHelper = databaseHelper.profilePictogramHelper;
 
-        pictogram = generatePictogram();
+        if (loadedPictogramId == -1) {
+            pictogram = generatePictogram();
+        }
+        else
+        {
+            pictogram = generatePictogram(); // Loaded pictogramid should be used
+            pictogram.setId(loadedPictogramId);
+        }
 
         if (pictogram != null && author != 0) {
             List<Tag> addTags = generateTagList();

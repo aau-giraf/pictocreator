@@ -60,6 +60,8 @@ public class SaveDialogFragment extends DialogFragment{
 
     private ImageView imgView;
 
+    private int loadedPictogramId;
+
     private EditText inputTextLabel;
     private EditText inlineTextLabel;
     private EditText tagInputFind;
@@ -103,7 +105,8 @@ public class SaveDialogFragment extends DialogFragment{
      * Setter for the StoragePictogram variable
      * @param storagePictogram The StoragePictogram to set
      */
-    public void setPictogram(StoragePictogram storagePictogram){
+    public void setPictogram(StoragePictogram storagePictogram, int loadedPictogramId){
+        this.loadedPictogramId = loadedPictogramId;
         this.storagePictogram = storagePictogram;
     }
 
@@ -340,7 +343,7 @@ public class SaveDialogFragment extends DialogFragment{
             }
 
             //saves the picogram into the database
-            if (storagePictogram.addPictogram()) {
+            if (storagePictogram.addPictogram(loadedPictogramId)) {
                 GToast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
             }
             else{
