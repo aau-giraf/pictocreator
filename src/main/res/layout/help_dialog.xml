@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -26,14 +27,14 @@
 			android:layout_centerVertical="true"
 			android:layout_alignParentLeft="true" />
         
-        <dk.aau.cs.giraf.gui.GButton
+        <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/close_button"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:drawableTop="@drawable/gcancel_icon"
-            android:text="Luk"/>
+            app:icon="@drawable/gcancel_icon"
+            app:text="Luk"/>
         
     </RelativeLayout>
     <FrameLayout 
@@ -50,7 +51,7 @@
         android:layout_weight="0.09"
         android:padding="5dp" >
         
-        <dk.aau.cs.giraf.gui.GButton
+        <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/previous_button"
             android:layout_width="65dp"
             android:layout_height="wrap_content"
@@ -58,8 +59,8 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
-            android:drawableTop="@drawable/prev_icon"
-            android:text="Forrige"/>
+            app:icon="@drawable/prev_icon"
+            app:text="Forrige"/>
 
         <dk.aau.cs.giraf.gui.GTextView
             android:id="@+id/help_status_text"
@@ -68,7 +69,7 @@
             android:layout_centerInParent="true"
           />
 
-        <dk.aau.cs.giraf.gui.GButton
+        <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/next_button"
             android:layout_width="65dp"
             android:layout_height="wrap_content"
@@ -76,8 +77,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
-            android:drawableTop="@drawable/next_icon"
-            android:text="Næste"/>
+            app:icon="@drawable/next_icon"
+            app:text="Næste"/>
         
     </RelativeLayout>
 

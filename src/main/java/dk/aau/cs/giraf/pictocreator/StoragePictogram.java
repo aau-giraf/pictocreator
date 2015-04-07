@@ -354,14 +354,7 @@ public class StoragePictogram {
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         ProfilePictogramController profileHelper = databaseHelper.profilePictogramHelper;
 
-        if (loadedPictogramId == -1) {
-            pictogram = generatePictogram();
-        }
-        else
-        {
-            pictogram = generatePictogram(); // Loaded pictogramid should be used
-            pictogram.setId(loadedPictogramId);
-        }
+        pictogram = generatePictogram();
 
         if (pictogram != null && author != 0) {
             List<Tag> addTags = generateTagList();

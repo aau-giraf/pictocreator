@@ -60,8 +60,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private GDialogMessage clearDialog;
     private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton, helpDialoGirafButton, undoButton, redoButton;
 
-    private int loadedPictogramId = -1; //Nothing loaded by default
-
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
@@ -156,7 +154,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.overwrite),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) { //Create new
-                        loadedPictogramId = -1; // Set loaded pictogram id to -1 to create new else the loaded pictogram gets overwritten
                         savePictogram();
                     }
                 })
@@ -180,12 +177,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             if (author == 0) {
                 GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
             } else {
-                if (loadedPictogramId != -1) {
-                    overwriteDialog();
-                }
-                else {
-                    savePictogram();
-                }
+                savePictogram();
             }
         }
     };
@@ -195,7 +187,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
         saveDialog = new SaveDialogFragment();
         saveDialog.setService(service);
-        saveDialog.setPictogram(storagePictogram, loadedPictogramId);
+        saveDialog.setPictogram(storagePictogram, 1);
         saveDialog.setPreview(getBitmap());
         saveDialog.show(getFragmentManager(), TAG);
     }
@@ -220,7 +212,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             if (drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null) {
                 DrawStackSingleton.getInstance().mySavedData.clear();
-                loadedPictogramId = -1;
                 drawFragment.drawView.invalidate();
 
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
@@ -377,7 +368,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         if (pictogram.getEditableImage() == null) {
             Bitmap bitmap = pictogram.getImage();
             loadPicture(bitmap);
-            loadedPictogramId = pictogramID;
         } else {
             try {
                 DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogram.getEditableImage());

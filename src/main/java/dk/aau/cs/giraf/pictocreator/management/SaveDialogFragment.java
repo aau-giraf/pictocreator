@@ -29,12 +29,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GMultiProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GToast;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.oasis.lib.Helper;
 import dk.aau.cs.giraf.oasis.lib.models.Profile;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
@@ -69,8 +69,8 @@ public class SaveDialogFragment extends DialogFragment{
     private String pictogramNameText;
     private String inlineText;
 
-    private GButton acceptButton;
-    private GButton cancelButton, addConnectCitizenButton;
+    private GirafButton acceptButton, overwriteButton;
+    private GirafButton cancelButton, addConnectCitizenButton;
 
     private GMultiProfileSelector autistSelector;
 
@@ -166,10 +166,13 @@ public class SaveDialogFragment extends DialogFragment{
         inputTextLabel.setOnKeyListener(pictogramNameKeyListener);
 
         //buttons
-        acceptButton = (GButton) view.findViewById(R.id.save_button_positive);
+        acceptButton = (GirafButton) view.findViewById(R.id.save_button_positive);
         acceptButton.setOnClickListener(acceptListener);
 
-        cancelButton = (GButton) view.findViewById(R.id.save_button_negative);
+        overwriteButton = (GirafButton) view.findViewById(R.id.overwrite_button_positive);
+        overwriteButton.setOnClickListener(overwriteListener);
+
+        cancelButton = (GirafButton) view.findViewById(R.id.save_button_negative);
         cancelButton.setOnClickListener(new OnClickListener(){
 
             @Override
@@ -193,7 +196,7 @@ public class SaveDialogFragment extends DialogFragment{
         connectedCitizenList.setAdapter(connectedArrayAdapter);
         connectedCitizenList.setOnItemClickListener(onRemoveCitizen);
 
-        addConnectCitizenButton = (GButton) view.findViewById(R.id.connect_autism);
+        addConnectCitizenButton = (GirafButton) view.findViewById(R.id.connect_autism);
         addConnectCitizenButton.setOnClickListener(addCitizen);
 
         //tags layout configuration
@@ -307,60 +310,71 @@ public class SaveDialogFragment extends DialogFragment{
     private final OnClickListener acceptListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            pictogramNameText = inputTextLabel.getText().toString();
-            inlineText = inlineTextLabel.getText().toString();
-
-            //A pictogram must have a name, if not the user is asked to provide one
-            if (pictogramNameText.matches("") || pictogramNameText == null) {
-                GToast.makeText(parentActivity, getString(R.string.select_name), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            fileHandler.saveFinalFiles(pictogramNameText, inlineText, preview);
-
-            //Value 1 in database means publicly available
-            //Value 0 in database means not publicly available
-            if (publicityPublic.isChecked()){
-                storagePictogram.setPublicPictogram(1);
-            }
-            else if(publicityPrivate.isChecked()){
-                storagePictogram.setPublicPictogram(0);
-                if(!citizenProfiles.isEmpty()){
-                    for (Profile p : citizenProfiles){
-                        storagePictogram.addCitizen(p);
-                    }
-                }else {
-                    GToast.makeText(parentActivity, "Angiv venligst borgere dette er privat for", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            //adds each tag to the pictogram
-            if((tags != null)){
-                for(String t : tags){
-                    storagePictogram.addTag(t);
-                }
-            }
-
-            //saves the picogram into the database
-            if (storagePictogram.addPictogram(loadedPictogramId)) {
-                GToast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                GToast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
-            }
-
-            if (isService) {
-                Intent returnIntent = new Intent(MainActivity.getActionResult());
-                returnIntent.putExtra("pictogramId", storagePictogram.getId());
-                parentActivity.setResult(Activity.RESULT_OK, returnIntent);
-
-                parentActivity.finish();
-            }
-
-            tmpDialog.dismiss();
+            savePictogram(false);
         }
     };
+
+    private final OnClickListener overwriteListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            savePictogram(true);
+        }
+    };
+
+    private void savePictogram(boolean overwrite) {
+        pictogramNameText = inputTextLabel.getText().toString();
+        inlineText = inlineTextLabel.getText().toString();
+
+        //A pictogram must have a name, if not the user is asked to provide one
+        if (pictogramNameText.matches("") || pictogramNameText == null) {
+            GToast.makeText(parentActivity, getString(R.string.select_name), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        fileHandler.saveFinalFiles(pictogramNameText, inlineText, preview);
+
+        //Value 1 in database means publicly available
+        //Value 0 in database means not publicly available
+        if (publicityPublic.isChecked()){
+            storagePictogram.setPublicPictogram(1);
+        }
+        else if(publicityPrivate.isChecked()){
+            storagePictogram.setPublicPictogram(0);
+            if(!citizenProfiles.isEmpty()){
+                for (Profile p : citizenProfiles){
+                    storagePictogram.addCitizen(p);
+                }
+            }else {
+                GToast.makeText(parentActivity, "Angiv venligst borgere dette er privat for", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        //adds each tag to the pictogram
+        if((tags != null)){
+            for(String t : tags){
+                storagePictogram.addTag(t);
+            }
+        }
+
+        //saves the picogram into the database
+        if (storagePictogram.addPictogram(loadedPictogramId)) {
+            GToast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            GToast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
+        }
+
+        if (isService) {
+            Intent returnIntent = new Intent(MainActivity.getActionResult());
+            returnIntent.putExtra("pictogramId", storagePictogram.getId());
+            parentActivity.setResult(Activity.RESULT_OK, returnIntent);
+
+            parentActivity.finish();
+        }
+
+        tmpDialog.dismiss();
+    }
 
     private final AdapterView.OnItemClickListener onRemoveCitizen = new AdapterView.OnItemClickListener() {
         @Override
