@@ -38,7 +38,11 @@ android {
     dexOptions {
         preDexLibraries = false
     }
-
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
     defaultConfig{
         minSdkVersion 15
         targetSdkVersion 19
