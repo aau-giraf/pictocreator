@@ -60,9 +60,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private GDialogMessage clearDialog;
     private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton, helpDialoGirafButton, undoButton, redoButton;
 
-    private int loadedPictogramId = -1; //Nothing loaded by default
-    private boolean overwrite = false;
-
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
@@ -157,12 +154,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.overwrite),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) { //Create new
-                        overwrite = false;
+                        savePictogram();
                     }
                 })
                 .setNegativeButton(getString(R.string.create_new),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) { // Overwrite
-                        overwrite = true;
+                        savePictogram();
                         dialog.cancel();
                     }
                 });
@@ -177,25 +174,23 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener showLabelMakerClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (loadedPictogramId != -1) {
-                overwriteDialog();
-            }
-            else
             if (author == 0) {
                 GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
             } else {
-                drawFragment.DeselectEntity();
-
-
-
-                saveDialog = new SaveDialogFragment();
-                saveDialog.setService(service);
-                saveDialog.setPictogram(storagePictogram);
-                saveDialog.setPreview(getBitmap());
-                saveDialog.show(getFragmentManager(), TAG);
+                savePictogram();
             }
         }
     };
+
+    private void savePictogram() {
+        drawFragment.DeselectEntity();
+
+        saveDialog = new SaveDialogFragment();
+        saveDialog.setService(service);
+        saveDialog.setPictogram(storagePictogram, 1);
+        saveDialog.setPreview(getBitmap());
+        saveDialog.show(getFragmentManager(), TAG);
+    }
 
     private Activity getActivity() {
         return this;
@@ -217,7 +212,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             if (drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null) {
                 DrawStackSingleton.getInstance().mySavedData.clear();
-                loadedPictogramId = -1;
                 drawFragment.drawView.invalidate();
 
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
@@ -374,7 +368,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         if (pictogram.getEditableImage() == null) {
             Bitmap bitmap = pictogram.getImage();
             loadPicture(bitmap);
-            loadedPictogramId = pictogramID;
         } else {
             try {
                 DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogram.getEditableImage());

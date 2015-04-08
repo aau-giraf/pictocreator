@@ -349,7 +349,7 @@ public class StoragePictogram {
      *
      * @return True if the pictogram was successfully added, false otherwise
      */
-    public boolean addPictogram() {
+    public boolean addPictogram(int loadedPictogramId) {
         Pictogram pictogram;
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         ProfilePictogramController profileHelper = databaseHelper.profilePictogramHelper;

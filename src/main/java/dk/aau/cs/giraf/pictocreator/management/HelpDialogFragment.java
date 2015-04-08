@@ -17,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GTextView;
 import dk.aau.cs.giraf.gui.GToast;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class HelpDialogFragment extends DialogFragment{
@@ -30,7 +30,7 @@ public class HelpDialogFragment extends DialogFragment{
     private FrameLayout helpBody;
     private ImageView imgView;
     private ArrayList<Integer> helpResourceList;
-    private GButton closeButton, prevButton, nextButton;
+    private GirafButton closeButton, prevButton, nextButton;
     private GTextView statusText;
     private LinearLayout helpDialogLayout;
     private int currentDrawable;
@@ -106,7 +106,7 @@ public class HelpDialogFragment extends DialogFragment{
 
         changeBody(iterator);
         
-        closeButton = (GButton) view.findViewById(R.id.close_button);
+        closeButton = (GirafButton) view.findViewById(R.id.close_button);
         closeButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,7 +114,7 @@ public class HelpDialogFragment extends DialogFragment{
                 }
             });
 
-        prevButton = (GButton) view.findViewById(R.id.previous_button);
+        prevButton = (GirafButton) view.findViewById(R.id.previous_button);
         prevButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View view) {
@@ -123,7 +123,7 @@ public class HelpDialogFragment extends DialogFragment{
         	}
         });
 
-        nextButton = (GButton) view.findViewById(R.id.next_button);
+        nextButton = (GirafButton) view.findViewById(R.id.next_button);
         nextButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View view) {
