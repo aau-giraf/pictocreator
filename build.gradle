@@ -18,6 +18,7 @@ apply plugin: 'dk.giraf.deploy'
 apply plugin: 'play'
 repositories {
     maven {
+        mavenCentral()
         url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
     }
 }
