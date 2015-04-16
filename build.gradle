@@ -18,6 +18,7 @@ apply plugin: 'dk.giraf.deploy'
 apply plugin: 'play'
 repositories {
     maven {
+        mavenCentral()
         url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
     }
 }
@@ -37,24 +38,17 @@ android {
     dexOptions {
         preDexLibraries = false
     }
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
     defaultConfig{
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
     }
     lintOptions{
         abortOnError false
-    }
-    sourceSets {
-        // Move the build types to build-types/<type>
-        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
-        // This moves them out of them default location under src/<type>/... which would
-        // conflict with src/ being used by the main source set.
-        // Adding new build types or product flavors should be accompanied
-        // by a similar customization.
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
     }
 }
 
