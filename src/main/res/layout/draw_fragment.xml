@@ -37,7 +37,7 @@
                 android:id="@+id/myRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:weightSum="6">
+                android:weightSum="7">
 
                 <dk.aau.cs.giraf.gui.GirafButton
                     android:id="@+id/select_handler_button"
@@ -45,6 +45,14 @@
                     android:layout_height="fill_parent"
                     app:icon="@drawable/select"
                     app:text="@string/selector"
+                    android:layout_weight="1"/>
+
+                <dk.aau.cs.giraf.gui.GirafButton
+                    android:id="@+id/eraser_handler_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    app:icon="@drawable/blank_100x100"
+                    app:text="@string/eraser"
                     android:layout_weight="1"/>
 
                 <dk.aau.cs.giraf.gui.GirafButton

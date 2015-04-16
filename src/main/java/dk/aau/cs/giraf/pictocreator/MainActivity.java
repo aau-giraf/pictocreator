@@ -212,6 +212,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             if (drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null) {
                 DrawStackSingleton.getInstance().mySavedData.clear();
+                Helper.poppedEntities.clear();
                 drawFragment.drawView.invalidate();
 
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
@@ -226,29 +227,25 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             EntityGroup savedEntities = DrawStackSingleton.getInstance().mySavedData;
 
             if (savedEntities != null) {
-                if (Helper.deletedEntities.size() > 0) {
+                Entity toPop = savedEntities.getEntityToPop();
 
-                    Entity toPop = savedEntities.getEntityToPop();
-                    Entity poppedDeletedEntity = Helper.deletedEntities.get(Helper.deletedEntities.size() - 1);
+                if (toPop == null)
+                    return;
 
-                    if (toPop == null)
-                    {
-                        savedEntities.addEntity(poppedDeletedEntity);
-                    }
-                    else if (toPop.getTime().before(poppedDeletedEntity.getTime()))
-                    {
-                        savedEntities.addEntity(poppedDeletedEntity);
-                    }
-                    else
-                    {
-                        undoDrawnEntity(savedEntities);
-                    }
-                }
-                else
+                if (!savedEntities.getEntityToPop().getIsDeleted() && !savedEntities.getEntityToPop().getHasBeenRedone())
                 {
                     undoDrawnEntity(savedEntities);
                 }
-
+                else if(!savedEntities.getEntityToPop().getIsDeleted() && savedEntities.getEntityToPop().getHasBeenRedone())
+                {
+                    savedEntities.getEntityToPop().setHasBeenRedone(false);
+                    undoDrawnEntity(savedEntities);
+                }
+                else
+                {
+                    savedEntities.getEntityToPop().setHasBeenRedone(true);
+                    savedEntities.getEntityToPop().setIsDeleted(false);
+                }
                 drawFragment.drawView.invalidate();
                 //Neeeded, as selectionhandler would have a deleted item selected otherwise
                 drawFragment.DeselectEntity();
@@ -261,7 +258,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         {
             Helper.poppedEntities.remove(Helper.poppedEntities.get(0));
         }
-        Helper.poppedEntities.add(savedEntities.popEntity());
+        Entity poppedEntity = savedEntities.popEntity();
+        poppedEntity.setIsDeleted(false);
+        Helper.poppedEntities.add(poppedEntity);
     }
 
     private final OnClickListener redoClick = new OnClickListener() {

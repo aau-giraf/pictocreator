@@ -20,9 +20,9 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
  */
 public class TextEntity extends Entity {
 
-    private EditText editText;
+    private EditText editText; // Initial EditText
     private Activity mActivity;
-    public EditText drawnEditText;
+    public EditText drawnEditText; // The EditText which is drawn and can be edited
     public int backgroundColor;
     private LinearLayout linLayout;
     private boolean hidden = false;
@@ -61,9 +61,6 @@ public class TextEntity extends Entity {
 
     @Override
     public void doDraw(Canvas canvas) {
-        if (editText.getText().length() == 0)
-            return;
-
         linLayout = new LinearLayout(mActivity.getApplicationContext());
 
         drawnEditText = new EditText(mActivity.getApplicationContext());

@@ -27,18 +27,16 @@ dependencies {
     compile(group: 'dk.aau.cs.giraf', name: 'pictogramLib', version: '1.0', ext: 'aar')
     compile(group: 'dk.aau.cs.giraf', name: 'meta-database', version: '1.0')
     compile(group: 'dk.aau.cs.giraf', name: 'oasisLib', version: '1.0', ext: 'aar')
-    compile(group: 'dk.aau.cs.giraf', name: 'girafComponent', version: '1.0', ext: 'aar')
+    compile(group: 'dk.aau.cs.giraf', name: 'girafComponent', version: '1.2', ext: 'aar')
     compile(group: 'dk.aau.cs.giraf', name: 'localDb', version: '1.0', ext: 'aar')
 }
 
 android {
     compileSdkVersion 19
     buildToolsVersion "21.1.2"
-
     dexOptions {
         preDexLibraries = false
     }
-
     defaultConfig{
         minSdkVersion 15
         targetSdkVersion 19

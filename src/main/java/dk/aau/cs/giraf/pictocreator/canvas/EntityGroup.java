@@ -15,9 +15,10 @@ import dk.aau.cs.giraf.pictocreator.management.Helper;
 /**
  * EntityGroup is a collection of Entity objects. Use this to either group
  * objects and their movement, or to ensure a specific drawing order.
+ *
  * @author Croc
  */
-public class EntityGroup extends Entity implements Serializable{
+public class EntityGroup extends Entity implements Serializable {
 
     /**
      * List of all the entities kept in the EntityGroup. Consider it a stack
@@ -28,35 +29,45 @@ public class EntityGroup extends Entity implements Serializable{
     /**
      * Creates an empty EntityGroup ready for service.
      */
-    public EntityGroup() {};
-    
+    public EntityGroup() {
+    }
+
+    ;
+
     /**
      * Creates an EntityGroup based on the contents of a Parcel structure.
+     *
      * @param in The Parcel to open. EntityGroup expects that the next
-     * ArrayList in the parcel is meant for EntityGroup. 
+     *           ArrayList in the parcel is meant for EntityGroup.
      */
     public EntityGroup(Parcel in) {
         super(in);
-        
+
         entities = in.readArrayList(ArrayList.class.getClassLoader());
     }
 
     /**
      * Used to move an entity behind all other entities
      * by the button shown in the top right corner of a selection.
+     *
      * @param entity
      */
-    public void moveToBack(Entity entity){
+    public void moveToBack(Entity entity) {
         int index = entities.indexOf(entity);
         entities.remove(index);
         entities.add(entities.size(), entity);
     }
+
     /**
      * Push a new entity onto the group's list.
+     *
      * @param toAdd The Entity to add.
      */
     public void addEntity(Entity toAdd) {
-        if (!entities.contains(toAdd)){
+        if (toAdd == null) {
+            return;
+        }
+        if (!entities.contains(toAdd)) {
             toAdd.setTime(Calendar.getInstance().getTime());
             entities.add(0, toAdd);
         }
@@ -64,24 +75,20 @@ public class EntityGroup extends Entity implements Serializable{
 
     /**
      * Removes an Entity from the stack.
+     *
      * @return The Entity itself.
      * Returns null if the EntityGroup is empty.
      */
-    public Entity getEntityToPop()
-    {
-        if (!entities.isEmpty())
-        {
+    public Entity getEntityToPop() {
+        if (!entities.isEmpty()) {
             return entities.get(0);
         }
         return null;
     }
 
-    public Entity popEntity()
-    {
-        if (!entities.isEmpty())
-        {
+    public Entity popEntity() {
+        if (!entities.isEmpty()) {
             Entity toRemove = entities.get(0);
-            toRemove.setTime(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
         }
@@ -90,6 +97,7 @@ public class EntityGroup extends Entity implements Serializable{
 
     /**
      * Removes an Entity from the stack.
+     *
      * @param toRemove The Entity to remove.
      * @return The Entity itself. Good for chaining or quick assignment.
      * Returns null if the Entity is not in the group.
@@ -99,27 +107,28 @@ public class EntityGroup extends Entity implements Serializable{
             toRemove.setTime(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
-        }
-        else return null;
+        } else return null;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        for (int i = entities.size()-1; i >= 0; i--) {
+        for (int i = entities.size() - 1; i >= 0; i--) {
             entities.get(i).draw(canvas);
         }
     }
-    
+
     /**
      * Retrieves the number of Entities kept in the group.
+     *
      * @return The number as returned by entities.size();
      */
     public int size() {
         return entities.size();
     }
-    
+
     /**
      * Returns the first (topmost) Entity that collides with a given set of coordinates, or null.
+     *
      * @param x X-coordinat of a clicked point
      * @param y Y-coordinat of a clicked point
      * @return The topmost Entity that collides with the point, or null if none.
@@ -127,7 +136,7 @@ public class EntityGroup extends Entity implements Serializable{
     public Entity getCollidedWithPoint(float x, float y) {
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
-            if (e.collidesWithPoint(x, y)){
+            if (e.collidesWithPoint(x, y)) {
                 return e;
             }
         }
@@ -147,7 +156,7 @@ public class EntityGroup extends Entity implements Serializable{
         dest.writeList(this.entities);
     }
 
-    public void clear(){
+    public void clear() {
         entities.clear();
         Helper.poppedEntities.clear();
         Helper.deletedEntities.clear();

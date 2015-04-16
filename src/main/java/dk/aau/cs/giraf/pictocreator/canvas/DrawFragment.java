@@ -3,6 +3,8 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +28,7 @@ import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.cam.Preview;
+import dk.aau.cs.giraf.pictocreator.canvas.handlers.EraserHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
@@ -55,7 +58,7 @@ public class DrawFragment extends Fragment {
     /**
      * Button for the RectHandler ActionHandler.
      */
-    protected GirafButton rectHandlerButton,ovalHandlerButton,
+    protected GirafButton rectHandlerButton,ovalHandlerButton, eraserHandlerButton,
             lineHandlerButton, selectHandlerButton, freehandHandlerButton, textHandlerButton;
 
     private GColorPicker backgroundColorPicker;
@@ -119,6 +122,9 @@ public class DrawFragment extends Fragment {
 
         selectHandlerButton = (GirafButton)view.findViewById(R.id.select_handler_button);
         selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);
+
+        eraserHandlerButton = (GirafButton)view.findViewById(R.id.eraser_handler_button);
+        eraserHandlerButton.setOnClickListener(onEraserHandlerButtonClick);
 
         rectHandlerButton = (GirafButton)view.findViewById(R.id.rect_handler_button);
         rectHandlerButton.setOnClickListener(onRectHandlerButtonClick);
@@ -263,6 +269,15 @@ public class DrawFragment extends Fragment {
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.SELECT);
         }
     };
+    private final OnClickListener onEraserHandlerButtonClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Bitmap eraserBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.trashcan);
+            drawView.setHandler(new EraserHandler(R.color.giraf_white, eraserBitmap));
+            setAllUnToggle();
+            canvasHandlerPreviewButton.changePreviewDisplay(DrawType.ERASER);
+        }
+    };
     private final OnClickListener onFreehandHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -297,10 +312,6 @@ public class DrawFragment extends Fragment {
     private final OnClickListener onTextHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            // Set text to white and background to black
-            drawView.setFillColor(Color.WHITE);
-            drawView.setStrokeColor(Color.BLACK);
-
             drawView.setHandler(new TextHandler(getActivity(), drawView));
             setAllUnToggle();
             strokeWidthText.setText(getString(R.string.text_size));

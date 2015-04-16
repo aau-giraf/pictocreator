@@ -5,6 +5,6 @@ package dk.aau.cs.giraf.pictocreator.canvas;
  * Created by SW608F14.
  */
 enum DrawType {
-        RECTANGLE, CIRCLE, LINE, SELECT, TEXT, NONE
+        RECTANGLE, CIRCLE, LINE, SELECT, TEXT, ERASER, NONE
 }
 

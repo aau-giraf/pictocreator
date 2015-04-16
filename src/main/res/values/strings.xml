@@ -32,4 +32,5 @@
     <string name="stroke_color">"Baggrunds farve"</string>
     <string name="record">"Optag"</string>
     <string name="camera">"Kamera"</string>
+    <string name="eraser">"Viskelæder"</string>
 </resources>

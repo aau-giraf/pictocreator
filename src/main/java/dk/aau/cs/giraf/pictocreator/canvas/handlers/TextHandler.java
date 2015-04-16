@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import dk.aau.cs.giraf.gui.GToggleButton;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
@@ -25,11 +24,7 @@ import dk.aau.cs.giraf.pictocreator.management.Helper;
 
 public class TextHandler extends ActionHandler {
 
-    /**
-     * The currently selected Entity. May be null if no Entity is selected.
-     */
-    private Entity selectedEntity;
-
+    private float normalTextSize = 28;
     /**
      * All handlers must define a drawBuffer method that draws their current UI
      * output on a passed canvas.
@@ -40,21 +35,6 @@ public class TextHandler extends ActionHandler {
     public final void drawBufferPreBounds(Canvas canvas) {
 
     }
-
-    /**
-     * The ID of the pointer currently being tracked. Check isPointerDown to see
-     * if one is *actually* being tracked.
-     */
-    private int currentPointerId;
-
-    /**
-     * Tracks whether a pointer is currently being tracked.
-     */
-    private boolean isPointerDown = false;
-    /**
-     * The location of the Pointer the last place we saw it.
-     */
-    protected FloatPoint previousPointerLocation;
 
     private Activity mActivity;
     private RelativeLayout mainLayout;
@@ -68,23 +48,14 @@ public class TextHandler extends ActionHandler {
 
     @Override
     public boolean onTouchEvent(MotionEvent event, final EntityGroup drawStack) {
-        // Determine type of action.
-        // Down: find first collision, highlight.
-        // Move: reposition by delta.
-        // Up: stop. Un-select is a different gesture.
-        String touchEventTag = "TextHandler.onTouchEvent";
-        int index = event.getActionIndex();
-        int pointerId = event.getPointerId(index);
         int action = event.getAction();
-
-        if (pointerId != currentPointerId) {
-            Log.i(touchEventTag, "Unregistered pointer. Ignoring.");
-        }
 
         if (action != MotionEvent.ACTION_DOWN) {
             return false;
         }
+        String touchEventTag = "TextHandler.onTouchEvent";
 
+        Log.i(TAG, "TextEntity instantiated.");
         GirafButton selectButton = (GirafButton) mActivity.findViewById(R.id.select_handler_button);
         selectButton.performClick();
 
@@ -95,7 +66,6 @@ public class TextHandler extends ActionHandler {
         editText.setTextColor(getStrokeColor());
         editText.setBackgroundColor(getFillColor());
 
-        float normalTextSize = 28;
         editText.setTextSize(normalTextSize + getStrokeWidth());
         editText.setX(x);
         editText.setY(y);

@@ -66,7 +66,17 @@ public abstract class Entity implements Parcelable, Serializable {
 
     public Date getTime() { return this.time; }
 
-	
+	private boolean isDeleted;
+
+    private boolean hasBeenRedone;
+
+    public boolean getHasBeenRedone() {return  this.hasBeenRedone;}
+
+    public void setHasBeenRedone(boolean b) { this.hasBeenRedone = b;}
+
+    public boolean getIsDeleted() { return this.isDeleted; }
+
+    public void setIsDeleted(boolean b) { this.isDeleted = b; }
 	/**
 	 * Width of the Entity.
 	 * Try Entity.getGraphic().getWidth() for the displayed width.
@@ -199,6 +209,10 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * @param canvas The Canvas object to draw onto.
 	 */
 	public void draw(Canvas canvas) {
+        if (getIsDeleted())
+        {
+            return;
+        }
 		int canvasLayers = canvas.getSaveCount();
 		canvas.save();
 		

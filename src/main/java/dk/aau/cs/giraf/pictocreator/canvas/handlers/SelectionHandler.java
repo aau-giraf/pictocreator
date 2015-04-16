@@ -236,11 +236,9 @@ public class SelectionHandler extends ActionHandler {
      * @param drawStack The draw stack EntityGroup to remove the Entity from.
      */
     protected void deleteEntity(EntityGroup drawStack) {
-        if (Helper.deletedEntities.size() > 5)
-        {
-            Helper.deletedEntities.remove(Helper.deletedEntities.get(0));
-        }
-        Helper.deletedEntities.add(drawStack.removeEntity(selectedEntity));
+        drawStack.removeEntity(selectedEntity);
+        selectedEntity.setIsDeleted(true);
+        drawStack.addEntity(selectedEntity);
     }
 
     /**
@@ -352,6 +350,7 @@ public class SelectionHandler extends ActionHandler {
         // Determine action or new Entity selection.
         if (action == MotionEvent.ACTION_DOWN && !isPointerDown) {
             if (selectedEntity != null) {
+
                 // Attempt to collide with action icon.
                 if (resizeIcon.collidesWithPoint(px, py)) {
                     currentMode = ACTION_MODE.RESIZE;
