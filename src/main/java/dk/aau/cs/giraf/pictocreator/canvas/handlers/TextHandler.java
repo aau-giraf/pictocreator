@@ -55,7 +55,7 @@ public class TextHandler extends ActionHandler {
         }
         String touchEventTag = "TextHandler.onTouchEvent";
 
-        Log.i(TAG, "TextEntity instantiated.");
+        Log.i(touchEventTag, "TextEntity instantiated.");
         GirafButton selectButton = (GirafButton) mActivity.findViewById(R.id.select_handler_button);
         selectButton.performClick();
 
