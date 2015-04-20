@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,6 +21,7 @@ import java.io.IOException;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.data.Download;
+import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
@@ -76,6 +76,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         setContentView(R.layout.activity_main);
 
         mainIntent = getIntent();
+        Intent sync = new Intent(this, Download.class);
+        startActivity(sync);
 
         createStoragePictogram();
 
@@ -141,11 +143,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             storagePictogram.setAuthor(author);
         }
-        else
-        {
-            Intent sync = new Intent(this, Download.class);
-            startActivity(sync);
-        }
+
     }
 
     private void overwriteDialog()
@@ -316,10 +314,10 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      * Opens pictosearch application, so pictograms can be loaded into the application.
      */
     private void callPictosearch() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, PictoAdminMain.class);
 
         try {
-            intent.setComponent(new ComponentName("dk.aau.cs.giraf.pictosearch", "dk.aau.cs.giraf.pictosearch.PictoAdminMain"));
+            //intent.setComponent(new ComponentName("dk.aau.cs.giraf.pictosearch", "dk.aau.cs.giraf.pictosearch.PictoAdminMain"));
             intent.putExtra("currentGuardianID", author);
             intent.putExtra("purpose", "single");
 
