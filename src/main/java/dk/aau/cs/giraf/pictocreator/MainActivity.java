@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
-import dk.aau.cs.giraf.gui.GirafButton;
+import dk.aau.cs.giraf.core.data.Download;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
@@ -140,6 +140,11 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             }
 
             storagePictogram.setAuthor(author);
+        }
+        else
+        {
+            Intent sync = new Intent(this, Download.class);
+            startActivity(sync);
         }
     }
 
