@@ -1,6 +1,7 @@
 package dk.aau.cs.giraf.pictocreator;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -127,20 +128,27 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private void createStoragePictogram() {
         storagePictogram = new StoragePictogram(this);
 
-        if (mainIntent != null) {
-            String action = mainIntent.getAction();
+        if (ActivityManager.isUserAMonkey()) {
+            dk.aau.cs.giraf.oasis.lib.Helper h = new dk.aau.cs.giraf.oasis.lib.Helper(this);
+            h.CreateDummyData();
 
-            if (action != "dk.aau.cs.giraf.CREATEPICTOGRAM") {
-                author = mainIntent.getIntExtra("currentGuardianID", 0);
-                this.service = false;
-            } else {
-                author = mainIntent.getIntExtra("author", 0);
-                this.service = true;
+            author = h.profilesHelper.getGuardians().get(0).getId();
+        }
+        else {
+            if (mainIntent != null) {
+                String action = mainIntent.getAction();
+
+                if (action != "dk.aau.cs.giraf.CREATEPICTOGRAM") {
+                    author = mainIntent.getIntExtra("currentGuardianID", 0);
+                    this.service = false;
+                } else {
+                    author = mainIntent.getIntExtra("author", 0);
+                    this.service = true;
+                }
             }
-
-            storagePictogram.setAuthor(author);
         }
 
+        storagePictogram.setAuthor(author);
     }
 
     private void overwriteDialog()
