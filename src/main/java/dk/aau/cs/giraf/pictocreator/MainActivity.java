@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
-import dk.aau.cs.giraf.core.data.Download;
 import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
@@ -76,9 +75,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         setContentView(R.layout.activity_main);
 
         mainIntent = getIntent();
-        Intent sync = new Intent(this, Download.class);
-        startActivity(sync);
-
+        
         createStoragePictogram();
 
         decor = getWindow().getDecorView();
