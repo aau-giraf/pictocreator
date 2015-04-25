@@ -130,7 +130,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
         if (ActivityManager.isUserAMonkey()) {
             dk.aau.cs.giraf.oasis.lib.Helper h = new dk.aau.cs.giraf.oasis.lib.Helper(this);
-            h.CreateDummyData();
 
             author = h.profilesHelper.getGuardians().get(0).getId();
         }
