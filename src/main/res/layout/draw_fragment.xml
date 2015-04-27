@@ -51,7 +51,7 @@
                     android:id="@+id/eraser_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    app:icon="@drawable/trashcan"
+                    app:icon="@drawable/eraser"
                     android:layout_weight="1"/>
 
                 <dk.aau.cs.giraf.gui.GirafButton
