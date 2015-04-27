@@ -298,6 +298,13 @@ public class SaveDialogFragment extends DialogFragment{
                     tags.add(0, text);
                     tagArrayAdapter.notifyDataSetChanged();
                 }
+
+                InputMethodManager imm = (InputMethodManager) parentActivity.getApplicationContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(inputTextLabel.getWindowToken(), 0);
+                }
             }
             return true;
         }

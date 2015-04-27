@@ -383,7 +383,6 @@ public class StoragePictogram {
             DepartmentPictogram dp = new DepartmentPictogram(pictogram.getId(), departmentId);
             databaseHelper.departmentPictogramHelper.insertDepartmentPictogram(dp);
             return true;
-
         } catch (Exception e) {
             return false;
         }
