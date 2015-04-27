@@ -93,13 +93,13 @@ public abstract class Entity implements Parcelable, Serializable {
      * Retrieves the declared height of the Entity.
      * @return The height of the Entity.
      */
-    public float getHeight() { return this.height; }
+    public float getHeight() { if (isDeleted) { return 0; } else {return this.height; } }
 
     /**
      * Retrieves the declared width of the Entity.
      * @return The height of the Entity.
      */
-    public float getWidth() { return this.width; }
+    public float getWidth() { if (isDeleted) {return 0; } else { return this.width; } }
 
     /**
      * Sets a new height for the Entity.
@@ -240,8 +240,13 @@ public abstract class Entity implements Parcelable, Serializable {
 	 * @return True if the point is within the hitbox, false otherwise.
 	 */
 	public boolean collidesWithPoint(float x, float y) {
-		return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
-				(getHitboxTop() <= y && y <= getHitboxBottom());
+        if (isDeleted) {
+            return false;
+        }
+        else {
+            return (getHitboxLeft() <= x && x <= getHitboxRight()) &&
+                    (getHitboxTop() <= y && y <= getHitboxBottom());
+        }
 	}
 
     /**

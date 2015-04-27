@@ -248,8 +248,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 }
                 else if(!savedEntities.getEntityToPop().getIsDeleted() && savedEntities.getEntityToPop().getHasBeenRedone())
                 {
-                    savedEntities.getEntityToPop().setHasBeenRedone(false);
-                    undoDrawnEntity(savedEntities);
+                    savedEntities.getNextEntityToPop().setIsDeleted(false);
+                    savedEntities.getNextEntityToPop().setHasBeenRedone(true);
                 }
                 else
                 {

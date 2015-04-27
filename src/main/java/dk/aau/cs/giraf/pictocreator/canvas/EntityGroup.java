@@ -82,6 +82,21 @@ public class EntityGroup extends Entity implements Serializable {
         return null;
     }
 
+    public Entity getNextEntityToPop() {
+        for (int i = 0; i < entities.size(); i++)
+        {
+            if (entities.get(i).getHasBeenRedone())
+            {
+                continue;
+            }
+            else
+            {
+                return entities.get(i);
+            }
+        }
+        return null;
+    }
+
     public Entity popEntity() {
         if (!entities.isEmpty()) {
             Entity toRemove = entities.get(0);

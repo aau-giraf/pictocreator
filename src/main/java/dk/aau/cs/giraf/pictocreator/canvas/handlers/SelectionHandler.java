@@ -236,7 +236,7 @@ public class SelectionHandler extends ActionHandler {
      * @param drawStack The draw stack EntityGroup to remove the Entity from.
      */
     protected void deleteEntity(EntityGroup drawStack) {
-        drawStack.removeEntity(selectedEntity);
+        selectedEntity.setHasBeenRedone(false);
         selectedEntity.setIsDeleted(true);
     }
 
