@@ -39,6 +39,8 @@ public class PreviewButton extends GirafButton {
      */
     public void setStrokeColor(int c) {
         strokePaint.setColor(c);
+        linePaint.setColor(c);
+        setTextPaint(c);
         this.invalidate();
     }
 
@@ -51,18 +53,6 @@ public class PreviewButton extends GirafButton {
         linePaint.setColor(c);
         this.invalidate();
     }
-
-    /**
-     * Retrieves the current stroke color in use.
-     * @return Returns the currently previewed stroke colour as ARGB.
-     */
-    public int getStrokeColor() { return strokePaint.getColor(); }
-
-    /**
-     * Retrieves the fill color currently in use.
-     * @return Returns the currently previewed fill colour as ARGB.
-     */
-    public int getFillColor() { return fillPaint.getColor(); }
 
     /**
      * Padding for the previewed entity
@@ -93,14 +83,12 @@ public class PreviewButton extends GirafButton {
 
     public PreviewButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
-		//init();
+
+		init();
 	}
 
 	private void init() {
 		// Some default coloring and width.
-		setFillColor(0xFFFF00FF);
-		setStrokeColor(0xFFFF0000);
 		setStrokeWidth(4);
 
 		fillPaint.setStyle(Style.FILL);
@@ -113,7 +101,7 @@ public class PreviewButton extends GirafButton {
 
 /*    *//**
      * Draws an icon on the canvas based on the selected entity
-     *//*
+     */
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -146,22 +134,12 @@ public class PreviewButton extends GirafButton {
             canvas.drawRect(padding, padding, canvas.getWidth() - padding, canvas.getHeight() - padding, fillPaint);
             canvas.drawText("A", canvas.getWidth() - textWidthPadding, canvas.getHeight() - textHeightPadding, textPaint);
         }
-	}*/
+	}
 
     public void setTextPaint(int color)
     {
         textPaint.setColor(color);
     }
-
-    // Returns true if stroke and false if fill
-	public void swapColors() {
-        int tempColor = fillPaint.getColor();
-
-		setFillColor(strokePaint.getColor());
-        textPaint.setColor(tempColor); // TextPaint is used as getStrokeColor throughout the application
-		setStrokeColor(tempColor);
-        invalidate();
-	}
 
     public void changePreviewDisplay(DrawType type){
         this.drawtype = type;

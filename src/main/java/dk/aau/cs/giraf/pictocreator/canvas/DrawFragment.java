@@ -164,6 +164,8 @@ public class DrawFragment extends Fragment {
         canvasHandlerPreviewButton = (PreviewButton) view.findViewById(R.id.canvasHandlerPreviewButton);
 
         canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
+        canvasHandlerPreviewButton.setFillColor(currentBackgroundColor);
+        canvasHandlerPreviewButton.setStrokeColor(currentStrokeColor);
         canvasHandlerPreviewButton.setEnabled(false);
 
         importFragmentButton = (GirafButton)view.findViewById(R.id.start_import_dialog_button);
@@ -303,6 +305,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new OvalHandler());
             setAllUnToggle();
+
          //   colorFrameButton.setText(getText(R.string.pick_color));
         //    ovalHandlerButton.setToggled(true);
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.CIRCLE);
@@ -348,11 +351,13 @@ public class DrawFragment extends Fragment {
                 {
                     currentBackgroundColor = color;
                     drawView.setFillColor(color);
+                    canvasHandlerPreviewButton.setFillColor(color);
                 }
                 else
                 {
                     currentStrokeColor = color;
                     drawView.setStrokeColor(color);
+                    canvasHandlerPreviewButton.setStrokeColor(color);
                 }
             }
         });
