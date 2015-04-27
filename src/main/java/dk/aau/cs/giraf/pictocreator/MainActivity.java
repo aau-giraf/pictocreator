@@ -27,9 +27,7 @@ import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
-import dk.aau.cs.giraf.oasis.lib.models.DepartmentPictogram;
 import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
-import dk.aau.cs.giraf.oasis.lib.models.Profile;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
@@ -92,11 +90,11 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_regret), getString(R.string.undo_button_text));
+        undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_regret), getString(R.string.regret));
         undoButton.setOnClickListener(undoClick);
         addGirafButtonToActionBar(undoButton, GirafActivity.RIGHT);
 
-        redoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_redo), getString(R.string.redo_button_text));
+        redoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_redo), getString(R.string.redo));
         redoButton.setOnClickListener(redoClick);
         addGirafButtonToActionBar(redoButton, GirafActivity.RIGHT);
 

@@ -40,7 +40,7 @@
               android:layout_margin="10dp"
               android:drawableTop="@drawable/record"
               android:gravity="bottom|center_horizontal"
-              android:text="Optag"
+              android:text="@string/record"
               android:checked="false" />
 
           <dk.aau.cs.giraf.gui.GButton
@@ -51,7 +51,7 @@
               android:focusableInTouchMode="false"
               android:drawableTop="@drawable/play"
               android:layout_margin="10dp"
-              android:text="Afspil"
+              android:text="@string/play"
               android:adjustViewBounds="false"/>
 
       </LinearLayout>
@@ -68,7 +68,7 @@
           android:layout_height="wrap_content"
           android:layout_margin="10dp"
           android:drawableTop="@drawable/save"
-          android:text="Gem"
+          android:text="@string/save_button_text"
           android:layout_toLeftOf="@+id/record_negative_button"/>
 
       <dk.aau.cs.giraf.gui.GButton
@@ -77,7 +77,7 @@
           android:layout_height="wrap_content"
           android:layout_margin="10dp"
           android:drawableTop="@drawable/gcancel_icon"
-          android:text="Fortryd"
+          android:text="@string/regret"
           android:layout_toRightOf="@+id/record_positive_button"
            />
 

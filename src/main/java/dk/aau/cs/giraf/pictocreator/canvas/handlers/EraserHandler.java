@@ -83,7 +83,7 @@ public class EraserHandler extends ShapeHandler {
             // Finger raised. If we have valid data, store to drawStack and clear.
             // Validate the pointer ID.
             if (bufferedEntity == null) {
-                Log.i(TAG, "Cannot add null entity. Assumnig bad MOVE event chain.");
+                Log.i(TAG, "Cannot add null entity. Assuming bad MOVE event chain.");
             }
             else if (eventPointerId == this.currentPointerId){
                 ((EraserEntity)bufferedEntity).isErasing = false;

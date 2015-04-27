@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pictocreator</string>
+    <string name="accesibility">Accessibility</string>
+    <string name="add_citizen">Add Citizen</string>
+    <string name="add_search_tags">Add Tag</string>
+    <string name="background_color">Stroke color</string>
+    <string name="camera">Camera</string>
+    <string name="circle">Circle</string>
+    <string name="citizens">Citizen(s):</string>
+    <string name="clear_button_text">Clear</string>
+    <string name="clear_canvas">Clear canvas?</string>
+    <string name="create_new">Create new</string>
+    <string name="eraser">Eraser</string>
+    <string name="free_hand">Freehand</string>
+    <string name="help_button_text">Help</string>
+    <string name="institution">Institution:</string>
+    <string name="line">Line</string>
+    <string name="load_button_text">Load</string>
+    <string name="menu_settings">Settings</string>
+    <string name="must_be_logged_in">You have to be logged in, in order to save, log in through GIRAF and try again.</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="overwrite_existing_question">Do you want to overwrite the loaded pictogram, or create a new one?</string>
+    <string name="pick_color">Pick color</string>
+    <string name="pick_stroke_color">Pick stroke color</string>
+    <string name="pictogram">Pictogram</string>
+    <string name="pictogram_name">Pictogram name</string>
+    <string name="pictosearch_not_installed">Pictosearch is not installed</string>
+    <string name="play">Play</string>
+    <string name="record">Record</string>
+    <string name="record_dialog_title">Sound recorder</string>
+    <string name="rectangle">Rectangle</string>
+    <string name="redo">Redo</string>
+    <string name="regret">Regret</string>
+    <string name="save_button_text">Save</string>
+    <string name="save_pictogram">Save Pictogram</string>
+    <string name="search_tags">Search tags</string>
+    <string name="select_name">Please enter a name</string>
+    <string name="selector">Selector</string>
+    <string name="stroke_color">Stroke color</string>
+    <string name="stroke_width">Stroke width</string>
+    <string name="text">Text</string>
+    <string name="textViewText">Name of audio file</string>
+    <string name="text_on_pictogram">Text on Pictogram</string>
+    <string name="text_size">Font Size</string>
+</resources>

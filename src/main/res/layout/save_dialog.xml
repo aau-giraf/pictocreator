@@ -44,7 +44,7 @@
         android:id="@+id/save_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Piktogram"
+        android:text="@string/pictogram"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/croc_fragment"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:layout_below="@+id/save_preview"
-        android:hint="Tekst på Piktogram"
+        android:hint="@string/text_on_pictogram"
         android:textAlignment="center"
         android:layout_marginBottom="10dp" />
 
@@ -83,7 +83,7 @@
           android:ems="10"
           android:layout_below="@+id/edit_inline_text"
           android:layout_marginBottom="10dp"
-          android:hint="Piktogram navn" />
+          android:hint="@string/pictogram_name"/>
 
       <LinearLayout
           android:orientation="horizontal"
@@ -100,7 +100,7 @@
         android:paddingRight="8dp"
         android:layout_marginRight="40dp"
         app:icon="@drawable/save"
-        app:text="Gem"/>
+        app:text="@string/save_button_text"/>
 
       <dk.aau.cs.giraf.gui.GirafButton
               android:id="@+id/overwrite_button_positive"
@@ -111,7 +111,7 @@
               android:paddingRight="8dp"
               android:layout_marginRight="40dp"
               app:icon="@drawable/save"
-              app:text="Overskriv"/>
+              app:text="@string/overwrite"/>
 
       <dk.aau.cs.giraf.gui.GirafButton
         android:id="@+id/save_button_negative"
@@ -121,7 +121,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         app:icon="@drawable/gcancel_icon"
-        app:text="Fortryd"/>
+        app:text="@string/regret"/>
 
       </LinearLayout>
 
@@ -141,7 +141,7 @@
           android:id="@+id/availability"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Tilgængelighed"
+          android:text="@string/accesibility"
           android:textSize="20sp"
           android:textStyle="bold"
           android:textColor="@color/croc_fragment"
@@ -160,7 +160,7 @@
 
           <dk.aau.cs.giraf.gui.GRadioButton
               android:id="@+id/radio_public"
-              android:text="Institution:"
+              android:text="@string/institution"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content"
               android:checked="true"
@@ -168,7 +168,7 @@
 
           <dk.aau.cs.giraf.gui.GRadioButton
               android:id="@+id/radio_private"
-              android:text="Borger(e):"
+              android:text="@string/citizens"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content"/>
 
@@ -181,7 +181,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/public_group"
-        app:text="Tilføj Borger"
+        app:text="@string/add_citizen"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:visibility="invisible" />
@@ -217,7 +217,7 @@
             android:id="@+id/search_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Søgeord"
+            android:text="@string/search_tags"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/croc_fragment"
@@ -236,7 +236,7 @@
           android:layout_alignParentTop="true"
           android:layout_alignParentLeft="true"
           android:layout_alignRight="@+id/save_list_frame"
-          android:hint="Tilføj søgeord"/>
+          android:hint="@string/add_search_tags"/>
 
       <FrameLayout
           android:id="@+id/save_list_frame"
