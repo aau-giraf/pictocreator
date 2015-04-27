@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="close">Luk</string>
+    <string name="previous">Forrige</string>
+    <string name="next">Næste</string>
+    <string name="help_tools_and_functionalities">Hjælp (Værktøjer og Funktionalitet)</string>
     <string name="text_on_pictogram">Tekst på Piktogram</string>
     <string name="citizens">Borger(e):</string>
     <string name="institution">Institution:</string>

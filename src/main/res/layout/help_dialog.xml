@@ -17,7 +17,7 @@
 			android:id="@+id/dialog_title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Hjælp (Værktøjer og Funktionalitet)"
+			android:text="@string/help_tools_and_functionalities"
 			android:textSize="15sp"
 			android:textStyle="bold"
 			android:textColor="@color/croc_fragment"
@@ -34,7 +34,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             app:icon="@drawable/gcancel_icon"
-            app:text="Luk"/>
+            app:text="@string/close"/>
         
     </RelativeLayout>
     <FrameLayout 
@@ -60,7 +60,7 @@
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             app:icon="@drawable/prev_icon"
-            app:text="Forrige"/>
+            app:text="@string/previous"/>
 
         <dk.aau.cs.giraf.gui.GTextView
             android:id="@+id/help_status_text"
@@ -78,7 +78,7 @@
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             app:icon="@drawable/next_icon"
-            app:text="Næste"/>
+            app:text="@string/next"/>
         
     </RelativeLayout>
 

@@ -43,4 +43,8 @@
     <string name="textViewText">Name of audio file</string>
     <string name="text_on_pictogram">Text on Pictogram</string>
     <string name="text_size">Font Size</string>
+    <string name="help_tools_and_functionalities">Help (Tools and Functionalities)</string>
+    <string name="close">Close</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>
