@@ -273,7 +273,7 @@ public class DrawFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Bitmap eraserBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.trashcan);
-            drawView.setHandler(new EraserHandler(R.color.giraf_white, eraserBitmap));
+            drawView.setHandler(new EraserHandler(-1, eraserBitmap));
             setAllUnToggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.ERASER);
         }

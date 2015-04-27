@@ -40,6 +40,38 @@ public class EraserEntity extends PrimitiveEntity {
 
     private Bitmap eraserBitmap;
 
+    /**
+     * Create a new EraserEntity with a specific stroke color.
+     * @param color Hexadecimal color. Alpha channel: higher > more opaque.
+     */
+    public EraserEntity(int color, Bitmap eraserBitmap) {
+        super(color, color);
+        setHeight(0);
+        setWidth(0);
+        setX(0); // Set to 0 to ensure selectionHandler cannot select this entity
+        setY(0); // Set to 0 to ensure selectionHandler cannot select this entity
+        this.eraserBitmap = eraserBitmap;
+    }
+
+    @Override
+    public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
+        if (drawPoints.size() <= 1) return; // Don't erase trivial.
+
+        Path p = new Path();
+        for (FloatPoint floatPoint : drawPoints){
+            p.lineTo(floatPoint.x, floatPoint.y);
+        }
+
+        paint.setStyle(Style.STROKE);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+
+        canvas.drawPath(p, paint);
+
+        if (isErasing)
+            canvas.drawBitmap(eraserBitmap, drawPoints.get(drawPoints.size() - 1).x, drawPoints.get(drawPoints.size() - 1).y, null);
+    }
+
     @Override
     public void setX(float x) {
         if (basePoint == null) basePoint = new FloatPoint(x, 0);
@@ -82,37 +114,6 @@ public class EraserEntity extends PrimitiveEntity {
         }
     }
 
-    /**
-     * Create a new FreehandEntity with a specific stroke color.
-     * @param color Hexadecimal color. Alpha channel: higher > more opaque.
-     */
-    public EraserEntity(int color, Bitmap eraserBitmap) {
-        super(color, color);
-        setX(0);
-        setY(0);
-        this.eraserBitmap = eraserBitmap;
-    }
-
-    @Override
-    public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
-        if (drawPoints.size() <= 1) return; // Don't draw trivial.
-
-        paint = new SerializablePaint(paint); // Copy.
-
-        Path p = new Path();
-        for (FloatPoint floatPoint : drawPoints){
-            p.lineTo(floatPoint.x, floatPoint.y);
-        }
-
-        paint.setStyle(Style.STROKE);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-
-        if (isErasing)
-            canvas.drawBitmap(eraserBitmap, drawPoints.get(drawPoints.size() - 1).x, drawPoints.get(drawPoints.size() - 1).y, null);
-
-        canvas.drawPath(p, paint);
-    }
 
     /**
      * Add a new point to the Entity.

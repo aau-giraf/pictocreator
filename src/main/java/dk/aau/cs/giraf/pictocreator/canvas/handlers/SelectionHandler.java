@@ -238,7 +238,6 @@ public class SelectionHandler extends ActionHandler {
     protected void deleteEntity(EntityGroup drawStack) {
         drawStack.removeEntity(selectedEntity);
         selectedEntity.setIsDeleted(true);
-        drawStack.addEntity(selectedEntity);
     }
 
     /**

@@ -2,14 +2,11 @@ package dk.aau.cs.giraf.pictocreator.canvas;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import android.graphics.Canvas;
 import android.os.Parcel;
-import android.text.format.Time;
 
-import dk.aau.cs.giraf.pictocreator.canvas.entity.TextEntity;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.EraserEntity;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 
 /**
@@ -68,7 +65,6 @@ public class EntityGroup extends Entity implements Serializable {
             return;
         }
         if (!entities.contains(toAdd)) {
-            toAdd.setTime(Calendar.getInstance().getTime());
             entities.add(0, toAdd);
         }
     }
@@ -104,7 +100,6 @@ public class EntityGroup extends Entity implements Serializable {
      */
     public Entity removeEntity(Entity toRemove) {
         if (entities.contains(toRemove)) {
-            toRemove.setTime(Calendar.getInstance().getTime());
             entities.remove(toRemove);
             return toRemove;
         } else return null;
@@ -135,6 +130,9 @@ public class EntityGroup extends Entity implements Serializable {
      */
     public Entity getCollidedWithPoint(float x, float y) {
         for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i) instanceof EraserEntity)
+                continue;
+
             Entity e = entities.get(i);
             if (e.collidesWithPoint(x, y)) {
                 return e;
