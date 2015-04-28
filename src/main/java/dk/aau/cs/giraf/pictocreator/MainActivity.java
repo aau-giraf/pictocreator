@@ -91,7 +91,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_regret), getString(R.string.regret));
+        undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.undo), getString(R.string.regret));
         undoButton.setOnClickListener(undoClick);
         addGirafButtonToActionBar(undoButton, GirafActivity.RIGHT);
 

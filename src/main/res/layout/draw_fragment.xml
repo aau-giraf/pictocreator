@@ -127,7 +127,7 @@
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                app:icon="@drawable/blank_100x100"
+                app:icon="@drawable/background_color_picker"
                 android:layout_below="@id/strokeWidthBar"
                 android:layout_toRightOf="@+id/colorToolbox"/>
 
