@@ -66,10 +66,10 @@
                 android:layout_width="100dp"
                 android:layout_height="120dp"
                 android:id="@+id/color_effects"
-                android:drawableTop="@drawable/switch_effect_camera"
+                app:icon="@drawable/switch_effect_camera"
                 android:layout_toLeftOf="@+id/button_capture"
-                app:text="Sort Hvid"
                 android:layout_margin="10dp"/>
+            <!-- app:text="Sort Hvid"-->
 
             <dk.aau.cs.giraf.gui.GirafButton
                 android:layout_width="100dp"

@@ -37,6 +37,7 @@
         <activity
             android:windowSoftInputMode="adjustPan"
             android:name="dk.aau.cs.giraf.pictocreator.MainActivity"
+            android:theme="@style/GirafTheme">
             android:label="Piktotegner"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize"

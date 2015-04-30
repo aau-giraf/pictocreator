@@ -1,7 +1,7 @@
 package dk.aau.cs.giraf.pictocreator.audiorecorder;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -218,9 +218,9 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private final OnClickListener recordClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (((GirafButton) view).isFocused()) { // TODO FIX change to isToggled
+            if (!((GirafButton) view).isChecked()) { // TODO FIX change to isToggled
                 recThread.start();
-                //recordButton.setToggled(true);
+                recordButton.toggle();
                 //recordButton.setText("Stop");
                 recordButton.setIcon(getResources().getDrawable(R.drawable.stop));
                 playButton.setEnabled(false);
@@ -229,7 +229,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
             else {
                 recThread.stop();
                 decibelMeter.setLevel(0);
-                //recordButton.setToggled(false);
+                recordButton.toggle();
                 //recordButton.setText("Optag");
                 recordButton.setIcon(getResources().getDrawable(R.drawable.record));
                 hasRecorded = true;

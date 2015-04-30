@@ -182,6 +182,7 @@ public class CamFragment extends DialogFragment {
         @Override
         public void onClick(View v) {
             swapColourEffect();
+            ((GirafButton)v).toggle();
         }
     };
 

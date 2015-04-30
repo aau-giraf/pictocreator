@@ -50,7 +50,6 @@ public class PreviewButton extends GirafButton {
      */
     public void setFillColor(int c) {
         fillPaint.setColor(c);
-        linePaint.setColor(c);
         this.invalidate();
     }
 
@@ -95,7 +94,7 @@ public class PreviewButton extends GirafButton {
 		strokePaint.setStyle(Style.STROKE);
         textPaint.setTextSize(28);
         textPaint.setStyle(Style.STROKE);
-        textWidthPadding = padding + 40;
+        textWidthPadding = padding + 30;
         textHeightPadding = padding + 10;
     }
 
@@ -127,6 +126,10 @@ public class PreviewButton extends GirafButton {
         }
         else if (drawtype == DrawType.SELECT){
             Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.select);
+            canvas.drawBitmap(mBitmap, padding, padding, null);
+        }
+        else if (drawtype == DrawType.ERASER){
+            Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), dk.aau.cs.giraf.pictocreator.R.drawable.eraser);
             canvas.drawBitmap(mBitmap, padding, padding, null);
         }
         else if (drawtype == DrawType.TEXT)

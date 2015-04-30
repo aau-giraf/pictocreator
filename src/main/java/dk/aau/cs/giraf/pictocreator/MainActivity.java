@@ -3,8 +3,8 @@ package dk.aau.cs.giraf.pictocreator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,9 +26,10 @@ import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.gui.GComponent;
-import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
+import dk.aau.cs.giraf.gui.GirafConfirmDialog;
+import dk.aau.cs.giraf.gui.GirafDialog;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
@@ -41,12 +42,13 @@ import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 
+
 /**
  * Main class for the Croc app
  *
  * @author Croc
  */
-public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener {
+public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener, GirafConfirmDialog.Confirmation {
     private final static String TAG = "MainActivity";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";
     private Intent mainIntent;
@@ -58,21 +60,41 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private RelativeLayout topLayout;
     private SaveDialogFragment saveDialog;
 
-    private GDialogMessage clearDialog;
+    private GirafDialog clearDialog;
     private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton,
             helpDialoGirafButton, undoButton, redoButton, printButton;
+
+    private final int Method_Id_Clear = 1;
 
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
     private long author;
 
-    /**
-     * Function called when the activity is first created
-     */
+    @Override
+    public void confirmDialog(int methodID) {
+        switch (methodID) {
+            case Method_Id_Clear:
+                AudioHandler.resetSound();
+
+                if (drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null) {
+                    DrawStackSingleton.getInstance().mySavedData.clear();
+                    Helper.poppedEntities.clear();
+                    drawFragment.drawView.invalidate();
+
+                    //Neeeded, as selectionhandler would have a deleted item selected otherwise
+                    drawFragment.DeselectEntity();
+                }
+                break;
+        }
+    }
+
+
+        /**
+         * Function called when the activity is first created
+         */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setTheme(R.style.GirafTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -87,7 +109,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
         drawFragment = new DrawFragment();
 
-        fragManager = getFragmentManager();
+        fragManager = getSupportFragmentManager();
 
         fragTrans = fragManager.beginTransaction();
         fragTrans.add(R.id.fragmentContainer, drawFragment);
@@ -187,8 +209,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         @Override
         public void onClick(View view) {
             if (author == 0) {
-                //GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
-                author = 10;
+                GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
+
                 savePictogram();
             } else {
                 savePictogram();
@@ -214,24 +236,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         @Override
         public void onClick(View v) {
             Log.i(TAG, "Clear Button clicked");
-            clearDialog = new GDialogMessage(v.getContext(), getString(R.string.clear_canvas), onAcceptClearCanvasClick);
-            clearDialog.show();
-        }
-    };
+            clearDialog = GirafConfirmDialog.newInstance(getString(R.string.clear_button_text), getString(R.string.clear_canvas), Method_Id_Clear);
 
-    private final OnClickListener onAcceptClearCanvasClick = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            AudioHandler.resetSound();
-
-            if (drawFragment.drawView != null && DrawStackSingleton.getInstance().mySavedData != null) {
-                DrawStackSingleton.getInstance().mySavedData.clear();
-                Helper.poppedEntities.clear();
-                drawFragment.drawView.invalidate();
-
-                //Neeeded, as selectionhandler would have a deleted item selected otherwise
-                drawFragment.DeselectEntity();
-            }
+            clearDialog.show(getSupportFragmentManager(), "clearDialog");
         }
     };
 

@@ -1,6 +1,6 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -246,14 +246,22 @@ public class DrawFragment extends Fragment {
      * Toggles all the tool buttons off.
      */
     private void setAllUnToggle(){
-//        rectHandlerButton.setToggled(false);
-//        ovalHandlerButton.setToggled(false);
-//        lineHandlerButton.setToggled(false);
-//        selectHandlerButton.setToggled(false);
-//        freehandHandlerButton.setToggled(false);
-//        textHandlerButton.setToggled(false);
+        if (rectHandlerButton.isChecked())
+            rectHandlerButton.toggle();
+        if (ovalHandlerButton.isChecked())
+            ovalHandlerButton.toggle();
+        if (lineHandlerButton.isChecked())
+            lineHandlerButton.toggle();
+        if (selectHandlerButton.isChecked())
+            selectHandlerButton.toggle();
+        if (freehandHandlerButton.isChecked())
+           freehandHandlerButton.toggle();
+        if (textHandlerButton.isChecked())
+            textHandlerButton.toggle();
+        if (eraserHandlerButton.isChecked())
+            eraserHandlerButton.toggle();
+
         strokeWidthText.setText(getString(R.string.stroke_width));
-        // TODO currentStrokeColorButton.text("Text farve");
     }
 
     /**
@@ -265,8 +273,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new SelectionHandler(getResources(), getActivity()));
             setAllUnToggle();
-            //colorFrameButton.setText(getText(R.string.pick_color));
-            //selectHandlerButton.setToggled(true);
+            selectHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.SELECT);
         }
     };
@@ -276,6 +283,7 @@ public class DrawFragment extends Fragment {
             Bitmap eraserBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.eraser);
             drawView.setHandler(new EraserHandler(-1, eraserBitmap));
             setAllUnToggle();
+            eraserHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.ERASER);
         }
     };
@@ -285,7 +293,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new FreehandHandler());
             setAllUnToggle();
            // colorFrameButton.setText(getText(R.string.pick_stroke_color));
-           // freehandHandlerButton.setToggled(true);
+            freehandHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
     };
@@ -295,7 +303,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new RectHandler());
             setAllUnToggle();
         //    colorFrameButton.setText(getText(R.string.pick_color));
-        //    rectHandlerButton.setToggled(true);
+            rectHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.RECTANGLE);
         }
     };
@@ -306,7 +314,7 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
 
          //   colorFrameButton.setText(getText(R.string.pick_color));
-        //    ovalHandlerButton.setToggled(true);
+            ovalHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.CIRCLE);
         }
     };
@@ -318,7 +326,7 @@ public class DrawFragment extends Fragment {
             setAllUnToggle();
             strokeWidthText.setText(getString(R.string.text_size));
          //   TODO currentStrokColorButton.setText(getText(R.string.pick_color));
-        //    textHandlerButton.setToggled(true);
+            textHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.TEXT);
         }
     };
@@ -330,7 +338,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new LineHandler());
             setAllUnToggle();
         //    colorFrameButton.setText(getText(R.string.pick_stroke_color));
-        //    lineHandlerButton.setToggled(true);
+            lineHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
     };
