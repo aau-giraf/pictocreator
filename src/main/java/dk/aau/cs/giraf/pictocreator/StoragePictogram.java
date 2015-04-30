@@ -12,26 +12,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.Toast;
 
-import dk.aau.cs.giraf.gui.GToast;
-import dk.aau.cs.giraf.oasis.lib.Helper;
-import dk.aau.cs.giraf.oasis.lib.controllers.DepartmentPictogramController;
-import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
-import dk.aau.cs.giraf.oasis.lib.controllers.PictogramTagController;
-import dk.aau.cs.giraf.oasis.lib.controllers.ProfilePictogramController;
-import dk.aau.cs.giraf.oasis.lib.controllers.TagController;
-import dk.aau.cs.giraf.oasis.lib.models.Department;
-import dk.aau.cs.giraf.oasis.lib.models.DepartmentPictogram;
-import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
-import dk.aau.cs.giraf.oasis.lib.models.PictogramTag;
-import dk.aau.cs.giraf.oasis.lib.models.Profile;
-import dk.aau.cs.giraf.oasis.lib.models.ProfilePictogram;
-import dk.aau.cs.giraf.oasis.lib.models.Tag;
+import dk.aau.cs.giraf.dblib.models.DepartmentPictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictogram.TextToSpeech;
+import dk.aau.cs.giraf.dblib.models.Pictogram;
+import dk.aau.cs.giraf.dblib.models.Profile;
+import dk.aau.cs.giraf.dblib.Helper;
+import dk.aau.cs.giraf.dblib.controllers.TagController;
+import dk.aau.cs.giraf.dblib.controllers.PictogramController;
+import dk.aau.cs.giraf.dblib.controllers.ProfilePictogramController;
+import dk.aau.cs.giraf.dblib.controllers.PictogramTagController;
+import dk.aau.cs.giraf.dblib.models.Tag;
+import dk.aau.cs.giraf.dblib.models.ProfilePictogram;
+import dk.aau.cs.giraf.dblib.models.PictogramTag;
 
 /**
  * Class for storage of pictograms
@@ -45,9 +41,9 @@ public class StoragePictogram {
     private String inlineTextLabel;
     private String imagePath;
     private File audioFile;
-    private int author;
+    private long author;
     private int publicPictogram;
-    private int pictogramID;
+    private long pictogramID;
     private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
     private List<Profile> citizens = new ArrayList<Profile>();
 
@@ -131,7 +127,7 @@ public class StoragePictogram {
      *
      * @param author The author to set
      */
-    public void setAuthor(int author) {
+    public void setAuthor(long author) {
         this.author = author;
     }
 
@@ -149,7 +145,7 @@ public class StoragePictogram {
      *
      * @return The pictogramID
      */
-    public int getId() {
+    public long getId() {
         return pictogramID;
     }
 
@@ -185,7 +181,7 @@ public class StoragePictogram {
      *
      * @return The author
      */
-    public int getAuthor() {
+    public long getAuthor() {
         return author;
     }
 
@@ -216,7 +212,7 @@ public class StoragePictogram {
     private Tag insertTag(String tag) {
         TagController tagsHelper = databaseHelper.tagsHelper;
         Tag newTag = new Tag(tag);
-        int tagId = tagsHelper.insertTag(newTag);
+        long tagId = tagsHelper.insertTag(newTag);
         newTag.setId(tagId);
 
         return newTag;
@@ -379,7 +375,7 @@ public class StoragePictogram {
         try {
             databaseHelper.pictogramHelper.insertPictogram(pictogram);
             Profile user = databaseHelper.profilesHelper.getProfileById(author);
-            int departmentId = user.getDepartmentId();
+            long departmentId = user.getDepartmentId();
             DepartmentPictogram dp = new DepartmentPictogram(pictogram.getId(), departmentId);
             databaseHelper.departmentPictogramHelper.insertDepartmentPictogram(dp);
             return true;

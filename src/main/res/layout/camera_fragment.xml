@@ -2,6 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cameraLayout"
     android:orientation="vertical"
     android:layout_width="800dp"
@@ -26,16 +27,16 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true" />
 
-        <dk.aau.cs.giraf.gui.GButton
+        <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/quit_buttonCamera"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:drawableTop="@drawable/gcancel_icon"
+            android:layout_height="70dp"
+            app:icon="@drawable/gcancel_icon"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="Luk"
             android:layout_gravity="right"
             android:layout_margin ="10dp"/>
+            <!-- app:text="Luk" -->
 
 
     </RelativeLayout>
@@ -61,53 +62,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <dk.aau.cs.giraf.gui.GToggleButton
+            <dk.aau.cs.giraf.gui.GirafButton
                 android:layout_width="100dp"
                 android:layout_height="120dp"
                 android:id="@+id/color_effects"
                 android:drawableTop="@drawable/switch_effect_camera"
                 android:layout_toLeftOf="@+id/button_capture"
-                android:text="Sort Hvid"
+                app:text="Sort Hvid"
                 android:layout_margin="10dp"/>
 
-            <dk.aau.cs.giraf.gui.GButton
+            <dk.aau.cs.giraf.gui.GirafButton
                 android:layout_width="100dp"
                 android:layout_height="120dp"
                 android:id="@+id/button_capture"
-                android:drawableTop="@drawable/camera"
+                app:icon="@drawable/camera"
                 android:layout_centerHorizontal="true"
-                android:text="Tag Billede"
                 android:layout_margin="8dp"/>
+                <!-- app:text="Tag Billede" -->
 
-             <dk.aau.cs.giraf.gui.GButton
+            <dk.aau.cs.giraf.gui.GirafButton
                 android:layout_width="100dp"
                 android:layout_height="120dp"
                 android:id="@+id/switch_cam"
-                android:drawableTop="@drawable/switch_camera"
+                app:icon="@drawable/switch_camera"
                 android:layout_toRightOf="@+id/button_capture"
-                android:text="Skift Kamera"
                 android:layout_margin="10dp"/>
-        </LinearLayout>
+                <!-- app:text="Skift Kamera" -->
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp"
+        android:layout_gravity="center">
+
+        <dk.aau.cs.giraf.gui.GirafButton
+            android:id="@+id/acceptPictureButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="20dp"
-            android:layout_gravity="center">
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            app:icon="@drawable/icon_accept"/>
 
-            <dk.aau.cs.giraf.gui.GVerifyButton
-                android:id="@+id/acceptPictureButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"/>
+        <dk.aau.cs.giraf.gui.GirafButton
+            android:id="@+id/retryPictureButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            app:icon="@drawable/icon_cancel"/>
 
-            <dk.aau.cs.giraf.gui.GCancelButton
-                android:id="@+id/retryPictureButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"/>
-
-        </LinearLayout>
-    </ViewSwitcher>
+    </LinearLayout>
+</ViewSwitcher>
 </LinearLayout>

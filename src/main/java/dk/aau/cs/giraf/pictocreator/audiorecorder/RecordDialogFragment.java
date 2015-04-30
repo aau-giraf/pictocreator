@@ -11,10 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GToast;
-import dk.aau.cs.giraf.gui.GToggleButton;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictogram.CompleteListener;
 import dk.aau.cs.giraf.pictogram.PictoMediaPlayer;
@@ -36,10 +35,10 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private DecibelMeterView decibelMeter;
     private LinearLayout recordLayout;
 
-    private GToggleButton recordButton;
-    private GButton acceptButton;
-    private GButton cancelButton;
-    private GButton playButton;
+    private GirafButton recordButton;
+    private GirafButton acceptButton;
+    private GirafButton cancelButton;
+    private GirafButton playButton;
 
     private AudioHandler handler;
     private RecordThread recThread;
@@ -103,12 +102,12 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
 
         recThread = new RecordThread(handler, this);
 
-        recordButton = (GToggleButton) view.findViewById(R.id.record_button);
+        recordButton = (GirafButton) view.findViewById(R.id.record_button);
         recordButton.setOnClickListener(recordClickListener);
 
         decibelMeter = (DecibelMeterView) view.findViewById(R.id.decibel_meter);
 
-        playButton = (GButton) view.findViewById(R.id.playButton);
+        playButton = (GirafButton) view.findViewById(R.id.playButton);
         playButton.setOnClickListener(playClickListener);
 
         recordingExists = (new File(handler.getFinalPath()).exists());
@@ -116,7 +115,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
         recordLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
 
-        acceptButton = (GButton) view.findViewById(R.id.record_positive_button);
+        acceptButton = (GirafButton) view.findViewById(R.id.record_positive_button);
         acceptButton.setEnabled(false);
         acceptButton.setOnClickListener(new OnClickListener(){
             @Override
@@ -128,7 +127,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
             }
         });
 
-        cancelButton = (GButton) view.findViewById(R.id.record_negative_button);
+        cancelButton = (GirafButton) view.findViewById(R.id.record_negative_button);
         cancelButton.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View view){
@@ -148,13 +147,13 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private void switchLayoutPlayStopButton(){
         try{
             if(mediaPlayer.isPlaying()){
-                playButton.setText("Stop");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.stop), null, null);
+                //playButton.setText("Stop");
+                playButton.setIcon(getResources().getDrawable(R.drawable.stop));
                 Log.i(TAG, "changed to stop icon");
             }
             else{
-                playButton.setText("Afspil");
-                playButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.play), null, null);
+                // playButton.setText("Afspil");
+                playButton.setIcon(getResources().getDrawable(R.drawable.play));
                 Log.i(TAG, "changed to play icon");
             }
         }
@@ -219,20 +218,20 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
     private final OnClickListener recordClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (((GToggleButton) view).isToggled()) {
+            if (((GirafButton) view).isFocused()) { // TODO FIX change to isToggled
                 recThread.start();
-                recordButton.setToggled(true);
-                recordButton.setText("Stop");
-                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.stop), null, null);
+                //recordButton.setToggled(true);
+                //recordButton.setText("Stop");
+                recordButton.setIcon(getResources().getDrawable(R.drawable.stop));
                 playButton.setEnabled(false);
                 acceptButton.setEnabled(false);
             }
             else {
                 recThread.stop();
                 decibelMeter.setLevel(0);
-                recordButton.setToggled(false);
-                recordButton.setText("Optag");
-                recordButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.record), null, null);
+                //recordButton.setToggled(false);
+                //recordButton.setText("Optag");
+                recordButton.setIcon(getResources().getDrawable(R.drawable.record));
                 hasRecorded = true;
                 playButton.setEnabled(true);
                 acceptButton.setEnabled(true);

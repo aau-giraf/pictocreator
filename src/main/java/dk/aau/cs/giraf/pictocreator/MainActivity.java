@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.print.PrintHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -23,12 +24,11 @@ import java.io.IOException;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
+import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
-import dk.aau.cs.giraf.oasis.lib.controllers.PictogramController;
-import dk.aau.cs.giraf.oasis.lib.models.Pictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
@@ -59,12 +59,13 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private SaveDialogFragment saveDialog;
 
     private GDialogMessage clearDialog;
-    private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton, helpDialoGirafButton, undoButton, redoButton;
+    private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton,
+            helpDialoGirafButton, undoButton, redoButton, printButton;
 
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
-    private int author;
+    private long author;
 
     /**
      * Function called when the activity is first created
@@ -77,11 +78,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         setContentView(R.layout.activity_main);
 
         mainIntent = getIntent();
-        
+
         createStoragePictogram();
 
         decor = getWindow().getDecorView();
         decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
+        decor.setBackgroundColor(getResources().getColor(R.color.giraf_background)); // Shouldn't be necessary, should be white as standard
 
         drawFragment = new DrawFragment();
 
@@ -90,6 +92,10 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans = fragManager.beginTransaction();
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
+
+        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.add_sequence_picture), getString(R.string.print));
+        printButton.setOnClickListener(printClick);
+        addGirafButtonToActionBar(printButton, GirafActivity.LEFT);
 
         undoButton = new GirafButton(this, getResources().getDrawable(R.drawable.undo), getString(R.string.regret));
         undoButton.setOnClickListener(undoClick);
@@ -130,15 +136,14 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         storagePictogram = new StoragePictogram(this);
 
         if (ActivityManager.isUserAMonkey()) {
-            dk.aau.cs.giraf.oasis.lib.Helper h = new dk.aau.cs.giraf.oasis.lib.Helper(this);
+            dk.aau.cs.giraf.dblib.Helper h = new dk.aau.cs.giraf.dblib.Helper(this);
 
             author = h.profilesHelper.getGuardians().get(0).getId();
-        }
-        else {
+        } else {
             if (mainIntent != null) {
                 String action = mainIntent.getAction();
 
-                if (action != "dk.aau.cs.giraf.CREATEPICTOGRAM") {
+                if (action != "dk.aaau.cs.giraf.CREATEPICTOGRAM") {
                     author = mainIntent.getIntExtra("currentGuardianID", 0);
                     this.service = false;
                 } else {
@@ -151,8 +156,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         storagePictogram.setAuthor(author);
     }
 
-    private void overwriteDialog()
-    {
+    private void overwriteDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         alertDialogBuilder.setTitle(getString(R.string.save_pictogram));
@@ -160,13 +164,13 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         alertDialogBuilder
                 .setMessage(getString(R.string.overwrite_existing_question))
                 .setCancelable(false)
-                .setPositiveButton(getString(R.string.overwrite),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) { //Create new
+                .setPositiveButton(getString(R.string.overwrite), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { //Create new
                         savePictogram();
                     }
                 })
-                .setNegativeButton(getString(R.string.create_new),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) { // Overwrite
+                .setNegativeButton(getString(R.string.create_new), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { // Overwrite
                         savePictogram();
                         dialog.cancel();
                     }
@@ -231,6 +235,16 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         }
     };
 
+    private final OnClickListener printClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Bitmap b = getBitmap();
+            PrintHelper photoPrinter = new PrintHelper(getActivity());
+            photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+            photoPrinter.printBitmap("pictogram.jpg - Personal Pictogram", b);
+        }
+    };
+
     private final OnClickListener undoClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -242,22 +256,16 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 if (toPop == null)
                     return;
 
-                if (!savedEntities.getEntityToPop().getIsDeleted() && !savedEntities.getEntityToPop().getHasBeenRedone())
-                {
+                if (!savedEntities.getEntityToPop().getIsDeleted() && !savedEntities.getEntityToPop().getHasBeenRedone()) {
                     undoDrawnEntity(savedEntities);
-                }
-                else if(!savedEntities.getEntityToPop().getIsDeleted() && savedEntities.getEntityToPop().getHasBeenRedone())
-                {
+                } else if (!savedEntities.getEntityToPop().getIsDeleted() && savedEntities.getEntityToPop().getHasBeenRedone()) {
                     Entity nextEntityToPop = savedEntities.getNextEntityToPop();
-                    if (nextEntityToPop == null)
-                    {
+                    if (nextEntityToPop == null) {
                         return;
                     }
                     nextEntityToPop.setIsDeleted(false);
                     nextEntityToPop.setHasBeenRedone(true);
-                }
-                else
-                {
+                } else {
                     savedEntities.getEntityToPop().setHasBeenRedone(true);
                     savedEntities.getEntityToPop().setIsDeleted(false);
                 }
@@ -269,8 +277,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     };
 
     private void undoDrawnEntity(EntityGroup savedEntities) {
-        if (Helper.poppedEntities.size() > 5)
-        {
+        if (Helper.poppedEntities.size() > 5) {
             Helper.poppedEntities.remove(Helper.poppedEntities.get(0));
         }
         Entity poppedEntity = savedEntities.popEntity();
@@ -374,7 +381,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             return;
         }
 
-        PictogramController pictogramController = new PictogramController(this);
+        dk.aau.cs.giraf.dblib.controllers.PictogramController pictogramController = new dk.aau.cs.giraf.dblib.controllers.PictogramController(this);
         Pictogram pictogram = pictogramController.getPictogramById(pictogramID);
 
         /*if the pictogram has no drawstack, just load the bitmap

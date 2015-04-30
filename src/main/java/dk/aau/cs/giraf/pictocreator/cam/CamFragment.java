@@ -15,11 +15,8 @@ import android.widget.ViewSwitcher;
 
 import java.io.File;
 
-import dk.aau.cs.giraf.gui.GButton;
-import dk.aau.cs.giraf.gui.GCancelButton;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GComponent;
-import dk.aau.cs.giraf.gui.GToggleButton;
-import dk.aau.cs.giraf.gui.GVerifyButton;
 import dk.aau.cs.giraf.pictocreator.R;
 
 public class CamFragment extends DialogFragment {
@@ -33,19 +30,19 @@ public class CamFragment extends DialogFragment {
     private LinearLayout cameraLayout;
 
     /* Buttons */
-    private GButton exitButton;
+    private GirafButton exitButton;
 
     //User for swapping layouts
     private ViewSwitcher viewSwitcher;
 
     //For first layout
-    private GToggleButton colorSwapButton;
-    private GButton captureButton;
-    private GButton switchCamButton;
+    private GirafButton colorSwapButton;
+    private GirafButton captureButton;
+    private GirafButton switchCamButton;
 
     //For second layout
-    private GVerifyButton verifyButton;
-    private GCancelButton retryButton;
+    private GirafButton verifyButton;
+    private GirafButton retryButton;
 
     private PhotoHandler photoHandler;
 
@@ -96,22 +93,22 @@ public class CamFragment extends DialogFragment {
         viewSwitcher = (ViewSwitcher)view.findViewById(R.id.layoutSwitcherCamera);
 
         /* Assign Buttons*/
-        exitButton = (GButton)view.findViewById(R.id.quit_buttonCamera);
+        exitButton = (GirafButton)view.findViewById(R.id.quit_buttonCamera);
         exitButton.setOnClickListener(quitButtonClick);
 
-        captureButton = (GButton)view.findViewById(R.id.button_capture);
+        captureButton = (GirafButton)view.findViewById(R.id.button_capture);
         captureButton.setOnClickListener(captureClick);
 
-        colorSwapButton = (GToggleButton)view.findViewById(R.id.color_effects);
+        colorSwapButton = (GirafButton)view.findViewById(R.id.color_effects);
         colorSwapButton.setOnClickListener(colorSwapClick);
 
-        switchCamButton = (GButton)view.findViewById(R.id.switch_cam);
+        switchCamButton = (GirafButton)view.findViewById(R.id.switch_cam);
         switchCamButton.setOnClickListener(cameraSwapClick);
 
-        verifyButton = (GVerifyButton)view.findViewById(R.id.acceptPictureButton);
+        verifyButton = (GirafButton)view.findViewById(R.id.acceptPictureButton);
         verifyButton.setOnClickListener(verifyButtonClick);
 
-        retryButton = (GCancelButton)view.findViewById(R.id.retryPictureButton);
+        retryButton = (GirafButton)view.findViewById(R.id.retryPictureButton);
         retryButton.setOnClickListener(retryButtonClick);
 
         photoHandler = new PhotoHandler(this.getActivity());

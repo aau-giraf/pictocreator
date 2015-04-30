@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
@@ -8,79 +9,79 @@
     android:id="@+id/recordLayout">
 
 
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:orientation="horizontal"
-      android:weightSum="2">
-
-
-    <view
-        android:id="@+id/decibel_meter"
-        android:layout_width="45dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        class="dk.aau.cs.giraf.pictocreator.audiorecorder.DecibelMeterView"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1">
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    </view>
 
-      <LinearLayout
+        <view
+            android:id="@+id/decibel_meter"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            class="dk.aau.cs.giraf.pictocreator.audiorecorder.DecibelMeterView"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1">
+
+        </view>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <dk.aau.cs.giraf.gui.GirafButton
+                android:id="@+id/record_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="10dp"
+                app:icon="@drawable/record"
+                android:gravity="bottom|center_horizontal"
+                android:text="@string/record"
+                android:checked="false" />
+
+            <dk.aau.cs.giraf.gui.GirafButton
+                android:layout_width="70dp"
+                android:layout_height="70dp" 
+                android:id="@+id/playButton"
+                android:layout_gravity="center"
+                android:focusableInTouchMode="false"
+                app:icon="@drawable/play"
+                android:layout_margin="10dp"
+                app:text="@string/play"
+                android:adjustViewBounds="false"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:orientation="horizontal" >
 
-          <dk.aau.cs.giraf.gui.GToggleButton
-              android:id="@+id/record_button"
-              android:layout_width="70dp"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_horizontal|center_vertical"
-              android:layout_margin="10dp"
-              android:drawableTop="@drawable/record"
-              android:gravity="bottom|center_horizontal"
-              android:text="@string/record"
-              android:checked="false" />
+        <dk.aau.cs.giraf.gui.GirafButton
+            android:id="@+id/record_positive_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            app:icon="@drawable/save"
+            app:text="@string/save_button_text"
+            android:layout_toLeftOf="@+id/record_negative_button"/>
 
-          <dk.aau.cs.giraf.gui.GButton
-              android:layout_width="70dp"
-              android:layout_height="wrap_content"
-              android:id="@+id/playButton"
-              android:layout_gravity="center"
-              android:focusableInTouchMode="false"
-              android:drawableTop="@drawable/play"
-              android:layout_margin="10dp"
-              android:text="@string/play"
-              android:adjustViewBounds="false"/>
+        <dk.aau.cs.giraf.gui.GirafButton
+            android:id="@+id/record_negative_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            app:icon="@drawable/gcancel_icon"
+            app:text="@string/regret"
+            android:layout_toRightOf="@+id/record_positive_button"
+            />
 
-      </LinearLayout>
-  </LinearLayout>
-
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal" >
-
-      <dk.aau.cs.giraf.gui.GButton
-          android:id="@+id/record_positive_button"
-          android:layout_width="70dp"
-          android:layout_height="wrap_content"
-          android:layout_margin="10dp"
-          android:drawableTop="@drawable/save"
-          android:text="@string/save_button_text"
-          android:layout_toLeftOf="@+id/record_negative_button"/>
-
-      <dk.aau.cs.giraf.gui.GButton
-          android:id="@+id/record_negative_button"
-          android:layout_width="70dp"
-          android:layout_height="wrap_content"
-          android:layout_margin="10dp"
-          android:drawableTop="@drawable/gcancel_icon"
-          android:text="@string/regret"
-          android:layout_toRightOf="@+id/record_positive_button"
-           />
-
-  </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

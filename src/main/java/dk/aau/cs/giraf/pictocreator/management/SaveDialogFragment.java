@@ -29,14 +29,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import dk.aau.cs.giraf.dblib.models.Profile;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GDialogMessage;
 import dk.aau.cs.giraf.gui.GMultiProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
-import dk.aau.cs.giraf.oasis.lib.Helper;
-import dk.aau.cs.giraf.oasis.lib.models.Profile;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
@@ -422,14 +421,9 @@ public class SaveDialogFragment extends DialogFragment{
     private final OnClickListener addCitizen = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Helper helper = new Helper(parentActivity);
+            dk.aau.cs.giraf.dblib.Helper helper = new dk.aau.cs.giraf.dblib.Helper(parentActivity);
             try{
-                int authorID = storagePictogram.getAuthor();
-
-                //fix for no logged in author, should only be used during testing
-                if (authorID == 0){
-                    authorID++;
-                }
+                long authorID = storagePictogram.getAuthor();
 
                 ArrayList<Profile> authorChildren = new ArrayList<Profile>();
                 authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
