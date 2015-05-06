@@ -97,6 +97,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.activity_main);
 
         mainIntent = getIntent();
@@ -162,6 +164,18 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             author = h.profilesHelper.getGuardians().get(0).getId();
         } else {
+            // If the launcher is running it is not a guest session
+            this.isGuestSession = !Data.isProcessRunning("dk.aau.cs.giraf.launcher", this);
+
+            if (isGuestSession) {
+                new GToast(this, super.getResources().getString(R.string.guest_toast), 100).show();
+                // Disable button to switch profile as there are no other profile than Guest in standalone execution
+                gButtonProfileSelect.setEnabled(false);
+                // Empty Data constructor creates a guest profile
+                currentProfileData = new ProfileData();
+
+                this.downloadAllPictograms();
+            }
             if (mainIntent != null) {
                 String action = mainIntent.getAction();
 
