@@ -92,6 +92,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                     drawFragment.DeselectEntity();
                 }
                 break;
+            case 2:
+                break;
         }
     }
 

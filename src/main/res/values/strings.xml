@@ -51,4 +51,5 @@
     <string name="remove_tag">Slet søgeord:</string>
     <string name="from_the_list">fra listen?</string>
     <string name="remove">Fjern </string>
+    <string name="Delete">Slet</string>
 </resources>

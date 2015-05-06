@@ -51,4 +51,5 @@
     <string name="print">Print</string>
     <string name="remove">Remove </string>
     <string name="from_the_list"> from the list?</string>
+    <string name="Delete">Remove</string>
 </resources>
