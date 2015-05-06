@@ -253,7 +253,6 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         //citizen
     }
 
-
     /**
      * Click listener that enables deletion of tags
      */
@@ -262,7 +261,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
             GirafConfirmDialog removeDialog = GirafConfirmDialog.newInstance(getString(R.string.delete), getString(R.string.remove_tag), Method_Id_Remove_Tag);
-            
+
             removeDialog.show(getFragmentManager(), "removeDialog");
         }
     };

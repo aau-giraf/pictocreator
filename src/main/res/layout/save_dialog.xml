@@ -9,7 +9,7 @@
         android:id="@+id/saveBar"
         android:layout_width="match_parent"
         android:background="@drawable/top_bar_background"
-        android:layout_height="75dp">
+        android:layout_height="60dp">
 
         <dk.aau.cs.giraf.gui.GTextView
             android:id="@+id/dialog_title"
