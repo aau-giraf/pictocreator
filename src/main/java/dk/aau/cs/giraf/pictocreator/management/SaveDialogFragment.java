@@ -433,10 +433,11 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
             try{
                 long authorID = storagePictogram.getAuthor();
 
-                if (authorID == 0)
+                if (authorID == 0) {
                     Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
                     return;
-
+                }
+                
                 ArrayList<Profile> authorChildren = new ArrayList<Profile>();
                 authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
 
