@@ -266,7 +266,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             // Start a print job, passing in a PrintDocumentAdapter implementation
             // to handle the generation of a print document
 
-            //printManager.print()
+           // printManager.print()
         }
     };
 

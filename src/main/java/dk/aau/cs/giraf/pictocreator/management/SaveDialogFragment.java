@@ -1,15 +1,11 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
-import java.util.ArrayList;
-
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentActivity;
 import android.app.Activity;
-import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,6 +25,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import dk.aau.cs.giraf.dblib.models.Profile;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GirafButton;
@@ -40,9 +38,10 @@ import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
 /**
  * Dialog used for saving a Pictogram
+ *
  * @author Croc
  */
-public class SaveDialogFragment extends DialogFragment implements GirafProfileSelectorDialog.OnMultipleProfilesSelectedListener, GirafConfirmDialog.Confirmation{
+public class SaveDialogFragment extends DialogFragment implements GirafProfileSelectorDialog.OnMultipleProfilesSelectedListener, GirafConfirmDialog.Confirmation {
     private final String TAG = "SaveDialog";
 
     private View view;
@@ -58,6 +57,8 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private final int Method_Id_Remove_Tag = 1;
     private final int Select_Users_Id = 1;
     private final int Method_Id_Remove_Citizen = 2;
+
+    private DialogFragment dialog;
 
     private ImageView imgView;
 
@@ -82,7 +83,6 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
 
     private FileHandler fileHandler;
     private boolean isService = false;
-  //  private Dialog tmpDialog;
     private static int tempPos;
 
     private ArrayAdapter<String> tagArrayAdapter, connectedArrayAdapter;
@@ -90,32 +90,35 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     /**
      * Constructor for the Dialog, left empty on purpose
      */
-    public SaveDialogFragment(){
+    public SaveDialogFragment() {
         // empty constructor required for DialogFragment
     }
 
     /**
      * Method for setting the preview in the dialog
+     *
      * @param preview The bitmap to preview
      */
-    public void setPreview(Bitmap preview){
+    public void setPreview(Bitmap preview) {
         this.preview = preview;
     }
 
     /**
      * Setter for the StoragePictogram variable
+     *
      * @param storagePictogram The StoragePictogram to set
      */
-    public void setPictogram(StoragePictogram storagePictogram, int loadedPictogramId){
+    public void setPictogram(StoragePictogram storagePictogram, int loadedPictogramId) {
         this.loadedPictogramId = loadedPictogramId;
         this.storagePictogram = storagePictogram;
     }
 
     /**
      * Setter for the isService variable
+     *
      * @param isService The boolean which describes if CROC is a service.
      */
-    public void setService(boolean isService){
+    public void setService(boolean isService) {
         this.isService = isService;
     }
 
@@ -123,7 +126,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
      * Method called when the dialog is first created
      */
     @Override
-    public void onCreate(Bundle SavedInstanceState){
+    public void onCreate(Bundle SavedInstanceState) {
         super.onCreate(SavedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
     }
@@ -132,16 +135,15 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
      * Method called when the view for the dialog is created
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-      //  tmpDialog = getDialog();
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.save_dialog, container);
 
+        dialog = this;
 
-        saveBar = (RelativeLayout)view.findViewById(R.id.saveBar);
+        saveBar = (RelativeLayout) view.findViewById(R.id.saveBar);
         saveBar.setBackground(getResources().getDrawable(R.drawable.background));
 
-       // tmpDialog.setCanceledOnTouchOutside(false);
+        this.setCancelable(false);
 
         parentActivity = getActivity();
 
@@ -150,7 +152,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         parentActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         //general layout for this dialog
-        saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
+        saveDialogLayout = (LinearLayout) view.findViewById(R.id.saveDialogLayout);
         saveDialogLayout.setBackground(getResources().getDrawable(R.drawable.background));
         saveDialogLayout.setOnTouchListener(hideKeyboardTouchListener);
 
@@ -173,11 +175,11 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         overwriteButton.setOnClickListener(overwriteListener);
 
         cancelButton = (GirafButton) view.findViewById(R.id.save_button_negative);
-        cancelButton.setOnClickListener(new OnClickListener(){
+        cancelButton.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View view){
-                //tmpDialog.cancel();
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
 
@@ -190,7 +192,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         //citizen layout configuration
         citizenProfiles = new ArrayList<Profile>();
         citizenNames = new ArrayList<String>();
-        connectedArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, citizenNames);
+        connectedArrayAdapter = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, citizenNames);
 
         connectedCitizenList = (ListView) view.findViewById(R.id.connected_list);
         connectedCitizenList.setAdapter(connectedArrayAdapter);
@@ -201,7 +203,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
 
         //tags layout configuration
         tags = new ArrayList<String>();
-        tagArrayAdapter  = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, tags);
+        tagArrayAdapter = new ArrayAdapter<String>(parentActivity, R.layout.save_tag, tags);
 
         tagInputFind = (EditText) view.findViewById(R.id.save_input_find);
         tagInputFind.setNextFocusDownId(R.id.save_input_find);
@@ -221,14 +223,13 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private void AssignBitmapPreview() {
         Bitmap bitmap = null;
 
-        if(preview != null)
-        {
+        if (preview != null) {
             bitmap = preview;
         }
 
         imgView = new ImageView(parentActivity);
 
-        if(bitmap != null){
+        if (bitmap != null) {
             imgView.setImageBitmap(bitmap);
         }
     }
@@ -242,12 +243,12 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
             case Method_Id_Remove_Citizen:
                 citizenProfiles.remove(tempPos);
                 updateCitizenList();
-        break;
+                break;
         }
     }
 
     @Override
-    public void onProfilesSelected(int i, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile,java.lang.Boolean>> list) {
+    public void onProfilesSelected(int i, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile, java.lang.Boolean>> list) {
 
     }
 
@@ -268,11 +269,9 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     /**
      * Listener for saveDialogLayout which hides the keyboard when the layout is touched
      */
-    private final View.OnTouchListener hideKeyboardTouchListener = new View.OnTouchListener()
-    {
+    private final View.OnTouchListener hideKeyboardTouchListener = new View.OnTouchListener() {
         @Override
-        public boolean onTouch(View view, MotionEvent ev)
-        {
+        public boolean onTouch(View view, MotionEvent ev) {
             InputMethodManager in = (InputMethodManager) parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
             in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             return false;
@@ -286,9 +285,9 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private final View.OnKeyListener tagKeyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if(keyCode == 66 && !(tagInputFind.getText().toString()).matches("")){
-                if(!tags.contains(tagInputFind.getText().toString())){
-                    tags.add(0,tagInputFind.getText().toString());
+            if (keyCode == 66 && !(tagInputFind.getText().toString()).matches("")) {
+                if (!tags.contains(tagInputFind.getText().toString())) {
+                    tags.add(0, tagInputFind.getText().toString());
                 }
                 tagInputFind.setText("");
                 tagInputFind.requestFocus();
@@ -304,8 +303,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private final View.OnKeyListener pictogramNameKeyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
-            if (keyEvent.getKeyCode() == keyEvent.KEYCODE_ENTER)
-            {
+            if (keyEvent.getKeyCode() == keyEvent.KEYCODE_ENTER) {
                 String text = inputTextLabel.getText().toString();
                 if (!tags.contains(text) && text.length() > 0) {
                     tags.add(0, text);
@@ -355,24 +353,23 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
 
         //Value 1 in database means publicly available
         //Value 0 in database means not publicly available
-        if (publicityPublic.isChecked()){
+        if (publicityPublic.isChecked()) {
             storagePictogram.setPublicPictogram(1);
-        }
-        else if(publicityPrivate.isChecked()){
+        } else if (publicityPrivate.isChecked()) {
             storagePictogram.setPublicPictogram(0);
-            if(!citizenProfiles.isEmpty()){
-                for (Profile p : citizenProfiles){
+            if (!citizenProfiles.isEmpty()) {
+                for (Profile p : citizenProfiles) {
                     storagePictogram.addCitizen(p);
                 }
-            }else {
+            } else {
                 Toast.makeText(parentActivity, "Angiv venligst borgere dette er privat for", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
 
         //adds each tag to the pictogram
-        if((tags != null)){
-            for(String t : tags){
+        if ((tags != null)) {
+            for (String t : tags) {
                 storagePictogram.addTag(t);
             }
         }
@@ -380,9 +377,8 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         //saves the picogram into the database
         if (storagePictogram.addPictogram(loadedPictogramId)) {
             Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(parentActivity, "Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
         }
 
         if (isService) {
@@ -393,7 +389,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
             parentActivity.finish();
         }
 
-        //tmpDialog.dismiss();
+        this.dismiss();
     }
 
     private final AdapterView.OnItemClickListener onRemoveCitizen = new AdapterView.OnItemClickListener() {
@@ -430,14 +426,14 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         @Override
         public void onClick(View v) {
             dk.aau.cs.giraf.dblib.Helper helper = new dk.aau.cs.giraf.dblib.Helper(parentActivity);
-            try{
+            try {
                 long authorID = storagePictogram.getAuthor();
 
                 if (authorID == 0) {
                     Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
                     return;
                 }
-                
+
                 ArrayList<Profile> authorChildren = new ArrayList<Profile>();
                 authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
 
@@ -445,16 +441,16 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
                 GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(SaveDialogFragment.this.getActivity(), authorID, false, false, "", Select_Users_Id);
                 autistSelector.show(SaveDialogFragment.this.getFragmentManager(), "" + Select_Users_Id);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         }
     };
 
 
-    private void updateCitizenList(){
+    private void updateCitizenList() {
         citizenNames.clear();
-        for(int i = 0; i < citizenProfiles.size(); i++){
+        for (int i = 0; i < citizenProfiles.size(); i++) {
             citizenNames.add(i, citizenProfiles.get(i).getName());
         }
         connectedArrayAdapter.notifyDataSetChanged();
@@ -464,7 +460,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
      * Method called when the dialog is resumed
      */
     @Override
-	public void onResume(){
+    public void onResume() {
         super.onResume();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
