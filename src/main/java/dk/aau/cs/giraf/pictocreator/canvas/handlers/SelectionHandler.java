@@ -349,7 +349,6 @@ public class SelectionHandler extends ActionHandler {
         // Determine action or new Entity selection.
         if (action == MotionEvent.ACTION_DOWN && !isPointerDown) {
             if (selectedEntity != null) {
-
                 // Attempt to collide with action icon.
                 if (resizeIcon.collidesWithPoint(px, py)) {
                     currentMode = ACTION_MODE.RESIZE;
@@ -473,6 +472,9 @@ public class SelectionHandler extends ActionHandler {
     @Override
     public void drawBufferPreBounds(Canvas canvas) {
         if (selectedEntity != null) {
+            if (selectedEntity.getIsDeleted())
+                return;
+
             drawHighlighted(canvas);
         }
     }
@@ -480,6 +482,9 @@ public class SelectionHandler extends ActionHandler {
     @Override
     public void drawBufferPostBounds(Canvas canvas) {
         if (selectedEntity != null) {
+            if (selectedEntity.getIsDeleted())
+                return;
+
             if (showIcons) {
                 editTextIcon.draw(canvas);
                 resizeIcon.draw(canvas);

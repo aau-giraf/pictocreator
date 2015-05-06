@@ -1,11 +1,11 @@
 package dk.aau.cs.giraf.pictocreator.management;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,12 +30,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import dk.aau.cs.giraf.dblib.models.Profile;
-import dk.aau.cs.giraf.gui.GComponent;
-import dk.aau.cs.giraf.gui.GDialogMessage;
-import dk.aau.cs.giraf.gui.GMultiProfileSelector;
 import dk.aau.cs.giraf.gui.GRadioButton;
-import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
+import dk.aau.cs.giraf.gui.GirafConfirmDialog;
+import dk.aau.cs.giraf.gui.GirafProfileSelectorDialog;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
@@ -44,7 +42,7 @@ import dk.aau.cs.giraf.pictocreator.StoragePictogram;
  * Dialog used for saving a Pictogram
  * @author Croc
  */
-public class SaveDialogFragment extends DialogFragment{
+public class SaveDialogFragment extends DialogFragment implements GirafProfileSelectorDialog.OnMultipleProfilesSelectedListener, GirafConfirmDialog.Confirmation{
     private final String TAG = "SaveDialog";
 
     private View view;
@@ -56,6 +54,10 @@ public class SaveDialogFragment extends DialogFragment{
     private ArrayList<Profile> citizenProfiles;
     private Activity parentActivity;
     private RelativeLayout saveBar;
+
+    private final int Method_Id_Remove_Tag = 1;
+    private final int Select_Users_Id = 1;
+    private final int Method_Id_Remove_Citizen = 2;
 
     private ImageView imgView;
 
@@ -71,7 +73,7 @@ public class SaveDialogFragment extends DialogFragment{
     private GirafButton acceptButton, overwriteButton;
     private GirafButton cancelButton, addConnectCitizenButton;
 
-    private GMultiProfileSelector autistSelector;
+    private GirafProfileSelectorDialog autistSelector;
 
     private GRadioButton publicityPublic;
     private GRadioButton publicityPrivate;
@@ -80,7 +82,7 @@ public class SaveDialogFragment extends DialogFragment{
 
     private FileHandler fileHandler;
     private boolean isService = false;
-    private Dialog tmpDialog;
+  //  private Dialog tmpDialog;
     private static int tempPos;
 
     private ArrayAdapter<String> tagArrayAdapter, connectedArrayAdapter;
@@ -131,16 +133,15 @@ public class SaveDialogFragment extends DialogFragment{
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        tmpDialog = getDialog();
+      //  tmpDialog = getDialog();
 
         view = inflater.inflate(R.layout.save_dialog, container);
 
 
         saveBar = (RelativeLayout)view.findViewById(R.id.saveBar);
-        saveBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
+        saveBar.setBackground(getResources().getDrawable(R.drawable.background));
 
-
-        tmpDialog.setCanceledOnTouchOutside(false);
+       // tmpDialog.setCanceledOnTouchOutside(false);
 
         parentActivity = getActivity();
 
@@ -150,7 +151,7 @@ public class SaveDialogFragment extends DialogFragment{
 
         //general layout for this dialog
         saveDialogLayout = (LinearLayout)view.findViewById(R.id.saveDialogLayout);
-        saveDialogLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
+        saveDialogLayout.setBackground(getResources().getDrawable(R.drawable.background));
         saveDialogLayout.setOnTouchListener(hideKeyboardTouchListener);
 
         //preview layout configuration
@@ -176,7 +177,7 @@ public class SaveDialogFragment extends DialogFragment{
 
             @Override
             public void onClick(View view){
-                tmpDialog.cancel();
+                //tmpDialog.cancel();
             }
         });
 
@@ -232,6 +233,25 @@ public class SaveDialogFragment extends DialogFragment{
         }
     }
 
+    @Override
+    public void confirmDialog(int methodID) {
+        switch (methodID) {
+            case Method_Id_Remove_Tag:
+                tags.remove(tempPos);
+                tagArrayAdapter.notifyDataSetChanged();
+            case Method_Id_Remove_Citizen:
+                citizenProfiles.remove(tempPos);
+                updateCitizenList();
+        break;
+        }
+    }
+
+    @Override
+    public void onProfilesSelected(int i, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile,java.lang.Boolean>> list) {
+
+    }
+
+
     /**
      * Click listener that enables deletion of tags
      */
@@ -239,15 +259,9 @@ public class SaveDialogFragment extends DialogFragment{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
-            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Slet Søgeord: " + tags.get(position),
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            tags.remove(tempPos);
-                            tagArrayAdapter.notifyDataSetChanged();
-                        }
-                    });
-            removeDialog.show();
+            GirafConfirmDialog removeDialog = GirafConfirmDialog.newInstance(getString(R.string.remove_tag), getString(R.string.remove_tag), Method_Id_Remove_Tag);
+
+            removeDialog.show(SaveDialogFragment.this.getFragmentManager(), "removeDialog");
         }
     };
 
@@ -333,7 +347,7 @@ public class SaveDialogFragment extends DialogFragment{
 
         //A pictogram must have a name, if not the user is asked to provide one
         if (pictogramNameText.matches("") || pictogramNameText == null) {
-            GToast.makeText(parentActivity, getString(R.string.select_name), Toast.LENGTH_SHORT).show();
+            Toast.makeText(parentActivity, getString(R.string.select_name), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -351,7 +365,7 @@ public class SaveDialogFragment extends DialogFragment{
                     storagePictogram.addCitizen(p);
                 }
             }else {
-                GToast.makeText(parentActivity, "Angiv venligst borgere dette er privat for", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parentActivity, "Angiv venligst borgere dette er privat for", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -365,10 +379,10 @@ public class SaveDialogFragment extends DialogFragment{
 
         //saves the picogram into the database
         if (storagePictogram.addPictogram(loadedPictogramId)) {
-            GToast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
         }
         else{
-            GToast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parentActivity,"Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
         }
 
         if (isService) {
@@ -379,22 +393,16 @@ public class SaveDialogFragment extends DialogFragment{
             parentActivity.finish();
         }
 
-        tmpDialog.dismiss();
+        //tmpDialog.dismiss();
     }
 
     private final AdapterView.OnItemClickListener onRemoveCitizen = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             tempPos = position;
-            GDialogMessage removeDialog = new GDialogMessage(parentActivity,"Fjern " + citizenProfiles.get(position).getName() + " fra listen?",
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            citizenProfiles.remove(tempPos);
-                            updateCitizenList();
-                        }
-                    });
-            removeDialog.show();
+            String description = getString(R.string.remove) + " " + citizenProfiles.get(position).getName() + " " + getString(R.string.from_the_list);
+            GirafConfirmDialog removeDialog = GirafConfirmDialog.newInstance(getString(R.string.remove), description, Method_Id_Remove_Citizen);
+            removeDialog.show(SaveDialogFragment.this.getFragmentManager(), "removeCitizen");
         }
     };
 
@@ -425,18 +433,16 @@ public class SaveDialogFragment extends DialogFragment{
             try{
                 long authorID = storagePictogram.getAuthor();
 
+                if (authorID == 0)
+                    Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
+                    return;
+
                 ArrayList<Profile> authorChildren = new ArrayList<Profile>();
                 authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
-                autistSelector = new GMultiProfileSelector(parentActivity, authorChildren ,citizenProfiles);
-                autistSelector.setMyOnCloseListener(new GMultiProfileSelector.onCloseListener() {
-                    @Override
-                    public void onClose(List<Profile> selectedProfiles) {
-                        citizenProfiles.clear();
-                        citizenProfiles.addAll(selectedProfiles);
-                        updateCitizenList();
-                    }
-                });
-                autistSelector.show();
+
+
+                GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(SaveDialogFragment.this.getActivity(), authorID, false, false, "", Select_Users_Id);
+                autistSelector.show(SaveDialogFragment.this.getFragmentManager(), "" + Select_Users_Id);
 
             }catch (Exception e){
                 Log.e(TAG, e.getMessage());

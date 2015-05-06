@@ -48,4 +48,7 @@
     <string name="eraser">Viskelæder</string>
     <string name="print">Print</string>
     <string name="app_name">Piktotegner</string>
+    <string name="remove_tag">Slet søgeord:</string>
+    <string name="from_the_list">fra listen?</string>
+    <string name="remove">Fjern </string>
 </resources>

@@ -38,10 +38,8 @@
             android:windowSoftInputMode="adjustPan"
             android:name="dk.aau.cs.giraf.pictocreator.MainActivity"
             android:theme="@style/GirafTheme">
-            android:label="Piktotegner"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

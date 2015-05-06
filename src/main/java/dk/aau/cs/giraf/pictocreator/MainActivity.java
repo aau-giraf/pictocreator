@@ -3,6 +3,13 @@ package dk.aau.cs.giraf.pictocreator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import android.print.PageRange;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -26,7 +33,6 @@ import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.gui.GComponent;
-import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GirafConfirmDialog;
 import dk.aau.cs.giraf.gui.GirafDialog;
@@ -209,7 +215,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         @Override
         public void onClick(View view) {
             if (author == 0) {
-                GToast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
 
                 savePictogram();
             } else {
@@ -225,7 +231,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         saveDialog.setService(service);
         saveDialog.setPictogram(storagePictogram, 1);
         saveDialog.setPreview(getBitmap());
-        saveDialog.show(getFragmentManager(), TAG);
+        saveDialog.show(getSupportFragmentManager(), TAG);
     }
 
     private Activity getActivity() {
@@ -249,6 +255,18 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             PrintHelper photoPrinter = new PrintHelper(getActivity());
             photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
             photoPrinter.printBitmap("pictogram.jpg - Personal Pictogram", b);
+
+            // Get a PrintManager instance
+            PrintManager printManager = (PrintManager) getActivity()
+                    .getSystemService(Context.PRINT_SERVICE);
+
+            // Set job name, which will be displayed in the print queue
+            String jobName = getActivity().getString(R.string.app_name) + " Document";
+
+            // Start a print job, passing in a PrintDocumentAdapter implementation
+            // to handle the generation of a print document
+
+            //printManager.print()
         }
     };
 
@@ -260,12 +278,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             if (savedEntities != null) {
                 Entity toPop = savedEntities.getEntityToPop();
 
-                if (toPop == null)
+                if (toPop == null) // No entity has been drawn on the canvas
                     return;
 
-                if (!savedEntities.getEntityToPop().getIsDeleted() && !savedEntities.getEntityToPop().getHasBeenRedone()) {
+                if (!toPop.getIsDeleted() && !toPop.getHasBeenRedone()) { // Basic functionality when entity on top of stack is not a deleted entity
                     undoDrawnEntity(savedEntities);
-                } else if (!savedEntities.getEntityToPop().getIsDeleted() && savedEntities.getEntityToPop().getHasBeenRedone()) {
+                } else if (!toPop.getIsDeleted() && toPop.getHasBeenRedone()) {
                     Entity nextEntityToPop = savedEntities.getNextEntityToPop();
                     if (nextEntityToPop == null) {
                         return;
@@ -273,12 +291,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                     nextEntityToPop.setIsDeleted(false);
                     nextEntityToPop.setHasBeenRedone(true);
                 } else {
-                    savedEntities.getEntityToPop().setHasBeenRedone(true);
-                    savedEntities.getEntityToPop().setIsDeleted(false);
+                    toPop.setHasBeenRedone(true);
+                    toPop.setIsDeleted(false);
                 }
                 drawFragment.drawView.invalidate();
-                //Neeeded, as selectionhandler would have a deleted item selected otherwise
-                drawFragment.DeselectEntity();
+
+                drawFragment.DeselectEntity(); // Needed, as selectionhandler would have a deleted item selected otherwise
             }
         }
     };
@@ -349,7 +367,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e) {
-            GToast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
     }
@@ -419,7 +437,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         try {
             loadPicture(BitmapFactory.decodeFile(picture.getPath()));
         } catch (OutOfMemoryError e) {
-            GToast.makeText(this, "Billedet blev desværre ikke taget, slet et af dine nuværende billeder.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Billedet blev desværre ikke taget, slet et af dine nuværende billeder.", Toast.LENGTH_LONG).show();
         }
     }
 
