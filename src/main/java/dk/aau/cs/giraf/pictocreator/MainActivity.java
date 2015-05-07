@@ -42,7 +42,7 @@ import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 
-
+import dk.aau.cs.giraf.core.data.Data;
 /**
  * Main class for the Croc app
  *
@@ -59,7 +59,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private HelpDialogFragment helpDialog;
     private RelativeLayout topLayout;
     private SaveDialogFragment saveDialog;
-
+    private boolean isGuestSession;
     private GirafDialog clearDialog;
     private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton,
             helpDialoGirafButton, undoButton, redoButton, printButton;
@@ -169,14 +169,10 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             if (isGuestSession) {
                 new GToast(this, super.getResources().getString(R.string.guest_toast), 100).show();
-                // Disable button to switch profile as there are no other profile than Guest in standalone execution
-                gButtonProfileSelect.setEnabled(false);
-                // Empty Data constructor creates a guest profile
-                currentProfileData = new ProfileData();
 
                 this.downloadAllPictograms();
             }
-            if (mainIntent != null) {
+            else if (mainIntent != null) {
                 String action = mainIntent.getAction();
 
                 if (action != "dk.aaau.cs.giraf.CREATEPICTOGRAM") {
@@ -427,6 +423,14 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             Log.e(TAG, e.getMessage());
         }
     }
+
+    /**
+     * Launch an activity which handles downloading of the database.
+     */
+    private void downloadAllPictograms() {
+        super.startActivity(new Intent(this, Data.class));
+    }
+
 
     @Override
     public void onPictureTaken(File picture) {

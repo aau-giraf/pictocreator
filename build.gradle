@@ -19,6 +19,7 @@ apply plugin: 'play'
 repositories {
     maven {
         mavenCentral()
+        mavenLocal()    
         url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
     }
 }
@@ -29,8 +30,12 @@ dependencies {
     compile(group: 'dk.aau.cs.giraf', name: 'girafComponent', version: '5.3.2', ext: 'aar')
     compile(group: 'dk.aau.cs.giraf', name: 'oasisLib', version: '0.0-SNAPSHOT', ext: 'aar')
     compile(group: 'dk.aau.cs.giraf', name: 'localDb', version: '0.0-SNAPSHOT', ext: 'aar')
-    compile(name: 'corelib', ext:'aar')
-    compile files('libs/meta-database.jar')
+    compile(group: 'dk.aau.cs.giraf', name: 'corelib', version: '0.0-SNAPSHOT', ext: 'aar')
+}
+
+// Always download latest snapshot
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 android {

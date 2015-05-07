@@ -48,4 +48,6 @@
     <string name="eraser">Viskelæder</string>
     <string name="print">Print</string>
     <string name="app_name">Piktotegner</string>
+        <string name="guest_toast">Du er nu logget på som gæst og nogle funktioner
+        er derfor deaktiveret. Kør fra GIRAF Launcher hvis disse funktioner skal bruges."</string>
 </resources>
