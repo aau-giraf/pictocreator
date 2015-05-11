@@ -112,6 +112,7 @@
               android:paddingRight="8dp"
               android:layout_marginRight="40dp"
               app:icon="@drawable/save"
+              android:clickable="false"
               app:text="@string/overwrite"/>
 
       <dk.aau.cs.giraf.gui.GirafButton
@@ -121,7 +122,7 @@
         android:layout_toRightOf="@+id/save_button_positive"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        app:icon="@drawable/gcancel_icon"
+        app:icon="@drawable/icon_cancel"
         app:text="@string/regret"/>
 
       </LinearLayout>

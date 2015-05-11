@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,20 +12,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Toast;
 
-import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GColorPicker;
 import dk.aau.cs.giraf.gui.GSeekBar;
 import dk.aau.cs.giraf.gui.GTextView;
+import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
-import dk.aau.cs.giraf.pictocreator.cam.Preview;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.EraserHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
@@ -92,6 +88,9 @@ public class DrawFragment extends Fragment {
      * The LinearLayout view that contains all choosable colours.
      */
     LinearLayout colorButtonToolbox;
+
+    public DrawFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -325,7 +324,6 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new TextHandler(getActivity(), drawView));
             setAllUnToggle();
             strokeWidthText.setText(getString(R.string.text_size));
-         //   TODO currentStrokColorButton.setText(getText(R.string.pick_color));
             textHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.TEXT);
         }

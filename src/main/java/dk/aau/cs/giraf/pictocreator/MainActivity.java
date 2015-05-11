@@ -4,12 +4,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.CancellationSignal;
-import android.os.ParcelFileDescriptor;
-import android.print.PageRange;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintManager;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -18,7 +14,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.print.PrintHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -26,6 +21,8 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -47,6 +44,7 @@ import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
+import dk.aau.cs.giraf.pictocreator.PrintDialogActivity;
 
 
 /**
@@ -96,7 +94,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 break;
         }
     }
-
 
         /**
          * Function called when the activity is first created
@@ -253,24 +250,19 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener printClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            Bitmap b = getBitmap();
-            PrintHelper photoPrinter = new PrintHelper(getActivity());
-            photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-            photoPrinter.printBitmap("pictogram.jpg - Personal Pictogram", b);
-
-            // Get a PrintManager instance
-            PrintManager printManager = (PrintManager) getActivity()
-                    .getSystemService(Context.PRINT_SERVICE);
-
-            // Set job name, which will be displayed in the print queue
-            String jobName = getActivity().getString(R.string.app_name) + " Document";
-
-            // Start a print job, passing in a PrintDocumentAdapter implementation
-            // to handle the generation of a print document
-
-           // printManager.print()
+            Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
+            printIntent.setDataAndType(getImageUri(getApplicationContext(), getBitmap()), "jpg");
+            printIntent.putExtra("title", "Title on Print");
+            startActivity(printIntent);
         }
     };
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
 
     private final OnClickListener undoClick = new OnClickListener() {
         @Override

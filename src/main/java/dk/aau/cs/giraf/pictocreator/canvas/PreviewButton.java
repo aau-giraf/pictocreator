@@ -9,11 +9,8 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import dk.aau.cs.giraf.gui.GButton;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.R;
-
-
 
 /**
  * The preview button is optimally displayed close to regular ColorButtons and

@@ -31,7 +31,7 @@
             android:id="@+id/quit_buttonCamera"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:icon="@drawable/gcancel_icon"
+            app:icon="@drawable/icon_cancel"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="right"
