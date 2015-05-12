@@ -177,8 +177,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
 
         overwriteButton = (GirafButton) view.findViewById(R.id.overwrite_button_positive);
 
-        if (loadedPictogramId == 0) // Nothing to overwrite
-            overwriteButton.setEnabled(false);
+        overwriteButton.setEnabled(false); // TODO: NOT FULLY IMPLEMENTED YET
 
         overwriteButton.setOnClickListener(overwriteListener);
 

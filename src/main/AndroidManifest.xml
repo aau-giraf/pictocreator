@@ -29,8 +29,9 @@
 
     <application
         android:allowBackup="true"
+        android:screenOrientation="landscape"
         android:icon="@drawable/picto_creator"
-        android:label="Piktotegner"
+        android:label="@string/app_name"
 		android:theme="@style/AppTheme"
 	    tools:replace="icon,label">
         android:largeHeap="true"
@@ -38,7 +39,6 @@
             android:windowSoftInputMode="adjustPan"
             android:name="dk.aau.cs.giraf.pictocreator.MainActivity"
             android:theme="@style/GirafTheme">
-            android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

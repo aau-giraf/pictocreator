@@ -484,8 +484,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         tempEntity.setCenter(drawFragment.drawView.getMeasuredWidth() / 2, drawFragment.drawView.getMeasuredHeight() / 2 - 4.0f);
         DrawStackSingleton.getInstance().mySavedData.addEntity(tempEntity);
         drawFragment.drawView.invalidate();
-
-        //undoButton.enabled = true; // TODO FIX
     }
 
     private Bitmap getBitmap() {
