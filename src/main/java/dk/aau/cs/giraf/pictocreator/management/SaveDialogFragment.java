@@ -56,9 +56,10 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private FragmentActivity parentActivity;
     private RelativeLayout saveBar;
 
-    private final int Method_Id_Remove_Tag = 1;
+    private final int Method_Id_Remove_Tag = 2;
+    private final int Method_Id_Remove_Citizen = 3;
+
     private final int Select_Users_Id = 1;
-    private final int Method_Id_Remove_Citizen = 2;
 
     private DialogFragment dialog;
 
@@ -241,34 +242,14 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     }
 
+    // Is never called but a necessity for having a GirafConfirmDialog
     @Override
     public void confirmDialog(int methodID) {
-        switch (methodID) {
-            case Method_Id_Remove_Tag:
-                tags.remove(tempPos);
-                tagArrayAdapter.notifyDataSetChanged();
-                break;
-            case Method_Id_Remove_Citizen:
-                citizenProfiles.remove(tempPos);
-                updateCitizenList();
-                break;
-        }
     }
 
+    // Is never called but a necessity for having a GirafProfileSelectorDialog
     @Override
-    public void onProfilesSelected(int i, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile, java.lang.Boolean>> list) {
-        List<Profile> selectedProfiles = new ArrayList<Profile>();
-        for (int index = 0; index < list.size(); index++)
-        {
-            if (list.get(index).second == true) // Selected
-            {
-                selectedProfiles.add(list.get(index).first);
-            }
-        }
-
-        citizenProfiles.clear();
-        citizenProfiles.addAll(selectedProfiles);
-        updateCitizenList();
+    public void onProfilesSelected(int dialogIdentifier, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile, java.lang.Boolean>> list) {
     }
 
     /**
@@ -282,6 +263,12 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
             removeDialog.show(getFragmentManager(), "removeDialog");
         }
     };
+
+    public void removeTagConfirm()
+    {
+        tags.remove(tempPos);
+        tagArrayAdapter.notifyDataSetChanged();
+    }
 
     /**
      * Listener for saveDialogLayout which hides the keyboard when the layout is touched
@@ -419,6 +406,12 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     };
 
+    public void removeCitizenConfirm()
+    {
+        citizenProfiles.remove(tempPos);
+        updateCitizenList();
+    }
+
     private final OnClickListener enableCitizenList = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -450,21 +443,11 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
                     Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
                     //return;
                 }
-/*
+
                 ArrayList<Profile> authorChildren = new ArrayList<Profile>();
-                authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getProfileById(authorID)));
-                autistSelector = new GMultiProfileSelector(parentActivity, authorChildren ,citizenProfiles);
-                autistSelector.setMyOnCloseListener(new GMultiProfileSelector.onCloseListener() {
-                    @Override
-                    public void onClose(List<Profile> selectedProfiles) {
-                        citizenProfiles.clear();
-                        citizenProfiles.addAll(selectedProfiles);
-                        updateCitizenList();
-                    }
-                });*/
+                authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getById(authorID)));
 
-
-                GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(getActivity(), 1, false, true, "", Select_Users_Id);
+                GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(getActivity(), authorID, false, true, getString(R.string.profile_selector_description), Select_Users_Id);
                 autistSelector.show(getFragmentManager(), "" + Select_Users_Id);
 
             } catch (Exception e) {
@@ -472,6 +455,13 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
             }
         }
     };
+
+    public void addSelectedCitizens(List<Profile> selectedProfiles)
+    {
+        citizenProfiles.clear();
+        citizenProfiles.addAll(selectedProfiles);
+        updateCitizenList();
+    }
 
 
     private void updateCitizenList() {

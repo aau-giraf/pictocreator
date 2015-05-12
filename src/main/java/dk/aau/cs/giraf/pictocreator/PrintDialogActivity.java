@@ -40,6 +40,7 @@ public class PrintDialogActivity extends Activity {
      */
     Intent cloudPrintIntent;
 
+    @JavascriptInterface
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -55,10 +56,10 @@ public class PrintDialogActivity extends Activity {
 
         dialogWebView.setWebViewClient(new PrintDialogWebClient());
 
-
         dialogWebView.loadUrl(PRINT_DIALOG_URL);
     }
 
+    @JavascriptInterface
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == ZXING_SCAN_REQUEST && resultCode == RESULT_OK) {
@@ -67,14 +68,17 @@ public class PrintDialogActivity extends Activity {
     }
 
     final class PrintDialogJavaScriptInterface {
+        @JavascriptInterface
         public String getType() {
             return cloudPrintIntent.getType();
         }
 
+        @JavascriptInterface
         public String getTitle() {
             return cloudPrintIntent.getExtras().getString("title");
         }
 
+        @JavascriptInterface
         public String getContent() {
             try {
                 ContentResolver contentResolver = getContentResolver();
@@ -99,10 +103,12 @@ public class PrintDialogActivity extends Activity {
             return "";
         }
 
+        @JavascriptInterface
         public String getEncoding() {
             return CONTENT_TRANSFER_ENCODING;
         }
 
+        @JavascriptInterface
         public void onPostMessage(String message) {
             if (message.startsWith(CLOSE_POST_MESSAGE_NAME)) {
                 finish();
@@ -110,7 +116,9 @@ public class PrintDialogActivity extends Activity {
         }
     }
 
+
     private final class PrintDialogWebClient extends WebViewClient {
+        @JavascriptInterface
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith(ZXING_URL)) {
@@ -127,10 +135,12 @@ public class PrintDialogActivity extends Activity {
             return false;
         }
 
+        @JavascriptInterface
         @Override
         public void onPageFinished(WebView view, String url) {
             if (PRINT_DIALOG_URL.equals(url)) {
                 // Submit print document.
+
                 view.loadUrl("javascript:printDialog.setPrintDocument(printDialog.createPrintDocument("
                         + "window." + JS_INTERFACE + ".getType(),window." + JS_INTERFACE + ".getTitle(),"
                         + "window." + JS_INTERFACE + ".getContent(),window." + JS_INTERFACE + ".getEncoding()))");

@@ -25,7 +25,7 @@ public class EraserHandler extends ShapeHandler {
 
     private Bitmap eraserBitmap;
 
-    private int strokeWidthMultiplier = 4;
+    private int strokeWidthMultiplier = 5;
 
     public EraserHandler(int color, Bitmap eraserBitmap){
         canvasColor = color;

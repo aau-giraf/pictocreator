@@ -5,6 +5,8 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +16,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.print.PrintHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -25,14 +28,19 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
+import dk.aau.cs.giraf.dblib.models.Profile;
 import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GirafConfirmDialog;
 import dk.aau.cs.giraf.gui.GirafDialog;
+import dk.aau.cs.giraf.gui.GirafProfileSelectorDialog;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawFragment;
@@ -44,7 +52,6 @@ import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
-import dk.aau.cs.giraf.pictocreator.PrintDialogActivity;
 
 
 /**
@@ -52,7 +59,7 @@ import dk.aau.cs.giraf.pictocreator.PrintDialogActivity;
  *
  * @author Croc
  */
-public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener, GirafConfirmDialog.Confirmation {
+public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener, GirafConfirmDialog.Confirmation, GirafProfileSelectorDialog.OnMultipleProfilesSelectedListener {
     private final static String TAG = "MainActivity";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";
     private Intent mainIntent;
@@ -69,11 +76,27 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             helpDialoGirafButton, undoButton, redoButton, printButton;
 
     private final int Method_Id_Clear = 1;
+    private final int Method_Id_Remove_Tag = 2;
+    private final int Method_Id_Remove_Citizen = 3;
+
 
     private StoragePictogram storagePictogram;
     private View decor;
     private boolean service;
     private long author;
+
+    @Override
+    public void onProfilesSelected(int i, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile, java.lang.Boolean>> list) {
+        List<Profile> selectedProfiles = new ArrayList<Profile>();
+        for (int index = 0; index < list.size(); index++)
+        {
+            if (list.get(index).second == true) // Selected
+            {
+                selectedProfiles.add(list.get(index).first);
+            }
+        }
+        saveDialog.addSelectedCitizens(selectedProfiles);
+    }
 
     @Override
     public void confirmDialog(int methodID) {
@@ -90,7 +113,11 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                     drawFragment.DeselectEntity();
                 }
                 break;
-            case 2:
+            case Method_Id_Remove_Citizen:
+                saveDialog.removeCitizenConfirm();
+                break;
+            case Method_Id_Remove_Tag:
+                saveDialog.removeTagConfirm();
                 break;
         }
     }
@@ -250,17 +277,28 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener printClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
-            printIntent.setDataAndType(getImageUri(getApplicationContext(), getBitmap()), "jpg");
-            printIntent.putExtra("title", "Title on Print");
-            startActivity(printIntent);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                PrintHelper photoPrinter = new PrintHelper(getActivity());
+                photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+
+                photoPrinter.printBitmap(getString(R.string.print_title), getBitmap());
+            }
+            else {
+                Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
+                Uri bitmapUri = getImageUri(getApplicationContext(), getBitmap());
+                printIntent.setDataAndType(bitmapUri, "image/jpeg");
+                printIntent.putExtra("title", getString(R.string.print_title)); // Key value pair
+                startActivity(printIntent);
+            }
         }
     };
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes); // 100 is quality
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, getString(R.string.print_title), null);
         return Uri.parse(path);
     }
 

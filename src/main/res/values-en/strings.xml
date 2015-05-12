@@ -52,4 +52,6 @@
     <string name="remove">Remove </string>
     <string name="from_the_list"> from the list?</string>
     <string name="Delete">Remove</string>
+    <string name="print_title">Personal Pictogram</string>
+    <string name="profile_selector_description">Select citizens:</string>
 </resources>

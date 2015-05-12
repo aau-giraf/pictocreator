@@ -52,4 +52,6 @@
     <string name="from_the_list">fra listen?</string>
     <string name="remove">Fjern </string>
     <string name="Delete">Slet</string>
+    <string name="print_title">Personligt Piktogram</string>
+    <string name="profile_selector_description">Vælg borgere:</string>
 </resources>
