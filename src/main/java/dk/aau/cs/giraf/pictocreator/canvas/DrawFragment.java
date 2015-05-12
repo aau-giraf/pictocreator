@@ -117,6 +117,7 @@ public class DrawFragment extends Fragment {
 
         freehandHandlerButton = (GirafButton)view.findViewById(R.id.freehand_handler_button);
         freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
+        freehandHandlerButton.toggle();
 
         selectHandlerButton = (GirafButton)view.findViewById(R.id.select_handler_button);
         selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);

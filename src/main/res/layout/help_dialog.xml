@@ -30,7 +30,7 @@
         <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/close_button"
             android:layout_width="60dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             app:icon="@drawable/icon_cancel"
@@ -54,7 +54,7 @@
         <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/previous_button"
             android:layout_width="65dp"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="60dp"
@@ -72,7 +72,7 @@
         <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/next_button"
             android:layout_width="65dp"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="60dp"

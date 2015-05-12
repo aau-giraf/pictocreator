@@ -49,6 +49,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
+import dk.aau.cs.giraf.pictocreator.management.FileHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
@@ -291,6 +292,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 printIntent.setDataAndType(bitmapUri, "image/jpeg");
                 printIntent.putExtra("title", getString(R.string.print_title)); // Key value pair
                 startActivity(printIntent);
+
+                getContentResolver().delete(bitmapUri, null, null);
             }
         }
     };
@@ -377,12 +380,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener showHelpClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            try {
-                helpDialog = new HelpDialogFragment();
-                helpDialog.show(getFragmentManager(), TAG);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
+            Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
         }
     };
 

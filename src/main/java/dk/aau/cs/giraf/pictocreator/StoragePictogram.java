@@ -362,7 +362,7 @@ public class StoragePictogram {
                 return saveDepartmentPictogram(pictogram);
             } else {
                 for (Profile p : citizens) {
-                    profileHelper.insertProfilePictogram(new ProfilePictogram(p.getId(), pictogram.getId()));
+                    profileHelper.insert(new ProfilePictogram(p.getId(), pictogram.getId()));
                 }
             }
             return true;
