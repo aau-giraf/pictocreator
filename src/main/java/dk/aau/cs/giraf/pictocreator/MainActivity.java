@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
-import dk.aau.cs.giraf.core.pictosearch.PictoAdminMain;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
 import dk.aau.cs.giraf.gui.GComponent;
@@ -53,6 +52,7 @@ import dk.aau.cs.giraf.pictocreator.management.FileHandler;
 import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
+import dk.aau.cs.giraf.showcaseview.ShowcaseManager;
 
 
 /**
@@ -71,6 +71,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private HelpDialogFragment helpDialog;
     private RelativeLayout topLayout;
     private SaveDialogFragment saveDialog;
+
+    public static final String PICTO_SEARCH_PURPOSE_TAG = "purpose";
+    public static final String PICTO_SEARCH_SINGLE_TAG = "single";
 
     private GirafDialog clearDialog;
     private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton,
@@ -148,7 +151,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.add_sequence_picture), getString(R.string.print));
+        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.add_sequence_picture));
         printButton.setOnClickListener(printClick);
         addGirafButtonToActionBar(printButton, GirafActivity.LEFT);
 
@@ -160,15 +163,15 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         redoButton.setOnClickListener(redoClick);
         addGirafButtonToActionBar(redoButton, GirafActivity.RIGHT);
 
-        helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.help), getString(R.string.help_button_text));
+        helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.help));
         helpDialoGirafButton.setOnClickListener(showHelpClick);
         addGirafButtonToActionBar(helpDialoGirafButton, GirafActivity.RIGHT);
 
-        clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.trashcan), getString(R.string.clear_button_text));
+        clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.trashcan));
         clearButton.setOnClickListener(onClearButtonClick);
         addGirafButtonToActionBar(clearButton, GirafActivity.RIGHT);
 
-        saveDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.save), getString(R.string.save_button_text));
+        saveDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.save));
         saveDialoGirafButton.setOnClickListener(showLabelMakerClick);
         addGirafButtonToActionBar(saveDialoGirafButton, GirafActivity.LEFT);
 
@@ -381,6 +384,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         @Override
         public void onClick(View view) {
             Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+            final ShowcaseManager.ShowcaseCapable currentContent = (ShowcaseManager.ShowcaseCapable) getSupportFragmentManager().findFragmentById(R.id.drawingview);
+            currentContent.toggleShowcase();
         }
     };
 
@@ -388,12 +393,13 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      * Opens pictosearch application, so pictograms can be loaded into the application.
      */
     private void callPictosearch() {
-        Intent intent = new Intent(this, PictoAdminMain.class);
+        Intent intent = new Intent();
 
         try {
+            // Sets properties on the intent
             intent.setComponent(new ComponentName("dk.aau.cs.giraf.pictosearch", "dk.aau.cs.giraf.pictosearch.PictoAdminMain"));
+            intent.putExtra(PICTO_SEARCH_PURPOSE_TAG, PICTO_SEARCH_SINGLE_TAG);
             intent.putExtra("currentGuardianID", author);
-            intent.putExtra("purpose", "single");
 
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e) {

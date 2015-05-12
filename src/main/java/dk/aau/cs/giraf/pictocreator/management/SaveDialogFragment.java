@@ -443,8 +443,8 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
                     //return;
                 }
 
-                ArrayList<Profile> authorChildren = new ArrayList<Profile>();
-                authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getById(authorID)));
+              //  ArrayList<Profile> authorChildren = new ArrayList<Profile>();
+              //  authorChildren.addAll(helper.profilesHelper.getChildrenByGuardian(helper.profilesHelper.getById(authorID)));
 
                 GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(getActivity(), authorID, false, true, getString(R.string.profile_selector_description), Select_Users_Id);
                 autistSelector.show(getFragmentManager(), "" + Select_Users_Id);

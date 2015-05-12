@@ -29,16 +29,17 @@
 
     <application
         android:allowBackup="true"
-        android:screenOrientation="landscape"
         android:icon="@drawable/picto_creator"
         android:label="@string/app_name"
+        android:screenOrientation="landscape"
 		android:theme="@style/AppTheme"
-	    tools:replace="icon,label">
-        android:largeHeap="true"
+	    tools:replace="icon,label"
+        android:largeHeap="true">
         <activity
             android:windowSoftInputMode="adjustPan"
             android:name="dk.aau.cs.giraf.pictocreator.MainActivity"
-            android:theme="@style/GirafTheme">
+            android:theme="@style/GirafTheme"
+            android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +48,7 @@
         </activity>
 
         <activity
-            android:name="dk.aau.cs.giraf.pictocreator.PrintDialogActivity">
+            android:name="dk.aau.cs.giraf.pictocreator.PrintDialogActivity"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>

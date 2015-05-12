@@ -31,7 +31,7 @@
     <string name="record_dialog_title">Sound recorder</string>
     <string name="rectangle">Rectangle</string>
     <string name="redo">Redo</string>
-    <string name="regret">Regret</string>
+    <string name="regret">Undo</string>
     <string name="save_button_text">Save</string>
     <string name="save_pictogram">Save Pictogram</string>
     <string name="search_tags">Search tags</string>
@@ -51,7 +51,7 @@
     <string name="print">Print</string>
     <string name="remove">Remove </string>
     <string name="from_the_list"> from the list?</string>
-    <string name="Delete">Remove</string>
+    <string name="delete">Remove</string>
     <string name="print_title">Personal Pictogram</string>
     <string name="profile_selector_description">Select citizens:</string>
 </resources>
