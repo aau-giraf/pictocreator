@@ -357,9 +357,9 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         //Value 1 in database means publicly available
         //Value 0 in database means not publicly available
         if (publicityPublic.isChecked()) {
-            storagePictogram.setPublicPictogram(1);
+            storagePictogram.setIsPublic(true);
         } else if (publicityPrivate.isChecked()) {
-            storagePictogram.setPublicPictogram(0);
+            storagePictogram.setIsPublic(false);
             if (!citizenProfiles.isEmpty()) {
                 for (Profile p : citizenProfiles) {
                     storagePictogram.addCitizen(p);
@@ -379,9 +379,9 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
 
         //saves the picogram into the database
         if (storagePictogram.addPictogram(loadedPictogramId)) {
-            Toast.makeText(parentActivity, "Piktogram gemt", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parentActivity, getString(R.string.pictogram_saved), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(parentActivity, "Piktogram blev ikke gemt", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parentActivity, getString(R.string.pictogram_not_saved), Toast.LENGTH_SHORT).show();
         }
 
         if (isService) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.webkit.JavascriptInterface;
@@ -29,6 +30,7 @@ public class PrintDialogActivity extends Activity {
      * needs to be closed.
      */
     private static final String CLOSE_POST_MESSAGE_NAME = "cp-dialog-on-close";
+    private static Uri bitmapToPrint;
 
     /**
      * Web view element to show the printing dialog in.
@@ -39,6 +41,11 @@ public class PrintDialogActivity extends Activity {
      * Intent that started the action.
      */
     Intent cloudPrintIntent;
+
+    public static void setBitmapToPrint(Uri uriOfBitmap)
+    {
+        bitmapToPrint = uriOfBitmap;
+    }
 
     @JavascriptInterface
     @Override
@@ -112,6 +119,7 @@ public class PrintDialogActivity extends Activity {
         public void onPostMessage(String message) {
             if (message.startsWith(CLOSE_POST_MESSAGE_NAME)) {
                 finish();
+                getContentResolver().delete(bitmapToPrint, null, null);
             }
         }
     }

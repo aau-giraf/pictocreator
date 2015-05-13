@@ -42,7 +42,7 @@ public class StoragePictogram {
     private String imagePath;
     private File audioFile;
     private long author;
-    private int publicPictogram;
+    private boolean isPublic;
     private long pictogramID;
     private List<String> tags = new ArrayList<String>(); // tags added by the user which should be converted via generateTagList
     private List<Profile> citizens = new ArrayList<Profile>();
@@ -136,8 +136,8 @@ public class StoragePictogram {
      *
      * @param publicPictogram The publicPictogram to set
      */
-    public void setPublicPictogram(int publicPictogram) {
-        this.publicPictogram = publicPictogram;
+    public void setIsPublic(boolean b) {
+        this.isPublic = b;
     }
 
     /**
@@ -251,7 +251,7 @@ public class StoragePictogram {
 
         pictogram.setImage(pictogramImage);
         pictogram.setName(pictogramName);
-        pictogram.setPub(publicPictogram);
+        pictogram.setIsPublic(isPublic);
         pictogram.setInlineText(inlineTextLabel);
         pictogram.setAuthor(author);
 
@@ -267,7 +267,7 @@ public class StoragePictogram {
     private Pictogram insertPictogram(Pictogram pictogram) {
         PictogramController pictogramHelper = databaseHelper.pictogramHelper;
 
-        pictogramID = pictogramHelper.insertPictogram(pictogram);
+        pictogramID = pictogramHelper.insert(pictogram);
         pictogram.setId(pictogramID);
 
         return pictogram;
@@ -325,7 +325,7 @@ public class StoragePictogram {
     }
 
     /**
-     * Method for generation of editable image for the pictogram
+     * Method for generating editable image for the pictogram
      *
      * @param pictogram
      */
@@ -337,7 +337,7 @@ public class StoragePictogram {
                 Log.e(TAG, e.getMessage());
             }
         }
-        pictogram = insertPictogram(pictogram);
+        insertPictogram(pictogram);
     }
 
     /**
@@ -346,24 +346,23 @@ public class StoragePictogram {
      * @return True if the pictogram was successfully added, false otherwise
      */
     public boolean addPictogram(int loadedPictogramId) {
+        if (author == 0)
+            return false;
+
         Pictogram pictogram;
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         ProfilePictogramController profileHelper = databaseHelper.profilePictogramHelper;
 
-        pictogram = generatePictogram();
+        pictogram = generatePictogram(); // Creates pictogram and inserts it into the database
 
-        if (pictogram != null && author != 0) {
+        if (pictogram != null) {
             List<Tag> addTags = generateTagList();
             for (Tag t : addTags) {
-                tagHelper.insertPictogramTag(new PictogramTag(pictogram.getId(), t.getId()));
+                tagHelper.insert(new PictogramTag(pictogram.getId(), t.getId()));
             }
 
-            if (citizens.isEmpty()) { // Should be visible for department
-                return saveDepartmentPictogram(pictogram);
-            } else {
-                for (Profile p : citizens) {
-                    profileHelper.insert(new ProfilePictogram(p.getId(), pictogram.getId()));
-                }
+            for (Profile p : citizens) {
+                profileHelper.insert(new ProfilePictogram(p.getId(), pictogram.getId()));
             }
             return true;
         }
@@ -373,11 +372,10 @@ public class StoragePictogram {
 
     private boolean saveDepartmentPictogram(Pictogram pictogram) {
         try {
-            databaseHelper.pictogramHelper.insertPictogram(pictogram);
-            Profile user = databaseHelper.profilesHelper.getProfileById(author);
+            Profile user = databaseHelper.profilesHelper.getById(author);
             long departmentId = user.getDepartmentId();
             DepartmentPictogram dp = new DepartmentPictogram(pictogram.getId(), departmentId);
-            databaseHelper.departmentPictogramHelper.insertDepartmentPictogram(dp);
+            databaseHelper.departmentPictogramHelper.insert(dp);
             return true;
         } catch (Exception e) {
             return false;

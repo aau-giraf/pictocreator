@@ -55,4 +55,7 @@
     <string name="print_title">Personal Pictogram</string>
     <string name="profile_selector_description">Select citizens:</string>
     <string name="error_clearing_canvas">An unexpected error has occured, clearing canvas</string>
+    <string name="no_network">No internet connection!</string>
+    <string name="pictogram_not_saved">The pictogram could not be saved</string>
+    <string name="pictogram_saved">The pictogram was saved</string>
 </resources>

@@ -55,4 +55,7 @@
     <string name="print_title">Personligt Piktogram</string>
     <string name="profile_selector_description">Vælg borgere:</string>
     <string name="error_clearing_canvas">En uventet fejl er opstået, tegnebrættet ryddes</string>
+    <string name="no_network">Ingen internet forbindelse!</string>
+    <string name="pictogram_saved">Piktogrammet blev gemt</string>
+    <string name="pictogram_not_saved">Piktogrammet blev ikke gemt</string>
 </resources>

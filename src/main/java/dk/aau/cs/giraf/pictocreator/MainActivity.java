@@ -5,6 +5,8 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -23,6 +25,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,8 +52,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
-import dk.aau.cs.giraf.showcaseview.ShowcaseManager;
-
 
 /**
  * Main class for the Croc app
@@ -75,7 +78,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final int Method_Id_Clear = 1;
     private final int Method_Id_Remove_Tag = 2;
     private final int Method_Id_Remove_Citizen = 3;
-
 
     private StoragePictogram storagePictogram;
     private View decor;
@@ -143,7 +145,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.add_sequence_picture));
+        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.play));
         printButton.setOnClickListener(printClick);
         addGirafButtonToActionBar(printButton, GirafActivity.LEFT);
 
@@ -167,7 +169,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         saveDialoGirafButton.setOnClickListener(showLabelMakerClick);
         addGirafButtonToActionBar(saveDialoGirafButton, GirafActivity.LEFT);
 
-        loadDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.load_pictogram), getString(R.string.load_button_text));
+        loadDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_open_pictogram), getString(R.string.load_button_text));
         loadDialoGirafButton.setOnClickListener(showPictosearchClick);
         addGirafButtonToActionBar(loadDialoGirafButton, GirafActivity.LEFT);
     }
@@ -284,16 +286,31 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 photoPrinter.printBitmap(getString(R.string.print_title), getBitmap());
             }
             else {
-                Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
-                Uri bitmapUri = getImageUri(getApplicationContext(), getBitmap());
-                printIntent.setDataAndType(bitmapUri, "image/jpeg");
-                printIntent.putExtra("title", getString(R.string.print_title)); // Key value pair
-                startActivity(printIntent);
-
-                getContentResolver().delete(bitmapUri, null, null);
+                if (isNetworkConnected()) {
+                    Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
+                    Uri bitmapToPrint = getImageUri(getApplicationContext(), getBitmap());
+                    PrintDialogActivity.setBitmapToPrint(bitmapToPrint);
+                    printIntent.setDataAndType(bitmapToPrint, "image/jpeg");
+                    printIntent.putExtra("title", getString(R.string.print_title)); // Key value pair
+                    startActivity(printIntent);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_network), Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            // There are no active networks.
+            return false;
+        } else
+            return true;
+    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -378,8 +395,13 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         @Override
         public void onClick(View view) {
             Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
-            final ShowcaseManager.ShowcaseCapable currentContent = (ShowcaseManager.ShowcaseCapable) getSupportFragmentManager().findFragmentById(R.id.drawingview);
-            currentContent.toggleShowcase();
+
+            new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.HOME))
+                    .setContentTitle("ShowcaseView")
+                    .setContentText("This is highlighting the Home button")
+                    .hideOnTouchOutside()
+                    .build();
         }
     };
 
@@ -411,8 +433,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
 
+        Intent lol = data;
+        int res = resultCode;
+        int code = requestCode;
         if (resultCode == RESULT_OK) {
             loadPictogram(data);
         }
@@ -437,7 +463,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         }
 
         dk.aau.cs.giraf.dblib.controllers.PictogramController pictogramController = new dk.aau.cs.giraf.dblib.controllers.PictogramController(this);
-        Pictogram pictogram = pictogramController.getPictogramById(pictogramID);
+        Pictogram pictogram = pictogramController.getById(pictogramID);
 
         /*if the pictogram has no drawstack, just load the bitmap
           else we load drawstack*/
