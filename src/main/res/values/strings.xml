@@ -58,4 +58,5 @@
     <string name="no_network">Ingen internet forbindelse!</string>
     <string name="pictogram_saved">Piktogrammet blev gemt</string>
     <string name="pictogram_not_saved">Piktogrammet blev ikke gemt</string>
+    <string name="could_not_take_picture">Billedet blev desværre ikke taget, slet et af dine nuværende billeder for at frigøre plads.</string>
 </resources>

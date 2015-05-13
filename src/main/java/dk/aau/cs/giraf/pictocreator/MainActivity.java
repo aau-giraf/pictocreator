@@ -493,7 +493,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         try {
             loadPicture(BitmapFactory.decodeFile(picture.getPath()));
         } catch (OutOfMemoryError e) {
-            Toast.makeText(this, "Billedet blev desværre ikke taget, slet et af dine nuværende billeder.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.could_not_take_picture), Toast.LENGTH_LONG).show();
         }
     }
 

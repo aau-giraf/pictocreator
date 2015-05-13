@@ -58,4 +58,5 @@
     <string name="no_network">No internet connection!</string>
     <string name="pictogram_not_saved">The pictogram could not be saved</string>
     <string name="pictogram_saved">The pictogram was saved</string>
+    <string name="could_not_take_picture">The picture could not be taken, please remove an existing picture to free space.</string>
 </resources>
