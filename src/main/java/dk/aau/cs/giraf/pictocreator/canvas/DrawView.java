@@ -10,9 +10,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
-import dk.aau.cs.giraf.gui.GDialogAlert;
-import dk.aau.cs.giraf.gui.R;
+import dk.aau.cs.giraf.pictocreator.R;
 
 /**
  * The DrawView is a basic draw stack with a rendering loop that attempts
@@ -203,21 +203,6 @@ public class DrawView extends View {
     }
 
     /**
-     * Dialog used to prevent a crash when the user has drawn too many object.
-     */
-    private GDialogAlert dialogAlert = new GDialogAlert(this.getContext(),
-             R.drawable.ic_launcher,
-            "For mange elementer",
-            "Du har desværre tegnet for meget, tegnebrættet ryddes derfor.",
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            }
-    );
-
-    /**
      * Draws the entites in drawStack, the drawBuffer, and the bufferBounds onto the canvas.
      * Also, catches a nullPointerException which occurs with excessive drawings.
      * @TODO Instead of clearing all the entites, remove the last added entity and alert with a suitable message.
@@ -231,9 +216,9 @@ public class DrawView extends View {
         try{
 		    DrawStackSingleton.getInstance().mySavedData.draw(canvas);
         }
-        catch(NullPointerException e){
-            if(!dialogAlert.isShowing())
-                dialogAlert.show();
+        catch(Exception e){
+			Toast.makeText(getContext(), getContext().getString(R.string.error_clearing_canvas), Toast.LENGTH_LONG).show();
+			Log.w("DrawView", e.getMessage());
             clearCanvas();
         }
 

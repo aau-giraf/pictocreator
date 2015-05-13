@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -28,7 +28,6 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +67,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private FragmentManager fragManager;
     private FragmentTransaction fragTrans;
     private DrawFragment drawFragment;
-    private HelpDialogFragment helpDialog;
-    private RelativeLayout topLayout;
     private SaveDialogFragment saveDialog;
 
     public static final String PICTO_SEARCH_PURPOSE_TAG = "purpose";
@@ -132,7 +129,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
 
         mainIntent = getIntent();
@@ -140,8 +137,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         createStoragePictogram();
 
         decor = getWindow().getDecorView();
-        decor.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
-        decor.setBackgroundColor(getResources().getColor(R.color.giraf_background)); // Shouldn't be necessary, should be white as standard
+        decor.setBackgroundColor(getResources().getColor(R.color.giraf_background));
 
         drawFragment = new DrawFragment();
 

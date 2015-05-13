@@ -54,4 +54,5 @@
     <string name="delete">Remove</string>
     <string name="print_title">Personal Pictogram</string>
     <string name="profile_selector_description">Select citizens:</string>
+    <string name="error_clearing_canvas">An unexpected error has occured, clearing canvas</string>
 </resources>

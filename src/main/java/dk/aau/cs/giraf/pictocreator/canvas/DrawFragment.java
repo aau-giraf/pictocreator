@@ -108,7 +108,6 @@ public class DrawFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         view = inflater.inflate(R.layout.draw_fragment, container, false);
 
         drawView = (DrawView)view.findViewById(R.id.drawingview);

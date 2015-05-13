@@ -54,4 +54,5 @@
     <string name="delete">Slet</string>
     <string name="print_title">Personligt Piktogram</string>
     <string name="profile_selector_description">Vælg borgere:</string>
+    <string name="error_clearing_canvas">En uventet fejl er opstået, tegnebrættet ryddes</string>
 </resources>
