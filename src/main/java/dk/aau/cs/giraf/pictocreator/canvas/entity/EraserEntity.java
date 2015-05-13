@@ -48,14 +48,12 @@ public class EraserEntity extends PrimitiveEntity {
         super(color, color);
         setHeight(0);
         setWidth(0);
-        setX(0); // Set to 0 to ensure selectionHandler cannot select this entity
-        setY(0); // Set to 0 to ensure selectionHandler cannot select this entity
         this.eraserBitmap = eraserBitmap;
     }
 
     @Override
     public void drawWithPaint(Canvas canvas, SerializablePaint paint) {
-        if (drawPoints.size() <= 1) return; // Don't erase trivial.
+        //if (drawPoints.size() <= 1) return; // Don't erase trivial.
 
         Path p = new Path();
         for (FloatPoint floatPoint : drawPoints){
@@ -69,7 +67,15 @@ public class EraserEntity extends PrimitiveEntity {
         canvas.drawPath(p, paint);
 
         if (isErasing)
-            canvas.drawBitmap(eraserBitmap, drawPoints.get(drawPoints.size() - 1).x, drawPoints.get(drawPoints.size() - 1).y, null);
+            canvas.drawBitmap(eraserBitmap, getLastXPoint(), getLastYPoint(), null);
+    }
+
+    private float getLastYPoint() {
+        return drawPoints.get(drawPoints.size() - 1).y;
+    }
+
+    private float getLastXPoint() {
+        return drawPoints.get(drawPoints.size() - 1).x;
     }
 
     @Override

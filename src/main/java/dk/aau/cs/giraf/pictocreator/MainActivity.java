@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -34,7 +33,6 @@ import java.util.List;
 import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
-import dk.aau.cs.giraf.gui.GComponent;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GirafConfirmDialog;
 import dk.aau.cs.giraf.gui.GirafDialog;
@@ -47,8 +45,6 @@ import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
-import dk.aau.cs.giraf.pictocreator.management.FileHandler;
-import dk.aau.cs.giraf.pictocreator.management.HelpDialogFragment;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
 import dk.aau.cs.giraf.showcaseview.ShowcaseManager;
@@ -160,7 +156,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         addGirafButtonToActionBar(redoButton, GirafActivity.RIGHT);
 
         helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.help));
-        helpDialoGirafButton.setOnClickListener(showHelpClick);
+        helpDialoGirafButton.setOnClickListener(helpClick);
         addGirafButtonToActionBar(helpDialoGirafButton, GirafActivity.RIGHT);
 
         clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.trashcan));
@@ -198,8 +194,10 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 String action = mainIntent.getAction();
 
                 if (action != "dk.aaau.cs.giraf.CREATEPICTOGRAM") {
-                    author = mainIntent.getIntExtra("currentGuardianID", 0);
-                    this.service = false;
+                    if (mainIntent.getExtras() != null) {
+                        author = ((Long) mainIntent.getExtras().get("currentGuardianID")).longValue();
+                        this.service = false;
+                    }
                 } else {
                     author = mainIntent.getIntExtra("author", 0);
                     this.service = true;
@@ -376,7 +374,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         }
     };
 
-    private final OnClickListener showHelpClick = new OnClickListener() {
+    private final OnClickListener helpClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
             Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();

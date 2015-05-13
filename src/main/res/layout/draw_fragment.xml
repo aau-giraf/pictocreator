@@ -50,7 +50,7 @@
                     android:id="@+id/eraser_handler_button"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    app:icon="@drawable/eraser"
+                    app:icon="@drawable/icon_eraser"
                     android:layout_weight="1"/>
 
                 <dk.aau.cs.giraf.gui.GirafButton
@@ -115,7 +115,7 @@
             <dk.aau.cs.giraf.gui.GSeekBar
                 android:id="@+id/strokeWidthBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_marginLeft="10dp"/>
 
             <dk.aau.cs.giraf.gui.GirafButton
@@ -124,7 +124,7 @@
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                app:icon="@drawable/background_color_picker"
+                app:icon="@drawable/icon_color_background"
                 android:layout_below="@id/strokeWidthBar"
                 android:layout_toRightOf="@+id/colorToolbox"/>
 
@@ -134,7 +134,7 @@
                 android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                app:icon="@drawable/stroke_color_picker"/>
+                app:icon="@drawable/icon_color_stroke"/>
 
             <dk.aau.cs.giraf.pictocreator.canvas.PreviewButton
                 android:id="@+id/canvasHandlerPreviewButton"

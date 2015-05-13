@@ -279,7 +279,7 @@ public class DrawFragment extends Fragment {
     private final OnClickListener onEraserHandlerButtonClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            Bitmap eraserBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.eraser);
+            Bitmap eraserBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_eraser);
             drawView.setHandler(new EraserHandler(-1, eraserBitmap));
             setAllUnToggle();
             eraserHandlerButton.toggle();
