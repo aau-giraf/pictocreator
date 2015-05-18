@@ -2,13 +2,13 @@
 buildscript {
     repositories {
         mavenCentral()
-        mavenLocal()
+        //mavenLocal()
         maven {
             url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
         }
-        flatDir {
-            dirs 'libs'
-        }
+        //flatDir {
+        //    dirs 'libs'
+        //}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
@@ -33,9 +33,9 @@ repositories {
 }
 
 // Always download latest snapshot
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+//configurations.all {
+//    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+//}
 dependencies {
     compile('com.android.support:support-v4:+')
     compile project(':showcaseview-library')
