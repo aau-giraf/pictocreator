@@ -485,12 +485,15 @@ public class SelectionHandler extends ActionHandler {
             if (selectedEntity.getIsDeleted())
                 return;
 
+            DrawStackSingleton.getInstance().mySavedData.deselectEntities();
+
             if (showIcons) {
                 editTextIcon.draw(canvas);
                 resizeIcon.draw(canvas);
                 rotateIcon.draw(canvas);
                 scrapIcon.draw(canvas);
                 flattenIcon.draw(canvas);
+                selectedEntity.setIsSelected(true);
             }
         }
     }

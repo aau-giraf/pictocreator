@@ -1,0 +1,47 @@
+<!--
+  ~ Copyright 2014 Alex Curran
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!-- Why the hell the project is not using style to setup the radiu?
+    the style is the only (xml/canonical) way to set configuration of a 
+    widget with multiple version! Since there is zero efforts to make
+    available a simples set method to change radius, so it's more flexible
+    extract overhere the radius values? no? well i'm sorry
+-->
+
+<resources>
+
+    <declare-styleable name="ShowcaseView">
+        <attr name="sv_backgroundColor" format="color|reference" />
+        <attr name="sv_detailTextColor" format="color|reference" />
+        <attr name="sv_titleTextColor" format="color|reference" />
+        <attr name="sv_buttonBackgroundColor" format="color|reference" />
+        <attr name="sv_buttonForegroundColor" format="color|reference" />
+        <attr name="sv_buttonText" format="string|reference" />
+        <attr name="sv_detailTextAppearance" format="reference" />
+        <attr name="sv_titleTextAppearance" format="reference" />
+        <attr name="sv_showcaseColor" format="color|reference" />
+        <attr name="sv_tintButtonColor" format="boolean|reference" />
+        
+        <attr name="sv_radius" format="dimension" />
+        <attr name="sv_radius_inner" format="dimension" />
+        <attr name="sv_radius_outter" format="dimension" />
+        
+    </declare-styleable>
+    <declare-styleable name="CustomTheme">
+        <attr name="showcaseViewStyle" format="reference" />
+    </declare-styleable>
+
+</resources>

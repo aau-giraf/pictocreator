@@ -126,7 +126,7 @@ public class PreviewButton extends GirafButton {
             canvas.drawBitmap(mBitmap, padding, padding, null);
         }
         else if (drawtype == DrawType.ERASER){
-            Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), dk.aau.cs.giraf.pictocreator.R.drawable.eraser);
+            Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), dk.aau.cs.giraf.pictocreator.R.drawable.icon_eraser);
             canvas.drawBitmap(mBitmap, padding, padding, null);
         }
         else if (drawtype == DrawType.TEXT)

@@ -55,6 +55,14 @@ public class EntityGroup extends Entity implements Serializable {
         entities.add(entities.size(), entity);
     }
 
+    public void deselectEntities()
+    {
+        for (int i = 0; i < entities.size(); i++)
+        {
+            entities.get(i).setIsSelected(false);
+        }
+    }
+
     /**
      * Push a new entity onto the group's list.
      *

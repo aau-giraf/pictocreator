@@ -1,28 +1,44 @@
 package dk.aau.cs.giraf.pictocreator.canvas;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
+
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
+import java.util.ArrayList;
 
 import dk.aau.cs.giraf.gui.GColorPicker;
 import dk.aau.cs.giraf.gui.GSeekBar;
 import dk.aau.cs.giraf.gui.GTextView;
 import dk.aau.cs.giraf.gui.GirafButton;
+import dk.aau.cs.giraf.pictocreator.MainActivity;
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.RecordDialogFragment;
 import dk.aau.cs.giraf.pictocreator.cam.CamFragment;
+import dk.aau.cs.giraf.pictocreator.canvas.entity.RectEntity;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.EraserHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.FreehandHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.LineHandler;
@@ -30,17 +46,20 @@ import dk.aau.cs.giraf.pictocreator.canvas.handlers.OvalHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.RectHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.SelectionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.handlers.TextHandler;
+import dk.aau.cs.giraf.pictocreator.management.Helper;
 
 /**
  * The DrawFragment is the part of Croc that handles free-form drawing with
  * multiple tools. The basic layout draw_fragment.xml is expanded procedurally
  * with a number of colouring options and action tools in the constructor and
  * initialisation code.
+ *
  * @author lindhart
  */
-public class DrawFragment extends Fragment {
+public class DrawFragment extends Fragment implements OnShowcaseEventListener, View.OnClickListener {
 
     private static final String TAG = "DrawFragment";
+    private String FIRST_RUN = "PictocreatorPrefFile";
 
     public View view;
 
@@ -53,7 +72,7 @@ public class DrawFragment extends Fragment {
     /**
      * Button for the RectHandler ActionHandler.
      */
-    protected GirafButton rectHandlerButton,ovalHandlerButton, eraserHandlerButton,
+    protected GirafButton rectHandlerButton, ovalHandlerButton, eraserHandlerButton,
             lineHandlerButton, selectHandlerButton, freehandHandlerButton, textHandlerButton;
 
     private GColorPicker backgroundColorPicker;
@@ -77,6 +96,11 @@ public class DrawFragment extends Fragment {
     protected GirafButton currentStrokeColorButton;
     private int customColor;
 
+    private ShowcaseView sv;
+    private int showcaseCounter = 0;
+    private int stopShowcaseId;
+    private View stopShowcaseView;
+
     RecordDialogFragment recordDialog;
 
     /**
@@ -93,6 +117,242 @@ public class DrawFragment extends Fragment {
     }
 
     @Override
+    public void onClick(View view) {
+        float drawViewRadius = drawView.getWidth() / 2;
+
+        switch (showcaseCounter) {
+            case 0:
+                if (!freehandHandlerButton.isChecked()) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_zero_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setShowcaseTargetToDrawView(drawViewRadius);
+                sv.setContentTitle(getString(R.string.canvas));
+                sv.setContentText(getString(R.string.showcase_case_zero_content));
+                break;
+            case 1:
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() == 0) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_one_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setStandardShowcase();
+                sv.setShowcase(new ViewTarget(selectHandlerButton), true);
+                sv.setContentTitle(getString(R.string.select));
+                sv.setContentText(getString(R.string.showcase_case_one_content));
+                break;
+            case 2:
+                if (!selectHandlerButton.isChecked()) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_two_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setShowcaseTargetToDrawView(drawViewRadius);
+                sv.setContentTitle(getString(R.string.canvas));
+                sv.setContentText(getString(R.string.showcase_case_two_content));
+                break;
+            case 3:
+                Entity drawnEntity = getSelectedEntity();
+                if (drawnEntity == null) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_three_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                drawRectangleAndMoveItBack(drawnEntity);
+                setStandardShowcase();
+                sv.setContentTitle(getString(R.string.showcase_case_three_title));
+                sv.setContentText(getString(R.string.showcase_case_three_content));
+                setFlattenIconAsTarget(drawnEntity);
+                break;
+            case 4:
+                MainActivity mainActivity = (MainActivity) getActivity();
+                sv.setShowcase(new ViewTarget(mainActivity.clearButton), true);
+                sv.setContentTitle(getString(R.string.clear_canvas_no_questionmark));
+                sv.setContentText(getString(R.string.showcase_case_five_toast));
+                break;
+            case 5:
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() != 0) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_five_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                sv.setShowcase(new ViewTarget(textHandlerButton), true);
+                sv.setContentTitle(getString(R.string.text));
+                sv.setContentText(getString(R.string.showcase_case_six_toast));
+                break;
+            case 6:
+                if (!textHandlerButton.isChecked()) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_six_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setShowcaseTargetToDrawView(drawViewRadius);
+                sv.setContentTitle(getString(R.string.canvas));
+                sv.setContentText(getString(R.string.showcase_case_six_content));
+                break;
+            case 7:
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() == 0) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_two_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setAllUnToggle(); // Needed because text handler toggles select button by default.
+                setStandardShowcase();
+                sv.setShowcase(new ViewTarget(selectHandlerButton), true);
+                sv.setContentTitle(getString(R.string.select));
+                sv.setContentText(getString(R.string.showcase_case_one_content));
+                break;
+            case 8:
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() == 0) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_one_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setShowcaseTargetToDrawView(drawViewRadius);
+                sv.setContentTitle(getString(R.string.canvas));
+                sv.setContentText(getString(R.string.showcase_case_eight_content));
+                break;
+            case 9:
+                drawnEntity = getSelectedEntity();
+                if (drawnEntity == null) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_three_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setStandardShowcase();
+                sv.setContentTitle(getString(R.string.delete));
+                sv.setContentText(getString(R.string.showcase_case_nine_content));
+                setDeleteIconAsTarget(drawnEntity);
+                break;
+            case 10:
+                drawnEntity = getSelectedEntity();
+                if (drawnEntity == null)
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_ten_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!drawnEntity.getIsDeleted())
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_nine_content), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mainActivity = (MainActivity) getActivity();
+                sv.setShowcase(new ViewTarget(mainActivity.undoButton), true);
+                sv.setContentTitle(getString(R.string.regret));
+                sv.setContentText(getString(R.string.showcase_case_ten_content));
+                break;
+            case 11:
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() != 1)
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_ten_content), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setShowcaseTargetToDrawView(drawViewRadius);
+                sv.setContentTitle(getString(R.string.select));
+                sv.setContentText(getString(R.string.showcase_case_eleven_content));
+                break;
+            case 12:
+                drawnEntity = getSelectedEntity();
+                if (drawnEntity == null) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_three_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                setStandardShowcase();
+                sv.setContentTitle(getString(R.string.showcase_case_twelve_title));
+                sv.setContentText(getString(R.string.showcase_case_twelve_content));
+                setEditTextIconAsTarget(drawnEntity);
+                break;
+            case 13:
+                drawView.invalidate();
+                mainActivity = (MainActivity) getActivity();
+                setStandardShowcase();
+                sv.setShowcase(new ViewTarget(mainActivity.loadDialoGirafButton), true);
+                sv.setContentTitle(getString(R.string.load_button_text));
+                sv.setContentText(getString(R.string.showcase_case_thirteen_content));
+                break;
+            case 14:
+                mainActivity = (MainActivity) getActivity();
+                sv.setShowcase(new ViewTarget(mainActivity.saveDialoGirafButton), true);
+                sv.setContentTitle(getString(R.string.save_pictogram));
+                sv.setContentText(getString(R.string.showcase_case_fourteen_content));
+                break;
+            case 15:
+                mainActivity = (MainActivity) getActivity();
+                sv.setShowcase(new ViewTarget(mainActivity.printButton), true);
+                sv.setContentTitle(getString(R.string.print));
+                sv.setContentText(getString(R.string.showcase_case_fifteen_content));
+                sv.removeView(stopShowcaseView); // Only one end button should be visible
+                sv.setButtonText(getString(R.string.end)); // Last showcase
+                break;
+            default:
+                showcaseCounter = 0;
+                sv.hide();
+                break;
+        }
+
+        showcaseCounter++;
+    }
+
+    private void setStandardShowcase() {
+        sv.restoreRadius();
+        sv.setDrawInnerCircle(true);
+        sv.setDrawRect(false);
+    }
+
+    private void setShowcaseTargetToDrawView(float drawViewRadius) {
+        sv.setDrawRect(true);
+        sv.setAllRadius(drawViewRadius, drawViewRadius, drawViewRadius);
+        sv.setDrawInnerCircle(false);
+        sv.setShowcase(new ViewTarget(drawView), false);
+    }
+
+    private void drawRectangleAndMoveItBack(Entity drawnEntity) {
+        RectEntity newRect = new RectEntity(drawnEntity.getHitboxLeft(), drawnEntity.getHitboxTop(),
+                drawnEntity.getHitboxRight(), drawnEntity.getHitboxBottom(), currentBackgroundColor, currentStrokeColor);
+        newRect.setStrokeWidth(5);
+
+        DrawStackSingleton.getInstance().mySavedData.addEntity(newRect);
+        DrawStackSingleton.getInstance().mySavedData.moveToBack(newRect);
+        drawView.invalidate();
+    }
+
+    private void setFlattenIconAsTarget(Entity drawnEntity) {
+        int x = (int) drawnEntity.getHitboxLeft() + Helper.convertDpToPixel(125, getActivity().getApplicationContext());
+        int y = (int) drawnEntity.getHitboxTop() + Helper.convertDpToPixel(65, getActivity().getApplicationContext());
+        sv.setShowcase(new PointTarget(x, y), true);
+    }
+
+    private void setEditTextIconAsTarget(Entity drawnEntity) {
+        int x = (int) drawnEntity.getHitboxRight() + Helper.convertDpToPixel(185, getActivity().getApplicationContext());
+        int y = (int) drawnEntity.getHitboxBottom() + Helper.convertDpToPixel(125, getActivity().getApplicationContext());
+        sv.setShowcase(new PointTarget(x, y), true);
+    }
+
+    private void setDeleteIconAsTarget(Entity drawnEntity) {
+        int x = (int) drawnEntity.getHitboxRight() + Helper.convertDpToPixel(185, getActivity().getApplicationContext());
+        int y = (int) drawnEntity.getHitboxTop() + Helper.convertDpToPixel(60, getActivity().getApplicationContext());
+        sv.setShowcase(new PointTarget(x, y), true);
+    }
+
+    private Entity getSelectedEntity() {
+        ArrayList<Entity> entities = DrawStackSingleton.getInstance().mySavedData.entities;
+        if (entities.size() == 0)
+            return null;
+
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i).getIsSelected()) {
+                return entities.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+    }
+
+    @Override
+    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+
+    }
+
+    @Override
+    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -106,40 +366,114 @@ public class DrawFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        checkIfFirstRun(); // If first run setup showcases
+    }
+
+    private void checkIfFirstRun() {
+        SharedPreferences settings = getActivity().getSharedPreferences(FIRST_RUN, 0);
+
+        if (settings.getBoolean("first_run", true)) {
+            //the app is being launched for first time, do something
+            Log.d("Comments", "First time");
+
+            // first time task
+            setupShowcases();
+
+            // record the fact that the app has been started at least once
+            settings.edit().putBoolean("first_run", false).commit();
+        }
+    }
+
+    public void setupShowcases() {
+        ViewTarget target = new ViewTarget(freehandHandlerButton);
+        setAllUnToggle();
+        sv = new ShowcaseView.Builder(getActivity())
+                .setTarget(target)
+                .setContentTitle(R.string.free_hand)
+                .setContentText(getString(R.string.free_hand_showcase_content))
+                .setStyle(R.style.TextAppearance_ShowcaseView_Title)
+                .setOnClickListener(this)
+                .build();
+        sv.setButtonText(getString(R.string.next));
+
+        setupShowcaseViewButtons();
+    }
+
+    private void setupShowcaseViewButtons() {
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue(); // 12 dp
+        int stopShowcaseLeftMargin = ((Number) (getResources().getDisplayMetrics().density * 200)).intValue(); // 200 dp
+
+        RelativeLayout.LayoutParams nextLps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        nextLps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        nextLps.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        nextLps.setMargins(margin, margin, margin, margin);
+
+        sv.setButtonPosition(nextLps);
+
+        addStopButtonToShowcaseView(margin, stopShowcaseLeftMargin);
+    }
+
+    private void addStopButtonToShowcaseView(int margin, int stopShowcaseLeftMargin) {
+        RelativeLayout.LayoutParams stopLps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        stopLps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        stopLps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        stopLps.addRule(RelativeLayout.LEFT_OF, sv.getEndButtonId());
+        stopLps.setMargins(stopShowcaseLeftMargin, margin, margin, margin);
+        Button stopButton = (Button) LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.showcase_button, null);
+        stopButton.getBackground().setColorFilter(Color.parseColor("#33B5E5"), PorterDuff.Mode.MULTIPLY); // Showcase Button background color
+        stopButton.setText(getString(R.string.end));
+        stopShowcaseId = stopButton.getId();
+        stopShowcaseView = stopButton;
+        stopButton.setOnClickListener(new OnClickListener() { // Serves both stop and next button therefore a check on ID is needed.
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == stopShowcaseId) {
+                    showcaseCounter = 0;
+                    sv.hide();
+                }
+            }
+        });
+        sv.addView(stopButton, stopLps);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.draw_fragment, container, false);
 
-        drawView = (DrawView)view.findViewById(R.id.drawingview);
+        drawView = (DrawView) view.findViewById(R.id.drawingview);
 
-        strokeWidthText = (GTextView)view.findViewById(R.id.strokeWidthText);
+        strokeWidthText = (GTextView) view.findViewById(R.id.strokeWidthText);
 
-        freehandHandlerButton = (GirafButton)view.findViewById(R.id.freehand_handler_button);
+        freehandHandlerButton = (GirafButton) view.findViewById(R.id.freehand_handler_button);
         freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);
         freehandHandlerButton.toggle();
 
-        selectHandlerButton = (GirafButton)view.findViewById(R.id.select_handler_button);
+        selectHandlerButton = (GirafButton) view.findViewById(R.id.select_handler_button);
         selectHandlerButton.setOnClickListener(onSelectHandlerButtonClick);
 
-        eraserHandlerButton = (GirafButton)view.findViewById(R.id.eraser_handler_button);
+        eraserHandlerButton = (GirafButton) view.findViewById(R.id.eraser_handler_button);
         eraserHandlerButton.setOnClickListener(onEraserHandlerButtonClick);
 
-        rectHandlerButton = (GirafButton)view.findViewById(R.id.rect_handler_button);
+        rectHandlerButton = (GirafButton) view.findViewById(R.id.rect_handler_button);
         rectHandlerButton.setOnClickListener(onRectHandlerButtonClick);
 
-        lineHandlerButton = (GirafButton)view.findViewById(R.id.line_handler_button);
+        lineHandlerButton = (GirafButton) view.findViewById(R.id.line_handler_button);
         lineHandlerButton.setOnClickListener(onLineHandlerButtonClick);
 
-        ovalHandlerButton = (GirafButton)view.findViewById(R.id.oval_handler_button);
+        ovalHandlerButton = (GirafButton) view.findViewById(R.id.oval_handler_button);
         ovalHandlerButton.setOnClickListener(onOvalHandlerButtonClick);
 
-        textHandlerButton = (GirafButton)view.findViewById(R.id.text_handler_button);
+        textHandlerButton = (GirafButton) view.findViewById(R.id.text_handler_button);
         textHandlerButton.setOnClickListener(onTextHandlerButtonClick);
 
-        recordDialoGirafButton = (GirafButton)view.findViewById(R.id.start_record_dialog_button);
+        recordDialoGirafButton = (GirafButton) view.findViewById(R.id.start_record_dialog_button);
         recordDialoGirafButton.setOnClickListener(showRecorderClick);
 
-        GSeekBar strokeWidthBar = (GSeekBar)view.findViewById(R.id.strokeWidthBar);
+        GSeekBar strokeWidthBar = (GSeekBar) view.findViewById(R.id.strokeWidthBar);
         strokeWidthBar.setOnSeekBarChangeListener(onStrokeWidthChange);
 
         currentBackgroundColorButton = (GirafButton) view.findViewById(R.id.backgroundColorButton);
@@ -166,17 +500,17 @@ public class DrawFragment extends Fragment {
         canvasHandlerPreviewButton.setStrokeColor(currentStrokeColor);
         canvasHandlerPreviewButton.setEnabled(false);
 
-        importFragmentButton = (GirafButton)view.findViewById(R.id.start_import_dialog_button);
+        importFragmentButton = (GirafButton) view.findViewById(R.id.start_import_dialog_button);
         importFragmentButton.setOnClickListener(onImportClick);
 
-        importFragmentButton = (GirafButton)view.findViewById(R.id.start_import_dialog_button);
+        importFragmentButton = (GirafButton) view.findViewById(R.id.start_import_dialog_button);
         importFragmentButton.setOnClickListener(onImportClick);
 
-        if(!checkForCamera(this.getActivity())) {
+        if (!checkForCamera(this.getActivity())) {
             importFragmentButton.setEnabled(false);
         }
 
-        colorButtonToolbox = (LinearLayout)((ScrollView)view.findViewById(R.id.colorToolbox)).getChildAt(0);
+        colorButtonToolbox = (LinearLayout) ((ScrollView) view.findViewById(R.id.colorToolbox)).getChildAt(0);
 
         // Add standard HTML colors to the box.
         addColorButton(0x00000000); // Transparent
@@ -204,24 +538,26 @@ public class DrawFragment extends Fragment {
 
     /**
      * Function for checking whether a camera is available at the device
+     *
      * @param context The context in which the function is called
      * @return True if a camera is found on the device, false otherwise
      */
     private boolean checkForCamera(Context context) {
-        try{
-            if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) || context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)){
+        try {
+            if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA) || context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
                 return true;
             } else {
                 Log.d(TAG, "No camera found on device");
                 return false;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * Adds a new ColorButton with the specified hex color to the color toolbox.
+     *
      * @param color Color to add. Can have alpha, although we suggest keeping it opaque (0xFFxxxxxx).
      */
     private void addColorButton(int color) {
@@ -244,7 +580,7 @@ public class DrawFragment extends Fragment {
     /**
      * Toggles all the tool buttons off.
      */
-    private void setAllUnToggle(){
+    private void setAllUnToggle() {
         if (rectHandlerButton.isChecked())
             rectHandlerButton.toggle();
         if (ovalHandlerButton.isChecked())
@@ -254,7 +590,7 @@ public class DrawFragment extends Fragment {
         if (selectHandlerButton.isChecked())
             selectHandlerButton.toggle();
         if (freehandHandlerButton.isChecked())
-           freehandHandlerButton.toggle();
+            freehandHandlerButton.toggle();
         if (textHandlerButton.isChecked())
             textHandlerButton.toggle();
         if (eraserHandlerButton.isChecked())
@@ -291,7 +627,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new FreehandHandler());
             setAllUnToggle();
-           // colorFrameButton.setText(getText(R.string.pick_stroke_color));
+            // colorFrameButton.setText(getText(R.string.pick_stroke_color));
             freehandHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
@@ -301,7 +637,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new RectHandler());
             setAllUnToggle();
-        //    colorFrameButton.setText(getText(R.string.pick_color));
+            //    colorFrameButton.setText(getText(R.string.pick_color));
             rectHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.RECTANGLE);
         }
@@ -312,7 +648,7 @@ public class DrawFragment extends Fragment {
             drawView.setHandler(new OvalHandler());
             setAllUnToggle();
 
-         //   colorFrameButton.setText(getText(R.string.pick_color));
+            //   colorFrameButton.setText(getText(R.string.pick_color));
             ovalHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.CIRCLE);
         }
@@ -335,7 +671,7 @@ public class DrawFragment extends Fragment {
         public void onClick(View view) {
             drawView.setHandler(new LineHandler());
             setAllUnToggle();
-        //    colorFrameButton.setText(getText(R.string.pick_stroke_color));
+            //    colorFrameButton.setText(getText(R.string.pick_stroke_color));
             lineHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
@@ -345,21 +681,19 @@ public class DrawFragment extends Fragment {
      * Utilizes the GColorPicker to open up the color picker.
      * Returns a color which is sat as fillcolor, canvasHandlerPreviewButton's fillcolor, and the customColor buttons color.
      * The parameter in GColorPicker constructor is the previously selected color.
+     *
      * @param v View
      */
 
-    private void ColorPicker(View v, final int currentColor, final boolean background){
+    private void ColorPicker(View v, final int currentColor, final boolean background) {
         GColorPicker colorPicker = new GColorPicker(v.getContext(), customColor, new GColorPicker.OnOkListener() {
             @Override
             public void OnOkClick(GColorPicker diag, int color) {
-                if (background)
-                {
+                if (background) {
                     currentBackgroundColor = color;
                     drawView.setFillColor(color);
                     canvasHandlerPreviewButton.setFillColor(color);
-                }
-                else
-                {
+                } else {
                     currentStrokeColor = color;
                     drawView.setStrokeColor(color);
                     canvasHandlerPreviewButton.setStrokeColor(color);
@@ -371,18 +705,20 @@ public class DrawFragment extends Fragment {
         colorPicker.show();
     }
 
-    public void DeselectEntity(){
-        if (drawView.currentHandler instanceof SelectionHandler){
-            ((SelectionHandler)drawView.currentHandler).deselect();
+    public void DeselectEntity() {
+        if (drawView.currentHandler instanceof SelectionHandler) {
+            ((SelectionHandler) drawView.currentHandler).deselect();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i("DrawFragment.onSaveInstanceState", "Saving drawstack in Bundled parcel.");
+        Log.i("DrawFragment", "drawstack saved in bundled parcel.");
         outState.putParcelable("drawstack", DrawStackSingleton.getInstance().mySavedData);
-    };
+    }
+
+    ;
 
     private final OnClickListener onImportClick = new OnClickListener() {
         @Override
@@ -400,16 +736,25 @@ public class DrawFragment extends Fragment {
     private final OnSeekBarChangeListener onStrokeWidthChange = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            canvasHandlerPreviewButton.setStrokeWidth(progress/5);
-            drawView.setStrokeWidth(progress/5);
+            canvasHandlerPreviewButton.setStrokeWidth(progress / 5);
+            drawView.setStrokeWidth(progress / 5);
             Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
-        };
+        }
+
+        ;
 
         //Have to be overridden, but we do not need this functionality, therefore, it is empty.
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {};
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
+
+        ;
+
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {};
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        ;
     };
 
     /**

@@ -3,31 +3,29 @@ package dk.aau.cs.giraf.pictocreator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.support.v4.print.PrintHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,7 +56,8 @@ import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
  *
  * @author Croc
  */
-public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener, GirafConfirmDialog.Confirmation, GirafProfileSelectorDialog.OnMultipleProfilesSelectedListener {
+public class MainActivity extends GirafActivity implements CamFragment.PictureTakenListener,
+        GirafConfirmDialog.Confirmation, GirafProfileSelectorDialog.OnMultipleProfilesSelectedListener {
     private final static String TAG = "MainActivity";
     private final static String actionResult = "dk.aau.cs.giraf.PICTOGRAM";
     private Intent mainIntent;
@@ -68,16 +67,19 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private DrawFragment drawFragment;
     private SaveDialogFragment saveDialog;
 
+    public static final String PICTO_SEARCH_IDS_TAG = "checkoutIds";
     public static final String PICTO_SEARCH_PURPOSE_TAG = "purpose";
     public static final String PICTO_SEARCH_SINGLE_TAG = "single";
 
-    private GirafDialog clearDialog;
-    private GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton,
+
+    private GirafDialog clearDialog, showcaseDialog;
+    public GirafButton clearButton, saveDialoGirafButton, loadDialoGirafButton,
             helpDialoGirafButton, undoButton, redoButton, printButton;
 
     private final int Method_Id_Clear = 1;
     private final int Method_Id_Remove_Tag = 2;
     private final int Method_Id_Remove_Citizen = 3;
+    private final int Method_Id_Showcases = 4;
 
     private StoragePictogram storagePictogram;
     private View decor;
@@ -87,8 +89,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     @Override
     public void onProfilesSelected(int i, java.util.List<android.util.Pair<dk.aau.cs.giraf.dblib.models.Profile, java.lang.Boolean>> list) {
         List<Profile> selectedProfiles = new ArrayList<Profile>();
-        for (int index = 0; index < list.size(); index++)
-        {
+        for (int index = 0; index < list.size(); index++) {
             if (list.get(index).second == true) // Selected
             {
                 selectedProfiles.add(list.get(index).first);
@@ -118,12 +119,17 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             case Method_Id_Remove_Tag:
                 saveDialog.removeTagConfirm();
                 break;
+            case Method_Id_Showcases:
+                DrawStackSingleton.getInstance().mySavedData.clear();
+                drawFragment.drawView.invalidate();
+                drawFragment.setupShowcases();
+                break;
         }
     }
 
-        /**
-         * Function called when the activity is first created
-         */
+    /**
+     * Function called when the activity is first created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +151,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         fragTrans.add(R.id.fragmentContainer, drawFragment);
         fragTrans.commit();
 
-        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.play));
+        printButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_print));
         printButton.setOnClickListener(printClick);
         addGirafButtonToActionBar(printButton, GirafActivity.LEFT);
 
@@ -157,15 +163,15 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         redoButton.setOnClickListener(redoClick);
         addGirafButtonToActionBar(redoButton, GirafActivity.RIGHT);
 
-        helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.help));
+        helpDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_help));
         helpDialoGirafButton.setOnClickListener(helpClick);
         addGirafButtonToActionBar(helpDialoGirafButton, GirafActivity.RIGHT);
 
-        clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.trashcan));
+        clearButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_delete));
         clearButton.setOnClickListener(onClearButtonClick);
         addGirafButtonToActionBar(clearButton, GirafActivity.RIGHT);
 
-        saveDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.save));
+        saveDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_save));
         saveDialoGirafButton.setOnClickListener(showLabelMakerClick);
         addGirafButtonToActionBar(saveDialoGirafButton, GirafActivity.LEFT);
 
@@ -277,27 +283,23 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener printClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
+            if (!isNetworkConnected()) {
+                Toast.makeText(getApplicationContext(), getString(R.string.no_network), Toast.LENGTH_LONG).show();
+                return;
+            }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 PrintHelper photoPrinter = new PrintHelper(getActivity());
                 photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
 
                 photoPrinter.printBitmap(getString(R.string.print_title), getBitmap());
-            }
-            else {
-                if (isNetworkConnected()) {
-                    Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
-                    Uri bitmapToPrint = getImageUri(getApplicationContext(), getBitmap());
-                    PrintDialogActivity.setBitmapToPrint(bitmapToPrint);
-                    printIntent.setDataAndType(bitmapToPrint, "image/jpeg");
-                    printIntent.putExtra("title", getString(R.string.print_title)); // Key value pair
-                    startActivity(printIntent);
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), getString(R.string.no_network), Toast.LENGTH_LONG).show();
-                }
+            } else {
+                Intent printIntent = new Intent(getActivity(), PrintDialogActivity.class);
+                Uri bitmapToPrint = getImageUri(getApplicationContext(), getBitmap());
+                PrintDialogActivity.setBitmapToPrint(bitmapToPrint);
+                printIntent.setDataAndType(bitmapToPrint, "image/jpeg");
+                printIntent.putExtra("title", getString(R.string.print_title)); // Key value pair
+                startActivity(printIntent);
             }
         }
     };
@@ -394,14 +396,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final OnClickListener helpClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(getApplicationContext(), "Not implemented yet", Toast.LENGTH_LONG).show();
+            showcaseDialog = GirafConfirmDialog.newInstance(getString(R.string.showcase_dialog_title), getString(R.string.showcase_dialog_content), Method_Id_Showcases);
 
-            new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.HOME))
-                    .setContentTitle("ShowcaseView")
-                    .setContentText("This is highlighting the Home button")
-                    .hideOnTouchOutside()
-                    .build();
+            showcaseDialog.show(getSupportFragmentManager(), "showcasesDialog");
         }
     };
 
@@ -433,12 +430,11 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null)
+            return;
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        Intent lol = data;
-        int res = resultCode;
-        int code = requestCode;
         if (resultCode == RESULT_OK) {
             loadPictogram(data);
         }
@@ -450,10 +446,18 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      * @param data The data returned from pictosearch.
      */
     private void loadPictogram(Intent data) {
-        int pictogramID;
+        long pictogramID;
 
         try {
-            pictogramID = data.getExtras().getIntArray("checkoutIds")[0];
+            Bundle extras = data.getExtras(); // Get the data from the intent
+
+            // Check if there was returned any pictogram ids
+            if (data.hasExtra(PICTO_SEARCH_IDS_TAG)) {
+                pictogramID = extras.getLongArray(PICTO_SEARCH_IDS_TAG)[0];
+            } else {
+                Toast.makeText(this, getString(R.string.pictosearch_no_pictograms), Toast.LENGTH_LONG).show();
+                return;
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
             Log.e(TAG, e.getMessage());
             return;

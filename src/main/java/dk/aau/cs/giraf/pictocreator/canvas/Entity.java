@@ -70,11 +70,17 @@ public abstract class Entity implements Parcelable, Serializable {
 
     private boolean hasBeenRedone;
 
+    private boolean isSelected;
+
     public boolean getHasBeenRedone() {return  this.hasBeenRedone;}
 
     public void setHasBeenRedone(boolean b) { this.hasBeenRedone = b;}
 
     public boolean getIsDeleted() { return this.isDeleted; }
+
+    public void setIsSelected(boolean b) { this.isSelected = b; }
+
+    public boolean getIsSelected() { return this.isSelected; }
 
     public void setIsDeleted(boolean b) { this.isDeleted = b; }
 	/**
