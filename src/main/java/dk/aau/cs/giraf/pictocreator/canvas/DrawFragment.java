@@ -10,7 +10,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,6 +77,8 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     private GColorPicker backgroundColorPicker;
     private GColorPicker strokeColorPicker;
 
+    private Entity drawnEntity = null;
+
     private GTextView strokeWidthText;
     private int currentBackgroundColor;
     private int currentStrokeColor;
@@ -142,7 +143,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 break;
             case 2:
                 if (!selectHandlerButton.isChecked()) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_two_toast), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_one_content), Toast.LENGTH_LONG).show();
                     return;
                 }
                 setShowcaseTargetToDrawView(drawViewRadius);
@@ -150,7 +151,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setContentText(getString(R.string.showcase_case_two_content));
                 break;
             case 3:
-                Entity drawnEntity = getSelectedEntity();
+                drawnEntity = getSelectedEntity();
                 if (drawnEntity == null) {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_three_toast), Toast.LENGTH_LONG).show();
                     return;
@@ -168,7 +169,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setContentText(getString(R.string.showcase_case_five_toast));
                 break;
             case 5:
-                if (DrawStackSingleton.getInstance().mySavedData.entities.size() != 0) {
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() != 0) { // Should be empty after a clear
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_five_toast), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -186,7 +187,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setContentText(getString(R.string.showcase_case_six_content));
                 break;
             case 7:
-                if (DrawStackSingleton.getInstance().mySavedData.entities.size() == 0) {
+                if (DrawStackSingleton.getInstance().mySavedData.entities.size() == 0) { // Shouldn't be empty because the user should have painted something by now
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_two_toast), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -197,8 +198,8 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setContentText(getString(R.string.showcase_case_one_content));
                 break;
             case 8:
-                if (DrawStackSingleton.getInstance().mySavedData.entities.size() == 0) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_one_toast), Toast.LENGTH_LONG).show();
+                if (!selectHandlerButton.isChecked()) {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_one_content), Toast.LENGTH_LONG).show();
                     return;
                 }
                 setShowcaseTargetToDrawView(drawViewRadius);
@@ -217,16 +218,11 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 setDeleteIconAsTarget(drawnEntity);
                 break;
             case 10:
-                drawnEntity = getSelectedEntity();
-                if (drawnEntity == null)
-                {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_ten_toast), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (!drawnEntity.getIsDeleted())
-                {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_nine_content), Toast.LENGTH_LONG).show();
-                    return;
+                if (drawnEntity != null) {
+                    if (!drawnEntity.getIsDeleted()) { // Should be deleted from last showcase
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_ten_toast), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
                 mainActivity = (MainActivity) getActivity();
                 sv.setShowcase(new ViewTarget(mainActivity.undoButton), true);
@@ -234,8 +230,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setContentText(getString(R.string.showcase_case_ten_content));
                 break;
             case 11:
-                if (DrawStackSingleton.getInstance().mySavedData.entities.size() != 1)
-                {
+                if (drawnEntity.getIsDeleted()) { // Shouldn't be deleted no longer after this undo
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_ten_content), Toast.LENGTH_LONG).show();
                     return;
                 }

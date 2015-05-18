@@ -238,6 +238,7 @@ public class SelectionHandler extends ActionHandler {
     protected void deleteEntity(EntityGroup drawStack) {
         selectedEntity.setHasBeenRedone(false);
         selectedEntity.setIsDeleted(true);
+        selectedEntity.setIsSelected(false);
     }
 
     /**
@@ -305,6 +306,9 @@ public class SelectionHandler extends ActionHandler {
      * resetting to default action mode.
      */
     public void deselect() {
+        if (selectedEntity != null)
+            selectedEntity.setIsSelected(false);
+
         selectedEntity = null;
         currentMode = ACTION_MODE.NONE;
     }
@@ -349,6 +353,7 @@ public class SelectionHandler extends ActionHandler {
         // Determine action or new Entity selection.
         if (action == MotionEvent.ACTION_DOWN && !isPointerDown) {
             if (selectedEntity != null) {
+                selectedEntity.setIsSelected(false);
                 // Attempt to collide with action icon.
                 if (resizeIcon.collidesWithPoint(px, py)) {
                     currentMode = ACTION_MODE.RESIZE;
@@ -377,6 +382,7 @@ public class SelectionHandler extends ActionHandler {
             if (selectedEntity == null) {
                 deselect();
             } else {
+                selectedEntity.setIsSelected(false);
                 updateIconLocations(); // Icons.
             }
 
@@ -494,6 +500,10 @@ public class SelectionHandler extends ActionHandler {
                 scrapIcon.draw(canvas);
                 flattenIcon.draw(canvas);
                 selectedEntity.setIsSelected(true);
+            }
+            else
+            {
+                selectedEntity.setIsSelected(false);
             }
         }
     }
