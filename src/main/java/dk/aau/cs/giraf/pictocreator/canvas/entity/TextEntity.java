@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
+import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
 
 /**
  * The Bitmap entity quite simply displays a Bitmap at a specified location.
@@ -29,7 +31,6 @@ public class TextEntity extends Entity {
     private int layoutXAdjustment = 155;
     private int layoutYAdjustment = 18;
     private int textDefaultBounds = 30;
-
 
     public TextEntity(EditText src, Activity activity, int backgroundColor) {
         editText = src;
@@ -64,6 +65,8 @@ public class TextEntity extends Entity {
         linLayout = new LinearLayout(mActivity.getApplicationContext());
 
         drawnEditText = new EditText(mActivity.getApplicationContext());
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         if (hidden) { drawnEditText.setVisibility(View.INVISIBLE); }
         else { drawnEditText.setVisibility(View.VISIBLE); }

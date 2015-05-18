@@ -6,30 +6,23 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
-import org.w3c.dom.Text;
+import android.widget.TextView;
 
 import dk.aau.cs.giraf.pictocreator.R;
 import dk.aau.cs.giraf.pictocreator.canvas.ActionHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
-import dk.aau.cs.giraf.pictocreator.canvas.DrawView;
 import dk.aau.cs.giraf.pictocreator.canvas.Entity;
 import dk.aau.cs.giraf.pictocreator.canvas.EntityGroup;
 import dk.aau.cs.giraf.pictocreator.canvas.FloatPoint;
@@ -265,6 +258,8 @@ public class SelectionHandler extends ActionHandler {
             final TextEntity textEntity = (TextEntity)selectedEntity;
             textEntity.setHidden(true);
             final EditText editText = new EditText(mActivity.getApplicationContext());
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+            editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
             final String text = textEntity.drawnEditText.getText().toString().trim();
             editText.setText(text);
             editText.setBackgroundColor(textEntity.backgroundColor);
@@ -275,18 +270,19 @@ public class SelectionHandler extends ActionHandler {
             editText.setX(textEntity.getX() + Helper.convertDpToPixel(95, mActivity.getApplicationContext()));
             editText.setY(textEntity.getY());
             editText.setTextSize(textEntity.drawnEditText.getTextSize());
-            editText.setOnKeyListener(new View.OnKeyListener() {
+            editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
                 @Override
-                public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-                    {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
                         InputMethodManager imm = (InputMethodManager) mActivity.getApplicationContext()
                                 .getSystemService(Context.INPUT_METHOD_SERVICE);
 
                         if (imm != null) {
                             textEntity.setText(editText.getText().toString());
                             textEntity.setHidden(false);
+                            deselect();
                             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+
                             mainLayout.removeView(editText);
                         }
                     }

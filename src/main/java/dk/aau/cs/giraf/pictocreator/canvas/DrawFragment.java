@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.PointTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
@@ -68,14 +70,13 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
      */
     public DrawView drawView;
 
+    private GSeekBar strokeWidthBar;
+
     /**
      * Button for the RectHandler ActionHandler.
      */
     protected GirafButton rectHandlerButton, ovalHandlerButton, eraserHandlerButton,
             lineHandlerButton, selectHandlerButton, freehandHandlerButton, textHandlerButton;
-
-    private GColorPicker backgroundColorPicker;
-    private GColorPicker strokeColorPicker;
 
     private Entity drawnEntity = null;
 
@@ -98,7 +99,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     private int customColor;
 
     private ShowcaseView sv;
-    private int showcaseCounter = 0;
+    private int showcaseCounter = 15;
     private int stopShowcaseId;
     private View stopShowcaseView;
 
@@ -268,8 +269,60 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setShowcase(new ViewTarget(mainActivity.printButton), true);
                 sv.setContentTitle(getString(R.string.print));
                 sv.setContentText(getString(R.string.showcase_case_fifteen_content));
-                sv.removeView(stopShowcaseView); // Only one end button should be visible
-                sv.setButtonText(getString(R.string.end)); // Last showcase
+                //setFinalShowcase();
+                break;
+            case 16:
+                sv.setShowcase(new ViewTarget(rectHandlerButton), true);
+                sv.setContentTitle("Rektangel");
+                sv.setContentText("Tryk på retkanglet, derefter Næste.");
+                break;
+            case 17:
+                sv.setShowcase(new ViewTarget(colorButtonToolbox), true);
+                sv.setContentTitle("Baggrundsfarve");
+                sv.setContentText("Tryk på en farve for at vælge baggrundsfarve, derefter Næste.");
+                break;
+            case 18:
+                sv.setShowcase(new ViewTarget(canvasHandlerPreviewButton), true);
+                sv.setContentTitle("Forhåndsvisning");
+                sv.setContentText("Her ses en forhåndsvisning af, hvordan det valgte værktøj, vil blive tegnet på lærredet.");
+            case 19:
+                Point p = new ViewTarget(colorButtonToolbox).getPoint();
+                p.set(p.x, p.y - 100); // Move the showcase a bit to indicate that something changed
+                Target t = new PointTarget(p);
+                sv.setShowcase(t, true);
+                sv.setContentTitle("Stregfarve");
+                sv.setContentText("Tryk på en farve i 2 sekunder for at vælge stregfarve, derefter Næste.");
+                break;
+            case 21:
+                sv.setShowcase(new ViewTarget(strokeWidthBar), true);
+                sv.setContentTitle("Streg tykkelse");
+                sv.setContentText("Med denne komponent kan du vælge stregtykkelse og font størrelse.");
+                break;
+            case 20:
+                setShowcaseTargetToDrawView(drawViewRadius);
+                sv.setContentTitle("Lærred");
+                sv.setContentText("Du kan nu tegne rektangler med de valgte farver og tykkelse.");
+                break;
+            case 22:
+                setStandardShowcase();
+                sv.setShowcase(new ViewTarget(currentBackgroundColorButton), true);
+                sv.setContentTitle("Baggrundsfarve");
+                sv.setContentText("Med denne knap kan du vælge mere specifikke baggrundsfarver");
+                break;
+            case 23:
+                sv.setShowcase(new ViewTarget(currentStrokeColorButton), true);
+                sv.setContentTitle("Stregfarve");
+                sv.setContentText("Med denne knap kan du vælge mere specifikke stregfarver");
+                break;
+            case 24:
+                sv.setShowcase(new ViewTarget(importFragmentButton), true);
+                sv.setContentTitle("Kamera");
+                sv.setContentText("Med denne knap kan du tage billeder og indsætte på lærredet.");
+                break;
+            case 25:
+                sv.setShowcase(new ViewTarget(recordDialoGirafButton), true);
+                sv.setContentTitle("Mikrofon");
+                sv.setContentText("Med denne knap kan du tilføje lyd og afspille lyd, tilknyttet dit piktogram.");
                 break;
             default:
                 showcaseCounter = 0;
@@ -278,6 +331,11 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
         }
 
         showcaseCounter++;
+    }
+
+    private void setFinalShowcase() {
+        sv.removeView(stopShowcaseView); // Only one end button should be visible
+        sv.setButtonText(getString(R.string.end)); // Last showcase
     }
 
     private void setStandardShowcase() {
@@ -442,6 +500,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
         drawView = (DrawView) view.findViewById(R.id.drawingview);
 
         strokeWidthText = (GTextView) view.findViewById(R.id.strokeWidthText);
+        strokeWidthBar = (GSeekBar) view.findViewById(R.id.strokeWidthBar);
 
         freehandHandlerButton = (GirafButton) view.findViewById(R.id.freehand_handler_button);
         freehandHandlerButton.setOnClickListener(onFreehandHandlerButtonClick);

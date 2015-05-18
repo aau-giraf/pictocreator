@@ -3,13 +3,16 @@ package dk.aau.cs.giraf.pictocreator.canvas.handlers;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.pictocreator.R;
@@ -47,7 +50,7 @@ public class TextHandler extends ActionHandler {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event, final EntityGroup drawStack) {
+    public boolean onTouchEvent(final MotionEvent event, final EntityGroup drawStack) {
         int action = event.getAction();
 
         if (action != MotionEvent.ACTION_DOWN) {
@@ -63,6 +66,8 @@ public class TextHandler extends ActionHandler {
         int y = (int) event.getY() - Helper.convertDpToPixel(mActivity.getResources().getDimension(R.dimen.padding_y), mActivity.getApplicationContext());
 
         final EditText editText = new EditText(mActivity.getApplicationContext());
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setTextColor(getStrokeColor());
         editText.setBackgroundColor(getFillColor());
 
@@ -70,20 +75,20 @@ public class TextHandler extends ActionHandler {
         editText.setX(x);
         editText.setY(y);
 
-        editText.setOnKeyListener(new View.OnKeyListener() {
+        editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    InputMethodManager imm = (InputMethodManager) mActivity.getApplicationContext()
-                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                public boolean onEditorAction (TextView v,int actionId, KeyEvent event){
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        InputMethodManager imm = (InputMethodManager) mActivity.getApplicationContext()
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    if (imm != null) {
-                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                        if (editText.getText().length() != 0) {
-                            mainLayout.removeView(editText);
-                            drawStack.addEntity(new TextEntity(editText, mActivity, getFillColor()));
+                        if (imm != null) {
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                            if (editText.getText().length() != 0) {
+                                mainLayout.removeView(editText);
+                                drawStack.addEntity(new TextEntity(editText, mActivity, getFillColor()));
+                            }
                         }
-                    }
                 }
                 return false;
             }

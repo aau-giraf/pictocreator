@@ -2,8 +2,12 @@
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
         maven {
             url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
+        }
+        flatDir {
+            dirs 'libs'
         }
     }
     dependencies {
@@ -17,10 +21,20 @@ apply plugin: 'android'
 apply plugin: 'dk.giraf.deploy'
 apply plugin: 'play'
 repositories {
+    mavenCentral()
+    mavenLocal()
     maven {
-        mavenCentral()
         url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
     }
+    flatDir {
+        dirs 'libs'
+    }
+
+}
+
+// Always download latest snapshot
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 dependencies {
     compile('com.android.support:support-v4:+')
@@ -31,6 +45,7 @@ dependencies {
     compile(group: 'dk.aau.cs.giraf', name: 'meta-database', version: '3.0.0')
     compile(group: 'dk.aau.cs.giraf', name: 'girafComponent', version: '10.0.0', ext: 'aar')
     compile(group: 'dk.aau.cs.giraf', name: 'localDb', version: '4.0.3', ext: 'aar')
+    compile(group: 'dk.aau.cs.giraf', name: 'pictosearch', version: '0.0-SNAPSHOT', ext: 'aar')
 }
 
 android {
