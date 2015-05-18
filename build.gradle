@@ -22,13 +22,13 @@ apply plugin: 'dk.giraf.deploy'
 apply plugin: 'play'
 repositories {
     mavenCentral()
-    mavenLocal()
+    //mavenLocal()
     maven {
         url 'http://cs-cust06-int.cs.aau.dk/artifactory/libraries'
     }
-    flatDir {
-        dirs 'libs'
-    }
+    //flatDir {
+    //    dirs 'libs'
+    //}
 
 }
 
