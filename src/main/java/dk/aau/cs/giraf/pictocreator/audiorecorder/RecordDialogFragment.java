@@ -113,7 +113,7 @@ public class RecordDialogFragment extends DialogFragment implements RecordInterf
         recordingExists = (new File(handler.getFinalPath()).exists());
 
         recordLayout = (LinearLayout) view.findViewById(R.id.recordLayout);
-        recordLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
+        recordLayout.setBackgroundColor(getResources().getColor(dk.aau.cs.giraf.gui.R.color.giraf_background));
 
         acceptButton = (GirafButton) view.findViewById(R.id.record_positive_button);
         acceptButton.setEnabled(false);

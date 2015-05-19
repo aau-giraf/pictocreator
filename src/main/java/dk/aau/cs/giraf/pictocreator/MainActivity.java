@@ -408,7 +408,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
         try {
             // Sets properties on the intent
-            intent.setComponent(new ComponentName("dk.aau.cs.giraf.pictosearch", "dk.aau.cs.giraf.PictoAdminMain"));
+            intent.setComponent(new ComponentName("dk.aau.cs.giraf.pictosearch", "dk.aau.cs.giraf.pictosearch.PictoAdminMain"));
             intent.putExtra(PICTO_SEARCH_PURPOSE_TAG, PICTO_SEARCH_SINGLE_TAG);
             intent.putExtra("currentGuardianID", author);
 

@@ -99,7 +99,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     private int customColor;
 
     private ShowcaseView sv;
-    private int showcaseCounter = 15;
+    private int showcaseCounter = 0;
     private int stopShowcaseId;
     private View stopShowcaseView;
 
@@ -251,7 +251,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 setEditTextIconAsTarget(drawnEntity);
                 break;
             case 13:
-                drawView.invalidate();
                 mainActivity = (MainActivity) getActivity();
                 setStandardShowcase();
                 sv.setShowcase(new ViewTarget(mainActivity.loadDialoGirafButton), true);
@@ -269,60 +268,66 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
                 sv.setShowcase(new ViewTarget(mainActivity.printButton), true);
                 sv.setContentTitle(getString(R.string.print));
                 sv.setContentText(getString(R.string.showcase_case_fifteen_content));
-                //setFinalShowcase();
                 break;
             case 16:
                 sv.setShowcase(new ViewTarget(rectHandlerButton), true);
-                sv.setContentTitle("Rektangel");
-                sv.setContentText("Tryk på retkanglet, derefter Næste.");
+                sv.setContentTitle(getString(R.string.rectangle));
+                sv.setContentText(getString(R.string.showcase_case_sixteen_content));
                 break;
             case 17:
+                if (!rectHandlerButton.isChecked())
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.showcase_case_sixteen_content), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 sv.setShowcase(new ViewTarget(colorButtonToolbox), true);
-                sv.setContentTitle("Baggrundsfarve");
-                sv.setContentText("Tryk på en farve for at vælge baggrundsfarve, derefter Næste.");
+                sv.setContentTitle(getString(R.string.background_color));
+                sv.setContentText(getString(R.string.showcase_case_seventeen_content));
                 break;
             case 18:
                 sv.setShowcase(new ViewTarget(canvasHandlerPreviewButton), true);
-                sv.setContentTitle("Forhåndsvisning");
-                sv.setContentText("Her ses en forhåndsvisning af, hvordan det valgte værktøj, vil blive tegnet på lærredet.");
+                sv.setContentTitle(getString(R.string.preview));
+                sv.setContentText(getString(R.string.showcase_case_eighteen_content));
+                break;
             case 19:
                 Point p = new ViewTarget(colorButtonToolbox).getPoint();
                 p.set(p.x, p.y - 100); // Move the showcase a bit to indicate that something changed
                 Target t = new PointTarget(p);
                 sv.setShowcase(t, true);
-                sv.setContentTitle("Stregfarve");
-                sv.setContentText("Tryk på en farve i 2 sekunder for at vælge stregfarve, derefter Næste.");
-                break;
-            case 21:
-                sv.setShowcase(new ViewTarget(strokeWidthBar), true);
-                sv.setContentTitle("Streg tykkelse");
-                sv.setContentText("Med denne komponent kan du vælge stregtykkelse og font størrelse.");
+                sv.setContentTitle(getString(R.string.stroke_color));
+                sv.setContentText(getString(R.string.showcase_case_nineteen_content));
                 break;
             case 20:
+                sv.setShowcase(new ViewTarget(strokeWidthBar), true);
+                sv.setContentTitle(getString(R.string.stroke_width));
+                sv.setContentText(getString(R.string.showcase_case_twenty_content));
+                break;
+            case 21:
                 setShowcaseTargetToDrawView(drawViewRadius);
-                sv.setContentTitle("Lærred");
-                sv.setContentText("Du kan nu tegne rektangler med de valgte farver og tykkelse.");
+                sv.setContentTitle(getString(R.string.canvas));
+                sv.setContentText(getString(R.string.showcase_case_twenty_one_content));
                 break;
             case 22:
                 setStandardShowcase();
                 sv.setShowcase(new ViewTarget(currentBackgroundColorButton), true);
-                sv.setContentTitle("Baggrundsfarve");
-                sv.setContentText("Med denne knap kan du vælge mere specifikke baggrundsfarver");
+                sv.setContentTitle(getString(R.string.background_color));
+                sv.setContentText(getString(R.string.showcase_case_twenty_two_content));
                 break;
             case 23:
                 sv.setShowcase(new ViewTarget(currentStrokeColorButton), true);
-                sv.setContentTitle("Stregfarve");
-                sv.setContentText("Med denne knap kan du vælge mere specifikke stregfarver");
+                sv.setContentTitle(getString(R.string.stroke_color));
+                sv.setContentText(getString(R.string.showcase_case_twenty_three_content));
                 break;
             case 24:
                 sv.setShowcase(new ViewTarget(importFragmentButton), true);
-                sv.setContentTitle("Kamera");
-                sv.setContentText("Med denne knap kan du tage billeder og indsætte på lærredet.");
+                sv.setContentTitle(getString(R.string.camera));
+                sv.setContentText(getString(R.string.showcase_case_twenty_four_content));
                 break;
             case 25:
                 sv.setShowcase(new ViewTarget(recordDialoGirafButton), true);
-                sv.setContentTitle("Mikrofon");
-                sv.setContentText("Med denne knap kan du tilføje lyd og afspille lyd, tilknyttet dit piktogram.");
+                sv.setContentTitle(getString(R.string.microphone));
+                sv.setContentText(getString(R.string.showcase_case_twenty_five_content));
+                setFinalShowcase();
                 break;
             default:
                 showcaseCounter = 0;
@@ -681,7 +686,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
         public void onClick(View view) {
             drawView.setHandler(new FreehandHandler());
             setAllUnToggle();
-            // colorFrameButton.setText(getText(R.string.pick_stroke_color));
             freehandHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }
@@ -691,7 +695,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
         public void onClick(View view) {
             drawView.setHandler(new RectHandler());
             setAllUnToggle();
-            //    colorFrameButton.setText(getText(R.string.pick_color));
             rectHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.RECTANGLE);
         }
@@ -701,8 +704,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
         public void onClick(View view) {
             drawView.setHandler(new OvalHandler());
             setAllUnToggle();
-
-            //   colorFrameButton.setText(getText(R.string.pick_color));
             ovalHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.CIRCLE);
         }
@@ -725,7 +726,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
         public void onClick(View view) {
             drawView.setHandler(new LineHandler());
             setAllUnToggle();
-            //    colorFrameButton.setText(getText(R.string.pick_stroke_color));
             lineHandlerButton.toggle();
             canvasHandlerPreviewButton.changePreviewDisplay(DrawType.LINE);
         }

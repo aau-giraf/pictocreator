@@ -92,4 +92,6 @@
     <string name="showcase_case_nine_content">Delete the text element, then Next.</string>
     <string name="showcase_case_ten_toast">You must select the text and delete it, then Next</string>
     <string name="showcase_case_seven_toast">Use your finger til add a text element to the canvas, then Next.</string>
+    <string name="preview">Preview</string>
+    <string name="microphone">Microphone</string>
 </resources>

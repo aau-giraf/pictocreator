@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/cameraBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="60dp">
 
         <dk.aau.cs.giraf.gui.GTextView
             android:id="@+id/dialog_title"
@@ -63,8 +63,8 @@
             android:layout_height="wrap_content">
 
             <dk.aau.cs.giraf.gui.GirafButton
-                android:layout_width="100dp"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/color_effects"
                 app:icon="@drawable/switch_effect_camera"
                 android:layout_toLeftOf="@+id/button_capture"
@@ -72,8 +72,8 @@
             <!-- app:text="Sort Hvid"-->
 
             <dk.aau.cs.giraf.gui.GirafButton
-                android:layout_width="100dp"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/button_capture"
                 app:icon="@drawable/camera"
                 android:layout_centerHorizontal="true"
@@ -81,8 +81,8 @@
                 <!-- app:text="Tag Billede" -->
 
             <dk.aau.cs.giraf.gui.GirafButton
-                android:layout_width="100dp"
-                android:layout_height="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/switch_cam"
                 app:icon="@drawable/switch_camera"
                 android:layout_toRightOf="@+id/button_capture"

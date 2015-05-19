@@ -82,13 +82,13 @@ public class CamFragment extends DialogFragment {
         view = inflater.inflate(R.layout.camera_fragment, container, false);
 
         cameraBar = (RelativeLayout)view.findViewById(R.id.cameraBar);
-        cameraBar.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.GRADIENT));
+        cameraBar.setBackgroundColor(getResources().getColor(dk.aau.cs.giraf.gui.R.color.giraf_bar_gradient_start));
 
         frameLayout = (FrameLayout)view.findViewById(R.id.camera_preview);
         frameLayout.addView(mPreview);
 
         cameraLayout = (LinearLayout) view.findViewById(R.id.cameraLayout);
-        cameraLayout.setBackgroundDrawable(GComponent.GetBackground(GComponent.Background.SOLID));
+        cameraLayout.setBackgroundColor(getResources().getColor(dk.aau.cs.giraf.gui.R.color.giraf_background));
 
         viewSwitcher = (ViewSwitcher)view.findViewById(R.id.layoutSwitcherCamera);
 
