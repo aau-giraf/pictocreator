@@ -62,14 +62,6 @@ public class PreviewButton extends GirafButton {
         this.invalidate();
     }
 
-    public int getBackgroundColor() {
-        return fillPaint.getColor();
-    }
-
-    public int getStrokeColor() {
-        return strokePaint.getColor();
-    }
-
     /**
      * Padding for the previewed entity
      */

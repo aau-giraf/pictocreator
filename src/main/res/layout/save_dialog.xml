@@ -122,13 +122,8 @@
         android:layout_toRightOf="@+id/save_button_positive"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-<<<<<<< HEAD
         app:icon="@drawable/icon_cancel"/>
         <!-- app:text="@string/regret"/> -->
-=======
-        app:icon="@drawable/icon_cancel" />
-      <!--  app:text="@string/regret"/> -->
->>>>>>> db9337bf186a98f6d46169b541471064b5ad00c1
 
       </LinearLayout>
 
