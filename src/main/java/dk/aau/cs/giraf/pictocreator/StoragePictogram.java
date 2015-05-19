@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import dk.aau.cs.giraf.dblib.models.Department;
 import dk.aau.cs.giraf.dblib.models.DepartmentPictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
@@ -212,7 +213,7 @@ public class StoragePictogram {
     private Tag insertTag(String tag) {
         TagController tagsHelper = databaseHelper.tagsHelper;
         Tag newTag = new Tag(tag);
-        long tagId = tagsHelper.insertTag(newTag);
+        long tagId = tagsHelper.insert(newTag);
         newTag.setId(tagId);
 
         return newTag;
@@ -266,7 +267,7 @@ public class StoragePictogram {
      */
     private Pictogram insertPictogram(Pictogram pictogram) {
         PictogramController pictogramHelper = databaseHelper.pictogramHelper;
-
+        
         pictogramID = pictogramHelper.insert(pictogram);
         pictogram.setId(pictogramID);
 

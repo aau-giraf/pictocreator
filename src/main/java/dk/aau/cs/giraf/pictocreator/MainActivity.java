@@ -210,6 +210,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 }
             }
         }
+        author = 37; // TODO: Fix this hardcoded for presentation
 
         storagePictogram.setAuthor(author);
     }
@@ -411,7 +412,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             intent.setComponent(new ComponentName("dk.aau.cs.giraf.pictosearch", "dk.aau.cs.giraf.pictosearch.PictoAdminMain"));
             intent.putExtra(PICTO_SEARCH_PURPOSE_TAG, PICTO_SEARCH_SINGLE_TAG);
             intent.putExtra("currentGuardianID", author);
-
+            long aID = author;
             startActivityForResult(intent, RESULT_FIRST_USER);
         } catch (Exception e) {
             Toast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
@@ -426,7 +427,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         intent.putExtra("currentGuardianID", author);
         intent.putExtra("purpose", "single");
         startActivityForResult(intent, RESULT_FIRST_USER);
-    }*/
+    } **/
 
     /**
      * This method gets the pictogram that are returned by pictosearch.

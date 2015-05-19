@@ -403,7 +403,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
 
     @Override
     public void onShowcaseViewHide(ShowcaseView showcaseView) {
-
     }
 
     @Override
@@ -817,7 +816,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     private final OnClickListener onCurrentBackgroundColorButtonClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            ColorPicker(v, currentBackgroundColor, true); // 3rd parameter (true) means set background color
+            ColorPicker(v, canvasHandlerPreviewButton.getBackgroundColor(), true); // 3rd parameter (true) means set background color
         }
     };
 
@@ -827,7 +826,7 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     private final OnClickListener getOnCurrentStrokeColorButtonClick = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            ColorPicker(v, currentStrokeColor, false); // 3rd parameter (false) means set stroke color
+            ColorPicker(v, canvasHandlerPreviewButton.getStrokeColor(), false); // 3rd parameter (false) means set stroke color
         }
     };
 }

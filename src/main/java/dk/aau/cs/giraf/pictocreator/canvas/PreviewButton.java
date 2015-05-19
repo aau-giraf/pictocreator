@@ -27,6 +27,10 @@ public class PreviewButton extends GirafButton {
     private Paint textPaint = new Paint();
 
     private Paint linePaint = new Paint();
+    private int defaultTextSize = 28;
+    private int defaultStrokeWidth = 4;
+    private int textWidthExtraPadding = 30;
+    private int textHeightExtraPadding = 10;
 
     private DrawType drawtype = DrawType.RECTANGLE;
 
@@ -50,6 +54,14 @@ public class PreviewButton extends GirafButton {
         this.invalidate();
     }
 
+    public int getBackgroundColor() {
+        return fillPaint.getColor();
+    }
+
+    public int getStrokeColor() {
+        return strokePaint.getColor();
+    }
+
     /**
      * Padding for the previewed entity
      */
@@ -71,7 +83,7 @@ public class PreviewButton extends GirafButton {
      */
 	public void setStrokeWidth(float width) {
 		strokePaint.setStrokeWidth(width);
-        textPaint.setTextSize(28 + width);
+        textPaint.setTextSize(defaultTextSize + width);
         linePaint.setStrokeWidth(width);
 		invalidate();
 	}
@@ -85,14 +97,14 @@ public class PreviewButton extends GirafButton {
 
 	private void init() {
 		// Some default coloring and width.
-		setStrokeWidth(4);
+		setStrokeWidth(defaultStrokeWidth);
 
 		fillPaint.setStyle(Style.FILL);
 		strokePaint.setStyle(Style.STROKE);
-        textPaint.setTextSize(28);
+        textPaint.setTextSize(defaultTextSize);
         textPaint.setStyle(Style.STROKE);
-        textWidthPadding = padding + 30;
-        textHeightPadding = padding + 10;
+        textWidthPadding = padding + textWidthExtraPadding;
+        textHeightPadding = padding + textHeightExtraPadding;
     }
 
 /*    *//**

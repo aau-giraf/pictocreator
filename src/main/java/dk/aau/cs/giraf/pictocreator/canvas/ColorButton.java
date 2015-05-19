@@ -122,7 +122,6 @@ public class ColorButton extends ImageButton {
 		previewButton.setFillColor(getColor());
 	}
 
-
 	/**
 	 * Retrieves this ColorButton's bound colour.
 	 * @return The colour as an integer (ARGB).

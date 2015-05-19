@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -263,8 +262,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     };
 
-    public void removeTagConfirm()
-    {
+    public void removeTagConfirm() {
         tags.remove(tempPos);
         tagArrayAdapter.notifyDataSetChanged();
     }
@@ -405,8 +403,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     };
 
-    public void removeCitizenConfirm()
-    {
+    public void removeCitizenConfirm() {
         citizenProfiles.remove(tempPos);
         updateCitizenList();
     }
@@ -452,8 +449,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     };
 
-    public void addSelectedCitizens(List<Profile> selectedProfiles)
-    {
+    public void addSelectedCitizens(List<Profile> selectedProfiles) {
         citizenProfiles.clear();
         citizenProfiles.addAll(selectedProfiles);
         updateCitizenList();
