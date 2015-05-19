@@ -132,11 +132,7 @@ public class StoragePictogram {
         this.author = author;
     }
 
-    /**
-     * Setter for the publicPictogram variable
-     *
-     * @param publicPictogram The publicPictogram to set
-     */
+
     public void setIsPublic(boolean b) {
         this.isPublic = b;
     }
@@ -261,7 +257,6 @@ public class StoragePictogram {
 
     /**
      * Method for inserting pictogram into the database
-     *
      * @param pictogram The pictogram to insert
      * @return the newly inserted pictogram
      */

@@ -420,14 +420,14 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         }
     }
 
-    // Opens the pictosearch to search for a single pictogram which ar public to the current guardian
-    /*private void callPictosearch() {
+    // Opens the pictosearch to search for a single pictogram which is public to the current guardian
+    /** private void callPictosearch() {
         Intent intent = new Intent(this, dk.aau.cs.giraf.pictosearch.PictoAdminMain.class);
 
         intent.putExtra("currentGuardianID", author);
         intent.putExtra("purpose", "single");
         startActivityForResult(intent, RESULT_FIRST_USER);
-    } **/
+    } */
 
     /**
      * This method gets the pictogram that are returned by pictosearch.

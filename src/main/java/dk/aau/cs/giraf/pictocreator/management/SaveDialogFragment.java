@@ -432,19 +432,18 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         @Override
         public void onClick(View v) {
             dk.aau.cs.giraf.dblib.Helper helper = new dk.aau.cs.giraf.dblib.Helper(parentActivity);
+
+            long authorID = storagePictogram.getAuthor();
+
+            if (authorID == 0) {
+                Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
+                return;
+            }
             try {
-                long authorID = storagePictogram.getAuthor();
-
-                if (authorID == 0) {
-                    Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(getActivity(), authorID, false, true, getString(R.string.profile_selector_description), Select_Users_Id);
                 autistSelector.show(getFragmentManager(), "" + Select_Users_Id);
-
             } catch (Exception e) {
-                Log.e(TAG, e.toString());
+                Log.i(TAG, e.toString());
             }
         }
     };

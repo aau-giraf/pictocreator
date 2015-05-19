@@ -63,7 +63,6 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     private String FIRST_RUN = "PictocreatorPrefFile";
 
     public View view;
-
     /**
      * The DrawView contained within this fragment. A lot of communication goes
      * more or less transparently through, which makes this reference useful.
@@ -792,22 +791,15 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
             canvasHandlerPreviewButton.setStrokeWidth(progress / 5);
             drawView.setStrokeWidth(progress / 5);
             Log.i("DrawFragment", String.format("StrokeWidthBar changed to %s.", progress));
-        }
-
-        ;
+        };
 
         //Have to be overridden, but we do not need this functionality, therefore, it is empty.
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
         }
-
-        ;
-
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
         }
-
-        ;
     };
 
     /**
