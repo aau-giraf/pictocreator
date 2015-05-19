@@ -403,7 +403,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     /**
      * Opens pictosearch as an application, so pictograms can be loaded into the application.
      */
-    private void callPictosearch() {
+/*    private void callPictosearch() {
         Intent intent = new Intent();
 
         try {
@@ -417,16 +417,16 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             Toast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
         }
-    }
+    }*/
 
-    // Opens the pictosearch to search for a single pictogram which ar public to the current guardian
-    /*private void callPictosearch() {
+    // Opens the pictosearch to search for a single pictogram which is public to the current guardian
+    private void callPictosearch() {
         Intent intent = new Intent(this, dk.aau.cs.giraf.pictosearch.PictoAdminMain.class);
 
         intent.putExtra("currentGuardianID", author);
         intent.putExtra("purpose", "single");
         startActivityForResult(intent, RESULT_FIRST_USER);
-    }*/
+    }
 
     /**
      * This method gets the pictogram that are returned by pictosearch.

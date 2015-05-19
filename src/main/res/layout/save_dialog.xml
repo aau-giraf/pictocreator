@@ -94,14 +94,14 @@
 
       <dk.aau.cs.giraf.gui.GirafButton
         android:id="@+id/save_button_positive"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_marginRight="40dp"
-        app:icon="@drawable/save"
-        app:text="@string/save_button_text"/>
+        app:icon="@drawable/save"/>
+        <!-- app:text="@string/save_button_text"/> -->
 
       <dk.aau.cs.giraf.gui.GirafButton
               android:id="@+id/overwrite_button_positive"
@@ -117,13 +117,13 @@
 
       <dk.aau.cs.giraf.gui.GirafButton
         android:id="@+id/save_button_negative"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
         android:layout_toRightOf="@+id/save_button_positive"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        app:icon="@drawable/icon_cancel"
-        app:text="@string/regret"/>
+        app:icon="@drawable/icon_cancel" />
+      <!--  app:text="@string/regret"/> -->
 
       </LinearLayout>
 

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -263,8 +262,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     };
 
-    public void removeTagConfirm()
-    {
+    public void removeTagConfirm() {
         tags.remove(tempPos);
         tagArrayAdapter.notifyDataSetChanged();
     }
@@ -405,8 +403,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
     };
 
-    public void removeCitizenConfirm()
-    {
+    public void removeCitizenConfirm() {
         citizenProfiles.remove(tempPos);
         updateCitizenList();
     }
@@ -435,25 +432,23 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         @Override
         public void onClick(View v) {
             dk.aau.cs.giraf.dblib.Helper helper = new dk.aau.cs.giraf.dblib.Helper(parentActivity);
+
+            long authorID = storagePictogram.getAuthor();
+
+            if (authorID == 0) {
+                Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
+                return;
+            }
             try {
-                long authorID = storagePictogram.getAuthor();
-
-                if (authorID == 0) {
-                    Toast.makeText(getActivity(), getString(R.string.must_be_logged_in), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 GirafProfileSelectorDialog autistSelector = GirafProfileSelectorDialog.newInstance(getActivity(), authorID, false, true, getString(R.string.profile_selector_description), Select_Users_Id);
                 autistSelector.show(getFragmentManager(), "" + Select_Users_Id);
-
             } catch (Exception e) {
-                Log.e(TAG, e.toString());
+                Log.i(TAG, e.toString());
             }
         }
     };
 
-    public void addSelectedCitizens(List<Profile> selectedProfiles)
-    {
+    public void addSelectedCitizens(List<Profile> selectedProfiles) {
         citizenProfiles.clear();
         citizenProfiles.addAll(selectedProfiles);
         updateCitizenList();

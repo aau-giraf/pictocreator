@@ -41,6 +41,14 @@ public class PreviewButton extends GirafButton {
         this.invalidate();
     }
 
+    public int getStrokeColor(){
+        return strokePaint.getColor();
+    }
+
+    public int getBackgroundColor(){
+        return fillPaint.getColor();
+    }
+
     /**
      * Sets the fill color to use. Causes a re-render of the preview Bitmap.
      * @param c Color to use. 0 is transparent ("null") while 0xFF?????? is opaque.
