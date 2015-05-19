@@ -52,7 +52,7 @@
     <ViewSwitcher
         android:id="@+id/layoutSwitcherCamera"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom = "true"
         android:layout_below="@+id/camera_preview">
@@ -94,20 +94,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="20dp"
         android:layout_gravity="center">
 
         <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/acceptPictureButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
             android:layout_margin="10dp"
             app:icon="@drawable/icon_accept"/>
 
         <dk.aau.cs.giraf.gui.GirafButton
             android:id="@+id/retryPictureButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
             android:layout_margin="10dp"
             app:icon="@drawable/icon_cancel"/>
 

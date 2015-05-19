@@ -112,7 +112,7 @@
               android:paddingRight="8dp"
               android:layout_marginRight="40dp"
               app:icon="@drawable/save"
-              android:clickable="false"
+              android:visibility="gone"
               app:text="@string/overwrite"/>
 
       <dk.aau.cs.giraf.gui.GirafButton
