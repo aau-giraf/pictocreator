@@ -52,6 +52,12 @@
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
+
+        <provider
+            android:name="dk.aau.cs.giraf.localdb.DatabaseProvider"
+            android:authorities="dk.aau.cs.giraf.pictocreator.provider"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

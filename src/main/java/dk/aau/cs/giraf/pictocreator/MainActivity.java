@@ -32,8 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
+import dk.aau.cs.giraf.core.data.Constants;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
+import dk.aau.cs.giraf.gui.GToast;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GirafConfirmDialog;
 import dk.aau.cs.giraf.gui.GirafDialog;
@@ -48,6 +50,7 @@ import dk.aau.cs.giraf.pictocreator.canvas.entity.BitmapEntity;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
 import dk.aau.cs.giraf.pictocreator.management.Helper;
 import dk.aau.cs.giraf.pictocreator.management.SaveDialogFragment;
+import dk.aau.cs.giraf.core.data.Data;
 
 /**
  * Main class for the Croc app
@@ -196,7 +199,17 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
             author = h.profilesHelper.getGuardians().get(0).getId();
         } else {
-            if (mainIntent != null) {
+            // If the launcher is running it is not a guest session
+            boolean isGuestSession = !Data.isProcessRunning("dk.aau.cs.giraf.launcher", this);
+
+            if (isGuestSession) {
+                new GToast(this, super.getResources().getString(R.string.guest_toast), 100).show();
+                this.service = true;
+                author = 1;
+
+                this.downloadAllPictograms();
+            }
+            else if (mainIntent != null) {
                 String action = mainIntent.getAction();
 
                 if (action != "dk.aaau.cs.giraf.CREATEPICTOGRAM") {
@@ -267,6 +280,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
     private Activity getActivity() {
         return this;
+    }
+
+
+    private void downloadAllPictograms() {
+        super.startActivity(new Intent(this, Data.class));
+
     }
 
     private final OnClickListener onClearButtonClick = new OnClickListener() {
@@ -404,8 +423,8 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     /**
      * Opens pictosearch as an application, so pictograms can be loaded into the application.
      */
-    private void callPictosearch() {
-        Intent intent = new Intent();
+   /* private void callPictosearch() {
+        /*Intent intent = new Intent();
 
         try {
             // Sets properties on the intent
@@ -417,17 +436,17 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         } catch (Exception e) {
             Toast.makeText(this, getText(R.string.pictosearch_not_installed), Toast.LENGTH_LONG).show();
             Log.e(TAG, "Pictosearch is not installed: " + e.getMessage());
-        }
-    }
+        }*/
+
 
     // Opens the pictosearch to search for a single pictogram which is public to the current guardian
-    /** private void callPictosearch() {
+    private void callPictosearch() {
         Intent intent = new Intent(this, dk.aau.cs.giraf.pictosearch.PictoAdminMain.class);
 
         intent.putExtra("currentGuardianID", author);
         intent.putExtra("purpose", "single");
         startActivityForResult(intent, RESULT_FIRST_USER);
-    } */
+    }
 
     /**
      * This method gets the pictogram that are returned by pictosearch.
