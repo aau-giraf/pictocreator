@@ -119,6 +119,7 @@ public class PrintDialogActivity extends Activity {
         public void onPostMessage(String message) {
             if (message.startsWith(CLOSE_POST_MESSAGE_NAME)) {
                 finish();
+                // Added to delete local copy of the printed pictogram
                 getContentResolver().delete(bitmapToPrint, null, null);
             }
         }

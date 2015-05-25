@@ -429,10 +429,10 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     }
 
     private void checkIfFirstRun() {
-        SharedPreferences settings = getActivity().getSharedPreferences(FIRST_RUN, 0);
+        SharedPreferences settings = getActivity().getSharedPreferences(FIRST_RUN, Context.MODE_PRIVATE);
 
         if (settings.getBoolean("first_run", true)) {
-            //the app is being launched for first time, do something
+            //the app is being launched for first time
             Log.d("Comments", "First time");
 
             // first time task
@@ -444,21 +444,21 @@ public class DrawFragment extends Fragment implements OnShowcaseEventListener, V
     }
 
     public void setupShowcases() {
-        ViewTarget target = new ViewTarget(freehandHandlerButton);
         setAllUnToggle();
         sv = new ShowcaseView.Builder(getActivity())
-                .setTarget(target)
+                .setTarget(new ViewTarget(freehandHandlerButton))
                 .setContentTitle(R.string.free_hand)
                 .setContentText(getString(R.string.free_hand_showcase_content))
                 .setStyle(R.style.TextAppearance_ShowcaseView_Title)
                 .setOnClickListener(this)
                 .build();
-        sv.setButtonText(getString(R.string.next));
 
         setupShowcaseViewButtons();
     }
 
     private void setupShowcaseViewButtons() {
+        sv.setButtonText(getString(R.string.next));
+
         int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue(); // 12 dp
         int stopShowcaseLeftMargin = ((Number) (getResources().getDisplayMetrics().density * 200)).intValue(); // 200 dp
 

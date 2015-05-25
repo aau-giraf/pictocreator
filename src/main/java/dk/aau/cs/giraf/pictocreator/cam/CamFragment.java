@@ -116,7 +116,6 @@ public class CamFragment extends DialogFragment {
         return view;
     }
 
-
     //Left blank intentionally, is used for the click sound when taking a picture.
     private final Camera.ShutterCallback shutterCall = new Camera.ShutterCallback() {
         @Override
