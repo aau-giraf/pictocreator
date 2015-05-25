@@ -13,8 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import dk.aau.cs.giraf.dblib.models.Department;
-import dk.aau.cs.giraf.dblib.models.DepartmentPictogram;
 import dk.aau.cs.giraf.pictocreator.audiorecorder.AudioHandler;
 import dk.aau.cs.giraf.pictocreator.canvas.DrawStackSingleton;
 import dk.aau.cs.giraf.pictocreator.management.ByteConverter;
@@ -50,6 +48,9 @@ public class StoragePictogram {
 
     private Context context;
     private Helper databaseHelper;
+
+    private int PICTOGRAM_WIDTH = 283;
+    private int PICTOGRAM_HEIGHT = 283;
 
     /**
      * Constructor for the class
@@ -244,7 +245,7 @@ public class StoragePictogram {
         Pictogram pictogram = new Pictogram();
 
         Bitmap pictogramImage = BitmapFactory.decodeFile(path);
-        pictogramImage = Bitmap.createScaledBitmap(pictogramImage, 283, 283, true);
+        pictogramImage = Bitmap.createScaledBitmap(pictogramImage, PICTOGRAM_WIDTH, PICTOGRAM_HEIGHT, true);
 
         pictogram.setImage(pictogramImage);
         pictogram.setName(pictogramName);
@@ -258,15 +259,18 @@ public class StoragePictogram {
     /**
      * Method for inserting pictogram into the database
      * @param pictogram The pictogram to insert
-     * @return the newly inserted pictogram
+     * @return status of the insert
      */
-    private Pictogram insertPictogram(Pictogram pictogram) {
+    private boolean insertPictogram(Pictogram pictogram) {
         PictogramController pictogramHelper = databaseHelper.pictogramHelper;
         
         pictogramID = pictogramHelper.insert(pictogram);
         pictogram.setId(pictogramID);
 
-        return pictogram;
+        if (pictogramID == -1)
+            return false;
+        else
+            return true;
     }
 
     /**
@@ -278,9 +282,10 @@ public class StoragePictogram {
         Pictogram pictogram = makeImage(imagePath);
 
         generateAudio(pictogram);
-        generateEditableImage(pictogram);
-
-        return pictogram;
+        if (generateEditableImage(pictogram))
+            return pictogram;
+        else
+            return null;
     }
 
     /**
@@ -325,7 +330,7 @@ public class StoragePictogram {
      *
      * @param pictogram
      */
-    private void generateEditableImage(Pictogram pictogram) {
+    private boolean generateEditableImage(Pictogram pictogram) {
         if (DrawStackSingleton.getInstance().getSavedData() != null) {
             try {
                 pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
@@ -333,7 +338,8 @@ public class StoragePictogram {
                 Log.e(TAG, e.getMessage());
             }
         }
-        insertPictogram(pictogram);
+
+        return insertPictogram(pictogram);
     }
 
     /**

@@ -203,7 +203,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             boolean isGuestSession = !Data.isProcessRunning("dk.aau.cs.giraf.launcher", this);
 
             if (isGuestSession) {
-                new GToast(this, super.getResources().getString(R.string.guest_toast), 100).show();
+                new GToast(this, super.getResources().getString(R.string.guest_toast), 200).show();
                 this.service = true;
                 author = 1;
 
