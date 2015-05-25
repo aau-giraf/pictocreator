@@ -104,4 +104,5 @@
     <string name="showcase_case_eighteen_content">Her ses en forhåndsvisning af, hvordan det valgte værktøj, vil blive tegnet på lærredet.</string>
     <string name="showcase_case_seventeen_content">Tryk på en farve for at vælge baggrundsfarve, derefter Næste.</string>
     <string name="showcase_case_sixteen_content">Tryk på retkanglet, derefter Næste.</string>
+    <string name="guest_toast">Du er nu logget på som gæst og nogle funktioner er derfor deaktiveret, log ind gennem GIRAF for at aktivere dem."</string>
 </resources>

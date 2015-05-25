@@ -94,4 +94,5 @@
     <string name="showcase_case_seven_toast">Use your finger til add a text element to the canvas, then Next.</string>
     <string name="preview">Preview</string>
     <string name="microphone">Microphone</string>
+    <string name="guest_toast">You are logged in as guest, some functionalities are disabled, you must login through Giraf to enable them."</string>
 </resources>

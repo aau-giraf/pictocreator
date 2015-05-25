@@ -365,16 +365,4 @@ public class StoragePictogram {
 
         return false;
     }
-
-    private boolean saveDepartmentPictogram(Pictogram pictogram) {
-        try {
-            Profile user = databaseHelper.profilesHelper.getById(author);
-            long departmentId = user.getDepartmentId();
-            DepartmentPictogram dp = new DepartmentPictogram(pictogram.getId(), departmentId);
-            databaseHelper.departmentPictogramHelper.insert(dp);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
