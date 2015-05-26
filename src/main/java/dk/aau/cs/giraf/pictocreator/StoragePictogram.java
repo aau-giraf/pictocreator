@@ -251,7 +251,7 @@ public class StoragePictogram {
         pictogram.setName(pictogramName);
         pictogram.setIsPublic(isPublic);
         pictogram.setInlineText(inlineTextLabel);
-        pictogram.setAuthor(author);
+        //pictogram.setAuthor(author); // TODO: The insert pictogramHelper.insert(Pictogram) returns -1 when the author has ID: 107 therefore this is outcommented.
 
         return pictogram;
     }
