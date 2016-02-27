@@ -33,6 +33,7 @@ import java.util.List;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.data.Constants;
+import dk.aau.cs.giraf.dblib.controllers.PictogramController;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
 import dk.aau.cs.giraf.gui.GToast;
@@ -508,12 +509,12 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
         /*if the pictogram has no drawstack, just load the bitmap
           else we load drawstack*/
-        if (pictogram.getEditableImage() == null) {
-            Bitmap bitmap = pictogram.getImage();
+        if (pictogramController.getEditableImage(pictogram) == null) {
+            Bitmap bitmap = pictogramController.getImage(pictogram);
             loadPicture(bitmap);
         } else {
             try {
-                DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogram.getEditableImage());
+                DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogramController.getEditableImage(pictogram));
                 drawFragment.drawView.invalidate();
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());

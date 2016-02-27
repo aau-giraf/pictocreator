@@ -246,11 +246,14 @@ public class StoragePictogram {
 
         Bitmap pictogramImage = BitmapFactory.decodeFile(path);
         pictogramImage = Bitmap.createScaledBitmap(pictogramImage, PICTOGRAM_WIDTH, PICTOGRAM_HEIGHT, true);
+        PictogramController controller = new PictogramController(context);
 
-        pictogram.setImage(pictogramImage);
         pictogram.setName(pictogramName);
         pictogram.setIsPublic(isPublic);
         pictogram.setInlineText(inlineTextLabel);
+
+        controller.setImage(pictogram, pictogramImage);
+
         //pictogram.setAuthor(author); // TODO: The insert pictogramHelper.insert(Pictogram) returns -1 when the author has ID: 107 therefore this is outcommented.
 
         return pictogram;
@@ -335,7 +338,8 @@ public class StoragePictogram {
     private boolean generateEditableImage(Pictogram pictogram) {
         if (DrawStackSingleton.getInstance().getSavedData() != null) {
             try {
-                pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
+                PictogramController controller = new PictogramController(context);
+                controller.setEditableImage(pictogram, ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
             }
