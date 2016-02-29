@@ -316,7 +316,9 @@ public class StoragePictogram {
                         AudioHandler.setFinalPath(context.getCacheDir().getPath() + File.separator + date);
                     }
                     FileOutputStream fileOutputStream = new FileOutputStream(AudioHandler.getFinalPath());
-                    fileOutputStream.write(pictogram.getSoundData());
+                    if(pictogram.getSoundData() != null) {
+                        fileOutputStream.write(pictogram.getSoundData());
+                    }
                     fileOutputStream.close();
                 } catch (IOException e) {
                     Log.e(TAG, e.getMessage());
