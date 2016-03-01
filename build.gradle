@@ -20,6 +20,7 @@
 apply plugin: 'android'
 apply plugin: 'dk.giraf.deploy'
 apply plugin: 'com.github.triplet.play'
+
 repositories {
     mavenCentral()
     mavenLocal()
