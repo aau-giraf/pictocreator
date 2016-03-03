@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-
+import com.google.analytics.tracking.android.EasyTracker;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -179,6 +179,19 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         loadDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_open_pictogram), getString(R.string.load_button_text));
         loadDialoGirafButton.setOnClickListener(showPictosearchClick);
         addGirafButtonToActionBar(loadDialoGirafButton, GirafActivity.LEFT);
+    }
+
+    //Google analytics - start logging
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Start logging
+    }
+    //Google analytics - Stop logging
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // stop logging
     }
 
     @Override
