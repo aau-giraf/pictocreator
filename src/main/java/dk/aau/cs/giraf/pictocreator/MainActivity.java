@@ -504,7 +504,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             return;
         }
 
-        dk.aau.cs.giraf.dblib.controllers.PictogramController pictogramController = new dk.aau.cs.giraf.dblib.controllers.PictogramController(this);
+        PictogramController pictogramController = new PictogramController(getApplicationContext());
         Pictogram pictogram = pictogramController.getById(pictogramID);
 
         /*if the pictogram has no drawstack, just load the bitmap
