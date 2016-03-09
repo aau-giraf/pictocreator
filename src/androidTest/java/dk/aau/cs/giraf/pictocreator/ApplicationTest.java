@@ -1,4 +1,4 @@
-package dk.aau.cs.giraf.croc.test;
+package dk.aau.cs.giraf.pictocreator;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
