@@ -11,7 +11,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+import com.google.analytics.tracking.android.EasyTracker;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,6 +64,19 @@ public class PrintDialogActivity extends Activity {
         dialogWebView.setWebViewClient(new PrintDialogWebClient());
 
         dialogWebView.loadUrl(PRINT_DIALOG_URL);
+    }
+
+    //Google analytics - start logging
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Start logging
+    }
+    //Google analytics - Stop logging
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // stop logging
     }
 
     @JavascriptInterface

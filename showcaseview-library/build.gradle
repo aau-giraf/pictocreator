@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * Dependencies for gradle,build tools, compile- and targetSDK
+ * last updated 25-02-2016.
+ * */
 buildscript {
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.android.tools.build:gradle:1.5.0'
     }
 }
 
@@ -34,11 +38,11 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 23
     }
 }

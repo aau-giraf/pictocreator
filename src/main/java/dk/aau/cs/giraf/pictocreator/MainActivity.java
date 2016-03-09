@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-
+import com.google.analytics.tracking.android.EasyTracker;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +33,7 @@ import java.util.List;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
 import dk.aau.cs.giraf.core.data.Constants;
+import dk.aau.cs.giraf.dblib.controllers.PictogramController;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
 import dk.aau.cs.giraf.gui.GToast;
@@ -179,6 +180,19 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         loadDialoGirafButton = new GirafButton(this, getResources().getDrawable(R.drawable.icon_open_pictogram), getString(R.string.load_button_text));
         loadDialoGirafButton.setOnClickListener(showPictosearchClick);
         addGirafButtonToActionBar(loadDialoGirafButton, GirafActivity.LEFT);
+    }
+
+    //Google analytics - start logging
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Start logging
+    }
+    //Google analytics - Stop logging
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // stop logging
     }
 
     @Override
@@ -490,17 +504,17 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
             return;
         }
 
-        dk.aau.cs.giraf.dblib.controllers.PictogramController pictogramController = new dk.aau.cs.giraf.dblib.controllers.PictogramController(this);
+        PictogramController pictogramController = new PictogramController(getApplicationContext());
         Pictogram pictogram = pictogramController.getById(pictogramID);
 
         /*if the pictogram has no drawstack, just load the bitmap
           else we load drawstack*/
-        if (pictogram.getEditableImage() == null) {
-            Bitmap bitmap = pictogram.getImage();
+        if (pictogramController.getEditableImage(pictogram) == null) {
+            Bitmap bitmap = pictogramController.getImage(pictogram);
             loadPicture(bitmap);
         } else {
             try {
-                DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogram.getEditableImage());
+                DrawStackSingleton.getInstance().mySavedData = (EntityGroup) ByteConverter.deserialize(pictogramController.getEditableImage(pictogram));
                 drawFragment.drawView.invalidate();
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
