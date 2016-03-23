@@ -19,7 +19,8 @@
     <string name="load_button_text">Load</string>
     <string name="menu_settings">Settings</string>
     <string name="must_be_logged_in">You have to be logged in, in order to save, log in through GIRAF and try again.</string>
-    <string name="overwrite">Overwrite</string>
+    <string name="overwrite">Overwrite pictogram</string>
+    <string name="overwrite_pic">Do you want to overwrite the selected pictogram?</string>
     <string name="overwrite_existing_question">Do you want to overwrite the loaded pictogram, or create a new one?</string>
     <string name="pick_color">Pick color</string>
     <string name="pick_stroke_color">Pick stroke color</string>

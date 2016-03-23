@@ -278,11 +278,11 @@ public class StoragePictogram {
      *
      * @return The generated pictogram
      */
-    private Pictogram generatePictogram() {
+    private Pictogram generatePictogram(boolean overwritePictogram, long pictogramID) {
         Pictogram pictogram = makeImage(imagePath);
 
         generateAudio(pictogram);
-        if (generateEditableImage(pictogram))
+        if (generateEditableImage(pictogram, overwritePictogram, pictogramID))
             return pictogram;
         else
             return null;
@@ -332,7 +332,7 @@ public class StoragePictogram {
      *
      * @param pictogram
      */
-    private boolean generateEditableImage(Pictogram pictogram) {
+    private boolean generateEditableImage(Pictogram pictogram, boolean overwritePictogram, long pictogramID) {
         if (DrawStackSingleton.getInstance().getSavedData() != null) {
             try {
                 pictogram.setEditableImage(ByteConverter.serialize(DrawStackSingleton.getInstance().getSavedData()));
@@ -341,7 +341,10 @@ public class StoragePictogram {
             }
         }
 
-        return insertPictogram(pictogram);
+        if (overwritePictogram)
+            return modifyPictogram(pictogram, pictogramID);
+        else
+            return insertPictogram(pictogram);
     }
 
     /**
@@ -349,7 +352,7 @@ public class StoragePictogram {
      *
      * @return True if the pictogram was successfully added, false otherwise
      */
-    public boolean addPictogram(int loadedPictogramId) {
+    public boolean addPictogram(boolean overwritePictogram, long overwritePicID) {
         if (author == 0)
             return false;
 
@@ -357,20 +360,38 @@ public class StoragePictogram {
         PictogramTagController tagHelper = databaseHelper.pictogramTagHelper;
         ProfilePictogramController profileHelper = databaseHelper.profilePictogramHelper;
 
-        pictogram = generatePictogram(); // Creates pictogram and inserts it into the database
+        pictogram = generatePictogram(overwritePictogram, overwritePicID); // Creates pictogram and inserts it into the database
 
         if (pictogram != null) {
-            List<Tag> addTags = generateTagList();
-            for (Tag t : addTags) {
-                tagHelper.insert(new PictogramTag(pictogram.getId(), t.getId()));
-            }
+            if (!overwritePictogram) {
+                List<Tag> addTags = generateTagList();
+                for (Tag t : addTags) {
+                    tagHelper.insert(new PictogramTag(pictogram.getId(), t.getId()));
+                }
 
-            for (Profile p : citizens) {
-                profileHelper.insert(new ProfilePictogram(p.getId(), pictogram.getId()));
+                for (Profile p : citizens) {
+                    profileHelper.insert(new ProfilePictogram(p.getId(), pictogram.getId()));
+                }
             }
             return true;
         }
-
         return false;
+    }
+
+    /**
+     * Method for updating a pictogram
+     *
+     * @param pictogram The pictogram that is replacing the old
+     * @param overwritePicID ID of the pictogram to overwrite
+     * @return True if any row was modified in the database for the pictogram
+     */
+    private boolean modifyPictogram(Pictogram pictogram,long overwritePicID) {
+        PictogramController pictogramHelper = databaseHelper.pictogramHelper;
+
+        pictogram.setId(overwritePicID);
+        if (pictogramHelper.modify(pictogram) > 0)
+            return true;
+        else
+            return false;
     }
 }

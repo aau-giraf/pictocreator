@@ -31,7 +31,8 @@
     <string name="text_size">Font Størrelse</string>
     <string name="overwrite_existing_question">Vil du overskrive det indlæste piktogram, eller oprette et nyt?</string>
     <string name="create_new">Opret nyt</string>
-    <string name="overwrite">Overskriv</string>
+    <string name="overwrite">Overskriv piktogram</string>
+    <string name="overwrite_pic">Vil du overskrive det valgte piktogram?</string>
     <string name="clear_canvas">Ryd tegnebræt?</string>
     <string name="save_pictogram">Gem Piktogram</string>
     <string name="must_be_logged_in">Du skal være logget ind for at gemme, log ind gennem GIRAF og prøv igen</string>

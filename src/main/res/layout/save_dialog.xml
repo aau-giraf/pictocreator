@@ -87,43 +87,43 @@
           android:hint="@string/pictogram_name"/>
 
       <LinearLayout
-          android:orientation="horizontal"
+          android:orientation="vertical"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/save_input_title">
+          android:layout_height="wrap_content">
+
+          <LinearLayout
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="8dp">
+
+              <dk.aau.cs.giraf.gui.GirafButton
+                  android:id="@+id/save_button_positive"
+                  android:layout_width="match_parent"
+                  android:layout_height="fill_parent"
+                  android:paddingLeft="8dp"
+                  android:paddingRight="8dp"
+                  android:layout_marginRight="40dp"
+                  app:icon="@drawable/icon_save"/>
+              <!-- app:text="@string/save_button_text"/> -->
+
+              <dk.aau.cs.giraf.gui.GirafButton
+                  android:id="@+id/save_button_negative"
+                  android:layout_width="match_parent"
+                  android:layout_height="fill_parent"
+                  android:paddingLeft="8dp"
+                  android:paddingRight="8dp"
+                  app:icon="@drawable/icon_cancel"/>
+              <!-- app:text="@string/regret"/> -->
+          </LinearLayout>
 
       <dk.aau.cs.giraf.gui.GirafButton
-        android:id="@+id/save_button_positive"
+        android:id="@+id/overwrite_button_positive"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:layout_marginRight="40dp"
-        app:icon="@drawable/icon_save"/>
-       <!-- app:text="@string/save_button_text"/> -->
-        
-      <dk.aau.cs.giraf.gui.GirafButton
-              android:id="@+id/overwrite_button_positive"
-              android:layout_width="70dp"
-              android:layout_height="70dp"
-              android:layout_alignParentLeft="true"
-              android:paddingLeft="8dp"
-              android:paddingRight="8dp"
-              android:layout_marginRight="40dp"
-              app:icon="@drawable/save"
-              android:visibility="gone"
-              app:text="@string/overwrite"/>
-
-      <dk.aau.cs.giraf.gui.GirafButton
-        android:id="@+id/save_button_negative"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_toRightOf="@+id/save_button_positive"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        app:icon="@drawable/icon_cancel"/>
-        <!-- app:text="@string/regret"/> -->
+        app:text="@string/overwrite"/>
 
       </LinearLayout>
 

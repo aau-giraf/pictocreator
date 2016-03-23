@@ -3,7 +3,6 @@ package dk.aau.cs.giraf.pictocreator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.aau.cs.giraf.activity.GirafActivity;
-import dk.aau.cs.giraf.core.data.Constants;
 import dk.aau.cs.giraf.dblib.controllers.PictogramController;
 import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
@@ -69,7 +67,6 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private DrawFragment drawFragment;
     private SaveDialogFragment saveDialog;
 
-    public static final String PICTO_SEARCH_IDS_TAG = "checkoutIds";
     public static final String PICTO_SEARCH_PURPOSE_TAG = "purpose";
     public static final String PICTO_SEARCH_SINGLE_TAG = "single";
 
@@ -82,6 +79,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
     private final int Method_Id_Remove_Tag = 2;
     private final int Method_Id_Remove_Citizen = 3;
     private final int Method_Id_Showcases = 4;
+    private final int Method_Id_Overwrite = 5;
 
     private StoragePictogram storagePictogram;
     private View decor;
@@ -100,6 +98,11 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         saveDialog.addSelectedCitizens(selectedProfiles);
     }
 
+    /**
+     * Method for handling what happens when a certain instance of confirmDialog is opened.
+     *
+     * @param methodID The ID of the confirmDialog that is opened.
+     */
     @Override
     public void confirmDialog(int methodID) {
         switch (methodID) {
@@ -125,6 +128,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
                 DrawStackSingleton.getInstance().mySavedData.clear();
                 drawFragment.drawView.invalidate();
                 drawFragment.setupShowcases();
+                break;
+            case Method_Id_Overwrite:
+                saveDialog.savePictogram();
                 break;
         }
     }
@@ -288,6 +294,7 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
         saveDialog.setService(service);
         saveDialog.setPictogram(storagePictogram, 1);
         saveDialog.setPreview(getBitmap());
+        saveDialog.setAuthor(author);
         saveDialog.show(getSupportFragmentManager(), TAG);
     }
 
@@ -456,25 +463,33 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
 
         intent.putExtra("currentGuardianID", author);
         intent.putExtra("purpose", "single");
-        startActivityForResult(intent, RESULT_FIRST_USER);
+        startActivityForResult(intent, ResultFunction.LOADIMAGE.getRequestCode());
     }
 
     /**
      * This method gets the pictogram that are returned by pictosearch.
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode passed by startActivityForResult and can be used to identify which
+     *                    startActivityForResult was called
+     * @param resultCode specified by the activity opened with startActivityResult
+     * @param data data returned by the opened Activity
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null)
             return;
 
-        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED)
+            return;
 
-        if (resultCode == RESULT_OK) {
-            loadPictogram(data);
+        switch (ResultFunction.fromRequestCode(requestCode)) {
+            case LOADIMAGE:
+                loadPictogram(data);
+                break;
+            default:
+                //Maybe our fragments know how to handle this
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
         }
     }
 
@@ -484,23 +499,9 @@ public class MainActivity extends GirafActivity implements CamFragment.PictureTa
      * @param data The data returned from pictosearch.
      */
     private void loadPictogram(Intent data) {
-        long pictogramID;
+        long pictogramID = PictogramHelper.getPictogramID(data, TAG, getApplicationContext(), this);
 
-        try {
-            Bundle extras = data.getExtras(); // Get the data from the intent
-
-            // Check if there was returned any pictogram ids
-            if (data.hasExtra(PICTO_SEARCH_IDS_TAG)) {
-                pictogramID = extras.getLongArray(PICTO_SEARCH_IDS_TAG)[0];
-            } else {
-                Toast.makeText(this, getString(R.string.pictosearch_no_pictograms), Toast.LENGTH_LONG).show();
-                return;
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Log.e(TAG, e.getMessage());
-            return;
-        } catch (NullPointerException e) {
-            Log.e(TAG, e.getMessage());
+        if (pictogramID == -1) {
             return;
         }
 

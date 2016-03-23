@@ -28,13 +28,19 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.aau.cs.giraf.dblib.controllers.PictogramController;
+import dk.aau.cs.giraf.dblib.models.Pictogram;
 import dk.aau.cs.giraf.dblib.models.Profile;
+import dk.aau.cs.giraf.dblib.models.ProfilePictogram;
+import dk.aau.cs.giraf.dblib.models.Tag;
 import dk.aau.cs.giraf.gui.GRadioButton;
 import dk.aau.cs.giraf.gui.GirafButton;
 import dk.aau.cs.giraf.gui.GirafConfirmDialog;
 import dk.aau.cs.giraf.gui.GirafProfileSelectorDialog;
 import dk.aau.cs.giraf.pictocreator.MainActivity;
+import dk.aau.cs.giraf.pictocreator.PictogramHelper;
 import dk.aau.cs.giraf.pictocreator.R;
+import dk.aau.cs.giraf.pictocreator.ResultFunction;
 import dk.aau.cs.giraf.pictocreator.StoragePictogram;
 
 /**
@@ -57,6 +63,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
 
     private final int Method_Id_Remove_Tag = 2;
     private final int Method_Id_Remove_Citizen = 3;
+    private final int Method_Id_Overwrite = 5;
 
     private final int Select_Users_Id = 1;
 
@@ -87,7 +94,12 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private boolean isService = false;
     private static int tempPos;
 
+    private long author;
+
     private ArrayAdapter<String> tagArrayAdapter, connectedArrayAdapter;
+
+    private boolean overwritePictogram = false;
+    private long overwritePicID;
 
     /**
      * Constructor for the Dialog, left empty on purpose
@@ -122,6 +134,10 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
      */
     public void setService(boolean isService) {
         this.isService = isService;
+    }
+
+    public void setAuthor(long author) {
+        this.author = author;
     }
 
     /**
@@ -175,9 +191,6 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         acceptButton.setOnClickListener(acceptListener);
 
         overwriteButton = (GirafButton) view.findViewById(R.id.overwrite_button_positive);
-
-        overwriteButton.setEnabled(false); // TODO: NOT FULLY IMPLEMENTED YET
-
         overwriteButton.setOnClickListener(overwriteListener);
 
         cancelButton = (GirafButton) view.findViewById(R.id.save_button_negative);
@@ -329,18 +342,16 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private final OnClickListener acceptListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            savePictogram(false);
+            if (overwritePictogram) {
+                GirafConfirmDialog overwriteDialog = GirafConfirmDialog.newInstance(getString(R.string.overwrite), getString(R.string.overwrite_pic), Method_Id_Overwrite);
+                overwriteDialog.show(getFragmentManager(), "overwriteDialog");
+            } else {
+                savePictogram();
+            }
         }
     };
 
-    private final OnClickListener overwriteListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            savePictogram(true);
-        }
-    };
-
-    private void savePictogram(boolean overwrite) {
+    public void savePictogram() {
         pictogramNameText = inputTextLabel.getText().toString();
         inlineText = inlineTextLabel.getText().toString();
 
@@ -376,7 +387,7 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
 
         //saves the picogram into the database
-        if (storagePictogram.addPictogram(loadedPictogramId)) {
+        if (storagePictogram.addPictogram(overwritePictogram, overwritePicID)) {
             Toast.makeText(parentActivity, getString(R.string.pictogram_saved), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(parentActivity, getString(R.string.pictogram_not_saved), Toast.LENGTH_SHORT).show();
@@ -391,6 +402,96 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
         }
 
         this.dismiss();
+    }
+
+    private final OnClickListener overwriteListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            openPictoSearch();
+        }
+    };
+
+    private void openPictoSearch() {
+        Intent intent = new Intent(parentActivity, dk.aau.cs.giraf.pictosearch.PictoAdminMain.class);
+
+        intent.putExtra("currentGuardianID", author);
+        intent.putExtra("purpose", "single");
+        startActivityForResult(intent, ResultFunction.LOADPICTOINFO.getRequestCode());
+    }
+
+    /**
+     * Method for receiving the pictogram that are returned by PictoSearch
+     *
+     * @param requestCode passed by startActivityForResult and can be used to identify which
+     *                    startActivityForResult was called
+     * @param resultCode specified by the activity opened with startActivityResult
+     * @param data data returned by the opened Activity
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null)
+            return;
+        loadPictoInfo(data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Method responsible for loading the data from the pictogram to overwrite
+     */
+    private void loadPictoInfo(Intent data) {
+        long pictogramID = PictogramHelper.getPictogramID(data, TAG, getContext(), getActivity());
+
+        if (pictogramID == -1) {
+            return;
+        }
+
+        PictogramController pictogramController = new PictogramController(getActivity());
+        Pictogram pictogram = pictogramController.getById(pictogramID);
+        dk.aau.cs.giraf.dblib.Helper databaseHelper = new dk.aau.cs.giraf.dblib.Helper(getActivity());
+
+        if (isEditTextEmpty(inlineTextLabel))
+            inlineTextLabel.setText(pictogram.getInlineText());
+
+        if (isEditTextEmpty(inputTextLabel))
+            inputTextLabel.setText(pictogram.getName());
+
+        if (!pictogram.getIsPublic()) {
+            publicityPrivate.setChecked(true);
+            showCitizenList();
+            List<Profile> profiles = databaseHelper.profilesHelper.getChildren();
+            for (Profile p : profiles) {
+                List<ProfilePictogram> proPics = databaseHelper.profilePictogramHelper.getPictogramProfileByProfile(p);
+                for (ProfilePictogram pp : proPics) {
+                    if (pp.getPictogramId() == pictogram.getId()) {
+                        citizenProfiles.add(p);
+                        break;
+                    }
+                }
+            }
+            updateCitizenList();
+        } else {
+            publicityPublic.setChecked(true);
+            hideCitizenList();
+        }
+
+        //TODO: T226 in Phabricator needs to be resolved before this works.
+        /*
+        List<Tag> oldTags = databaseHelper.tagsHelper.getTagByPictogram(pictogram);
+
+        for (Tag tag : oldTags) {
+            if (!tags.contains(tag.getName()))
+                tags.add(tag.getName());
+        }
+
+        tagArrayAdapter.notifyDataSetChanged();
+        */
+
+        overwritePicID = pictogramID;
+        overwritePictogram = true;
+    }
+
+    private boolean isEditTextEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
     }
 
     private final AdapterView.OnItemClickListener onRemoveCitizen = new AdapterView.OnItemClickListener() {
@@ -411,18 +512,26 @@ public class SaveDialogFragment extends DialogFragment implements GirafProfileSe
     private final OnClickListener enableCitizenList = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            addConnectCitizenButton.setVisibility(View.VISIBLE);
-            connectedCitizenList.setVisibility(View.VISIBLE);
+            showCitizenList();
         }
     };
+
+    private void showCitizenList() {
+        addConnectCitizenButton.setVisibility(View.VISIBLE);
+        connectedCitizenList.setVisibility(View.VISIBLE);
+    }
 
     private final OnClickListener disableConnect = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            addConnectCitizenButton.setVisibility(View.INVISIBLE);
-            connectedCitizenList.setVisibility(View.INVISIBLE);
+            hideCitizenList();
         }
     };
+
+    private void hideCitizenList() {
+        addConnectCitizenButton.setVisibility(View.INVISIBLE);
+        connectedCitizenList.setVisibility(View.INVISIBLE);
+    }
 
     /**
      * Click listener which adds citizen to the list
